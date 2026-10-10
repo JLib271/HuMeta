@@ -266,7 +266,7 @@ with t_schema:
         "5 - Strongly Agree"
     ]
 
-    # -----------------------------------------------------
+# -----------------------------------------------------
 # METADATA TEMPLATE
 # -----------------------------------------------------
 
@@ -382,93 +382,93 @@ st.download_button(
 
 
 
-    # -----------------------------------------------------
-    # PSYCHOMETRIC DICTIONARY
-    # -----------------------------------------------------
+# -----------------------------------------------------
+# PSYCHOMETRIC DICTIONARY
+# -----------------------------------------------------
 
-    st.subheader("📚 Good et al. Instrument Dictionary")
+st.subheader("📚 Good et al. Instrument Dictionary")
 
-    dictionary_data = []
+dictionary_data = []
 
-    for subscale, rules in SUBSCALE_MAP.items():
+for subscale, rules in SUBSCALE_MAP.items():
 
-        for item in rules["items"]:
+    for item in rules["items"]:
 
-            dictionary_data.append(
-                {
-                    "Expected Column Header": item,
-                    "Psychometric Subscale Domain": subscale,
-                    "Requires Reverse Scoring":
-                        "Yes" if item in rules["reverse"] else "No"
-                }
-            )
+        dictionary_data.append(
+            {
+                "Expected Column Header": item,
+                "Psychometric Subscale Domain": subscale,
+                "Requires Reverse Scoring":
+                    "Yes" if item in rules["reverse"] else "No"
+            }
+        )
 
-    st.dataframe(
-        pd.DataFrame(dictionary_data),
-        use_container_width=True,
-        hide_index=True
-    )
+st.dataframe(
+    pd.DataFrame(dictionary_data),
+    use_container_width=True,
+    hide_index=True
+)
 
-    # -----------------------------------------------------
-    # METADATA DICTIONARY
-    # -----------------------------------------------------
+# -----------------------------------------------------
+# METADATA DICTIONARY
+# -----------------------------------------------------
 
-    st.subheader("🌐 Metadata Dictionary")
+st.subheader("🌐 Metadata Dictionary")
 
-    metadata_dictionary = pd.DataFrame(
-        [
-            ["Gender_Identity", "Participant Metadata"],
-            ["Gender_Identity_Other", "Participant Metadata"],
-            ["Race_Ethnicity", "Participant Metadata"],
-            ["Race_Ethnicity_Other", "Participant Metadata"],
-            ["Grade_Level", "Educational Context"],
-            ["Grade_Level_Other", "Educational Context"],
-            ["Course_Subject", "Educational Context"],
-            ["Course_Subject_Other", "Educational Context"],
-            ["Institution_Type", "Institution Metadata"],
-            ["Institution_Type_Other", "Institution Metadata"],
-            ["Research_Design", "Study Metadata"],
-            ["Research_Design_Other", "Study Metadata"],
-            ["DOI", "Repository Metadata"],
-            ["ORCID", "Researcher Metadata"],
-            ["Grant_Number", "Funding Metadata"],
-            ["IRB_Protocol", "Compliance Metadata"]
-        ],
-        columns=[
-            "Metadata Variable",
-            "Category"
-        ]
-    )
+metadata_dictionary = pd.DataFrame(
+    [
+        ["Gender_Identity", "Participant Metadata"],
+        ["Gender_Identity_Other", "Participant Metadata"],
+        ["Race_Ethnicity", "Participant Metadata"],
+        ["Race_Ethnicity_Other", "Participant Metadata"],
+        ["Grade_Level", "Educational Context"],
+        ["Grade_Level_Other", "Educational Context"],
+        ["Course_Subject", "Educational Context"],
+        ["Course_Subject_Other", "Educational Context"],
+        ["Institution_Type", "Institution Metadata"],
+        ["Institution_Type_Other", "Institution Metadata"],
+        ["Research_Design", "Study Metadata"],
+        ["Research_Design_Other", "Study Metadata"],
+        ["DOI", "Repository Metadata"],
+        ["ORCID", "Researcher Metadata"],
+        ["Grant_Number", "Funding Metadata"],
+        ["IRB_Protocol", "Compliance Metadata"]
+    ],
+    columns=[
+        "Metadata Variable",
+        "Category"
+    ]
+)
 
-    st.dataframe(
-        metadata_dictionary,
-        use_container_width=True,
-        hide_index=True
-    )
+st.dataframe(
+    metadata_dictionary,
+    use_container_width=True,
+    hide_index=True
+)
 
 with t_propose:
-    st.subheader("💡 Propose Custom Metadata Columns to the Ecosystem")
-    st.write("Are you tracking an educational parameter not covered by the current core standards? Submit a recommendation below:")
-    
-    with st.form("suggestion_form", clear_on_submit=True):
-        new_key = st.text_input("Suggested Column Header Key", placeholder="e.g., Socioeconomic_Status_Tier")
-        new_cat = st.selectbox("Subscale Alignment", ["Membership Extension", "Acceptance Extension", "Institutional / Demographics", "Qualitative Flag"])
-        new_just = st.text_area("Research Justification / Purpose")
-        
-        if st.form_submit_button("Submit Suggestion to Manifest Log"):
-            if new_key and new_just:
-                st.session_state["proposed_columns"].append({
-                    "Proposed Column Key": new_key,
-                    "Subscale Category": new_cat,
-                    "Justification": new_just
-                })
-                st.success(f"Proposed column '{new_key}' successfully appended to the public manifest template log below!")
-            else:
-                st.error("Please fill in both the column key name and the research justification.")
+st.subheader("💡 Propose Custom Metadata Columns to the Ecosystem")
+st.write("Are you tracking an educational parameter not covered by the current core standards? Submit a recommendation below:")
 
-    st.subheader("Current Community Proposed Metadata Additions Log")
-    df_proposals = pd.DataFrame(st.session_state["proposed_columns"])
-    st.dataframe(df_proposals, use_container_width=True, hide_index=True)
+with st.form("suggestion_form", clear_on_submit=True):
+    new_key = st.text_input("Suggested Column Header Key", placeholder="e.g., Socioeconomic_Status_Tier")
+    new_cat = st.selectbox("Subscale Alignment", ["Membership Extension", "Acceptance Extension", "Institutional / Demographics", "Qualitative Flag"])
+    new_just = st.text_area("Research Justification / Purpose")
+    
+    if st.form_submit_button("Submit Suggestion to Manifest Log"):
+        if new_key and new_just:
+            st.session_state["proposed_columns"].append({
+                "Proposed Column Key": new_key,
+                "Subscale Category": new_cat,
+                "Justification": new_just
+            })
+            st.success(f"Proposed column '{new_key}' successfully appended to the public manifest template log below!")
+        else:
+            st.error("Please fill in both the column key name and the research justification.")
+
+st.subheader("Current Community Proposed Metadata Additions Log")
+df_proposals = pd.DataFrame(st.session_state["proposed_columns"])
+st.dataframe(df_proposals, use_container_width=True, hide_index=True)
 
 # -------------------------------------------------------------
 # DYNAMIC CALCULATION CORE ENGINE
