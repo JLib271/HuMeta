@@ -267,64 +267,118 @@ with t_schema:
     ]
 
     # -----------------------------------------------------
-    # METADATA TEMPLATE
-    # -----------------------------------------------------
+# METADATA TEMPLATE
+# -----------------------------------------------------
 
-    st.subheader("✏️ Metadata-Aligned Data Entry Template")
+st.subheader("✏️ Metadata-Aligned Dataset Builder")
 
-    example_row = {
-        "StudentID": "S001",
+template_columns = [
 
-        "Gender_Identity": "Woman",
-        "Gender_Identity_Other": "",
+    "StudentID",
 
-        "Race_Ethnicity": "Asian; White",
-        "Race_Ethnicity_Other": "",
+    "Gender_Identity",
+    "Gender_Identity_Other",
 
-        "Grade_Level": "5th Grade",
-        "Grade_Level_Other": "",
+    "Race_Ethnicity",
+    "Race_Ethnicity_Other",
 
-        "Course_Subject": "Mathematics",
-        "Course_Subject_Other": "",
+    "Grade_Level",
+    "Grade_Level_Other",
 
-        "Institution_Type": "Public Elementary School",
-        "Institution_Type_Other": "",
+    "Course_Subject",
+    "Course_Subject_Other",
 
-        "Research_Design": "Mixed Methods",
-        "Research_Design_Other": "",
+    "Institution_Type",
+    "Institution_Type_Other",
 
-        "DOI": "",
-        "ORCID": "",
-        "Grant_Number": "",
-        "IRB_Protocol": "",
+    "Research_Design",
+    "Research_Design_Other",
 
-        "Qualitative_Notes": ""
-    }
+    "DOI",
+    "ORCID",
+    "Grant_Number",
+    "IRB_Protocol",
 
-    for subscale, rules in SUBSCALE_MAP.items():
-        for item in rules["items"]:
-            example_row[item] = "3 - Neutral"
+    "Qualitative_Notes"
+]
 
-    template_df = pd.DataFrame([example_row])
+for subscale, rules in SUBSCALE_MAP.items():
+    template_columns.extend(rules["items"])
 
-    edited_template = st.data_editor(
-        template_df,
-        use_container_width=True,
-        num_rows="dynamic",
-        key="metadata_template_editor"
+template_df = pd.DataFrame(columns=template_columns)
+
+if "working_metadata_df" not in st.session_state:
+    st.session_state["working_metadata_df"] = template_df.copy()
+
+edited_template = st.data_editor(
+    st.session_state["working_metadata_df"],
+    num_rows="dynamic",
+    use_container_width=True,
+    key="metadata_template_editor"
+)
+
+st.session_state["working_metadata_df"] = edited_template
+
+st.info(
+    """
+    Create records from scratch using the data editor.
+
+    • Click '+ Add Row' to add study participants
+    • Race/Ethnicity can contain multiple values separated by semicolons
+    • Use *_Other fields whenever 'Other' is selected
+    • Download the dataset at any time
+    """
+)
+
+# -----------------------------------------------------
+# CSV IMPORT / MERGE
+# -----------------------------------------------------
+
+st.subheader("📥 Import Existing Dataset")
+
+uploaded_metadata_csv = st.file_uploader(
+    "Upload Existing Metadata CSV",
+    type=["csv"],
+    key="metadata_import"
+)
+
+if uploaded_metadata_csv is not None:
+
+    imported_df = pd.read_csv(uploaded_metadata_csv)
+
+    st.success(
+        f"Imported {len(imported_df)} records."
     )
 
-    st.info(
-        """
-        Race/Ethnicity may contain multiple values separated by semicolons.
-
-        Example:
-        Asian; White
-
-        If "Other" is selected, provide details in the matching
-        *_Other field.
-        """
+    st.dataframe(
+        imported_df.head(),
+        use_container_width=True
     )
+
+    if st.button("Append Imported Records"):
+
+        st.session_state["working_metadata_df"] = pd.concat(
+            [
+                st.session_state["working_metadata_df"],
+                imported_df
+            ],
+            ignore_index=True
+        )
+
+        st.success(
+            "Imported records merged successfully."
+        )
+
+# -----------------------------------------------------
+# DOWNLOAD DATASET
+# -----------------------------------------------------
+
+st.download_button(
+    label="📥 Download Current Metadata Dataset",
+    data=st.session_state["working_metadata_df"].to_csv(index=False),
+    file_name="metadata_dataset.csv",
+    mime="text/csv"
+)
 
     # -----------------------------------------------------
     # DOWNLOAD TEMPLATE
