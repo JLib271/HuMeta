@@ -446,7 +446,7 @@ st.dataframe(
     hide_index=True
 )
 
-with t_propose:
+    with t_propose:
 st.subheader("💡 Propose Custom Metadata Columns to the Ecosystem")
 st.write("Are you tracking an educational parameter not covered by the current core standards? Submit a recommendation below:")
 
