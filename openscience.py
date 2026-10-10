@@ -38,12 +38,6 @@ SUBSCALE_MAP = {
     }
 }
 
-# Compile a master list of all expected headers for template construction
-all_expected_items = ["StudentID", "Gender_Identity"]
-for sub, sub_rules in SUBSCALE_MAP.items():
-    all_expected_items.extend(sub_rules["items"])
-all_expected_items.append("Qualitative_Notes")
-
 # Math equation to calculate Cronbach's Alpha reliability
 def calculate_cronbach_alpha(df_items):
     num_columns = len(df_items.columns)
@@ -97,7 +91,7 @@ with st.container(border=True):
 # -------------------------------------------------------------
 st.header("🔒 2. Confidential Local Data & Schema Specifications")
 
-t_upload, t_schema, t_propose = st.tabs(["📥 Data Upload & Alignment Checker", "📋 Open Source Data Dictionary & CSV Template", "💡 Propose New Schema Columns"])
+t_upload, t_schema, t_propose = st.tabs(["📥 Data Upload & Alignment Checker", "📋 Open Source Data Dictionary", "💡 Propose New Schema Columns"])
 
 with t_upload:
     st.info("Upload your research dataset spreadsheet. The column mapping utility will compare your keys against the verified Good et al. schema.")
@@ -134,6 +128,10 @@ with t_upload:
 
     # Column Checklist Comparison Tool
     st.subheader("Column Name Match Analyzer")
+    all_expected_items = []
+    for sub, sub_rules in SUBSCALE_MAP.items():
+        all_expected_items.extend(sub_rules["items"])
+
     found_expected = [col for col in df_local.columns if col in all_expected_items]
     missing_expected = [col for col in all_expected_items if col not in df_local.columns]
 
@@ -149,31 +147,259 @@ with t_upload:
     st.dataframe(df_local, use_container_width=True)
 
 with t_schema:
-    st.subheader("📋 Download Blank Schema Template File")
-    st.write("Click the button below to download an empty, pre-formatted CSV template grid containing all 30 expected scale variable headers. You can open this file in Excel or Google Sheets to organize your study records perfectly before uploading.")
-    
-    # Construct a blank dataframe using our structural schema requirements list
-    df_blank_template = pd.DataFrame(columns=all_expected_items)
-    
-    st.download_button(
-        label="📥 Download Blank Data Organization CSV Template",
-        data=df_blank_template.to_csv(index=False),
-        file_name="open_educational_metadata_blank_roster.csv",
-        mime="text/csv",
-        key="btn_download_blank_template"
+
+    st.subheader("📋 FAIR-Aligned Metadata & Data Entry Template")
+
+    st.write(
+        """
+        Build standards-aligned educational research datasets using
+        controlled vocabularies and metadata fields that improve
+        consistency, interoperability, repository deposit, and
+        future meta-analysis.
+        """
     )
-    
-    st.subheader("Official Good et al. (2012) Open Source Schema Mapping Specifications")
-    dictionary_data = []
+
+    # -----------------------------------------------------
+    # CONTROLLED VOCABULARIES
+    # -----------------------------------------------------
+
+    GENDER_OPTIONS = [
+        "Woman",
+        "Man",
+        "Non-binary",
+        "Agender",
+        "Genderfluid",
+        "Two-Spirit",
+        "Prefer Not To Answer",
+        "Other"
+    ]
+
+    RACE_OPTIONS = [
+        "American Indian or Alaska Native",
+        "Asian",
+        "Black or African American",
+        "Hispanic or Latino",
+        "Middle Eastern or North African",
+        "Native Hawaiian or Pacific Islander",
+        "White",
+        "Prefer Not To Answer",
+        "Other"
+    ]
+
+    GRADE_OPTIONS = [
+        "Pre-K",
+        "Kindergarten",
+        "1st Grade",
+        "2nd Grade",
+        "3rd Grade",
+        "4th Grade",
+        "5th Grade",
+        "6th Grade",
+        "7th Grade",
+        "8th Grade",
+        "9th Grade",
+        "10th Grade",
+        "11th Grade",
+        "12th Grade",
+        "Undergraduate",
+        "Graduate",
+        "Adult Learning",
+        "Other"
+    ]
+
+    SUBJECT_OPTIONS = [
+        "Mathematics",
+        "Biology",
+        "Chemistry",
+        "Physics",
+        "Earth Science",
+        "Environmental Science",
+        "Engineering",
+        "Computer Science",
+        "Data Science",
+        "English Language Arts",
+        "Social Studies",
+        "History",
+        "Economics",
+        "Special Education",
+        "ESL / ELL",
+        "Other"
+    ]
+
+    INSTITUTION_OPTIONS = [
+        "Public Elementary School",
+        "Public Middle School",
+        "Public High School",
+        "Charter School",
+        "Private School",
+        "Community College",
+        "4-Year College",
+        "Research University",
+        "Minority Serving Institution",
+        "Tribal College",
+        "Online Institution",
+        "Museum",
+        "Science Center",
+        "Informal Learning Organization",
+        "Other"
+    ]
+
+    RESEARCH_OPTIONS = [
+        "Randomized Controlled Trial (RCT)",
+        "Quasi-Experimental Design (QED)",
+        "Correlational Study",
+        "Mixed Methods",
+        "Qualitative Study",
+        "Case Study",
+        "Design-Based Research",
+        "Improvement Science",
+        "Meta-Analysis",
+        "Systematic Review",
+        "Other"
+    ]
+
+    LIKERT_OPTIONS = [
+        "1 - Strongly Disagree",
+        "2 - Disagree",
+        "3 - Neutral",
+        "4 - Agree",
+        "5 - Strongly Agree"
+    ]
+
+    # -----------------------------------------------------
+    # METADATA TEMPLATE
+    # -----------------------------------------------------
+
+    st.subheader("✏️ Metadata-Aligned Data Entry Template")
+
+    example_row = {
+        "StudentID": "S001",
+
+        "Gender_Identity": "Woman",
+        "Gender_Identity_Other": "",
+
+        "Race_Ethnicity": "Asian; White",
+        "Race_Ethnicity_Other": "",
+
+        "Grade_Level": "5th Grade",
+        "Grade_Level_Other": "",
+
+        "Course_Subject": "Mathematics",
+        "Course_Subject_Other": "",
+
+        "Institution_Type": "Public Elementary School",
+        "Institution_Type_Other": "",
+
+        "Research_Design": "Mixed Methods",
+        "Research_Design_Other": "",
+
+        "DOI": "",
+        "ORCID": "",
+        "Grant_Number": "",
+        "IRB_Protocol": "",
+
+        "Qualitative_Notes": ""
+    }
+
     for subscale, rules in SUBSCALE_MAP.items():
         for item in rules["items"]:
-            is_reversed = "Yes (Inverted automatically)" if item in rules["reverse"] else "No"
-            dictionary_data.append({
-                "Expected Column Header": item,
-                "Psychometric Subscale Domain": subscale,
-                "Requires Reverse Scoring": is_reversed
-            })
-    st.table(pd.DataFrame(dictionary_data))
+            example_row[item] = "3 - Neutral"
+
+    template_df = pd.DataFrame([example_row])
+
+    edited_template = st.data_editor(
+        template_df,
+        use_container_width=True,
+        num_rows="dynamic",
+        key="metadata_template_editor"
+    )
+
+    st.info(
+        """
+        Race/Ethnicity may contain multiple values separated by semicolons.
+
+        Example:
+        Asian; White
+
+        If "Other" is selected, provide details in the matching
+        *_Other field.
+        """
+    )
+
+    # -----------------------------------------------------
+    # DOWNLOAD TEMPLATE
+    # -----------------------------------------------------
+
+    st.download_button(
+        label="📥 Download Metadata Template CSV",
+        data=template_df.to_csv(index=False),
+        file_name="metadata_template.csv",
+        mime="text/csv"
+    )
+
+    # -----------------------------------------------------
+    # PSYCHOMETRIC DICTIONARY
+    # -----------------------------------------------------
+
+    st.subheader("📚 Good et al. Instrument Dictionary")
+
+    dictionary_data = []
+
+    for subscale, rules in SUBSCALE_MAP.items():
+
+        for item in rules["items"]:
+
+            dictionary_data.append(
+                {
+                    "Expected Column Header": item,
+                    "Psychometric Subscale Domain": subscale,
+                    "Requires Reverse Scoring":
+                        "Yes" if item in rules["reverse"] else "No"
+                }
+            )
+
+    st.dataframe(
+        pd.DataFrame(dictionary_data),
+        use_container_width=True,
+        hide_index=True
+    )
+
+    # -----------------------------------------------------
+    # METADATA DICTIONARY
+    # -----------------------------------------------------
+
+    st.subheader("🌐 Metadata Dictionary")
+
+    metadata_dictionary = pd.DataFrame(
+        [
+            ["Gender_Identity", "Participant Metadata"],
+            ["Gender_Identity_Other", "Participant Metadata"],
+            ["Race_Ethnicity", "Participant Metadata"],
+            ["Race_Ethnicity_Other", "Participant Metadata"],
+            ["Grade_Level", "Educational Context"],
+            ["Grade_Level_Other", "Educational Context"],
+            ["Course_Subject", "Educational Context"],
+            ["Course_Subject_Other", "Educational Context"],
+            ["Institution_Type", "Institution Metadata"],
+            ["Institution_Type_Other", "Institution Metadata"],
+            ["Research_Design", "Study Metadata"],
+            ["Research_Design_Other", "Study Metadata"],
+            ["DOI", "Repository Metadata"],
+            ["ORCID", "Researcher Metadata"],
+            ["Grant_Number", "Funding Metadata"],
+            ["IRB_Protocol", "Compliance Metadata"]
+        ],
+        columns=[
+            "Metadata Variable",
+            "Category"
+        ]
+    )
+
+    st.dataframe(
+        metadata_dictionary,
+        use_container_width=True,
+        hide_index=True
+    )
 
 with t_propose:
     st.subheader("💡 Propose Custom Metadata Columns to the Ecosystem")
@@ -187,122 +413,129 @@ with t_propose:
         if st.form_submit_button("Submit Suggestion to Manifest Log"):
             if new_key and new_just:
                 st.session_state["proposed_columns"].append({
-    "Proposed Column Key": new_key,
-"Subscale Category": new_cat,
-"Justification": new_just
-})
-st.success(f"Proposed column '{new_key}' successfully appended to the public manifest template log below!")
-else:
-st.error("Please fill in both the column key name and the research justification.")
-st.subheader("Current Community Proposed Metadata Additions Log")
-df_proposals = pd.DataFrame(st.session_state["proposed_columns"])
-st.dataframe(df_proposals, use_container_width=True, hide_index=True)
+                    "Proposed Column Key": new_key,
+                    "Subscale Category": new_cat,
+                    "Justification": new_just
+                })
+                st.success(f"Proposed column '{new_key}' successfully appended to the public manifest template log below!")
+            else:
+                st.error("Please fill in both the column key name and the research justification.")
 
--------------------------------------------------------------
+    st.subheader("Current Community Proposed Metadata Additions Log")
+    df_proposals = pd.DataFrame(st.session_state["proposed_columns"])
+    st.dataframe(df_proposals, use_container_width=True, hide_index=True)
 
-
-DYNAMIC CALCULATION CORE ENGINE
-
-
--------------------------------------------------------------
-
+# -------------------------------------------------------------
+# DYNAMIC CALCULATION CORE ENGINE
+# -------------------------------------------------------------
 columns_to_keep = ["StudentID", "Gender_Identity", "Qualitative_Notes"]
 df_scored = df_local.filter(columns_to_keep).copy()
 subscale_calculated_cols = []
 alpha_records = {}
+
 for subscale, rules in SUBSCALE_MAP.items():
-found_items = [item for item in rules["items"] if item in df_local.columns]
-if found_items:
-sub_df = df_local.filter(found_items).copy()
-for item in found_items:
-if item in rules["reverse"]:
-sub_df[item] = 6 - sub_df[item]
-if len(sub_df.columns) >= 2:
-alpha_val = calculate_cronbach_alpha(sub_df)
-alpha_records[subscale] = alpha_val
-else:
-alpha_records[subscale] = "N/A (Single Item)"
-df_scored[f"Subscale_{subscale}"] = sub_df.mean(axis=1)
-subscale_calculated_cols.append(f"Subscale_{subscale}")
+    found_items = [item for item in rules["items"] if item in df_local.columns]
+    
+    if found_items:
+        sub_df = df_local.filter(found_items).copy()
+        for item in found_items:
+            if item in rules["reverse"]:
+                sub_df[item] = 6 - sub_df[item]
+        
+        if len(sub_df.columns) >= 2:
+            alpha_val = calculate_cronbach_alpha(sub_df)
+            alpha_records[subscale] = alpha_val
+        else:
+            alpha_records[subscale] = "N/A (Single Item)"
+            
+        df_scored[f"Subscale_{subscale}"] = sub_df.mean(axis=1)
+        subscale_calculated_cols.append(f"Subscale_{subscale}")
+
 if subscale_calculated_cols:
-df_scored["Overall_Belonging_Scale_Score"] = df_scored.filter(subscale_calculated_cols).mean(axis=1)
+    df_scored["Overall_Belonging_Scale_Score"] = df_scored.filter(subscale_calculated_cols).mean(axis=1)
 
--------------------------------------------------------------
-
-
-TIER 3: OPEN PUBLIC AGGREGATIONS & GRAPHICS
-
-
--------------------------------------------------------------
-
+# -------------------------------------------------------------
+# TIER 3: OPEN PUBLIC AGGREGATIONS & GRAPHICS
+# -------------------------------------------------------------
 st.header("📊 3. Public Demographic Aggregates, Charts & Reliability Reports")
 if not df_scored.empty:
-tab_stats, tab_charts, tab_alpha, tab_text = st.tabs(["Calculated Subscale Averages", "📈 Interactive Data Visualizations", "Cronbach's Alpha Reliability Logs", "Qualitative Logs"])
-with tab_stats:
-st.subheader("Aggregated Scale Matrices Grouped by Gender Profile")
-aggregates_output = df_scored.groupby("Gender_Identity")[df_scored.columns.difference(columns_to_keep)].mean().reset_index()
-st.dataframe(aggregates_output.round(2), use_container_width=True, hide_index=True)
-with tab_charts:
-st.subheader("📈 Interactive Profile Matrix Visualizer")
-st.write("This interactive graphic breaks down calculated belonging scores by identity profile across your active dataset:")
-df_melted = df_scored.melt(id_vars=["Gender_Identity"], value_vars=subscale_calculated_cols, var_name="Subscale Component", value_name="Calculated Score")
-df_chart_agg = df_melted.groupby(["Gender_Identity", "Subscale Component"])["Calculated Score"].mean().reset_index()
-custom_brand_colors = ["#1F4E79", "#2E8B57", "#708090", "#D9534F"]
-fig = px.bar(
-df_chart_agg,
-x="Subscale Component",
-y="Calculated Score",
-color="Gender_Identity",
-barmode="group",
-title="Comparison of Good et al. Subscale Profiles Across Gender Identities",
-labels={"Calculated Score": "Mean Scale Score (1-5)", "Subscale Component": "Psychometric Dimension"},
-color_discrete_sequence=custom_brand_colors
-)
-st.plotly_chart(fig, use_container_width=True)
-with tab_alpha:
-st.subheader("Internal Consistency Reports (Cronbach's Alpha)")
-alpha_summary_data = []
-for k, v in alpha_records.items():
-if isinstance(v, float):
-status_str = "🔥 Excellent Reliability" if v >= 0.80 else ("👍 Acceptable Reliability" if v >= 0.70 else "⚠️ Low Reliability")
-val_str = f"{v:.3f}"
-else:
-status_str = "Informational: Insufficient items to run calculation"
-val_str = str(v)
-alpha_summary_data.append({"Subscale Component Dimension": k, "Cronbach's Alpha Coefficient": val_str, "Psychometric Status Interpretation": status_str})
-st.table(pd.DataFrame(alpha_summary_data))
-with tab_text:
-st.subheader("Anonymized Field Observations Output")
-st.dataframe(df_scored.filter(columns_to_keep), use_container_width=True, hide_index=True)
-# -------------------------------------------------------------
-# EXPORT BLOCK
-# -------------------------------------------------------------
-st.subheader("📥 Export Open Science Manifest Package")
-levels_joined = ", ".join(student_levels) if student_levels else "None Selected"
-proposals_text = "\n".join([f"- Key: {p['Proposed Column Key']} | Category: {p['Subscale Category']} | Justification: {p['Justification']}" for p in st.session_state["proposed_columns"]])
-manifest_txt = (
-f"--- OPEN EDUCATIONAL METADATA MANIFEST ---\n"
-f"DUBLIN CORE METADATA ELEMENTS:\n"
-f"Identifier/Title: {dc_title}\nCreator: {dc_creator}\nSubject Group: {dc_subject}\nDate Logged: {dc_date}\nType: {dc_type}\n\n"
-f"DDI DATA DOCUMENTATION PARAMETERS:\n"
-f"Research Design Paradigm: {ddi_design}\nObservation Analysis Unit: {ddi_unit}\n\n"
-f"IEEE LOM EDUCATIONAL METADATA CONTEXT:\n"
-f"Instruction Focus Domain: {academic_keys_discipline}\nTarget Grade Cohort Levels: {levels_joined}\nInteractivity Configuration: {lom_interactivity}\n\n"
-f"COMMUNITY SCHEMATIC EXTENSIONS PROPOSED:\n"
-f"{proposals_text}\n"
-)
-c_exp1, c_exp2 = st.columns(2)
-with c_exp1:
-st.download_button(
-label="Download Public Aggregated Survey Tables (.CSV)",
-data=aggregates_output.to_csv(index=False),
-file_name="good_2012_anonymized_aggregates.csv",
-mime="text/csv"
-)
-with c_exp2:
-st.download_button(
-label="Download Unified Public Metadata Manifest & Community Logs (.TXT)",
-data=manifest_txt,
-file_name="open_science_schema_manifest.txt",
-mime="text/plain"
-)
+    tab_stats, tab_charts, tab_alpha, tab_text = st.tabs(["Calculated Subscale Averages", "📈 Interactive Data Visualizations", "Cronbach's Alpha Reliability Logs", "Qualitative Logs"])
+    
+    with tab_stats:
+        st.subheader("Aggregated Scale Matrices Grouped by Gender Profile")
+        aggregates_output = df_scored.groupby("Gender_Identity")[df_scored.columns.difference(columns_to_keep)].mean().reset_index()
+        st.dataframe(aggregates_output.round(2), use_container_width=True, hide_index=True)
+        
+    with tab_charts:
+        st.subheader("📈 Interactive Profile Matrix Visualizer")
+        st.write("This interactive graphic breaks down calculated belonging scores by identity profile across your active dataset:")
+        
+        df_melted = df_scored.melt(id_vars=["Gender_Identity"], value_vars=subscale_calculated_cols, var_name="Subscale Component", value_name="Calculated Score")
+        df_chart_agg = df_melted.groupby(["Gender_Identity", "Subscale Component"])["Calculated Score"].mean().reset_index()
+        
+        custom_brand_colors = ["#1F4E79", "#2E8B57", "#708090", "#D9534F"]
+        
+        fig = px.bar(
+            df_chart_agg, 
+            x="Subscale Component", 
+            y="Calculated Score", 
+            color="Gender_Identity", 
+            barmode="group",
+            title="Comparison of Good et al. Subscale Profiles Across Gender Identities",
+            labels={"Calculated Score": "Mean Scale Score (1-5)", "Subscale Component": "Psychometric Dimension"},
+            color_discrete_sequence=custom_brand_colors
+        )
+        st.plotly_chart(fig, use_container_width=True)
+        
+    with tab_alpha:
+        st.subheader("Internal Consistency Reports (Cronbach's Alpha)")
+        alpha_summary_data = []
+        for k, v in alpha_records.items():
+            if isinstance(v, float):
+                status_str = "🔥 Excellent Reliability" if v >= 0.80 else ("👍 Acceptable Reliability" if v >= 0.70 else "⚠️ Low Reliability")
+                val_str = f"{v:.3f}"
+            else:
+                status_str = "Informational: Insufficient items to run calculation"
+                val_str = str(v)
+            alpha_summary_data.append({"Subscale Component Dimension": k, "Cronbach's Alpha Coefficient": val_str, "Psychometric Status Interpretation": status_str})
+        st.table(pd.DataFrame(alpha_summary_data))
+        
+    with tab_text:
+        st.subheader("Anonymized Field Observations Output")
+        st.dataframe(df_scored.filter(columns_to_keep), use_container_width=True, hide_index=True)
+
+    # -------------------------------------------------------------
+    # EXPORT BLOCK
+    # -------------------------------------------------------------
+    st.subheader("📥 Export Open Science Manifest Package")
+    levels_joined = ", ".join(student_levels) if student_levels else "None Selected"
+    proposals_text = "\n".join([f"- Key: {p['Proposed Column Key']} | Category: {p['Subscale Category']} | Justification: {p['Justification']}" for p in st.session_state["proposed_columns"]])
+    
+    manifest_txt = (
+        f"--- OPEN EDUCATIONAL METADATA MANIFEST ---\n"
+        f"DUBLIN CORE METADATA ELEMENTS:\n"
+        f"Identifier/Title: {dc_title}\nCreator: {dc_creator}\nSubject Group: {dc_subject}\nDate Logged: {dc_date}\nType: {dc_type}\n\n"
+        f"DDI DATA DOCUMENTATION PARAMETERS:\n"
+        f"Research Design Paradigm: {ddi_design}\nObservation Analysis Unit: {ddi_unit}\n\n"
+        f"IEEE LOM EDUCATIONAL METADATA CONTEXT:\n"
+        f"Instruction Focus Domain: {academic_keys_discipline}\nTarget Grade Cohort Levels: {levels_joined}\nInteractivity Configuration: {lom_interactivity}\n\n"
+        f"COMMUNITY SCHEMATIC EXTENSIONS PROPOSED:\n"
+        f"{proposals_text}\n"
+    )
+    
+    c_exp1, c_exp2 = st.columns(2)
+    with c_exp1:
+        st.download_button(
+            label="Download Public Aggregated Survey Tables (.CSV)",
+            data=aggregates_output.to_csv(index=False),
+            file_name="good_2012_anonymized_aggregates.csv",
+            mime="text/csv"
+        )
+    with c_exp2:
+        st.download_button(
+            label="Download Unified Public Metadata Manifest & Community Logs (.TXT)",
+            data=manifest_txt,
+            file_name="open_science_schema_manifest.txt",
+            mime="text/plain"
+        )
+
