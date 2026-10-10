@@ -380,16 +380,7 @@ st.download_button(
     mime="text/csv"
 )
 
-    # -----------------------------------------------------
-    # DOWNLOAD TEMPLATE
-    # -----------------------------------------------------
 
-    st.download_button(
-        label="📥 Download Metadata Template CSV",
-        data=template_df.to_csv(index=False),
-        file_name="metadata_template.csv",
-        mime="text/csv"
-    )
 
     # -----------------------------------------------------
     # PSYCHOMETRIC DICTIONARY
