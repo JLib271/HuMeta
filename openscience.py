@@ -361,38 +361,7 @@ with t_schema:
 
 st.subheader("✏️ Metadata-Aligned Dataset Builder")
 
-template_columns = [
-
-    "StudentID",
-
-    "Gender_Identity",
-    "Gender_Identity_Other",
-
-    "Race_Ethnicity",
-    "Race_Ethnicity_Other",
-
-    "Grade_Level",
-    "Grade_Level_Other",
-
-    "Course_Subject",
-    "Course_Subject_Other",
-
-    "Institution_Type",
-    "Institution_Type_Other",
-
-    "Research_Design",
-    "Research_Design_Other",
-
-    "DOI",
-    "ORCID",
-    "Grant_Number",
-    "IRB_Protocol",
-
-    "Qualitative_Notes"
-]
-
-for subscale, rules in SUBSCALE_MAP.items():
-    template_columns.extend(rules["items"])
+template_columns = selected_columns
 
 template_df = pd.DataFrame(columns=template_columns)
 
