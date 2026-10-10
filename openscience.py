@@ -196,25 +196,28 @@ with t_propose:
     # Dynamic proposal submission form
     with st.form("schema_proposal_form", clear_on_submit=True):
         new_key = st.text_input("Proposed Variable Column Key", placeholder="e.g., Digital_Literacy_Scale")
-category_options = list(SUBSCALE_MAP.keys()) + ["Institutional / Demographics", "External Context Factor"]
-new_category = st.selectbox("Subscale or Metadata Category Alignment", options=category_options)
-is_reverse = st.checkbox("Is this variable reverse-coded?")
-new_justification = st.text_area("Research Justification / Theoretical Framework", placeholder="Explain why this field is necessary.")
-submitted = st.form_submit_button("Generate Proposal Pack")
-
-if submitted:
-    if new_key and new_justification:
-        new_proposal = {
-            "Proposed Column Key": new_key,
-            "Subscale Category": new_category,
-            "Justification": new_justification
-        }
-        st.session_state["proposed_columns"].append(new_proposal)
-        st.success("Proposal packet compiled! Use the button below to submit your request.")
+        category_options = list(SUBSCALE_MAP.keys()) + ["Institutional / Demographics", "External Context Factor"]
+        new_category = st.selectbox("Subscale or Metadata Category Alignment", options=category_options)
+        is_reverse = st.checkbox("Is this variable reverse-coded?")
+        new_justification = st.text_area("Research Justification / Theoretical Framework", placeholder="Explain why this field is necessary.")
         
-        # Formatted parsing tokens for GitHub Actions automation
-        issue_title = f"[Schema Proposal] Add '{new_key}'"
-        issue_body = f"""### 💡 New Variable Schema Proposal
+        # This button MUST remain indented inside the form block
+        submitted = st.form_submit_button("Generate Proposal Pack")
+
+    # Processing logic executes OUTSIDE the form after submission
+    if submitted:
+        if new_key and new_justification:
+            new_proposal = {
+                "Proposed Column Key": new_key,
+                "Subscale Category": new_category,
+                "Justification": new_justification
+            }
+            st.session_state["proposed_columns"].append(new_proposal)
+            st.success("Proposal packet compiled! Use the button below to submit your request.")
+            
+            # Formatted parsing tokens for GitHub Actions automation
+            issue_title = f"[Schema Proposal] Add '{new_key}'"
+            issue_body = f"""### 💡 New Variable Schema Proposal
 
 [START_DATA]
 KEY={new_key}
@@ -228,18 +231,19 @@ REVERSE={'True' if is_reverse else 'False'}
 ---
 *Submitted via the Open Educational Metadata Portal Application.*"""
 
-        encoded_title = urllib.parse.quote(issue_title)
-        encoded_body = urllib.parse.quote(issue_body)
-        github_issue_link = f"{GITHUB_REPO_URL}/issues/new?title={encoded_title}&body={encoded_body}"
+            encoded_title = urllib.parse.quote(issue_title)
+            encoded_body = urllib.parse.quote(issue_body)
+            github_issue_link = f"{GITHUB_REPO_URL}/issues/new?title={encoded_title}&body={encoded_body}"
 
-        st.markdown("---")
-        st.markdown("#### 🚀 Send to GitHub")
-        st.write("Clicking this button opens a pre-formatted ticket. Submit it to automatically generate a Pull Request for the codebase.")
-        st.link_button("Submit Proposal via GitHub Issue", github_issue_link, type="primary")
-    else:
-        st.error("Please fill out the Variable Column Key and Research Justification fields.")
+            st.markdown("---")
+            st.markdown("#### 🚀 Send to GitHub")
+            st.write("Clicking this button opens a pre-formatted ticket. Submit it to automatically generate a Pull Request for the codebase.")
+            st.link_button("Submit Proposal via GitHub Issue", github_issue_link, type="primary")
+        else:
+            st.error("Please fill out the Variable Column Key and Research Justification fields.")
 
-# Historical view of proposed items tracked in this session
-st.markdown("---")
-st.subheader("Current Active Queue (Session Context)")
-st.dataframe(pd.DataFrame(st.session_state["proposed_columns"]), use_container_width=True)
+    # Historical view of proposed items tracked in this session
+    st.markdown("---")
+    st.subheader("Current Active Queue (Session Context)")
+    st.dataframe(pd.DataFrame(st.session_state["proposed_columns"]), use_container_width=True)
+
