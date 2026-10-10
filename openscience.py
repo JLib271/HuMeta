@@ -447,8 +447,8 @@ st.dataframe(
 )
 
 with t_propose:
-st.subheader("💡 Propose Custom Metadata Columns to the Ecosystem")
-st.write("Are you tracking an educational parameter not covered by the current core standards? Submit a recommendation below:")
+    st.subheader("💡 Propose Custom Metadata Columns to the Ecosystem")
+    st.write("Are you tracking an educational parameter not covered by the current core standards? Submit a recommendation below:")
 
 with st.form("suggestion_form", clear_on_submit=True):
     new_key = st.text_input("Suggested Column Header Key", placeholder="e.g., Socioeconomic_Status_Tier")
