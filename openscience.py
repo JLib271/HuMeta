@@ -159,6 +159,95 @@ with t_schema:
         """
     )
 
+    # =====================================================
+    # VARIABLE SELECTION SECTION
+    # =====================================================
+
+    st.subheader("🧩 Select Variables For Your Dataset")
+
+    ALL_METADATA_FIELDS = {
+
+        "Participant Demographics": [
+            "Gender_Identity",
+            "Gender_Identity_Other",
+            "Race_Ethnicity",
+            "Race_Ethnicity_Other",
+            "Grade_Level",
+            "Grade_Level_Other"
+        ],
+
+        "Educational Context": [
+            "Course_Subject",
+            "Course_Subject_Other"
+        ],
+
+        "Institution Metadata": [
+            "Institution_Type",
+            "Institution_Type_Other"
+        ],
+
+        "Research Metadata": [
+            "Research_Design",
+            "Research_Design_Other",
+            "DOI",
+            "ORCID",
+            "Grant_Number",
+            "IRB_Protocol"
+        ]
+    }
+
+    selected_columns = ["StudentID"]
+
+    for group_name, field_list in ALL_METADATA_FIELDS.items():
+
+        st.markdown(f"#### {group_name}")
+
+        chosen = st.multiselect(
+            f"Choose {group_name}",
+            field_list,
+            default=field_list,
+            key=f"select_{group_name}"
+        )
+
+        selected_columns.extend(chosen)
+
+    st.markdown("#### Psychometric Scales")
+
+    selected_scales = st.multiselect(
+        "Choose Scale Domains",
+        list(SUBSCALE_MAP.keys()),
+        default=list(SUBSCALE_MAP.keys())
+    )
+
+    for scale in selected_scales:
+        selected_columns.extend(
+            SUBSCALE_MAP[scale]["items"]
+        )
+
+    include_notes = st.checkbox(
+        "Include Qualitative Notes",
+        value=True
+    )
+
+    if include_notes:
+        selected_columns.append(
+            "Qualitative_Notes"
+        )
+
+    selected_columns = list(
+        dict.fromkeys(selected_columns)
+    )
+
+    st.subheader("📋 Selected Dataset Structure")
+
+    st.dataframe(
+        pd.DataFrame(
+            {"Variable": selected_columns}
+        ),
+        use_container_width=True,
+        hide_index=True
+    )
+
     # -----------------------------------------------------
     # CONTROLLED VOCABULARIES
     # -----------------------------------------------------
