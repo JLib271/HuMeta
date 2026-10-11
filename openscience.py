@@ -22,6 +22,210 @@ st.set_page_config(page_title="Open Educational Metadata Portal", layout="wide")
 st.title("🔬 Open Educational Metadata Portal")
 st.caption("An Open Source, Community-Driven Engine for Standardized Educational Research and Psychometrics.")
 
+import streamlit as st
+import pandas as pd
+import sqlite3
+import tempfile
+import os
+
+# --- SILENT DATABASE INITIALIZATION ---
+# Fallback to local SQLite if a cloud database is not linked in Streamlit Secrets
+try:
+    shared_conn = st.connection("postgresql", type="sql")
+except Exception:
+    shared_conn = None
+
+# Ensure structural tables exist in local/fallback modes 
+# In production Postgres, you would run these CREATE scripts once inside your Supabase SQL console.
+def init_local_tables(conn):
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS studies (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            authors TEXT,
+            abstract TEXT,
+            keywords TEXT,
+            theoretical_framework TEXT
+        );
+    """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS variables (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            study_id INTEGER,
+            variable_name TEXT NOT NULL,
+            variable_type TEXT,
+            operational_definition TEXT,
+            FOREIGN KEY(study_id) REFERENCES studies(id)
+        );
+    """)
+    conn.commit()
+
+# --- STEP 1: CHOOSE TARGET ENGINE WORKFLOW ---
+st.sidebar.header("⚙️ Workspace Engine")
+db_mode = st.sidebar.radio("Data Saving Destination:", ["Local Locked (SQLite File)", "Global Collaborative Hub"])
+
+# Setup local session tracking
+if "local_db_path" not in st.session_state:
+    # Set up a clean persistent file for this specific session
+    temp_dir = tempfile.gettempdir()
+    st.session_state.local_db_path = os.path.join(temp_dir, "opened_metadata_session.db")
+    conn = sqlite3.connect(st.session_state.local_db_path)
+    init_local_tables(conn)
+    conn.close()
+
+# --- STEP 2: USER METADATA SUBMISSION FORM ---
+st.header("📝 Submit New Study Metadata")
+
+with st.form("study_submission_form", clear_on_submit=True):
+    st.subheader("Core Project Details")
+    title = st.text_input("Study Title*", placeholder="e.g., Impact of Open Textbooks on Retention")
+    authors = st.text_input("Author(s)", placeholder="e.g., Jane Doe, John Smith")
+    abstract = st.text_area("Abstract", placeholder="Summary of the study's objective and design...")
+    keywords = st.text_input("Keywords (comma separated)", placeholder="e.g., open education, OER, equity")
+    
+    st.divider()
+    st.subheader("Theoretical & Conceptual Framework")
+    framework = st.text_area(
+        "Theoretical Framework", 
+        placeholder="e.g., Self-Determination Theory (SDT), Technology Acceptance Model (TAM)..."
+    )
+    
+    st.divider()
+    st.subheader("Study Variables Layout")
+    st.caption("Define the properties of what you are measuring (do not upload raw collection spreadsheets here).")
+    
+    # Dynamic variables entry text strings parsed dynamically 
+    variables_input = st.text_area(
+        "List variables being collected (One per line format -> Name | Type | Operational Definition)",
+        value="Course Grade | Dependent Variable | Final numerical score percentage scaled 0-100\nTextbook Cost | Independent Variable | Total out of pocket dollar cost calculated at checkout",
+        help="Use the pipe symbol '|' to break out properties easily."
+    )
+    
+    submit_btn = st.form_submit_button("💾 Save Study Record")
+
+    if submit_btn:
+        if not title:
+            st.error("Study Title is required.")
+        else:
+            # Process variable strings into clean array structures
+            parsed_variables = []
+            for line in variables_input.strip().split("\n"):
+                if "|" in line:
+                    parts = [p.strip() for p in line.split("|")]
+                    v_name = parts[0]
+                    v_type = parts[1] if len(parts) > 1 else ""
+                    v_def = parts[2] if len(parts) > 2 else ""
+                    if v_name:
+                        parsed_variables.append((v_name, v_type, v_def))
+                else:
+                    if line.strip():
+                        parsed_variables.append((line.strip(), "Not Specified", "No definition provided"))
+
+            # Execution block base routing
+            if db_mode == "Local Locked (SQLite File)":
+                # Save to local sandboxed database
+                conn = sqlite3.connect(st.session_state.local_db_path)
+                cursor = conn.cursor()
+                cursor.execute(
+                    "INSERT INTO studies (title, authors, abstract, keywords, theoretical_framework) VALUES (?, ?, ?, ?, ?)",
+                    (title, authors, abstract, keywords, framework)
+                )
+                study_id = cursor.lastrowid
+                
+                for var in parsed_variables:
+                    cursor.execute(
+                        "INSERT INTO variables (study_id, variable_name, variable_type, operational_definition) VALUES (?, ?, ?, ?)",
+                        (study_id, var[0], var[1], var[2])
+                    )
+                conn.commit()
+                conn.close()
+                st.success("Successfully logged study to your temporary local instance!")
+                st.rerun()
+                
+            elif db_mode == "Global Collaborative Hub":
+                if shared_conn is not None:
+                    with shared_conn.session as session:
+                        # Save main study layer
+                        res = session.execute(
+                            """INSERT INTO studies (title, authors, abstract, keywords, theoretical_framework) 
+                               VALUES (:title, :authors, :abstract, :keywords, :framework) RETURNING id;""",
+                            {"title": title, "authors": authors, "abstract": abstract, "keywords": keywords, "framework": framework}
+                        )
+                        # Handles platform returning styles
+                        try:
+                            study_id = res.fetchone()[0]
+                        except Exception:
+                            # Fallback tracking if framework lacks direct sequential returning markers
+                            study_id = session.execute("SELECT max(id) FROM studies;").fetchone()[0]
+                        
+                        # Save sub-relational variables
+                        for var in parsed_variables:
+                            session.execute(
+                                """INSERT INTO variables (study_id, variable_name, variable_type, operational_definition) 
+                                   VALUES (:study_id, :name, :type, :def);""",
+                                {"study_id": study_id, "name": var[0], "type": var[1], "def": var[2]}
+                            )
+                        session.commit()
+                    st.success("Successfully broadcasted your study metadata layout live to the global community database!")
+                    st.rerun()
+                else:
+                    st.error("Global database engine credentials are unconfigured. Please use 'Local Locked' engine mode.")
+
+# --- STEP 3: DATA VISUALIZATION EXPLORER ---
+st.divider()
+st.header("🔍 Explored Studies Registries")
+
+if db_mode == "Local Locked (SQLite File)":
+    conn = sqlite3.connect(st.session_state.local_db_path)
+    try:
+        df_studies = pd.read_sql_query("SELECT * FROM studies ORDER BY id DESC", conn)
+        df_vars = pd.read_sql_query("SELECT * FROM variables", conn)
+    finally:
+        conn.close()
+        
+    # Provide direct backup recovery file package to download local file safely
+    with open(st.session_state.local_db_path, "rb") as f:
+        st.sidebar.download_button(
+            label="📥 Download Local Registry (.db)",
+            data=f.read(),
+            file_name="open_ed_metadata_registry.db",
+            mime="application/x-sqlite3"
+        )
+else:
+    if shared_conn is not None:
+        try:
+            df_studies = shared_conn.query("SELECT * FROM studies ORDER BY id DESC;", ttl="0")
+            df_vars = shared_conn.query("SELECT * FROM variables;", ttl="0")
+        except Exception:
+            df_studies, df_vars = pd.DataFrame(), pd.DataFrame()
+    else:
+        df_studies, df_vars = pd.DataFrame(), pd.DataFrame()
+        st.info("Global catalog offline.")
+
+# Render output summaries natively using nested tabs layout
+if not df_studies.empty:
+    for idx, row in df_studies.iterrows():
+        with st.expander(f"📚 {row['title']} — by {row['authors'] if row['authors'] else 'Unknown'}"):
+            st.markdown(f"**Keywords:** `{row['keywords']}`")
+            st.markdown(f"### Abstract\n{row['abstract'] if row['abstract'] else '*No summary provided.*'}")
+            st.markdown(f"### Theoretical Framework\n{row['theoretical_framework'] if row['theoretical_framework'] else '*None specified.*'}")
+            
+            # Match child elements belonging to this study sequence cleanly
+            if not df_vars.empty:
+                # Filter down variables for just this study ID
+                matched_vars = df_vars[df_vars['study_id'] == row['id']]
+                if not matched_vars.empty:
+                    st.markdown("### Collected Variables Layout")
+                    st.dataframe(
+                        matched_vars[['variable_name', 'variable_type', 'operational_definition']], 
+                        use_container_width=True,
+                        hide_index=True
+                    )
+else:
+    st.info("No study models found matching your current workspace selection database filter criteria.")
+
+
 # Configuration for your repository
 GITHUB_REPO_URL = "https://github.com"
 REPO_OWNER = "JLib271"
