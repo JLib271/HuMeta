@@ -316,6 +316,66 @@ with t_share:
     st.header("🔀 Connected Master Data Hub & Open Science Repository Gateways")
     st.write("This tab securely connects your contribution to a global unified database table while helping you publish individual records to KCWorks for citable DOIs.")
     
+    # ---------------------------------------------------------
+    # GLOBAL REGISTRY LIVE INSIGHTS INSIDE TAB 4
+    # ---------------------------------------------------------
+    st.markdown("### 📊 Global Registry Analytics Dashboard")
+    
+    # Caching routine to pull the shared file tree cleanly from your repository
+    @st.cache_data(ttl=300)  # Cache values for 5 minutes to manage pipeline speeds
+    def load_global_master_data():
+        raw_url = f"https://githubusercontent.com{REPO_OWNER}/{REPO_NAME}/main/{MASTER_FILE_PATH}"
+        try:
+            return pd.read_csv(raw_url)
+        except Exception:
+            # Fallback if master file tree is not initialized on main branch yet
+            return pd.DataFrame()
+
+    df_global_master = load_global_master_data()
+
+    if not df_global_master.empty:
+        # Layout metrics boxes
+        total_global_records = len(df_global_master)
+        unique_studies = df_global_master["Meta_Global_Contributor_ID"].nunique() if "Meta_Global_Contributor_ID" in df_global_master.columns else 1
+        
+        m_col1, m_col2 = st.columns(2)
+        with m_col1:
+            st.metric("Total Global Observations Collected", f"{total_global_records:,} Rows")
+        with m_col2:
+            st.metric("Unique Contributing Studies / Pipelines", f"{unique_studies} Projects")
+            
+        # Benchmark visualization graphics block
+        st.write("**Cross-Project Contribution Distribution Map**")
+        if "Meta_Global_Contributor_ID" in df_global_master.columns:
+            # Find the first column that matches a scale score prefix
+            score_columns = [c for c in df_global_master.columns if c.startswith("SCORE_")]
+            
+            if score_columns:
+                selected_master_scale = st.selectbox("Select Target Benchmark Metric for Cross-Project Comparison", options=score_columns, key="master_chart_selector")
+                
+                # Render an aggregated group comparisons chart
+                fig_master = px.box(
+                    df_global_master,
+                    x="Meta_Global_Contributor_ID",
+                    y=selected_master_scale,
+                    color="Meta_Global_Contributor_ID",
+                    title=f"Global Variance Mapping Matrix: '{selected_master_scale}' across Studies",
+                    template="plotly_white"
+                )
+                fig_master.update_layout(xaxis_title="Registered Contributor Project ID Tag", yaxis_title="Calculated Score Metrics")
+                st.plotly_chart(fig_master, use_container_width=True)
+            else:
+                st.info("Global master data file found, but no scored metrics columns (`SCORE_...`) have been streamed yet.")
+        else:
+            st.info("Master storage dataset initialization is complete. Individual telemetry metrics lines will plot here upon project submission.")
+    else:
+        st.info("ℹ️ The global repository file (`master_repository_data.csv`) is empty. The data dashboard will populate automatically when the first researcher uploads a validated dataset below.")
+
+    st.markdown("---")
+    
+    # ---------------------------------------------------------
+    # REPOSITORY DEPOSIT FORMS HOOKS
+    # ---------------------------------------------------------
     with st.container(border=True):
         st.subheader("1️⃣ Step One: Stream Dataset into the Connected Global Master Repository")
         st.write("Uploading here automatically appends row observations directly to the project's centralized core data collection matrix.")
@@ -344,6 +404,10 @@ with t_share:
                         
                     if success:
                         st.success(f"🎉 Success! {len(df_upload)} rows appended to the connected master registry file.")
+                        
+                        # Clear the stream cache instantly so dashboard changes display right away
+                        st.cache_data.clear()
+                        
                         st.markdown("### 2️⃣ Step Two: Secure Your Individual Personal DOI via KCWorks")
                         st.write("Now that your rows are cleanly unified within the core registry database, download your standard aligned validation file below and drop it into KCWorks to receive your citable reference DOI.")
                         
@@ -369,14 +433,14 @@ with t_share:
     with st.expander("📖 View Formatting Guidelines & Question Type Examples", expanded=False):
         st.markdown("Format inputs cleanly. Split multiple text question items using a semicolon (`;`). Group multiple choice options with commas.")
     
-    # 1. Capture the identity input field BEFORE the form kicks off
+    # Capture the identity input field BEFORE the form kicks off
     proposal_contributor = st.text_input(
         "Contributor Identifier for Proposal Tracking (Your name or organization)", 
         placeholder="e.g., Jane_Doe_MSU",
         key="proposal_contributor_id"
     )
     
-    # 2. Main structural input layout form
+    # Main structural input layout form
     with st.form("schema_proposal_form", clear_on_submit=True):
         new_key = st.text_input("Proposed Variable Column Key", placeholder="e.g., Student_Self_Efficacy")
         new_citation = st.text_input("APA Citation Source Reference", placeholder="Author, A. A. (Year)...")
@@ -386,24 +450,12 @@ with t_share:
         
         submitted_proposal = st.form_submit_button("Generate Proposal Pack")
 
-    # 3. Form processing logic block
+    # Form processing logic block
     if submitted_proposal:
         if new_key and new_citation and new_items and proposal_contributor:
             # Stamp identity tracking token into the title and structural data fields
             issue_title = f"[Schema Proposal] Add '{new_key}' by {proposal_contributor}"
-            issue_body = f"""### 💡 New Variable Schema Proposal
-
-[START_DATA]
-KEY={new_key}
-CITER={proposal_contributor}
-CITATION={new_citation}
-TYPE={var_type}
-OPTIONS={mc_options if mc_options and var_type == 'Multiple Choice (Categorical / Nominal)' else 'N/A'}
-ITEMS={new_items}
-[END_DATA]
-
-### 📄 Research Justification
-Community submission scale configuration entry."""
+            issue_body = f"### 💡 New Variable Schema Proposal\n\n[START_DATA]\nKEY={new_key}\nCITER={proposal_contributor}\nCITATION={new_citation}\nTYPE={var_type}\nOPTIONS={mc_options if mc_options and var_type == 'Multiple Choice (Categorical / Nominal)' else 'N/A'}\nITEMS={new_items}\n[END_DATA]\n\n### 📄 Research Justification\nCommunity submission scale configuration entry."
             
             github_issue_link = f"{GITHUB_REPO_URL}/issues/new?title={urllib.parse.quote(issue_title)}&body={urllib.parse.quote(issue_body)}"
             
