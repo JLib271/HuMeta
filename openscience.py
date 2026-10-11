@@ -279,18 +279,39 @@ with t_share:
     st.markdown("---")
     st.subheader("💡 Propose New Schema Columns to the Core Engine")
     
+    # Contextual guidance block containing clear formatting blueprints
+    with st.expander("📖 View Formatting Guidelines & Question Type Examples", expanded=True):
+        st.markdown("""
+        To keep the open education metadata registry uniform, please format your questionnaire entries according to these examples:
+        
+        *   **Likert Scale (Ordinal Rating):**
+            *   *Variable Key:* `Student_Self_Efficacy`
+            *   *Survey Items:* Separate distinct item statements with a semicolon.
+            *   *Example:* `I am confident I can pass this course; I know I can master this material; I can handle tough problems.`
+            *   *Multiple Choice Options:* Leave completely blank (uses standard 1-5 point scales).
+            
+        *   **Multiple Choice (Categorical / Nominal):**
+            *   *Variable Key:* `Instructional_Setting`
+            *   *Survey Items:* `What type of learning environment best describes your classroom context?`
+            *   *Multiple Choice Options:* Separate your category strings with commas.
+            *   *Example:* `Fully Remote, Hybrid / Blended, In-Person Lecture, Active Learning Lab`
+            
+        *   **Text Entry (Qualitative / String):**
+            *   *Variable Key:* `Open_Feedback_Notes`
+            *   *Survey Items:* `Please share any additional details regarding your domain belonging observations.`
+            *   *Multiple Choice Options:* Leave completely blank.
+        """)
+
     with st.form("schema_proposal_form", clear_on_submit=True):
         new_key = st.text_input("Proposed Variable Column Key", placeholder="e.g., Student_Self_Efficacy")
         new_citation = st.text_input("APA Citation Source Reference", placeholder="Author, A. A. (Year). Title...")
         
-        # New Field: Variable Response Type Selection
         var_type = st.selectbox(
             "Variable Type / Response Format",
             options=["Likert Scale (Ordinal Rating)", "Multiple Choice (Categorical / Nominal)", "Text Entry (Qualitative / String)", "Numeric Input (Continuous / Integer)"]
         )
         
-        # Conditional help text context for multiple choice questions
-        mc_options = st.text_input("Multiple Choice Options (If applicable)", placeholder="e.g., Option A, Option B, Option C (Separate with commas)")
+        mc_options = st.text_input("Multiple Choice Options (Only applicable for Categorical choices)", placeholder="e.g., Option A, Option B, Option C (Separate with commas)")
         
         new_items = st.text_area("Survey Scale Items Wording / Question Prompts", placeholder="Separate multiple individual items or questions using a semicolon (;)")
         
@@ -302,7 +323,7 @@ with t_share:
             st.session_state["proposed_columns"].append(new_proposal)
             st.success("Proposal packet compiled! Use the button below to submit your request to the repository maintainers.")
             
-            # Appends the new TYPE and OPTIONS metadata fields into the automated GitHub Issue transmission payload
+            # Appends the formatting metadata safely to the workflow engine tracker tokens
             issue_title = f"[Schema Proposal] Add '{new_key}'"
             issue_body = f"""### 💡 New Variable Schema Proposal
 
@@ -310,7 +331,7 @@ with t_share:
 KEY={new_key}
 CITATION={new_citation}
 TYPE={var_type}
-OPTIONS={mc_options if mc_options else 'N/A'}
+OPTIONS={mc_options if mc_options and var_type == "Multiple Choice (Categorical / Nominal)" else 'N/A'}
 ITEMS={new_items}
 [END_DATA]
 
