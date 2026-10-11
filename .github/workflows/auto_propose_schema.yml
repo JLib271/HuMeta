@@ -8,6 +8,13 @@ jobs:
   create-pr:
     if: contains(github.event.issue.title, '[Schema Proposal]')
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
     steps:
       - name: Checkout repository code
         uses: actions/checkout@v4
