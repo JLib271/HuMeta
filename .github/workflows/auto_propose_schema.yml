@@ -8,13 +8,11 @@ jobs:
   create-pr:
     if: contains(github.event.issue.title, '[Schema Proposal]')
     runs-on: ubuntu-latest
+    
     permissions:
       contents: write
       pull-requests: write
 
-    steps:
-      - name: Checkout repository code
-        uses: actions/checkout@v4
     steps:
       - name: Checkout repository code
         uses: actions/checkout@v4
@@ -25,6 +23,7 @@ jobs:
           python-version: '3.10'
 
       - name: Parse Issue Parameters & Update Scale Config Database
+        id: parse_metadata
         env:
           ISSUE_BODY: ${{ github.event.issue.body }}
         run: |
@@ -33,30 +32,43 @@ jobs:
 
           body = os.environ.get('ISSUE_BODY', '')
           
-          # Extract variables via structure token tracking
           key_match = re.search(r'KEY=(.+)', body)
+          citer_match = re.search(r'CITER=(.+)', body)
           cite_match = re.search(r'CITATION=(.+)', body)
           type_match = re.search(r'TYPE=(.+)', body)
           opts_match = re.search(r'OPTIONS=(.+)', body)
           items_match = re.search(r'ITEMS=(.+)', body)
 
-          if not (key_match and cite_match and items_match and type_match):
-              print('Error parsing scale configuration telemetry tokens inside the issue tracking description.')
+          if not (key_match and cite_match and items_match and type_match and citer_match):
+              print('Error: Missing parsing token blocks in issue context description.')
               exit(1)
 
           new_key = key_match.group(1).strip()
+          citer_id = citer_match.group(1).strip()
           citation = cite_match.group(1).strip()
           var_type = type_match.group(1).strip()
           options_raw = opts_match.group(1).strip() if opts_match else 'N/A'
-          
-          # Break semicolon-split values out into clean structural item array lists
           items_list = [i.strip() for i in items_match.group(1).split(';') if i.strip()]
 
+          safe_citer = re.sub(r'[^a-zA-Z0-9_\-]', '', citer_id)
+          if not safe_citer:
+              safe_citer = 'AnonymousContributor'
+          
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+              print(f'citer={safe_citer}', file=fh)
+
           config_path = 'schema_config.json'
+          
+          if not os.path.exists(config_path):
+              print('Error: schema_config.json database file could not be found.')
+              exit(1)
+
           with open(config_path, 'r') as f:
               schema_data = json.load(f)
 
-          # Initialize the specific variable entry map if it does not exist
+          if 'variables' not in schema_data:
+              schema_data['variables'] = {}
+
           if new_key not in schema_data['variables']:
               schema_data['variables'][new_key] = {
                   'items': [], 
@@ -66,17 +78,14 @@ jobs:
                   'options': []
               }
           
-          # Assign new descriptive categorical attributes safely
           schema_data['variables'][new_key]['citation'] = citation
           schema_data['variables'][new_key]['type'] = var_type
           
-          # Add categorical choice lists if specified
           if var_type == 'Multiple Choice (Categorical / Nominal)' and options_raw != 'N/A':
               schema_data['variables'][new_key]['options'] = [o.strip() for o in options_raw.split(',') if o.strip()]
           else:
               schema_data['variables'][new_key]['options'] = []
 
-          # Append structural question prompt blocks
           for item in items_list:
               if item not in schema_data['variables'][new_key]['items']:
                   schema_data['variables'][new_key]['items'].append(item)
@@ -89,8 +98,11 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "feat: registry multi-type scale addition for ${{ github.event.issue.title }}"
-          title: "🚀 Proposed Scale: Update scale matrix configurations from Issue #${{ github.event.issue.number }}"
-          body: "Closes #${{ github.event.issue.number }}. Safely parses structural attributes, choices, and academic citations into schema config registry database maps."
-          branch: "proposal/issue-${{ github.event.issue.number }}"
+          commit-message: "feat: registry schema addition submitted by ${{ steps.parse_metadata.outputs.citer }}"
+          title: "🚀 Proposed Scale: Sync variables contributed by @${{ steps.parse_metadata.outputs.citer }} (Issue #${{ github.event.issue.number }})"
+          body: |
+            Closes #${{ github.event.issue.number }}.
+            
+            This Pull Request safely appends structural attributes, options, and academic citations submitted by contributor **${{ steps.parse_metadata.outputs.citer }}** into the repository schema configurations database registry.
+          branch: "proposal-issue-${{ github.event.issue.number }}"
           base: "main"
