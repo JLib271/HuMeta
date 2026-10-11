@@ -14,63 +14,18 @@ GITHUB_REPO_URL = "https://github.com"
 # SCHEMA DICTIONARIES: CONFIGURATION & ITEM BANK
 # -------------------------------------------------------------
 # 1. Framework to variable mapping
-FRAMEWORK_MAP = {
-    "None / Custom Alignment": [],
-    "Good et al. (2012) Sense of Belonging in Math": [
-        "Belong_Community", "Member_Math_World", "Connected_Math", "Fit_In_Math",
-        "Feel_Accepted", "Feel_Valued", "Feel_Excluded", "Feel_Neglected", "Feel_Appreciated"
-    ],
-    "Academic Anxiety & Avoidance Framework": [
-        "Feel_Anxious", "Feel_Comfortable", "Feel_Inadequate", "Feel_Tense", "Feel_Stressed",
-        "Try_To_Say_Little", "Wish_Invisible", "Fade_To_Background", "Avoid_Attention"
-    ],
-    "Institutional Trust & Commitment Model": [
-        "Trust_Instructors", "Trust_Evaluation", "Trust_Materials", "No_Need_To_Prove_Self", "Instructors_Committed"
-    ]
-}
+import json
 
-# 2. Comprehensive item bank mapping variable keys to exact survey statements
-ITEM_BANK = {
-    # Membership
-    "Belong_Community": "I feel like a member of the math community.",
-    "Member_Math_World": "I feel like I belong in the math world.",
-    "Connected_Math": "I feel connected to the field of mathematics.",
-    "Fit_In_Math": "I feel like I fit in when I am doing math.",
-    # Acceptance
-    "Feel_Accepted": "I feel accepted by others in math.",
-    "Feel_Valued": "I feel valued in math settings.",
-    "Feel_Excluded": "I feel excluded from math groups or discussions.",
-    "Feel_Neglected": "I feel neglected by instructors or peers in math.",
-    "Feel_Appreciated": "I feel appreciated for my math input.",
-    # Affect
-    "Feel_Anxious": "I feel anxious when working on math problems.",
-    "Feel_Comfortable": "I feel comfortable in my math class.",
-    "Feel_Inadequate": "I feel inadequate or not smart enough in math.",
-    "Feel_At_Ease": "I feel at ease during math evaluations.",
-    "Feel_Tense": "I feel tense when I step into a math space.",
-    "Feel_Confident": "I feel confident about my math capabilities.",
-    "Feel_Stressed": "I feel stressed out by math coursework.",
-    # Trust
-    "Trust_Instructors": "I trust math instructors to grade me fairly.",
-    "Trust_Evaluation": "I trust math evaluation methods to reflect my true skills.",
-    "Trust_Materials": "I trust that math curriculum materials are designed to help me succeed.",
-    "No_Need_To_Prove_Self": "I feel like I do not need to constantly prove my math ability.",
-    "Instructors_Committed": "I believe math instructors are committed to my progress.",
-    # Desire to Fade
-    "Try_To_Say_Little": "I try to say as little as possible in math environments.",
-    "Wish_Invisible": "I wish I could be invisible in math classrooms.",
-    "Fade_To_Background": "I try to fade into the background during math lectures.",
-    "Avoid_Attention": "I try to avoid drawing any attention to myself in math spaces."
-}
-
-# Structural breakdown of subscales for checking/validation engine rules
-SUBSCALE_MAP = {
-    "Membership": {"items": ["Belong_Community", "Member_Math_World", "Connected_Math", "Fit_In_Math"], "reverse": []},
-    "Acceptance": {"items": ["Feel_Accepted", "Feel_Valued", "Feel_Excluded", "Feel_Neglected", "Feel_Appreciated"], "reverse": ["Feel_Excluded", "Feel_Neglected"]},
-    "Affect": {"items": ["Feel_Anxious", "Feel_Comfortable", "Feel_Inadequate", "Feel_At_Ease", "Feel_Tense", "Feel_Confident", "Feel_Stressed"], "reverse": ["Feel_Anxious", "Feel_Inadequate", "Feel_Tense", "Feel_Stressed"]},
-    "Trust": {"items": ["Trust_Instructors", "Trust_Evaluation", "Trust_Materials", "No_Need_To_Prove_Self", "Instructors_Committed"], "reverse": []},
-    "Desire_To_Fade": {"items": ["Try_To_Say_Little", "Wish_Invisible", "Fade_To_Background", "Avoid_Attention"], "reverse": ["Try_To_Say_Little", "Wish_Invisible", "Fade_To_Background", "Avoid_Attention"]}
-}
+# Safely open and unpack the unified database dictionary entries
+try:
+    with open("schema_config.json", "r") as f:
+        registry = json.load(f)
+    FRAMEWORK_MAP = registry["frameworks"]
+    SUBSCALE_MAP = registry["subscales"]
+    ITEM_BANK = registry["item_bank"]
+except Exception as e:
+    st.error(f"Failed to pull configuration layout mappings: {e}")
+    st.stop()
 
 if "proposed_columns" not in st.session_state:
     st.session_state["proposed_columns"] = []
