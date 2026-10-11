@@ -237,6 +237,63 @@ with t_score:
             st.write("#### 🔍 Identified Psychometric Measurements Profile")
             st.json(generated_scales_summary)
 
+            # ---------------------------------------------------------
+            # NEW: INTERACTIVE ANALYTICS & FIGURES PLATFORM
+            # ---------------------------------------------------------
+            st.markdown("---")
+            st.markdown("### 📊 Interactive Analytics & Figures Platform")
+            
+            # Extract all calculated score columns for charting analytics
+            score_cols = [f"SCORE_{k}" for k in generated_scales_summary.keys()]
+            
+            if score_cols:
+                chart_tab1, chart_tab2 = st.tabs(["📈 Scale Distributions", "👥 Group Demographics Analytics"])
+                
+                with chart_tab1:
+                    st.write("**Participant Profile Score Density Distributions**")
+                    # Melt dataframe columns cleanly for plotting multiple series onto a single histogram layout
+                    df_melted = df_processed.melt(
+                        id_vars=["StudentID"] if "StudentID" in df_processed.columns else None,
+                        value_vars=score_cols,
+                        var_name="Psychometric Scale Construct",
+                        value_name="Calculated Composite Score"
+                    )
+                    
+                    # Generate an interactive histogram figure using plotly express
+                    fig_dist = px.histogram(
+                        df_melted, 
+                        x="Calculated Composite Score", 
+                        color="Psychometric Scale Construct",
+                        barmode="overlay",
+                        marginal="box",
+                        nbins=20,
+                        title="Distribution Profile Across Deployed Framework Scales",
+                        template="plotly_white"
+                    )
+                    fig_dist.update_layout(xaxis_title="Scale Mean Score Value", yaxis_title="Participant Count Frequency")
+                    st.plotly_chart(fig_dist, use_container_width=True)
+                
+                with chart_tab2:
+                    if "Gender_Identity" in df_processed.columns:
+                        st.write("**Cross-Sectional Identity Variance Summary Matrix**")
+                        selected_chart_scale = st.selectbox("Select Scale Target for Group Profiling Analysis", options=score_cols)
+                        
+                        # Generate an interactive categorical box plot comparing scale scores by demographic groupings
+                        fig_box = px.box(
+                            df_processed,
+                            x="Gender_Identity",
+                            y=selected_chart_scale,
+                            color="Gender_Identity",
+                            points="all",
+                            title=f"Variance Metrics Matrix: '{selected_chart_scale}' Group Distributions",
+                            template="plotly_white"
+                        )
+                        fig_box.update_layout(xaxis_title="Reported Gender Identity Group", yaxis_title="Scale Composite Average Score")
+                        st.plotly_chart(fig_box, use_container_width=True)
+                    else:
+                        st.info("To unlock Cross-Sectional Group profiling graphics, ensure your uploaded dataset includes a standard 'Gender_Identity' column.")
+            
+            st.markdown("---")
             st.write("#### 📊 Processed Dataset Output Preview (Featuring Generated Scale Columns)")
             st.dataframe(df_processed, use_container_width=True)
 
