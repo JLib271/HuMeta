@@ -6,6 +6,18 @@ import urllib.parse
 import requests
 import base64
 
+# --- New Database Imports ---
+import tempfile
+import os
+import sqlite3
+
+# --- DATABASE INITIALIZATION ---
+# 1. Global Cloud Shared Database (Supabase/Postgres) via Streamlit Secrets
+try:
+    shared_conn = st.connection("postgresql", type="sql")
+except Exception:
+    shared_conn = None
+
 st.set_page_config(page_title="Open Educational Metadata Portal", layout="wide")
 st.title("🔬 Open Educational Metadata Portal")
 st.caption("An Open Source, Community-Driven Engine for Standardized Educational Research and Psychometrics.")
@@ -444,3 +456,80 @@ with t_share:
             st.link_button("Submit Proposal via GitHub Issue", github_issue_link, type="primary")
         else:
             st.error("Please ensure all form parameters AND your Contributor Identifier are filled out completely.")
+    # --- LOCAL USER OFFLINE DATABASE (Sidebar Placement) ---
+with st.sidebar:
+    st.markdown("---")
+    st.header("📂 Your Private Data")
+    uploaded_file = st.file_uploader("Upload your local metadata.db file", type=["db", "sqlite"])
+
+    local_df = None
+    temp_db_path = None
+
+    if uploaded_file is not None:
+        # Temporarily cache uploaded file stream to local container memory
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".db") as fp:
+            fp.write(uploaded_file.getvalue())
+            temp_db_path = fp.name
+
+        local_conn = sqlite3.connect(temp_db_path)
+        try:
+            # Assumes a relational schema named 'metadata'
+            local_df = pd.read_sql_query("SELECT * FROM metadata", local_conn)
+            
+            # Interactive write form to edit the local schema inside the sidebar lane
+            with st.form("add_local_record"):
+                st.write("Add New Record Locally")
+                title = st.text_input("Resource Title")
+                url = st.text_input("Resource URL")
+                submitted = st.form_submit_button("Save Locally")
+                
+                if submitted and title:
+                    cursor = local_conn.cursor()
+                    cursor.execute("CREATE TABLE IF NOT EXISTS metadata (title TEXT, url TEXT)")
+                    cursor.execute("INSERT INTO metadata (title, url) VALUES (?, ?)", (title, url))
+                    local_conn.commit()
+                    st.success("Saved! Download the file below to preserve changes.")
+                    st.rerun()
+        except Exception as e:
+            st.error(f"Error reading file: {e}")
+        finally:
+            local_conn.close()
+
+        # Dynamic file down-loader pipeline
+        if temp_db_path and os.path.exists(temp_db_path):
+            with open(temp_db_path, "rb") as f:
+                st.download_button(
+                    label="📥 Download Updated Local DB",
+                    data=f.read(),
+                    file_name="my_updated_metadata.db",
+                    mime="application/x-sqlite3"
+                )
+            os.unlink(temp_db_path)
+
+# --- GLOBAL COMMUNITY DATABASE (Main Screen Placement) ---
+st.markdown("---")
+st.subheader("🌐 Public Collaborative Database")
+
+if shared_conn is not None:
+    # Safely query cloud records from Postgres
+    try:
+        global_df = shared_conn.query("SELECT * FROM public_metadata;", ttl="0")
+        st.dataframe(global_df, use_container_width=True)
+    except Exception:
+        st.info("The public repository table is initializing or empty.")
+
+    # Cross-sync data frames via parameterized transaction session
+    if local_df is not None:
+        if st.button("🚀 Publish My Local Records to Community Feed"):
+            with shared_conn.session as session:
+                for index, row in local_df.iterrows():
+                    session.execute(
+                        "INSERT INTO public_metadata (title, url) VALUES (:title, :url) ON CONFLICT DO NOTHING;",
+                        {"title": row['title'], "url": row['url']}
+                    )
+                session.commit()
+            st.success("Successfully synchronized data with the community repository!")
+            st.rerun()
+else:
+    st.warning("Running in offline mode. Configure Streamlit Secrets to enable the global community hub.")
+
