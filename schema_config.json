@@ -2,60 +2,107 @@
   "frameworks": {
     "None / Custom Alignment": [],
     "Theory of Planned Behavior (TPB) Model": [
-      "TPB_Behavioral_Intention", "TPB_Attitude_Direct", "TPB_Subjective_Norm", "TPB_Perceived_Control"
+      "TPB_Behavioral_Intention",
+      "TPB_Attitude_Direct",
+      "TPB_Subjective_Norm",
+      "TPB_Perceived_Control"
     ],
     "Good et al. (2012) Sense of Belonging in Math": [
-      "Belong_Community", "Member_Math_World", "Connected_Math", "Fit_In_Math",
-      "Feel_Accepted", "Feel_Valued", "Feel_Excluded", "Feel_Neglected", "Feel_Appreciated"
-    ],
-    "Academic Anxiety & Avoidance Framework": [
-      "Feel_Anxious", "Feel_Comfortable", "Feel_Inadequate", "Feel_Tense", "Feel_Stressed",
-      "Try_To_Say_Little", "Wish_Invisible", "Fade_To_Background", "Avoid_Attention"
-    ],
-    "Institutional Trust & Commitment Model": [
-      "Trust_Instructors", "Trust_Evaluation", "Trust_Materials", "No_Need_To_Prove_Self", "Instructors_Committed"
+      "Math_Membership",
+      "Math_Acceptance",
+      "Math_Affect",
+      "Math_Trust",
+      "Math_Desire_To_Fade"
     ]
   },
-  "subscales": {
-    "Theory of Planned Behavior": {
-      "items": ["TPB_Behavioral_Intention", "TPB_Attitude_Direct", "TPB_Subjective_Norm", "TPB_Perceived_Control"], 
-      "reverse": []
+  "variables": {
+    "TPB_Behavioral_Intention": {
+      "items": [
+        "I intend to pursue advanced coursework in this academic domain.",
+        "I plan to select a career track aligned with this field of study."
+      ],
+      "reverse_items": [],
+      "citation": "Ajzen, I. (1991). The theory of planned behavior. Organizational Behavior and Human Decision Processes, 50(2), 179-211."
     },
-    "Membership": {"items": ["Belong_Community", "Member_Math_World", "Connected_Math", "Fit_In_Math"], "reverse": []},
-    "Acceptance": {"items": ["Feel_Accepted", "Feel_Valued", "Feel_Excluded", "Feel_Neglected", "Feel_Appreciated"], "reverse": ["Feel_Excluded", "Feel_Neglected"]},
-    "Affect": {"items": ["Feel_Anxious", "Feel_Comfortable", "Feel_Inadequate", "Feel_At_Ease", "Feel_Tense", "Feel_Confident", "Feel_Stressed"], "reverse": ["Feel_Anxious", "Feel_Inadequate", "Feel_Tense", "Feel_Stressed"]},
-    "Trust": {"items": ["Trust_Instructors", "Trust_Evaluation", "Trust_Materials", "No_Need_To_Prove_Self", "Instructors_Committed"], "reverse": []},
-    "Desire_To_Fade": {"items": ["Try_To_Say_Little", "Wish_Invisible", "Fade_To_Background", "Avoid_Attention"], "reverse": ["Try_To_Say_Little", "Wish_Invisible", "Fade_To_Background", "Avoid_Attention"]}
-  },
-  "item_bank": {
-    "TPB_Behavioral_Intention": "I intend to pursue advanced coursework or career paths in this academic domain.",
-    "TPB_Attitude_Direct": "I believe that mastering the material in this academic domain is highly valuable and beneficial to me.",
-    "TPB_Subjective_Norm": "People who are important to me (teachers, family, peers) think that I should succeed in this domain.",
-    "TPB_Perceived_Control": "I am confident that I have the ability, resources, and opportunity to succeed in this course of study.",
-    "Belong_Community": "I feel like a member of the math community.",
-    "Member_Math_World": "I feel like I belong in the math world.",
-    "Connected_Math": "I feel connected to the field of mathematics.",
-    "Fit_In_Math": "I feel like I fit in when I am doing math.",
-    "Feel_Accepted": "I feel accepted by others in math.",
-    "Feel_Valued": "I feel valued in math settings.",
-    "Feel_Excluded": "I feel excluded from math groups or discussions.",
-    "Feel_Neglected": "I feel neglected by instructors or peers in math.",
-    "Feel_Appreciated": "I feel appreciated for my math input.",
-    "Feel_Anxious": "I feel anxious when working on math problems.",
-    "Feel_Comfortable": "I feel comfortable in my math class.",
-    "Feel_Inadequate": "I feel inadequate or not smart enough in math.",
-    "Feel_At_Ease": "I feel at ease during math evaluations.",
-    "Feel_Tense": "I feel tense when I step into a math space.",
-    "Feel_Confident": "I feel confident about my math capabilities.",
-    "Feel_Stressed": "I feel stressed out by math coursework.",
-    "Trust_Instructors": "I trust math instructors to grade me fairly.",
-    "Trust_Evaluation": "I trust math evaluation methods to reflect my true skills.",
-    "Trust_Materials": "I trust that math curriculum materials are designed to help me succeed.",
-    "No_Need_To_Prove_Self": "I feel like I do not need to constantly prove my math ability.",
-    "Instructors_Committed": "I believe math instructors are committed to my progress.",
-    "Try_To_Say_Little": "I try to say as little as possible in math environments.",
-    "Wish_Invisible": "I wish I could be invisible in math classrooms.",
-    "Fade_To_Background": "I try to fade into the background during math lectures.",
-    "Avoid_Attention": "I try to avoid drawing any attention to myself in math spaces."
+    "TPB_Attitude_Direct": {
+      "items": [
+        "I believe that mastering this academic domain is highly valuable.",
+        "Learning this material feels deeply beneficial to my goals."
+      ],
+      "reverse_items": [],
+      "citation": "Ajzen, I. (1991). The theory of planned behavior. Organizational Behavior and Human Decision Processes, 50(2), 179-211."
+    },
+    "TPB_Subjective_Norm": {
+      "items": [
+        "People who are important to me think that I should succeed in this domain.",
+        "My peers and mentors encourage me to pursue this subject area."
+      ],
+      "reverse_items": [],
+      "citation": "Ajzen, I. (1991). The theory of planned behavior. Organizational Behavior and Human Decision Processes, 50(2), 179-211."
+    },
+    "TPB_Perceived_Control": {
+      "items": [
+        "I am confident that I have the ability and resources to succeed here.",
+        "Succeeding in this course of study is entirely within my control."
+      ],
+      "reverse_items": [],
+      "citation": "Ajzen, I. (1991). The theory of planned behavior. Organizational Behavior and Human Decision Processes, 50(2), 179-211."
+    },
+    "Math_Membership": {
+      "items": [
+        "I feel like a member of the math community.",
+        "I feel like I belong in the math world.",
+        "I feel connected to the field of mathematics."
+      ],
+      "reverse_items": [],
+      "citation": "Good, C., Rattan, A., & Dweck, C. S. (2012). Why do women opt out? Sense of belonging and stereotypes as predictors of women's math outcomes. Journal of Personality and Social Psychology, 102(4), 700-717."
+    },
+    "Math_Acceptance": {
+      "items": [
+        "I feel accepted by others in math.",
+        "I feel valued in math settings.",
+        "I feel appreciated for my math input."
+      ],
+      "reverse_items": [
+        "I feel excluded from math groups or discussions.",
+        "I feel neglected by instructors or peers in math."
+      ],
+      "citation": "Good, C., Rattan, A., & Dweck, C. S. (2012). Why do women opt out? Sense of belonging and stereotypes as predictors of women's math outcomes. Journal of Personality and Social Psychology, 102(4), 700-717."
+    },
+    "Math_Affect": {
+      "items": [
+        "I feel comfortable in my math class.",
+        "I feel at ease during math evaluations.",
+        "I feel confident about my math capabilities."
+      ],
+      "reverse_items": [
+        "I feel anxious when working on math problems.",
+        "I feel inadequate or not smart enough in math.",
+        "I feel tense when I step into a math space.",
+        "I feel stressed out by math coursework."
+      ],
+      "citation": "Good, C., Rattan, A., & Dweck, C. S. (2012). Why do women opt out? Sense of belonging and stereotypes as predictors of women's math outcomes. Journal of Personality and Social Psychology, 102(4), 700-717."
+    },
+    "Math_Trust": {
+      "items": [
+        "I trust math instructors to grade me fairly.",
+        "I trust math evaluation methods to reflect my true skills.",
+        "I trust that math curriculum materials are designed to help me succeed.",
+        "I feel like I do not need to constantly prove my math ability.",
+        "I believe math instructors are committed to my progress."
+      ],
+      "reverse_items": [],
+      "citation": "Good, C., Rattan, A., & Dweck, C. S. (2012). Why do women opt out? Sense of belonging and stereotypes as predictors of women's math outcomes. Journal of Personality and Social Psychology, 102(4), 700-717."
+    },
+    "Math_Desire_To_Fade": {
+      "items": [],
+      "reverse_items": [
+        "I try to say as little as possible in math environments.",
+        "I wish I could be invisible in math classrooms.",
+        "I try to fade into the background during math lectures.",
+        "I try to avoid drawing any attention to myself in math spaces."
+      ],
+      "citation": "Good, C., Rattan, A., & Dweck, C. S. (2012). Why do women opt out? Sense of belonging and stereotypes as predictors of women's math outcomes. Journal of Personality and Social Psychology, 102(4), 700-717."
+    }
   }
 }
