@@ -1,0 +1,76 @@
+name: Auto-Process Schema Proposal
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  create-pr:
+    if: contains(github.event.issue.title, '[Schema Proposal]')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Setup Python Runtime Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Parse Issue Body & Update JSON Schema Registry
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          python -c "
+          import os, re, json
+
+          body = os.environ.get('ISSUE_BODY', '')
+          
+          # Extract variables using parsing tokens
+          key_match = re.search(r'KEY=(.+)', body)
+          cat_match = re.search(r'CATEGORY=(.+)', body)
+          rev_match = re.search(r'REVERSE=(.+)', body)
+          just_match = re.search(r'### 📄 Research Justification\s*(.+)', body, re.DOTALL)
+
+          if not (key_match and cat_match and rev_match):
+              print('Error: Could not find structured data parsing tokens in issue description.')
+              exit(1)
+
+          new_key = key_match.group(1).strip()
+          category = cat_match.group(1).strip()
+          is_reverse = rev_match.group(1).strip() == 'True'
+          justification = just_match.group(1).strip() if just_match else 'Community submission'
+
+          config_path = 'schema_config.json'
+          
+          # Load existing JSON structural registry
+          with open(config_path, 'r') as f:
+              schema_data = json.load(f)
+
+          # 1. Update the Item Bank
+          schema_data['item_bank'][new_key] = justification
+
+          # 2. Update or Initialize the Subscale Categories Map
+          if category not in schema_data['subscales']:
+              schema_data['subscales'][category] = {'items': [], 'reverse': []}
+          
+          if new_key not in schema_data['subscales'][category]['items']:
+              schema_data['subscales'][category]['items'].append(new_key)
+          
+          if is_reverse and (new_key not in schema_data['subscales'][category]['reverse']):
+              schema_data['subscales'][category]['reverse'].append(new_key)
+
+          # Write clean, sorted structural object file back to project storage
+          with open(config_path, 'w') as f:
+              json.dump(schema_data, f, indent=2)
+          "
+
+      - name: Generate Branch and Open Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "feat: registry addition for ${{ github.event.issue.title }}"
+          title: "🚀 Proposed Schema: Update metadata registry from Issue #${{ github.event.issue.number }}"
+          body: "Closes #${{ github.event.issue.number }}. Safely appends metadata constructs into config storage."
+          branch: "proposal/issue-${{ github.event.issue.number }}"
+          base: "main"
