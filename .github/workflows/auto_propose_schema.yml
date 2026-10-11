@@ -17,7 +17,7 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Parse Issue Body & Update JSON Schema Registry
+      - name: Parse Issue Parameters & Update Scale Config Database
         env:
           ISSUE_BODY: ${{ github.event.issue.body }}
         run: |
@@ -26,41 +26,34 @@ jobs:
 
           body = os.environ.get('ISSUE_BODY', '')
           
-          # Extract variables using parsing tokens
+          # Extract variables via structure token tracking
           key_match = re.search(r'KEY=(.+)', body)
-          cat_match = re.search(r'CATEGORY=(.+)', body)
-          rev_match = re.search(r'REVERSE=(.+)', body)
-          just_match = re.search(r'### 📄 Research Justification\s*(.+)', body, re.DOTALL)
+          cite_match = re.search(r'CITATION=(.+)', body)
+          items_match = re.search(r'ITEMS=(.+)', body)
 
-          if not (key_match and cat_match and rev_match):
-              print('Error: Could not find structured data parsing tokens in issue description.')
+          if not (key_match and cite_match and items_match):
+              print('Error parsing scale configuration telemetry tokens inside the issue tracking description.')
               exit(1)
 
           new_key = key_match.group(1).strip()
-          category = cat_match.group(1).strip()
-          is_reverse = rev_match.group(1).strip() == 'True'
-          justification = just_match.group(1).strip() if just_match else 'Community submission'
+          citation = cite_match.group(1).strip()
+          
+          # Break split values out into a clean structural array list
+          items_list = [i.strip() for i in items_match.group(1).split(';') if i.strip()]
 
           config_path = 'schema_config.json'
-          
-          # Load existing JSON structural registry
           with open(config_path, 'r') as f:
               schema_data = json.load(f)
 
-          # 1. Update the Item Bank
-          schema_data['item_bank'][new_key] = justification
-
-          # 2. Update or Initialize the Subscale Categories Map
-          if category not in schema_data['subscales']:
-              schema_data['subscales'][category] = {'items': [], 'reverse': []}
+          # Update registry variables layer block structures safely
+          if new_key not in schema_data['variables']:
+              schema_data['variables'][new_key] = {'items': [], 'reverse_items': [], 'citation': ''}
           
-          if new_key not in schema_data['subscales'][category]['items']:
-              schema_data['subscales'][category]['items'].append(new_key)
-          
-          if is_reverse and (new_key not in schema_data['subscales'][category]['reverse']):
-              schema_data['subscales'][category]['reverse'].append(new_key)
+          schema_data['variables'][new_key]['citation'] = citation
+          for item in items_list:
+              if item not in schema_data['variables'][new_key]['items']:
+                  schema_data['variables'][new_key]['items'].append(item)
 
-          # Write clean, sorted structural object file back to project storage
           with open(config_path, 'w') as f:
               json.dump(schema_data, f, indent=2)
           "
@@ -69,8 +62,8 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "feat: registry addition for ${{ github.event.issue.title }}"
-          title: "🚀 Proposed Schema: Update metadata registry from Issue #${{ github.event.issue.number }}"
-          body: "Closes #${{ github.event.issue.number }}. Safely appends metadata constructs into config storage."
+          commit-message: "feat: registry scale addition for ${{ github.event.issue.title }}"
+          title: "🚀 Proposed Scale: Update scale matrix mappings from Issue #${{ github.event.issue.number }}"
+          body: "Closes #${{ github.event.issue.number }}. Safely appends scale constructs and academic citations into registry database."
           branch: "proposal/issue-${{ github.event.issue.number }}"
           base: "main"
