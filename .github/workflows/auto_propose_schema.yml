@@ -29,27 +29,47 @@ jobs:
           # Extract variables via structure token tracking
           key_match = re.search(r'KEY=(.+)', body)
           cite_match = re.search(r'CITATION=(.+)', body)
+          type_match = re.search(r'TYPE=(.+)', body)
+          opts_match = re.search(r'OPTIONS=(.+)', body)
           items_match = re.search(r'ITEMS=(.+)', body)
 
-          if not (key_match and cite_match and items_match):
+          if not (key_match and cite_match and items_match and type_match):
               print('Error parsing scale configuration telemetry tokens inside the issue tracking description.')
               exit(1)
 
           new_key = key_match.group(1).strip()
           citation = cite_match.group(1).strip()
+          var_type = type_match.group(1).strip()
+          options_raw = opts_match.group(1).strip() if opts_match else 'N/A'
           
-          # Break split values out into a clean structural array list
+          # Break semicolon-split values out into clean structural item array lists
           items_list = [i.strip() for i in items_match.group(1).split(';') if i.strip()]
 
           config_path = 'schema_config.json'
           with open(config_path, 'r') as f:
               schema_data = json.load(f)
 
-          # Update registry variables layer block structures safely
+          # Initialize the specific variable entry map if it does not exist
           if new_key not in schema_data['variables']:
-              schema_data['variables'][new_key] = {'items': [], 'reverse_items': [], 'citation': ''}
+              schema_data['variables'][new_key] = {
+                  'items': [], 
+                  'reverse_items': [], 
+                  'citation': '',
+                  'type': '',
+                  'options': []
+              }
           
+          # Assign new descriptive categorical attributes safely
           schema_data['variables'][new_key]['citation'] = citation
+          schema_data['variables'][new_key]['type'] = var_type
+          
+          # Add categorical choice lists if specified
+          if var_type == 'Multiple Choice (Categorical / Nominal)' and options_raw != 'N/A':
+              schema_data['variables'][new_key]['options'] = [o.strip() for o in options_raw.split(',') if o.strip()]
+          else:
+              schema_data['variables'][new_key]['options'] = []
+
+          # Append structural question prompt blocks
           for item in items_list:
               if item not in schema_data['variables'][new_key]['items']:
                   schema_data['variables'][new_key]['items'].append(item)
@@ -62,8 +82,8 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "feat: registry scale addition for ${{ github.event.issue.title }}"
-          title: "🚀 Proposed Scale: Update scale matrix mappings from Issue #${{ github.event.issue.number }}"
-          body: "Closes #${{ github.event.issue.number }}. Safely appends scale constructs and academic citations into registry database."
+          commit-message: "feat: registry multi-type scale addition for ${{ github.event.issue.title }}"
+          title: "🚀 Proposed Scale: Update scale matrix configurations from Issue #${{ github.event.issue.number }}"
+          body: "Closes #${{ github.event.issue.number }}. Safely parses structural attributes, choices, and academic citations into schema config registry database maps."
           branch: "proposal/issue-${{ github.event.issue.number }}"
           base: "main"
