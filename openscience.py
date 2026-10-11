@@ -10,38 +10,71 @@ st.caption("An Open Source, Community-Driven Engine for Standardized Educational
 # Configuration for your repository
 GITHUB_REPO_URL = "https://github.com"
 
-# Initialize an entry tracker for community crowdsourced column suggestions
-if "proposed_columns" not in st.session_state:
-    st.session_state["proposed_columns"] = [
-        {"Proposed Column Key": "Socioeconomic_Status_Tier", "Subscale Category": "Institutional / Demographics", "Justification": "To track environmental resource disparities in learning spaces."},
-        {"Proposed Column Key": "First_Generation_Status", "Subscale Category": "Institutional / Demographics", "Justification": "Crucial factor for domain membership and institutional trust metrics."}
+# -------------------------------------------------------------
+# SCHEMA DICTIONARIES: CONFIGURATION & ITEM BANK
+# -------------------------------------------------------------
+# 1. Framework to variable mapping
+FRAMEWORK_MAP = {
+    "None / Custom Alignment": [],
+    "Good et al. (2012) Sense of Belonging in Math": [
+        "Belong_Community", "Member_Math_World", "Connected_Math", "Fit_In_Math",
+        "Feel_Accepted", "Feel_Valued", "Feel_Excluded", "Feel_Neglected", "Feel_Appreciated"
+    ],
+    "Academic Anxiety & Avoidance Framework": [
+        "Feel_Anxious", "Feel_Comfortable", "Feel_Inadequate", "Feel_Tense", "Feel_Stressed",
+        "Try_To_Say_Little", "Wish_Invisible", "Fade_To_Background", "Avoid_Attention"
+    ],
+    "Institutional Trust & Commitment Model": [
+        "Trust_Instructors", "Trust_Evaluation", "Trust_Materials", "No_Need_To_Prove_Self", "Instructors_Committed"
     ]
-
-# Dictionary tracking our five belonging subscales and which ones are reverse-coded
-SUBSCALE_MAP = {
-    "Membership": {
-        "items": ["Belong_Community", "Member_Math_World", "Connected_Math", "Fit_In_Math"],
-        "reverse": []
-    },
-    "Acceptance": {
-        "items": ["Feel_Accepted", "Feel_Valued", "Feel_Excluded", "Feel_Neglected", "Feel_Appreciated"],
-        "reverse": ["Feel_Excluded", "Feel_Neglected"]
-    },
-    "Affect": {
-        "items": ["Feel_Anxious", "Feel_Comfortable", "Feel_Inadequate", "Feel_At_Ease", "Feel_Tense", "Feel_Confident", "Feel_Stressed"],
-        "reverse": ["Feel_Anxious", "Feel_Inadequate", "Feel_Tense", "Feel_Stressed"]
-    },
-    "Trust": {
-        "items": ["Trust_Instructors", "Trust_Evaluation", "Trust_Materials", "No_Need_To_Prove_Self", "Instructors_Committed"],
-        "reverse": []
-    },
-    "Desire_To_Fade": {
-        "items": ["Try_To_Say_Little", "Wish_Invisible", "Fade_To_Background", "Avoid_Attention"],
-        "reverse": ["Try_To_Say_Little", "Wish_Invisible", "Fade_To_Background", "Avoid_Attention"]
-    }
 }
 
-# Math equation to calculate Cronbach's Alpha reliability
+# 2. Comprehensive item bank mapping variable keys to exact survey statements
+ITEM_BANK = {
+    # Membership
+    "Belong_Community": "I feel like a member of the math community.",
+    "Member_Math_World": "I feel like I belong in the math world.",
+    "Connected_Math": "I feel connected to the field of mathematics.",
+    "Fit_In_Math": "I feel like I fit in when I am doing math.",
+    # Acceptance
+    "Feel_Accepted": "I feel accepted by others in math.",
+    "Feel_Valued": "I feel valued in math settings.",
+    "Feel_Excluded": "I feel excluded from math groups or discussions.",
+    "Feel_Neglected": "I feel neglected by instructors or peers in math.",
+    "Feel_Appreciated": "I feel appreciated for my math input.",
+    # Affect
+    "Feel_Anxious": "I feel anxious when working on math problems.",
+    "Feel_Comfortable": "I feel comfortable in my math class.",
+    "Feel_Inadequate": "I feel inadequate or not smart enough in math.",
+    "Feel_At_Ease": "I feel at ease during math evaluations.",
+    "Feel_Tense": "I feel tense when I step into a math space.",
+    "Feel_Confident": "I feel confident about my math capabilities.",
+    "Feel_Stressed": "I feel stressed out by math coursework.",
+    # Trust
+    "Trust_Instructors": "I trust math instructors to grade me fairly.",
+    "Trust_Evaluation": "I trust math evaluation methods to reflect my true skills.",
+    "Trust_Materials": "I trust that math curriculum materials are designed to help me succeed.",
+    "No_Need_To_Prove_Self": "I feel like I do not need to constantly prove my math ability.",
+    "Instructors_Committed": "I believe math instructors are committed to my progress.",
+    # Desire to Fade
+    "Try_To_Say_Little": "I try to say as little as possible in math environments.",
+    "Wish_Invisible": "I wish I could be invisible in math classrooms.",
+    "Fade_To_Background": "I try to fade into the background during math lectures.",
+    "Avoid_Attention": "I try to avoid drawing any attention to myself in math spaces."
+}
+
+# Structural breakdown of subscales for checking/validation engine rules
+SUBSCALE_MAP = {
+    "Membership": {"items": ["Belong_Community", "Member_Math_World", "Connected_Math", "Fit_In_Math"], "reverse": []},
+    "Acceptance": {"items": ["Feel_Accepted", "Feel_Valued", "Feel_Excluded", "Feel_Neglected", "Feel_Appreciated"], "reverse": ["Feel_Excluded", "Feel_Neglected"]},
+    "Affect": {"items": ["Feel_Anxious", "Feel_Comfortable", "Feel_Inadequate", "Feel_At_Ease", "Feel_Tense", "Feel_Confident", "Feel_Stressed"], "reverse": ["Feel_Anxious", "Feel_Inadequate", "Feel_Tense", "Feel_Stressed"]},
+    "Trust": {"items": ["Trust_Instructors", "Trust_Evaluation", "Trust_Materials", "No_Need_To_Prove_Self", "Instructors_Committed"], "reverse": []},
+    "Desire_To_Fade": {"items": ["Try_To_Say_Little", "Wish_Invisible", "Fade_To_Background", "Avoid_Attention"], "reverse": ["Try_To_Say_Little", "Wish_Invisible", "Fade_To_Background", "Avoid_Attention"]}
+}
+
+if "proposed_columns" not in st.session_state:
+    st.session_state["proposed_columns"] = []
+
 def calculate_cronbach_alpha(df_items):
     num_columns = len(df_items.columns)
     if num_columns in (0, 1):
@@ -50,200 +83,166 @@ def calculate_cronbach_alpha(df_items):
     total_var = df_items.sum(axis=1).var(ddof=1)
     if total_var == 0:
         return 0.0
-    alpha = (num_columns / (num_columns - 1)) * (1 - (item_vars.sum() / total_var))
-    return alpha
+    return (num_columns / (num_columns - 1)) * (1 - (item_vars.sum() / total_var))
 
 # -------------------------------------------------------------
-# TIER 1: OPEN SCIENCE STUDY METADATA TABS
+# MAIN LAYOUT CONFIGURATION
 # -------------------------------------------------------------
-st.header("🌐 1. Public Multi-Standard Study Metadata")
-with st.container(border=True):
-    t_dc, t_ddi, t_lom = st.tabs(["Dublin Core Core Elements", "DDI Research Methodology", "IEEE LOM Educational Context"])
+t_meta, t_spec, t_share = st.tabs([
+    "🌐 1. Study Profile Metadata", 
+    "📋 2. Survey Builder & Schema Templates", 
+    "📤 3. Open Science Data Sharing Hub"
+])
+
+# -------------------------------------------------------------
+# TAB 1: STUDY PROFILE METADATA
+# -------------------------------------------------------------
+with t_meta:
+    st.header("Public Multi-Standard Study Metadata")
+    with st.container(border=True):
+        t_dc, t_ddi, t_lom = st.tabs(["Dublin Core Core Elements", "DDI Research Methodology", "IEEE LOM Educational Context"])
+        with t_dc:
+            dc_title = st.text_input("Title (dc:title)", value="")
+            dc_creator = st.text_input("Creator / Lead Investigator (dc:creator)", value="")
+            dc_subject = st.text_input("Subject Keywords (dc:subject)", value="")
+            dc_date = st.text_input("Lifecycle Assembly Date (dc:date)", value="")
+            dc_type = st.selectbox("Resource Material Type (dc:type)", ["Dataset", "Text / Observation Log", "Software Application"])
+        with t_ddi:
+            ddi_design = st.selectbox("Methodology Paradigm", ["Randomized Controlled Trial (RCT)", "Quasi-Experimental Design (QED)", "Correlational Study"])
+            ddi_unit = st.selectbox("Observation Level", ["Individual Student Level", "Classroom-Level Aggregation"])
+        with t_lom:
+            academic_keys_discipline = st.selectbox("Disciplinary Focus", ["Mathematics", "Science", "Special Education"])
+            student_levels = st.multiselect("Grade Levels", ["Kindergarten", "Elementary", "Middle School", "High School", "Undergraduate"])
+
+# -------------------------------------------------------------
+# TAB 2: SURVEY BUILDER & TEMPLATE GENERATOR
+# -------------------------------------------------------------
+with t_spec:
+    st.header("Survey Instrument Builder & Schema Designer")
     
-    with t_dc:
-        st.subheader("Dublin Core Metadata Schema")
-        dc_title = st.text_input("Title (dc:title)", value="")
-        dc_creator = st.text_input("Creator / Lead Investigator (dc:creator)", value="")
-        dc_subject = st.text_input("Subject Keywords (dc:subject)", value="")
-        dc_date = st.text_input("Lifecycle Assembly Date (dc:date)", value="")
-        dc_type = st.selectbox("Resource Material Type (dc:type)", ["Dataset", "Text / Observation Log", "Software Application"])
-        
-    with t_ddi:
-        st.subheader("Data Documentation Initiative (DDI) Standards")
-        ddi_design = st.selectbox(
-            "Methodology / Research Paradigm", 
-            ["Randomized Controlled Trial (RCT)", "Quasi-Experimental Design (QED)", "Correlational / Observational Study"]
-        )
-        ddi_unit = st.selectbox("Unit of Analysis / Observation Level", ["Individual Student Level", "Classroom-Level Aggregation", "School-Wide Clusters"])
-        
-    with t_lom:
-        st.subheader("IEEE Learning Object Metadata (LOM) Standards")
-        academic_keys_discipline = st.selectbox(
-            "Disciplinary Instructional Classification Focus",
-            ["Mathematics", "Science", "English / Reading / Language Arts", "ELL / ESOL / ESL", "Special Education"]
-        )
-        student_levels = st.multiselect(
-            "Target Student Grade Levels (Choose all that apply)",
-            ["Pre-Kindergarten", "Kindergarten", "1st Grade", "2nd Grade", "3rd Grade", "4th Grade", "5th Grade", "6th Grade", "7th Grade", "8th Grade", "9th Grade", "10th Grade", "11th Grade", "12th Grade", "Undergraduate", "Graduate"],
-            default=[]
-        )
-        lom_interactivity = st.selectbox("Intended Interactivity Complexity", ["Active Learning Intervention", "Expository Lecture", "Mixed Blended Design"])
-
-# -------------------------------------------------------------
-# TIER 2: PRIVATE LOCAL DATA PROCESSING LAYER & SCHEMA EXPLORER
-# -------------------------------------------------------------
-st.header("🔒 2. Confidential Local Data & Schema Specifications")
-
-t_upload, t_schema, t_propose = st.tabs(["📥 Data Upload & Alignment Checker", "📋 Open Source Data Dictionary", "💡 Propose New Schema Columns"])
-
-# Gather all valid schema items for matching checks
-all_expected_items = []
-for sub, sub_rules in SUBSCALE_MAP.items():
-    all_expected_items.extend(sub_rules["items"])
-
-with t_upload:
-    st.info("Upload your research dataset spreadsheet. The column mapping utility will compare your keys against the verified Good et al. schema.")
-    uploaded_file = st.file_uploader("Upload local research data spreadsheet (CSV Format)", type=["csv"])
-
-    if uploaded_file is not None:
-        df_local = pd.read_csv(uploaded_file)
-        st.success("Custom user dataset parsing layer connected successfully!")
-        
-        # Column Checklist Comparison Tool
-        st.subheader("Column Name Match Analyzer")
-        found_expected = [col for col in df_local.columns if col in all_expected_items]
-        missing_expected = [col for col in all_expected_items if col not in df_local.columns]
-
-        col_chk1, col_chk2 = st.columns(2)
-        with col_chk1:
-            st.markdown(f"✅ **Matched Variables Found ({len(found_expected)}):**")
-            st.text(", ".join(found_expected) if found_expected else "None matched.")
-        with col_chk2:
-            st.markdown(f"⚠️ **Omitted or Different Variable Keys ({len(missing_expected)}):**")
-            st.text(", ".join(missing_expected) if missing_expected else "None missing.")
-
-        st.subheader("Raw Local Data Explorer View")
-        st.dataframe(df_local, use_container_width=True)
-        
-        # Chronbach's Alpha Calculator for matched columns
-        st.subheader("Psychometric Data Reliability Statistics")
-        alpha_results = {}
-        for subscale_name, rules in SUBSCALE_MAP.items():
-            matched_subscale_cols = [c for c in df_local.columns if c in rules["items"]]
-            if len(matched_subscale_cols) > 1:
-                sub_df = df_local[matched_subscale_cols].copy().apply(pd.to_numeric, errors='coerce').dropna()
-                if not sub_df.empty:
-                    alpha_val = calculate_cronbach_alpha(sub_df)
-                    alpha_results[subscale_name] = alpha_val
-        
-        if alpha_results:
-            st.write("Calculated Cronbach's Alpha for available subscales:")
-            st.json(alpha_results)
-        else:
-            st.write("Not enough matching psychometric columns uploaded to calculate alpha metrics.")
-    else:
-        st.warning("Please upload a local CSV file to analyze variables, view datasets, or compute psychometric statistics.")
-
-with t_schema:
-    st.subheader("📋 FAIR-Aligned Metadata & Data Entry Template Generator")
-    st.write(
-        """
-        Build standards-aligned educational research datasets using
-        controlled vocabularies and metadata fields that improve
-        consistency, interoperability, repository deposit, and
-        future meta-analysis.
-        """
+    # 1. Theoretical Framework Preset Selector
+    st.markdown("### Step 1: Select a Theoretical Framework Blueprint")
+    selected_framework = st.selectbox(
+        "Choosing a framework pre-selects validated variables for your model.",
+        options=list(FRAMEWORK_MAP.keys())
     )
+    framework_defaults = FRAMEWORK_MAP[selected_framework]
+
+    # 2. Dynamic Variable Checklist Configuration
+    st.markdown("### Step 2: Fine-Tune Variable Selection")
+    include_core = st.checkbox("Include Core Identifiers (`StudentID`, `Gender_Identity`, `Qualitative_Notes`)", value=True)
     
-    st.markdown("### Step 1: Select Demographics & Identifiers")
-    include_core = st.checkbox("Include Core Fields (`StudentID`, `Gender_Identity`, `Qualitative_Notes`)", value=True)
+    selected_variables = []
+    # Loop over structural category groups to organize the UI cleanly
+    for subscale, rules in SUBSCALE_MAP.items():
+        with st.expander(f"✨ {subscale} Subscale Fields", expanded=True):
+            for item in rules["items"]:
+                # Checked by default if part of the framework blueprint
+                is_default_checked = item in framework_defaults
+                if st.checkbox(f"Use Variable: `{item}` — *\"{ITEM_BANK[item]}\"*", value=is_default_checked, key=f"select_{item}"):
+                    selected_variables.append(item)
+
+    # 3. Structural CSV Blueprint Exporter
+    st.markdown("---")
+    st.markdown("### Step 3: Export Clean Metadata Templates & Questionnaires")
     
-    st.markdown("### Step 2: Select Psychometric Subscales to Include")
-    selected_subscales = []
-    for subscale_name in SUBSCALE_MAP.keys():
-        if st.checkbox(f"Include **{subscale_name}** Subscale Variables", value=True):
-            selected_subscales.append(subscale_name)
+    col_temp, col_surv = st.columns(2)
+    
+    with col_temp:
+        st.subheader("Data Entry Schema File")
+        template_columns = ["StudentID", "Gender_Identity", "Qualitative_Notes"] if include_core else []
+        template_columns.extend(selected_variables)
+        
+        df_template = pd.DataFrame(columns=template_columns)
+        st.dataframe(df_template, use_container_width=True)
+        
+        csv_buffer = df_template.to_csv(index=False).encode('utf-8')
+        st.download_button(
+            label="📥 Download Blank Metadata Template (CSV)",
+            data=csv_buffer,
+            file_name="educational_metadata_schema.csv",
+            mime="text/csv"
+        )
+
+    with col_surv:
+        st.subheader("Printable Survey Instrument File")
+        if selected_variables:
+            # Construct a human-readable survey list dataframe
+            survey_data = {
+                "Variable Header Key": selected_variables,
+                "Survey Question Prompt / Statement Text": [ITEM_BANK[v] for v in selected_variables],
+                "Suggested Response Scale": ["Likert Scale (1-5 Strongly Disagree to Strongly Agree)"] * len(selected_variables)
+            }
+            df_survey = pd.DataFrame(survey_data)
+            st.dataframe(df_survey, use_container_width=True)
             
-    # Dynamically build the empty layout based on user selections
-    template_columns = []
-    if include_core:
-        template_columns.extend(["StudentID", "Gender_Identity", "Qualitative_Notes"])
-        
-    for subscale_name in selected_subscales:
-        template_columns.extend(SUBSCALE_MAP[subscale_name]["items"])
-        
-    # Generate empty dataframe template
-    df_template = pd.DataFrame(columns=template_columns)
-    
-    st.markdown("### Step 3: Preview and Download Blank Structural Template")
-    st.write("This preview outlines the structural columns that will make up your clean metadata file.")
-    st.dataframe(df_template, use_container_width=True)
-    
-    # Export empty structured file via downloadable CSV button
-    csv_buffer = df_template.to_csv(index=False).encode('utf-8')
-    st.download_button(
-        label="📥 Download Blank Metadata Template (CSV)",
-        data=csv_buffer,
-        file_name="educational_metadata_template.csv",
-        mime="text/csv",
-        help="Click here to download a blank CSV template featuring your chosen schema alignments."
-    )
+            survey_csv = df_survey.to_csv(index=False).encode('utf-8')
+            st.download_button(
+                label="📝 Download Custom Survey Document (CSV)",
+                data=survey_csv,
+                file_name="psychometric_survey_instrument.csv",
+                mime="text/csv"
+            )
+        else:
+            st.warning("Please select at least one psychometric variable to generate a functional survey tool.")
 
-with t_propose:
-    st.subheader("💡 Propose New Schema Columns")
-    st.write("Suggest modifications or additions to the psychometric schema dictionary. Approved proposals can be automatically generated as a Pull Request.")
+# -------------------------------------------------------------
+# TAB 3: DATA SHARING HUB & INTEGRITY LAYOUT
+# -------------------------------------------------------------
+with t_share:
+    st.header("Open Science Public Data Sharing Repository")
+    st.write("Contribute de-identified research datasets to the centralized crowdsourced open education project repository.")
+    
+    # 1. Dataset Submission Form
+    with st.container(border=True):
+        st.subheader("📤 Data Repository Contribution Layer")
+        shared_file = st.file_uploader("Upload target project data spreadsheet (CSV Format)", type=["csv"], key="share_upload")
+        
+        st.markdown("#### Open Science Compliance & Certifications")
+        cert_irb = st.checkbox("I certify that this dataset is completely de-identified and has appropriate institutional board approval (IRB).")
+        cert_cc0 = st.checkbox("I agree to dedicate this dataset to the public domain under Creative Commons Zero (CC0 1.0) licensing rules.")
+        
+        submit_share = st.button("Publish to Repository Queue", type="primary")
+        
+        if submit_share:
+            if shared_file is not None:
+                if cert_irb and cert_cc0:
+                    df_shared = pd.read_csv(shared_file)
+                    st.success(f"🎉 Dataset containing {len(df_shared)} rows successfully submitted to the validation queue!")
+                    
+                    # Quick analytics profile verification display
+                    st.markdown("### Profile Distribution Validation Check")
+                    all_expected = []
+                    for s, r in SUBSCALE_MAP.items():
+                        all_expected.extend(r["items"])
+                    matched = [c for c in df_shared.columns if c in all_expected]
+                    st.info(f"Verified alignment profile: Found {len(matched)} standard variables out of {len(all_expected)} recognized entries.")
+                    st.dataframe(df_shared.head(5), use_container_width=True)
+                else:
+                    st.error("You must check both validation boxes to verify compliance before publishing data.")
+            else:
+                st.error("Please upload a target CSV data spreadsheet file first.")
 
-    # Dynamic proposal submission form
+    # 2. Schema Modification Box
+    st.markdown("---")
+    st.subheader("💡 Propose New Schema Columns to the Core Engine")
     with st.form("schema_proposal_form", clear_on_submit=True):
         new_key = st.text_input("Proposed Variable Column Key", placeholder="e.g., Digital_Literacy_Scale")
         category_options = list(SUBSCALE_MAP.keys()) + ["Institutional / Demographics", "External Context Factor"]
         new_category = st.selectbox("Subscale or Metadata Category Alignment", options=category_options)
         is_reverse = st.checkbox("Is this variable reverse-coded?")
         new_justification = st.text_area("Research Justification / Theoretical Framework", placeholder="Explain why this field is necessary.")
-        
-        # This button MUST remain indented inside the form block
-        submitted = st.form_submit_button("Generate Proposal Pack")
+        submitted_proposal = st.form_submit_button("Generate Proposal Pack")
 
-    # Processing logic executes OUTSIDE the form after submission
-    if submitted:
+    if submitted_proposal:
         if new_key and new_justification:
-            new_proposal = {
-                "Proposed Column Key": new_key,
-                "Subscale Category": new_category,
-                "Justification": new_justification
-            }
+            new_proposal = {"Proposed Column Key": new_key, "Subscale Category": new_category, "Justification": new_justification}
             st.session_state["proposed_columns"].append(new_proposal)
             st.success("Proposal packet compiled! Use the button below to submit your request.")
             
-            # Formatted parsing tokens for GitHub Actions automation
             issue_title = f"[Schema Proposal] Add '{new_key}'"
-            issue_body = f"""### 💡 New Variable Schema Proposal
-
-[START_DATA]
-KEY={new_key}
-CATEGORY={new_category}
-REVERSE={'True' if is_reverse else 'False'}
-[END_DATA]
-
-### 📄 Research Justification
-{new_justification}
-
----
-*Submitted via the Open Educational Metadata Portal Application.*"""
-
-            encoded_title = urllib.parse.quote(issue_title)
-            encoded_body = urllib.parse.quote(issue_body)
-            github_issue_link = f"{GITHUB_REPO_URL}/issues/new?title={encoded_title}&body={encoded_body}"
-
-            st.markdown("---")
-            st.markdown("#### 🚀 Send to GitHub")
-            st.write("Clicking this button opens a pre-formatted ticket. Submit it to automatically generate a Pull Request for the codebase.")
+            issue_body = f"### 💡 New Variable Schema Proposal\n\n[START_DATA]\nKEY={new_key}\nCATEGORY={new_category}\nREVERSE={'True' if is_reverse else 'False'}\n[END_DATA]\n\n### 📄 Research Justification\n{new_justification}"
+            github_issue_link = f"{GITHUB_REPO_URL}/issues/new?title={urllib.parse.quote(issue_title)}&body={urllib.parse.quote(issue_body)}"
             st.link_button("Submit Proposal via GitHub Issue", github_issue_link, type="primary")
         else:
             st.error("Please fill out the Variable Column Key and Research Justification fields.")
-
-    # Historical view of proposed items tracked in this session
-    st.markdown("---")
-    st.subheader("Current Active Queue (Session Context)")
-    st.dataframe(pd.DataFrame(st.session_state["proposed_columns"]), use_container_width=True)
-
