@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import json
 import urllib.parse
+import requests
+import base64
 
 st.set_page_config(page_title="Open Educational Metadata Portal", layout="wide")
 st.title("🔬 Open Educational Metadata Portal")
@@ -10,12 +12,15 @@ st.caption("An Open Source, Community-Driven Engine for Standardized Educational
 
 # Configuration for your repository
 GITHUB_REPO_URL = "https://github.com"
+REPO_OWNER = "JLib271"
+REPO_NAME = "OpenEdMetadata"
+MASTER_FILE_PATH = "master_repository_data.csv"
 
 # Initialize an entry tracker for community suggestions
 if "proposed_columns" not in st.session_state:
     st.session_state["proposed_columns"] = []
 
-# 1. Unpack our JSON Registry database
+# Unpack our central JSON Registry database
 try:
     with open("schema_config.json", "r") as f:
         registry = json.load(f)
@@ -24,6 +29,44 @@ try:
 except Exception as e:
     st.error(f"Failed to pull schema registry database mapping configurations: {e}")
     st.stop()
+
+# Helper engine to push data safely to GitHub repository files via API
+def append_to_github_master(df_new_rows):
+    if "GITHUB_PAT" not in st.secrets:
+        st.error("Missing secure repository credentials configuration ('GITHUB_PAT') inside Streamlit settings.")
+        return False
+        
+    token = st.secrets["GITHUB_PAT"]
+    url = f"https://github.com{REPO_OWNER}/{REPO_NAME}/contents/{MASTER_FILE_PATH}"
+    headers = {"Authorization": f"token {token}", "Accept": "application/vnd.github.v3+json"}
+    
+    # Step A: Get the existing master repository file if it exists
+    res = requests.get(url, headers=headers)
+    sha = None
+    df_existing = pd.DataFrame()
+    
+    if res.status_code == 200:
+        file_data = res.json()
+        sha = file_data["sha"]
+        content_decoded = base64.b64decode(file_data["content"]).decode('utf-8')
+        from io import StringIO
+        df_existing = pd.read_csv(StringIO(content_decoded))
+    
+    # Step B: Combine old records with new rows cleanly
+    df_combined = pd.concat([df_existing, df_new_rows], ignore_index=True)
+    csv_updated_string = df_combined.to_csv(index=False)
+    content_encoded = base64.b64encode(csv_updated_string.encode('utf-8')).decode('utf-8')
+    
+    # Step C: Send the payload commit matrix pack back up to GitHub
+    payload = {
+        "message": "database: automated row injection into master repository archive",
+        "content": content_encoded
+    }
+    if sha:
+        payload["sha"] = sha
+        
+    put_res = requests.put(url, headers=headers, json=payload)
+    return put_res.status_code in [200, 201]
 
 # Math equation to calculate Cronbach's Alpha reliability
 def calculate_cronbach_alpha(df_items):
@@ -37,13 +80,13 @@ def calculate_cronbach_alpha(df_items):
     return (num_columns / (num_columns - 1)) * (1 - (item_vars.sum() / total_var))
 
 # -------------------------------------------------------------
-# MAIN APPLICATION INTERFACE NAVIGATION
+# MAIN INTERFACE NAVIGATION TABS SYSTEM
 # -------------------------------------------------------------
 t_meta, t_spec, t_score, t_share = st.tabs([
     "🌐 1. Study Profile Metadata", 
     "📋 2. Survey Builder & Templates", 
     "📊 3. Automated Scale Scoring Engine",
-    "📤 4. Open Science Propose & Share"
+    "📤 4. Global Connected Repository Hub"
 ])
 
 # -------------------------------------------------------------
@@ -79,32 +122,21 @@ with t_spec:
     )
     framework_defaults = FRAMEWORK_MAP[selected_framework]
 
-    # Core constraint logic variables configuration
     st.markdown("### Step 2: Fine-Tune Variable Scales & Survey Prompts")
     include_core = st.checkbox("Include Baseline Demographics (`StudentID`, `Gender_Identity`, `Qualitative_Notes`)", value=True)
-    
-    # Conditional prompt querying extra model components
     allow_extra_variables = st.checkbox("➕ Would you like to select additional variables outside this framework?", value=False)
     
     selected_variables = []
-    
-    # Filter variables to display based on user alignment preferences
     for var_key, var_data in VARIABLES_DB.items():
         is_aligned = var_key in framework_defaults
         total_items = len(var_data["items"]) + len(var_data["reverse_items"])
         
-        # Condition rule: Render if aligned, or if user unlocked the extra variables toggle check
         if is_aligned or allow_extra_variables:
-            # Visually mark outside metrics if rendering a cross-theory field block
             label_prefix = "📊 [Aligned Construct]" if is_aligned else "🔄 [External Construct]"
-            
             with st.expander(f"{label_prefix} {var_key} ({total_items} Items Total)", expanded=is_aligned):
                 st.caption(f"📚 **Citation Source:** *{var_data['citation']}*")
-                
-                # Default checked to True if it belongs directly to the selected theory model core path
                 if st.checkbox(f"Deploy Scale Construct: `{var_key}`", value=is_aligned, key=f"deploy_{var_key}"):
                     selected_variables.append(var_key)
-                    
                     if var_data["items"]:
                         st.markdown("**Standard Items Wording:**")
                         for text in var_data["items"]:
@@ -121,7 +153,6 @@ with t_spec:
     with col_temp:
         st.subheader("Data Entry Template Matrix File")
         template_columns = ["StudentID", "Gender_Identity", "Qualitative_Notes"] if include_core else []
-        
         for var_key in selected_variables:
             v_info = VARIABLES_DB[var_key]
             template_columns.extend(v_info["items"])
@@ -129,7 +160,6 @@ with t_spec:
         
         df_template = pd.DataFrame(columns=template_columns)
         st.dataframe(df_template, use_container_width=True)
-        
         st.download_button(
             label="📥 Download Blank Metadata Template (CSV)",
             data=df_template.to_csv(index=False).encode('utf-8'),
@@ -143,31 +173,16 @@ with t_spec:
             txt_output = "========================================================\n"
             txt_output += "RESEARCH SURVEY INSTRUMENT & FIELD QUESTIONNAIRE\n"
             txt_output += "========================================================\n\n"
-            txt_output += "INSTRUCTIONS: Please respond to each statement honestly by checking\n"
-            txt_output += "the option that matches your experience.\n\n"
-            txt_output += "RESPONSE OPTIONS:\n"
-            txt_output += " Strongly Disagree  Disagree  Neutral  Agree  Strongly Agree\n\n"
-            txt_output += "--------------------------------------------------------\n\n"
+            txt_output += "RESPONSE OPTIONS: 1=Strongly Disagree, 2=Disagree, 3=Neutral, 4=Agree, 5=Strongly Agree\n\n"
             
             item_counter = 1
             for var_key in selected_variables:
                 v_info = VARIABLES_DB[var_key]
-                txt_output += f"### SCALE CONSTRUCT: {var_key}\n"
-                txt_output += f"Source Citation: {v_info['citation']}\n"
-                txt_output += "--------------------------------------------------------\n"
-                
-                for text in v_info["items"]:
-                    txt_output += f"{item_counter}. {text}\n"
-                    txt_output += "   [ ] 1      [ ] 2      [ ] 3      [ ] 4      [ ] 5\n\n"
+                txt_output += f"### SCALE CONSTRUCT: {var_key}\nSource: {v_info['citation']}\n"
+                for text in v_info["items"] + v_info["reverse_items"]:
+                    txt_output += f"{item_counter}. {text}\n   [ ] 1      [ ] 2      [ ] 3      [ ] 4      [ ] 5\n\n"
                     item_counter += 1
-                    
-                for text in v_info["reverse_items"]:
-                    txt_output += f"{item_counter}. {text}\n"
-                    txt_output += "   [ ] 1      [ ] 2      [ ] 3      [ ] 4      [ ] 5\n\n"
-                    item_counter += 1
-            
-            st.text_area("Questionnaire Sheet Text Preview", value=txt_output, height=250)
-            
+            st.text_area("Questionnaire Sheet Text Preview", value=txt_output, height=150)
             st.download_button(
                 label="📝 Download Ready-to-Complete Questionnaire (TXT)",
                 data=txt_output.encode('utf-8'),
@@ -176,13 +191,12 @@ with t_spec:
             )
         else:
             st.warning("Please choose at least one scale variable to compile survey templates.")
-
-# -------------------------------------------------------------
+            # -------------------------------------------------------------
 # TAB 3: AUTOMATED SCALE SCORING ENGINE
 # -------------------------------------------------------------
 with t_score:
     st.header("🧠 Automated Scale Scoring Engine")
-    st.write("Upload your raw participant response data sheet. The dashboard will automatically locate individual item text columns, reverse negative items, and generate standardized composite structural scores.")
+    st.write("Upload your raw student data sheet. The dashboard will automatically locate item text columns, reverse negative responses, and generate finalized structural scale composite score attributes.")
 
     scoring_file = st.file_uploader("Upload raw research response spreadsheet (CSV Format)", type=["csv"], key="scoring_input")
 
@@ -202,7 +216,6 @@ with t_score:
         df_processed.columns = df_processed.columns.str.strip()
         
         generated_scales_summary = {}
-
         st.markdown("### 📈 Compute Matrix Statistics Overview")
 
         for var_key, var_data in VARIABLES_DB.items():
@@ -215,18 +228,13 @@ with t_score:
 
             if len(all_matched_items) >= 1:
                 sub_df = df_processed[all_matched_items].apply(pd.to_numeric, errors='coerce')
-                
                 for rev_col in matched_reverse:
                     sub_df[rev_col] = inversion_constant - sub_df[rev_col]
 
                 scale_score_column_name = f"SCORE_{var_key}"
                 df_processed[scale_score_column_name] = sub_df.mean(axis=1)
 
-                if len(all_matched_items) > 1:
-                    alpha_val = calculate_cronbach_alpha(sub_df)
-                else:
-                    alpha_val = "Single Item Measure"
-                
+                alpha_val = calculate_cronbach_alpha(sub_df) if len(all_matched_items) > 1 else "Single Item Measure"
                 generated_scales_summary[var_key] = {
                     "Matched Items Found": f"{len(all_matched_items)} / {len(standard_items) + len(reverse_items)}",
                     "Reverse Items Inverted": len(matched_reverse),
@@ -238,12 +246,12 @@ with t_score:
             st.json(generated_scales_summary)
 
             # ---------------------------------------------------------
-            # NEW: INTERACTIVE ANALYTICS & FIGURES PLATFORM
+            # INTERACTIVE ANALYTICS & FIGURES PLATFORM (TAB 3)
             # ---------------------------------------------------------
+            import plotly.express as px
             st.markdown("---")
             st.markdown("### 📊 Interactive Analytics & Figures Platform")
             
-            # Extract all calculated score columns for charting analytics
             score_cols = [f"SCORE_{k}" for k in generated_scales_summary.keys()]
             
             if score_cols:
@@ -251,7 +259,6 @@ with t_score:
                 
                 with chart_tab1:
                     st.write("**Participant Profile Score Density Distributions**")
-                    # Melt dataframe columns cleanly for plotting multiple series onto a single histogram layout
                     df_melted = df_processed.melt(
                         id_vars=["StudentID"] if "StudentID" in df_processed.columns else None,
                         value_vars=score_cols,
@@ -259,7 +266,6 @@ with t_score:
                         value_name="Calculated Composite Score"
                     )
                     
-                    # Generate an interactive histogram figure using plotly express
                     fig_dist = px.histogram(
                         df_melted, 
                         x="Calculated Composite Score", 
@@ -278,7 +284,6 @@ with t_score:
                         st.write("**Cross-Sectional Identity Variance Summary Matrix**")
                         selected_chart_scale = st.selectbox("Select Scale Target for Group Profiling Analysis", options=score_cols)
                         
-                        # Generate an interactive categorical box plot comparing scale scores by demographic groupings
                         fig_box = px.box(
                             df_processed,
                             x="Gender_Identity",
@@ -294,48 +299,40 @@ with t_score:
                         st.info("To unlock Cross-Sectional Group profiling graphics, ensure your uploaded dataset includes a standard 'Gender_Identity' column.")
             
             st.markdown("---")
-            st.write("#### 📊 Processed Dataset Output Preview (Featuring Generated Scale Columns)")
+            st.write("#### 📊 Processed Dataset Output Preview")
             st.dataframe(df_processed, use_container_width=True)
-
             st.download_button(
                 label="📥 Download Scored Dataset File (CSV)",
                 data=df_processed.to_csv(index=False).encode('utf-8'),
                 file_name="computed_scale_scores_output.csv",
-                mime="text/csv",
-                help="Click here to download your original file appended with automated composite scale score columns."
+                mime="text/csv"
             )
         else:
-            st.warning("No columns matched your configurations registry items profiles.")
+            st.warning("No columns matched your configuration profiles.")
     else:
-        st.info("Awaiting raw response spreadsheet files containing item question headers to initialize scoring calculations engine loops.")
-
-# -------------------------------------------------------------
+        st.info("Awaiting raw response spreadsheet files containing item question headers to initialize loops.")
+        # -------------------------------------------------------------
 # TAB 4: TWO-WAY DATA MERGE & PROPOSAL PLATFORM HUB
 # -------------------------------------------------------------
 with t_share:
     st.header("🔀 Connected Master Data Hub & Open Science Repository Gateways")
     st.write("This tab securely connects your contribution to a global unified database table while helping you publish individual records to KCWorks for citable DOIs.")
     
-    # ---------------------------------------------------------
-    # GLOBAL REGISTRY LIVE INSIGHTS INSIDE TAB 4
-    # ---------------------------------------------------------
+    import plotly.express as px
     st.markdown("### 📊 Global Registry Analytics Dashboard")
     
-    # Caching routine to pull the shared file tree cleanly from your repository
-    @st.cache_data(ttl=300)  # Cache values for 5 minutes to manage pipeline speeds
+    # CORRECTED URL ENHANCEMENT FUNCTION
+    @st.cache_data(ttl=300)
     def load_global_master_data():
-        # CORRECTED: Added raw. prefix and matching slashes between repository path variables
         raw_url = f"https://githubusercontent.com{REPO_OWNER}/{REPO_NAME}/main/{MASTER_FILE_PATH}"
         try:
             return pd.read_csv(raw_url)
         except Exception:
-            # Fallback if master file tree is not initialized on main branch yet
             return pd.DataFrame()
 
     df_global_master = load_global_master_data()
 
     if not df_global_master.empty:
-        # Layout metrics boxes
         total_global_records = len(df_global_master)
         unique_studies = df_global_master["Meta_Global_Contributor_ID"].nunique() if "Meta_Global_Contributor_ID" in df_global_master.columns else 1
         
@@ -345,16 +342,13 @@ with t_share:
         with m_col2:
             st.metric("Unique Contributing Studies / Pipelines", f"{unique_studies} Projects")
             
-        # Benchmark visualization graphics block
         st.write("**Cross-Project Contribution Distribution Map**")
         if "Meta_Global_Contributor_ID" in df_global_master.columns:
-            # Find the first column that matches a scale score prefix
             score_columns = [c for c in df_global_master.columns if c.startswith("SCORE_")]
             
             if score_columns:
                 selected_master_scale = st.selectbox("Select Target Benchmark Metric for Cross-Project Comparison", options=score_columns, key="master_chart_selector")
                 
-                # Render an aggregated group comparisons chart
                 fig_master = px.box(
                     df_global_master,
                     x="Meta_Global_Contributor_ID",
@@ -374,9 +368,6 @@ with t_share:
 
     st.markdown("---")
     
-    # ---------------------------------------------------------
-    # REPOSITORY DEPOSIT FORMS HOOKS
-    # ---------------------------------------------------------
     with st.container(border=True):
         st.subheader("1️⃣ Step One: Stream Dataset into the Connected Global Master Repository")
         st.write("Uploading here automatically appends row observations directly to the project's centralized core data collection matrix.")
@@ -395,24 +386,18 @@ with t_share:
             if shared_file is not None and unique_id_stamp:
                 if cert_irb and cert_cc0:
                     df_upload = pd.read_csv(shared_file)
-                    
-                    # Track row lineage source by appending tracker attributes
                     df_upload["Meta_Global_Contributor_ID"] = unique_id_stamp
                     
-                    # Run secure backend API data deployment transmission stream 
                     with st.spinner("Streaming rows to global connected repository matrix file..."):
                         success = append_to_github_master(df_upload)
                         
                     if success:
                         st.success(f"🎉 Success! {len(df_upload)} rows appended to the connected master registry file.")
-                        
-                        # Clear the stream cache instantly so dashboard changes display right away
                         st.cache_data.clear()
                         
                         st.markdown("### 2️⃣ Step Two: Secure Your Individual Personal DOI via KCWorks")
                         st.write("Now that your rows are cleanly unified within the core registry database, download your standard aligned validation file below and drop it into KCWorks to receive your citable reference DOI.")
                         
-                        # Provide clean validated dataset back to user for repository uploading
                         st.download_button(
                             label="📥 Download Verified Clean File for KCWorks",
                             data=df_upload.to_csv(index=False).encode('utf-8'),
@@ -421,7 +406,7 @@ with t_share:
                         )
                         st.link_button("📤 Open KCWorks Deposit Portal Interface", "https://hcommons.org", type="primary")
                     else:
-                        st.error("Failed to append rows to master repository code file. Verify GitHub PAT credentials.")
+                        st.error("Failed to append rows to master repository code file. Verify GITHUB_PAT credentials.")
                 else:
                     st.error("You must select both validation checklist items to clear compliance validation routines.")
             else:
@@ -430,18 +415,15 @@ with t_share:
     st.markdown("---")
     st.subheader("💡 Propose New Schema Columns to the Core Engine")
     
-    # Guidelines container
     with st.expander("📖 View Formatting Guidelines & Question Type Examples", expanded=False):
         st.markdown("Format inputs cleanly. Split multiple text question items using a semicolon (`;`). Group multiple choice options with commas.")
     
-    # Capture the identity input field BEFORE the form kicks off
     proposal_contributor = st.text_input(
         "Contributor Identifier for Proposal Tracking (Your name or organization)", 
         placeholder="e.g., Jane_Doe_MSU",
         key="proposal_contributor_id"
     )
     
-    # Main structural input layout form
     with st.form("schema_proposal_form", clear_on_submit=True):
         new_key = st.text_input("Proposed Variable Column Key", placeholder="e.g., Student_Self_Efficacy")
         new_citation = st.text_input("APA Citation Source Reference", placeholder="Author, A. A. (Year)...")
@@ -451,10 +433,8 @@ with t_share:
         
         submitted_proposal = st.form_submit_button("Generate Proposal Pack")
 
-    # Form processing logic block
     if submitted_proposal:
         if new_key and new_citation and new_items and proposal_contributor:
-            # Stamp identity tracking token into the title and structural data fields
             issue_title = f"[Schema Proposal] Add '{new_key}' by {proposal_contributor}"
             issue_body = f"### 💡 New Variable Schema Proposal\n\n[START_DATA]\nKEY={new_key}\nCITER={proposal_contributor}\nCITATION={new_citation}\nTYPE={var_type}\nOPTIONS={mc_options if mc_options and var_type == 'Multiple Choice (Categorical / Nominal)' else 'N/A'}\nITEMS={new_items}\n[END_DATA]\n\n### 📄 Research Justification\nCommunity submission scale configuration entry."
             
