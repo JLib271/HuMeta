@@ -74,34 +74,45 @@ with t_spec:
     
     st.markdown("### Step 1: Select a Theoretical Framework Blueprint")
     selected_framework = st.selectbox(
-        "Choosing a framework automatically flags recommended scale configurations.",
+        "Choosing a framework flags and isolates matching scale configurations.",
         options=list(FRAMEWORK_MAP.keys())
     )
     framework_defaults = FRAMEWORK_MAP[selected_framework]
 
+    # Core constraint logic variables configuration
     st.markdown("### Step 2: Fine-Tune Variable Scales & Survey Prompts")
     include_core = st.checkbox("Include Baseline Demographics (`StudentID`, `Gender_Identity`, `Qualitative_Notes`)", value=True)
     
+    # Conditional prompt querying extra model components
+    allow_extra_variables = st.checkbox("➕ Would you like to select additional variables outside this framework?", value=False)
+    
     selected_variables = []
     
+    # Filter variables to display based on user alignment preferences
     for var_key, var_data in VARIABLES_DB.items():
-        is_default_checked = var_key in framework_defaults
+        is_aligned = var_key in framework_defaults
         total_items = len(var_data["items"]) + len(var_data["reverse_items"])
         
-        with st.expander(f"📊 {var_key} ({total_items} Items Total)", expanded=is_default_checked):
-            st.caption(f"📚 **Citation Source:** *{var_data['citation']}*")
+        # Condition rule: Render if aligned, or if user unlocked the extra variables toggle check
+        if is_aligned or allow_extra_variables:
+            # Visually mark outside metrics if rendering a cross-theory field block
+            label_prefix = "📊 [Aligned Construct]" if is_aligned else "🔄 [External Construct]"
             
-            if st.checkbox(f"Deploy Scale Construct: `{var_key}`", value=is_default_checked, key=f"deploy_{var_key}"):
-                selected_variables.append(var_key)
+            with st.expander(f"{label_prefix} {var_key} ({total_items} Items Total)", expanded=is_aligned):
+                st.caption(f"📚 **Citation Source:** *{var_data['citation']}*")
                 
-                if var_data["items"]:
-                    st.markdown("**Standard Items Wording:**")
-                    for text in var_data["items"]:
-                        st.markdown(f"- 📝 *\"{text}\"*")
-                if var_data["reverse_items"]:
-                    st.markdown("**Reverse-Coded Items Wording:**")
-                    for text in var_data["reverse_items"]:
-                        st.markdown(f"- ⚠️ *\"{text}\" (Inverted Score Required)*")
+                # Default checked to True if it belongs directly to the selected theory model core path
+                if st.checkbox(f"Deploy Scale Construct: `{var_key}`", value=is_aligned, key=f"deploy_{var_key}"):
+                    selected_variables.append(var_key)
+                    
+                    if var_data["items"]:
+                        st.markdown("**Standard Items Wording:**")
+                        for text in var_data["items"]:
+                            st.markdown(f"- 📝 *\"{text}\"*")
+                    if var_data["reverse_items"]:
+                        st.markdown("**Reverse-Coded Items Wording:**")
+                        for text in var_data["reverse_items"]:
+                            st.markdown(f"- ⚠️ *\"{text}\" (Inverted Score Required)*")
 
     st.markdown("---")
     st.markdown("### Step 3: Export Aligned Metadata Matrices & Questionnaires")
@@ -110,7 +121,11 @@ with t_spec:
     with col_temp:
         st.subheader("Data Entry Template Matrix File")
         template_columns = ["StudentID", "Gender_Identity", "Qualitative_Notes"] if include_core else []
-        template_columns.extend(selected_variables)
+        
+        for var_key in selected_variables:
+            v_info = VARIABLES_DB[var_key]
+            template_columns.extend(v_info["items"])
+            template_columns.extend(v_info["reverse_items"])
         
         df_template = pd.DataFrame(columns=template_columns)
         st.dataframe(df_template, use_container_width=True)
@@ -125,22 +140,39 @@ with t_spec:
     with col_surv:
         st.subheader("Printable Questionnaire Sheet File")
         if selected_variables:
-            survey_rows = []
+            txt_output = "========================================================\n"
+            txt_output += "RESEARCH SURVEY INSTRUMENT & FIELD QUESTIONNAIRE\n"
+            txt_output += "========================================================\n\n"
+            txt_output += "INSTRUCTIONS: Please respond to each statement honestly by checking\n"
+            txt_output += "the option that matches your experience.\n\n"
+            txt_output += "RESPONSE OPTIONS:\n"
+            txt_output += " Strongly Disagree  Disagree  Neutral  Agree  Strongly Agree\n\n"
+            txt_output += "--------------------------------------------------------\n\n"
+            
+            item_counter = 1
             for var_key in selected_variables:
                 v_info = VARIABLES_DB[var_key]
+                txt_output += f"### SCALE CONSTRUCT: {var_key}\n"
+                txt_output += f"Source Citation: {v_info['citation']}\n"
+                txt_output += "--------------------------------------------------------\n"
+                
                 for text in v_info["items"]:
-                    survey_rows.append({"Scale / Variable Key": var_key, "Question Prompt Wording": text, "Type": "Standard", "Source Reference": v_info["citation"]})
+                    txt_output += f"{item_counter}. {text}\n"
+                    txt_output += "   [ ] 1      [ ] 2      [ ] 3      [ ] 4      [ ] 5\n\n"
+                    item_counter += 1
+                    
                 for text in v_info["reverse_items"]:
-                    survey_rows.append({"Scale / Variable Key": var_key, "Question Prompt Wording": text, "Type": "Reverse-Coded", "Source Reference": v_info["citation"]})
+                    txt_output += f"{item_counter}. {text}\n"
+                    txt_output += "   [ ] 1      [ ] 2      [ ] 3      [ ] 4      [ ] 5\n\n"
+                    item_counter += 1
             
-            df_survey = pd.DataFrame(survey_rows)
-            st.dataframe(df_survey, use_container_width=True)
+            st.text_area("Questionnaire Sheet Text Preview", value=txt_output, height=250)
             
             st.download_button(
-                label="📝 Download Complete Scale Questionnaire (CSV)",
-                data=df_survey.to_csv(index=False).encode('utf-8'),
-                file_name="psychometric_survey_instrument.csv",
-                mime="text/csv"
+                label="📝 Download Ready-to-Complete Questionnaire (TXT)",
+                data=txt_output.encode('utf-8'),
+                file_name="psychometric_survey_instrument.txt",
+                mime="text/plain"
             )
         else:
             st.warning("Please choose at least one scale variable to compile survey templates.")
@@ -150,7 +182,7 @@ with t_spec:
 # -------------------------------------------------------------
 with t_score:
     st.header("🧠 Automated Scale Scoring Engine")
-    st.write("Upload your raw student response data sheet matching the template framework rules. The dashboard will automatically parse columns, reverse negative items, and generate standardized structural scores.")
+    st.write("Upload your raw participant response data sheet. The dashboard will automatically locate individual item text columns, reverse negative items, and generate standardized composite structural scores.")
 
     scoring_file = st.file_uploader("Upload raw research response spreadsheet (CSV Format)", type=["csv"], key="scoring_input")
 
@@ -158,7 +190,6 @@ with t_score:
         df_raw = pd.read_csv(scoring_file)
         st.success("Dataset successfully parsed by the psychometric engine layers.")
 
-        # Configuration configuration options for Likert scale inversion math boundaries
         st.markdown("#### ⚙️ Scoring Inversion Metrics Calibration")
         col_scale1, col_scale2 = st.columns(2)
         with col_scale1:
@@ -166,39 +197,39 @@ with t_score:
         with col_scale2:
             likert_max = st.number_input("Maximum Likert Response Scale Point Value", value=5)
         
-        # Inversion baseline metric
         inversion_constant = likert_min + likert_max
-
-        # Dynamic variable mapping detection logic loops
         df_processed = df_raw.copy()
+        df_processed.columns = df_processed.columns.str.strip()
+        
         generated_scales_summary = {}
 
         st.markdown("### 📈 Compute Matrix Statistics Overview")
 
         for var_key, var_data in VARIABLES_DB.items():
-            # Gather matching columns found inside the uploaded CSV document
-            standard_matches = [c for c in df_processed.columns if c in var_data["items"]]
-            reverse_matches = [c for c in df_processed.columns if c in var_data["reverse_items"]]
-            all_matches = standard_matches + reverse_matches
+            standard_items = [item.strip() for item in var_data["items"]]
+            reverse_items = [item.strip() for item in var_data["reverse_items"]]
+            
+            matched_standard = [c for c in df_processed.columns if c in standard_items]
+            matched_reverse = [c for c in df_processed.columns if c in reverse_items]
+            all_matched_items = matched_standard + matched_reverse
 
-            if len(all_matches) >= 1:
-                # Transform matching strings dynamically to floating-point numeric arrays
-                sub_df = df_processed[all_matches].apply(pd.to_numeric, errors='coerce')
+            if len(all_matched_items) >= 1:
+                sub_df = df_processed[all_matched_items].apply(pd.to_numeric, errors='coerce')
                 
-                # Invert the reverse coded components if they exist inside parameters
-                for rev_col in reverse_matches:
+                for rev_col in matched_reverse:
                     sub_df[rev_col] = inversion_constant - sub_df[rev_col]
 
-                # Compute mean row averages across matching items to generate a composite scale score
                 scale_score_column_name = f"SCORE_{var_key}"
                 df_processed[scale_score_column_name] = sub_df.mean(axis=1)
 
-                # Compute internal consistency statistics (Alpha) if more than 1 column matched
-                alpha_val = calculate_cronbach_alpha(sub_df) if len(all_matches) > 1 else "Single Item Measure"
+                if len(all_matched_items) > 1:
+                    alpha_val = calculate_cronbach_alpha(sub_df)
+                else:
+                    alpha_val = "Single Item Measure"
                 
                 generated_scales_summary[var_key] = {
-                    "Total Parsed Items": len(all_matches),
-                    "Reverse Items Inverted": len(reverse_matches),
+                    "Matched Items Found": f"{len(all_matched_items)} / {len(standard_items) + len(reverse_items)}",
+                    "Reverse Items Inverted": len(matched_reverse),
                     "Cronbach's Alpha Reliability": f"{alpha_val:.3f}" if isinstance(alpha_val, float) else alpha_val
                 }
 
@@ -209,18 +240,17 @@ with t_score:
             st.write("#### 📊 Processed Dataset Output Preview (Featuring Generated Scale Columns)")
             st.dataframe(df_processed, use_container_width=True)
 
-            # Export utility download system
             st.download_button(
                 label="📥 Download Scored Dataset File (CSV)",
                 data=df_processed.to_csv(index=False).encode('utf-8'),
                 file_name="computed_scale_scores_output.csv",
                 mime="text/csv",
-                help="Click here to download your original file appended with automated composite scale score values."
+                help="Click here to download your original file appended with automated composite scale score columns."
             )
         else:
-            st.warning("No columns in your uploaded dataset matched the names of items inside your system registry configuration profiles.")
+            st.warning("No columns matched your configurations registry items profiles.")
     else:
-        st.info("Awaiting raw response spreadsheet files to initialize scoring calculations engine loops.")
+        st.info("Awaiting raw response spreadsheet files containing item question headers to initialize scoring calculations engine loops.")
 
 # -------------------------------------------------------------
 # TAB 4: OPEN SCIENCE DATA SHARING & PROPOSALS
