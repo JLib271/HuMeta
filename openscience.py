@@ -253,85 +253,95 @@ with t_score:
         st.info("Awaiting raw response spreadsheet files containing item question headers to initialize scoring calculations engine loops.")
 
 # -------------------------------------------------------------
-# TAB 4: OPEN SCIENCE DATA SHARING & PROPOSALS
+# TAB 4: TWO-WAY DATA MERGE & PROPOSAL PLATFORM HUB
 # -------------------------------------------------------------
 with t_share:
-    st.header("Open Science Data Hub & Repository Submissions")
+    st.header("🔀 Connected Master Data Hub & Open Science Repository Gateways")
+    st.write("This tab securely connects your contribution to a global unified database table while helping you publish individual records to KCWorks for citable DOIs.")
     
     with st.container(border=True):
-        st.subheader("📤 Data Repository Contribution Layer")
-        shared_file = st.file_uploader("Upload target project data spreadsheet (CSV Format)", type=["csv"], key="share_upload")
+        st.subheader("1️⃣ Step One: Stream Dataset into the Connected Global Master Repository")
+        st.write("Uploading here automatically appends row observations directly to the project's centralized core data collection matrix.")
         
-        st.markdown("#### Open Science Compliance & Certifications")
+        shared_file = st.file_uploader("Upload structured project dataset (CSV Format)", type=["csv"], key="share_upload")
+        
+        st.markdown("#### Open Science Compliance Validation Certifications")
         cert_irb = st.checkbox("I certify that this dataset is completely de-identified and has appropriate institutional board approval (IRB).")
         cert_cc0 = st.checkbox("I agree to dedicate this dataset to the public domain under Creative Commons Zero (CC0 1.0) licensing rules.")
         
-        submit_share = st.button("Publish to Repository Queue", type="primary")
+        unique_id_stamp = st.text_input("Project Tracker Tag (Your name or study code name)", placeholder="e.g., Doe_Math_Study_2026")
+        
+        submit_share = st.button("🚀 Process & Append to Connected Master Repository", type="primary")
         
         if submit_share:
-            if shared_file is not None and cert_irb and cert_cc0:
-                df_shared = pd.read_csv(shared_file)
-                st.success(f"🎉 Dataset containing {len(df_shared)} rows successfully submitted to the validation queue!")
-                st.dataframe(df_shared.head(5), use_container_width=True)
+            if shared_file is not None and unique_id_stamp:
+                if cert_irb and cert_cc0:
+                    df_upload = pd.read_csv(shared_file)
+                    
+                    # Track row lineage source by appending tracker attributes
+                    df_upload["Meta_Global_Contributor_ID"] = unique_id_stamp
+                    
+                    # Run secure backend API data deployment transmission stream 
+                    with st.spinner("Streaming rows to global connected repository matrix file..."):
+                        success = append_to_github_master(df_upload)
+                        
+                    if success:
+                        st.success(f"🎉 Success! {len(df_upload)} rows appended to the connected master registry file.")
+                        st.markdown("### 2️⃣ Step Two: Secure Your Individual Personal DOI via KCWorks")
+                        st.write("Now that your rows are cleanly unified within the core registry database, download your standard aligned validation file below and drop it into KCWorks to receive your citable reference DOI.")
+                        
+                        # Provide clean validated dataset back to user for repository uploading
+                        st.download_button(
+                            label="📥 Download Verified Clean File for KCWorks",
+                            data=df_upload.to_csv(index=False).encode('utf-8'),
+                            file_name=f"{unique_id_stamp}_verified_metadata.csv",
+                            mime="text/csv"
+                        )
+                        st.link_button("📤 Open KCWorks Deposit Portal Interface", "https://hcommons.org", type="primary")
+                    else:
+                        st.error("Failed to append rows to master repository code file. Verify GitHub PAT credentials.")
+                else:
+                    st.error("You must select both validation checklist items to clear compliance validation routines.")
             else:
-                st.error("Please ensure your target CSV file is uploaded and both compliance verification boxes are selected.")
+                st.error("Please ensure a CSV spreadsheet is uploaded and a unique Project Tracker identifier tag is provided.")
 
     st.markdown("---")
     st.subheader("💡 Propose New Schema Columns to the Core Engine")
     
-    # Contextual guidance block containing clear formatting blueprints
-    with st.expander("📖 View Formatting Guidelines & Question Type Examples", expanded=True):
-        st.markdown("""
-        To keep the open education metadata registry uniform, please format your questionnaire entries according to these examples:
-        
-        *   **Likert Scale (Ordinal Rating):**
-            *   *Variable Key:* `Student_Self_Efficacy`
-            *   *Survey Items:* Separate distinct item statements with a semicolon.
-            *   *Example:* `I am confident I can pass this course; I know I can master this material; I can handle tough problems.`
-            *   *Multiple Choice Options:* Leave completely blank (uses standard 1-5 point scales).
-            
-        *   **Multiple Choice (Categorical / Nominal):**
-            *   *Variable Key:* `Instructional_Setting`
-            *   *Survey Items:* `What type of learning environment best describes your classroom context?`
-            *   *Multiple Choice Options:* Separate your category strings with commas.
-            *   *Example:* `Fully Remote, Hybrid / Blended, In-Person Lecture, Active Learning Lab`
-            
-        *   **Text Entry (Qualitative / String):**
-            *   *Variable Key:* `Open_Feedback_Notes`
-            *   *Survey Items:* `Please share any additional details regarding your domain belonging observations.`
-            *   *Multiple Choice Options:* Leave completely blank.
-        """)
-
+    # Guidelines container
+    with st.expander("📖 View Formatting Guidelines & Question Type Examples", expanded=False):
+        st.markdown("Format inputs cleanly. Split multiple text question items using a semicolon (`;`). Group multiple choice options with commas.")
+    
+    # 1. Capture the identity input field BEFORE the form kicks off
+    proposal_contributor = st.text_input(
+        "Contributor Identifier for Proposal Tracking (Your name or organization)", 
+        placeholder="e.g., Jane_Doe_MSU",
+        key="proposal_contributor_id"
+    )
+    
+    # 2. Main structural input layout form
     with st.form("schema_proposal_form", clear_on_submit=True):
         new_key = st.text_input("Proposed Variable Column Key", placeholder="e.g., Student_Self_Efficacy")
-        new_citation = st.text_input("APA Citation Source Reference", placeholder="Author, A. A. (Year). Title...")
-        
-        var_type = st.selectbox(
-            "Variable Type / Response Format",
-            options=["Likert Scale (Ordinal Rating)", "Multiple Choice (Categorical / Nominal)", "Text Entry (Qualitative / String)", "Numeric Input (Continuous / Integer)"]
-        )
-        
-        mc_options = st.text_input("Multiple Choice Options (Only applicable for Categorical choices)", placeholder="e.g., Option A, Option B, Option C (Separate with commas)")
-        
-        new_items = st.text_area("Survey Scale Items Wording / Question Prompts", placeholder="Separate multiple individual items or questions using a semicolon (;)")
+        new_citation = st.text_input("APA Citation Source Reference", placeholder="Author, A. A. (Year)...")
+        var_type = st.selectbox("Variable Format", options=["Likert Scale (Ordinal Rating)", "Multiple Choice (Categorical / Nominal)", "Text Entry (Qualitative / String)"])
+        mc_options = st.text_input("Multiple Choice Options (Commas separated)", placeholder="e.g., Option A, Option B")
+        new_items = st.text_area("Survey Items Questions Text prompts", placeholder="Separate multiple variables items with a semicolon (;)")
         
         submitted_proposal = st.form_submit_button("Generate Proposal Pack")
 
+    # 3. Form processing logic block
     if submitted_proposal:
-        if new_key and new_citation and new_items:
-            new_proposal = {"Proposed Column Key": new_key, "Citation": new_citation, "Type": var_type}
-            st.session_state["proposed_columns"].append(new_proposal)
-            st.success("Proposal packet compiled! Use the button below to submit your request to the repository maintainers.")
-            
-            # Appends the formatting metadata safely to the workflow engine tracker tokens
-            issue_title = f"[Schema Proposal] Add '{new_key}'"
+        if new_key and new_citation and new_items and proposal_contributor:
+            # Stamp identity tracking token into the title and structural data fields
+            issue_title = f"[Schema Proposal] Add '{new_key}' by {proposal_contributor}"
             issue_body = f"""### 💡 New Variable Schema Proposal
 
 [START_DATA]
 KEY={new_key}
+CITER={proposal_contributor}
 CITATION={new_citation}
 TYPE={var_type}
-OPTIONS={mc_options if mc_options and var_type == "Multiple Choice (Categorical / Nominal)" else 'N/A'}
+OPTIONS={mc_options if mc_options and var_type == 'Multiple Choice (Categorical / Nominal)' else 'N/A'}
 ITEMS={new_items}
 [END_DATA]
 
@@ -339,6 +349,8 @@ ITEMS={new_items}
 Community submission scale configuration entry."""
             
             github_issue_link = f"{GITHUB_REPO_URL}/issues/new?title={urllib.parse.quote(issue_title)}&body={urllib.parse.quote(issue_body)}"
+            
+            st.success("Proposal packet compiled! Click the button below to transfer it to the GitHub Action validation pipeline.")
             st.link_button("Submit Proposal via GitHub Issue", github_issue_link, type="primary")
         else:
-            st.error("Please fill out all schema parameters before compiling tracking configurations.")
+            st.error("Please ensure all form parameters AND your Contributor Identifier are filled out completely.")
