@@ -278,20 +278,45 @@ with t_share:
 
     st.markdown("---")
     st.subheader("💡 Propose New Schema Columns to the Core Engine")
+    
     with st.form("schema_proposal_form", clear_on_submit=True):
-        new_key = st.text_input("Proposed Variable Column Key", placeholder="e.g., Digital_Literacy_Scale")
+        new_key = st.text_input("Proposed Variable Column Key", placeholder="e.g., Student_Self_Efficacy")
         new_citation = st.text_input("APA Citation Source Reference", placeholder="Author, A. A. (Year). Title...")
-        new_items = st.text_area("Survey Scale Items Wording", placeholder="Separate multiple items using a semicolon (;)")
+        
+        # New Field: Variable Response Type Selection
+        var_type = st.selectbox(
+            "Variable Type / Response Format",
+            options=["Likert Scale (Ordinal Rating)", "Multiple Choice (Categorical / Nominal)", "Text Entry (Qualitative / String)", "Numeric Input (Continuous / Integer)"]
+        )
+        
+        # Conditional help text context for multiple choice questions
+        mc_options = st.text_input("Multiple Choice Options (If applicable)", placeholder="e.g., Option A, Option B, Option C (Separate with commas)")
+        
+        new_items = st.text_area("Survey Scale Items Wording / Question Prompts", placeholder="Separate multiple individual items or questions using a semicolon (;)")
+        
         submitted_proposal = st.form_submit_button("Generate Proposal Pack")
 
     if submitted_proposal:
         if new_key and new_citation and new_items:
-            new_proposal = {"Proposed Column Key": new_key, "Citation": new_citation}
+            new_proposal = {"Proposed Column Key": new_key, "Citation": new_citation, "Type": var_type}
             st.session_state["proposed_columns"].append(new_proposal)
             st.success("Proposal packet compiled! Use the button below to submit your request to the repository maintainers.")
             
+            # Appends the new TYPE and OPTIONS metadata fields into the automated GitHub Issue transmission payload
             issue_title = f"[Schema Proposal] Add '{new_key}'"
-            issue_body = f"### 💡 New Variable Schema Proposal\n\n[START_DATA]\nKEY={new_key}\nCITATION={new_citation}\nITEMS={new_items}\n[END_DATA]\n\n### 📄 Research Justification\nCommunity submission scale configuration entry."
+            issue_body = f"""### 💡 New Variable Schema Proposal
+
+[START_DATA]
+KEY={new_key}
+CITATION={new_citation}
+TYPE={var_type}
+OPTIONS={mc_options if mc_options else 'N/A'}
+ITEMS={new_items}
+[END_DATA]
+
+### 📄 Research Justification
+Community submission scale configuration entry."""
+            
             github_issue_link = f"{GITHUB_REPO_URL}/issues/new?title={urllib.parse.quote(issue_title)}&body={urllib.parse.quote(issue_body)}"
             st.link_button("Submit Proposal via GitHub Issue", github_issue_link, type="primary")
         else:
