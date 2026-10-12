@@ -554,12 +554,6 @@ elif app_mode == "2. Variable Instrument Architect":
                 f"4. Paste your copied payload into the large description box below it and hit submit!"
             )
             
-            st.markdown(
-                f'<a href="{safe_url}" target="_blank">'
-                f'<button style="background-color:#1A365D; color:white; border:none; padding:10px 20px; text-align:center; text-decoration:none; display:inline-block; font-size:14px; border-radius:6px; cursor:pointer; font-weight:bold; width:100%;">'
-                f'📦 Open Pre-filled Ingestion Ticket Page</button></a>',
-                unsafe_allow_html=True
-            )
         else:
             # Fallback message displayed when they haven't uploaded an external CSV yet
             st.warning("📥 To submit brand new constructs or alternative theoretical schemas to our open repository, please download the template, fill it out, and upload your custom CSV file above.")
