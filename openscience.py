@@ -114,17 +114,39 @@ with st.sidebar:
 # --- STEP 3: USER METADATA SUBMISSION FORM ---
 st.header("📝 Submit New Study Metadata")
 
+# 1. Start the form container layout
+with st.form("study_submission_form", clear_on_submit=False):
+    st.subheader("Core Project Details")
+    title = st.text_input("Study Title*", placeholder="e.g., Impact of Open Textbooks on Retention")
+    authors = st.text_input("Author(s)", placeholder="e.g., Jane Doe, John Smith")
+    abstract = st.text_area("Abstract", placeholder="Summary of the study's objective and design...")
+    keywords = st.text_input("Keywords (comma separated)", placeholder="e.g., open education, OER, equity")
+    
+    # We close the core details container group with an implicit submit form execution trick
+    # so we can break out of the form block to render live reactive selection checkboxes
+    core_details_submitted = st.form_submit_button("Proceed to Framework Validation", help="Validates layout elements live below")
+
+st.divider()
 st.subheader("Theoretical & Conceptual Framework")
+
+# 2. Place your checkboxes out here so they remain completely live and responsive!
 selected_theories = st.multiselect(
     "Which theoretical framework(s) inform your study?",
-    options=["Theory of Planned Behavior", "Self-Determination Theory", "Diffusion of Innovations Theory", "Technology Acceptance Model", "Social Cognitive Theory", "Other"]
+    options=[
+        "Theory of Planned Behavior", 
+        "Self-Determination Theory", 
+        "Diffusion of Innovations Theory",
+        "Technology Acceptance Model", 
+        "Social Cognitive Theory", 
+        "Other"
+    ]
 )
 
 other_framework = ""
 if "Other" in selected_theories:
     other_framework = st.text_input("Please specify your alternative theoretical framework:")
 
-# Compute auto-populated variables on the fly
+# 3. Process framework updates on-the-fly to calculate variable payloads
 prepopulated_vars = []
 for theory in selected_theories:
     if theory in THEORY_MAP:
@@ -135,25 +157,22 @@ if not prepopulated_vars:
 else:
     default_value = "\n".join(prepopulated_vars)
 
-# Start fixed text layout entry form
-with st.form("study_submission_form", clear_on_submit=True):
-    st.subheader("Core Project Details")
-    title = st.text_input("Study Title*", placeholder="e.g., Impact of Open Textbooks on Retention")
-    authors = st.text_input("Author(s)", placeholder="e.g., Jane Doe, John Smith")
-    abstract = st.text_area("Abstract", placeholder="Summary of the study's objective and design...")
-    keywords = st.text_input("Keywords (comma separated)", placeholder="e.g., open education, OER, equity")
-    
-    st.divider()
+st.divider()
+
+# 4. Open a second companion form to process the variables verification and final save transactional steps
+with st.form("variables_submission_form", clear_on_submit=True):
     st.subheader("Study Variables Layout")
-    st.caption("Define the properties of what you are measuring.")
+    st.caption("Define the properties of what you are measuring. Checking frameworks above will automatically pre-populate known baseline constructs below.")
 
     variables_input = st.text_area(
         "List variables being collected (One per line format -> Name | Type | Operational Definition)",
         value=default_value,
+        help="You can append, edit, or remove rows freely to customize your study's precise profile metrics.",
         height=250
     )
     
-    submit_btn = st.form_submit_button("💾 Save Study Record")
+    submit_btn = st.form_submit_button("💾 Save Complete Study Record")
+
 
     if submit_btn:
         if not title:
