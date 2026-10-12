@@ -427,7 +427,6 @@ elif app_mode == "2. Variable Instrument Architect":
     st.markdown(" ")
     st.subheader("➕ 3. Bulk Import Custom Variables & Suggestions")
     
-    # 🚨 1. CLEAR CRITICAL EXPLANATION NOTICE FOR THE USER
     st.warning(
         "⚠️ **Important Template Instructions:** After downloading the CSV template below, "
         "you **MUST delete the sample row** (VAR_SAMPLE_ID) before typing your own constructs. "
@@ -446,6 +445,7 @@ elif app_mode == "2. Variable Instrument Architect":
         mime="text/csv"
     )
     
+    # 🌟 THIS MUST BE THE ONLY FILE UPLOADER DECLARATION IN THIS SECTION
     uploaded_custom_vars = st.file_uploader("Upload your completed Custom Variables CSV file", type=["csv"])
     
     uploaded_items = []
@@ -455,9 +455,7 @@ elif app_mode == "2. Variable Instrument Architect":
             required_fields = ["Variable_ID", "Concept_Construct", "Variable_Label", "Question_Item_Text", "Response_Scale_Options", "Framework_Source"]
             
             if all(field in uploaded_df.columns for field in required_fields):
-                
-                # 🚨 2. AUTOMATED BACKEND FILTERING GUARD
-                # This automatically drops the row if the user forgot to delete the template example
+                # Automated backend filtering guard to strip placeholder out safely
                 initial_count = len(uploaded_df)
                 uploaded_df = uploaded_df[uploaded_df["Variable_ID"] != "VAR_SAMPLE_ID"]
                 filtered_count = len(uploaded_df)
@@ -475,7 +473,6 @@ elif app_mode == "2. Variable Instrument Architect":
                 st.error("❌ Column mismatch. Please verify your file headers perfectly match the downloaded template format.")
         except Exception as e:
             st.error(f"Error parsing custom variable spreadsheet file: {e}")
-
 
     # Merge active form items with newly imported custom spreadsheet items
     final_instrument_list = active_items + uploaded_items + st.session_state.session_instruments
