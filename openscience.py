@@ -440,6 +440,9 @@ elif app_mode == "2. Variable Instrument Architect":
         mime="text/csv"
     )
     
+      # 🌟 ENSURE THIS ASSIGNMENT LINE IS PRESENT DIRECTLY BEFORE THE IF STATEMENT:
+    uploaded_custom_vars = st.file_uploader("Upload your completed Custom Variables CSV file", type=["csv"])
+    
     uploaded_items = []
     if uploaded_custom_vars is not None:
         try:
@@ -455,6 +458,10 @@ elif app_mode == "2. Variable Instrument Architect":
                 st.error("❌ Column mismatch. Please verify your file headers perfectly match the downloaded template format.")
         except Exception as e:
             st.error(f"Error parsing custom variable spreadsheet file: {e}")
+
+    # Merge active form items with newly imported custom spreadsheet items
+    final_instrument_list = active_items + uploaded_items + st.session_state.session_instruments
+
 
     # Merge active form items with newly imported custom spreadsheet items
     final_instrument_list = active_items + uploaded_items + st.session_state.session_instruments
