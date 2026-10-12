@@ -160,16 +160,70 @@ else:
 st.divider()
 
 # 4. Open a second companion form to process the variables verification and final save transactional steps
+# --- STEP 4: DATA MODEL PROCESSING & SAVE AGGREGATION ---
 with st.form("variables_submission_form", clear_on_submit=True):
+    st.subheader("📊 Study Demographics Collection")
+    st.caption("Identify any standard baseline participant demographics your study intends to collect.")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("**Gender Metrics**")
+        collect_gender = st.checkbox("Collect Participant Gender Data")
+        gender_options = st.multiselect(
+            "Select intended gender selection categories:",
+            options=["Woman", "Man", "Non-binary", "Prefer to self-describe", "Prefer not to say"],
+            default=["Woman", "Man", "Non-binary", "Prefer not to say"],
+            disabled=not collect_gender
+        )
+        
+        gender_custom = ""
+        if "Prefer to self-describe" in gender_options and collect_gender:
+            gender_custom = st.text_input("Specify custom self-description placeholder text:", value="Custom Description text layout")
+
+    with col2:
+        st.markdown("**Age Metrics**")
+        collect_age = st.checkbox("Collect Participant Age Data")
+        age_mode = st.radio(
+            "Select age collection format:",
+            options=["Continuous (Numerical Entry / Open Age)", "Categorical Range (e.g., 18-24, 25-34)"],
+            disabled=not collect_age
+        )
+
+    st.divider()
     st.subheader("Study Variables Layout")
-    st.caption("Define the properties of what you are measuring. Checking frameworks above will automatically pre-populate known baseline constructs below.")
+    st.caption("Define the properties of what you are measuring. Checking frameworks and demographics above will automatically build and append baseline rows below.")
+
+    # Generate demographic rows on the fly to append to the variables layout text area
+    demo_vars = []
+    if collect_gender and gender_options:
+        cleaned_options = [g for g in gender_options if g != "Prefer to self-describe"]
+        if gender_custom:
+            cleaned_options.append(gender_custom)
+        options_string = ", ".join(cleaned_options)
+        demo_vars.append(f"Gender | Demographics | Participant gender selected categories: [{options_string}]")
+        
+    if collect_age:
+        demo_vars.append(f"Age | Demographics | Participant numerical entry or timeline tracking configured as: {age_mode}")
+
+    # Combine theoretical variables and demographic variables together into the box
+    if demo_vars:
+        if default_value == "Course Grade | Dependent Variable | Final numerical score percentage scaled 0-100\nTextbook Cost | Independent Variable | Total out of pocket dollar cost calculated at checkout":
+            final_default_value = "\n".join(demo_vars)
+        else:
+            final_default_value = default_value + "\n" + "\n".join(demo_vars)
+    else:
+        final_default_value = default_value
 
     variables_input = st.text_area(
         "List variables being collected (One per line format -> Name | Type | Operational Definition)",
-        value=default_value,
+        value=final_default_value,
         help="You can append, edit, or remove rows freely to customize your study's precise profile metrics.",
         height=250
     )
+    
+    submit_btn = st.form_submit_button("💾 Save Complete Study Record")
+
     
     submit_btn = st.form_submit_button("💾 Save Complete Study Record")
 
