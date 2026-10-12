@@ -188,15 +188,23 @@ elif app_mode == "2. Variable Instrument Architect":
     st.subheader("📚 1. Social Science Repository Metadata (ICPSR / Dataverse Alignment)")
     st.caption("Align study indexing with major repositories using rich, study-level methodology and citation tracing variables.")
     
+    # Explicit user guidance for obtaining a DOI via KCWorks
+    st.info(
+        "💡 **Need a DOI for your study artifacts?** Please submit your research data, code, or materials directly to the "
+        "[STEMEd+ Commons Collection in KCWorks](https://kcworks.org) to receive a unique persistent DOI before completing this index profile."
+    )
+    
     col_rep1, col_rep2 = st.columns(2)
     with col_rep1:
-        repository_id = st.text_input("Persistent Identifier / DOI (e.g., Harvard Dataverse / ICPSR Handle)", placeholder="e.g., doi:10.3886/ICPSR...")
+        repository_id = st.text_input(
+            "Persistent Identifier / DOI (e.g., from KCWorks, Harvard Dataverse, or ICPSR)", 
+            placeholder="e.g., doi:10.xxxx/kcworks..."
+        )
         data_type = st.selectbox("Data Collection Type / Media Vector", ["Quantitative Matrix", "Qualitative Text Transcript", "Audio/Video Media", "Mixed Matrix"])
     with col_rep2:
         unit_of_analysis = st.selectbox("Unit of Analysis (DDI Core)", ["Individual (Student/Teacher)", "Group/Classroom", "Organization/Institution", "Geographic/School District"])
         sampling_procedure = st.text_input("Sampling Procedure", placeholder="e.g., Convenience sample, Stratified random sampling...")
 
-    st.divider()
 
     # --- SECTION B: PSYCHOMETRIC SCALE CONFIGURATOR (APA PsycTESTS STANDARDS) ---
     st.subheader("🧪 2. Psychometric Scale Metadata (APA PsycTESTS Alignment)")
