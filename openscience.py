@@ -340,7 +340,7 @@ if app_mode == "1. Study Metadata Schema Registry":
             st.markdown("##### **Step 1: Copy your generated metadata payload capsule**")
             st.code(schema_payload, language="markdown")
             
-                        st.markdown("##### **Step 2: Open the ticket page and paste**")
+            st.markdown("##### **Step 2: Open the ticket page and paste**")
             static_github_url = "https://github.com"
             
             # Displays the URL as a clean text lane to completely prevent browser interception
