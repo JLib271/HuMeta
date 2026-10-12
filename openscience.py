@@ -460,7 +460,7 @@ elif app_mode == "2. Variable Instrument Architect":
                 
                 if not github_token:
                     st.warning("⚠️ GitHub automation token is unconfigured. Link your GITHUB_PAT in Streamlit secrets to activate submission pipelines.")
-                            else:
+            else:
                 # 🌟 Corrected Indentation: Shifted everything forward by 16 spaces
                 st.error("❌ Column mismatch. Please verify your file headers perfectly match the downloaded template format.")
         except Exception as e:
