@@ -1009,7 +1009,7 @@ elif app_mode == "4. Descriptive & Scale Analytics":
         except Exception as pdf_error:
             st.error(f"Failed to assemble PDF Report Compendium structure: {pdf_error}. Ensure reportlab and matplotlib packages exist.")
         else:
-        st.warning("No continuous numeric variable items identified in the targeted workspace tracking file sheet.")
+            st.warning("No continuous numeric variable items identified in the targeted workspace tracking file sheet.")
 
     # --- MODULE 4 ANALYTICS SUGGESTION PIPELINE BUTTON ---
     st.markdown("---")
