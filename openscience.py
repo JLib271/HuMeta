@@ -573,7 +573,42 @@ elif app_mode == "2. Variable Instrument Architect":
         # --- RENAME DATA GRID FOR ACCESSIBILITY ---
         st.subheader("📋 Your Active Study Instrument Summary Table")
         st.dataframe(df_manifest, use_container_width=True, hide_index=True)
+                # --- MODULE 2 VARIABLES SCHEMA PROPOSAL ENTRY ---
+        st.markdown("---")
+        st.markdown("### 🚀 Propose Custom Framework Variables to Global Schema")
+        st.caption("Want to make your uploaded CSV variables part of our permanent core dropdown systems?")
         
+        if uploaded_custom_vars is not None:
+            uploaded_custom_vars.seek(0)
+            raw_csv_text = uploaded_custom_vars.read().decode('utf-8')
+            first_framework = str(uploaded_df["Framework_Source"].iloc[0]) if not uploaded_df.empty else "Custom Framework"
+            
+            pasteboard_content = (
+                f"**New Theoretical Framework Submission**\n\n"
+                f"**Framework Target Name:** {first_framework}\n\n"
+                f"### RAW SCHEMA PAYLOAD\n"
+                f"```csv\n{raw_csv_text}\n```\n\n"
+                f"---\n*Submitted securely via the Open Educational Metadata Portal Variable Ingest Box.*"
+            )
+            
+            st.markdown("##### **Step 1: Copy your generated variable payload capsule**")
+            st.code(pasteboard_content, language="markdown")
+            
+            st.markdown("##### **Step 2: Open the ticket page and paste**")
+            # 🌟 BULLETPROOF SOLUTION: Raw URL containing NO special characters or query encodings
+            static_github_url = "https://github.com"
+            
+            st.markdown(
+                f"1. Click this link to go to the tracker: [{static_github_url}]({static_github_url})\n"
+                f"2. Type **`[Schema Suggestion] Add {first_framework}`** in the Issue Title lane.\n"
+                f"3. Paste your copied payload into the large description box below it and hit submit!"
+            )
+        else:
+            # Fallback message displayed when they haven't uploaded an external CSV yet
+            st.warning("📥 To submit brand new constructs or alternative theoretical schemas to our open repository, please download the template, fill it out, and upload your custom CSV file above.")
+            
+        st.markdown("---")
+
         # --- EXPORT PIPELINES ---
         col_exp1, col_exp2, col_exp3 = st.columns(3)
         
