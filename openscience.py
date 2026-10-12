@@ -90,27 +90,61 @@ if app_mode == "1. Study Metadata Schema Registry":
     st.caption("Aligning educational research metadata elements across Dublin Core (DCMES) and CEDS standards.")
     st.markdown("---")
     
+    # --- DYNAMIC AUTHOR TRACKING INITIALIZATION ---
+    # We use st.session_state to track an array of authors independently of form boundaries
+    if "authors_list" not in st.session_state:
+        st.session_state.authors_list = [{"name": "", "orcid": ""}]
+
+    st.subheader("👥 Dublin Core Creators (dc:creator)")
+    st.caption("Manage as many authors and ORCID iDs as your study requires.")
+
+    # Render interactive input text fields dynamically for every author in session memory
+    updated_authors = []
+    for idx, author in enumerate(st.session_state.authors_list):
+        col_name, col_orcid, col_del = st.columns([4, 4, 1])
+        
+        with col_name:
+            auth_name = st.text_input(
+                f"Author {idx+1} Name", 
+                value=author["name"], 
+                key=f"auth_name_{idx}", 
+                placeholder="e.g., Dr. Jane Doe"
+            )
+        with col_orcid:
+            auth_orcid = st.text_input(
+                f"Author {idx+1} ORCID iD Link", 
+                value=author["orcid"], 
+                key=f"auth_orcid_{idx}", 
+                placeholder="e.g., https://orcid.org"
+            )
+        with col_del:
+            st.markdown("<div style='padding-top: 28px;'></div>", unsafe_allow_html=True)
+            # Disable the delete button if there's only 1 author entry left
+            if st.button("🗑️", key=f"auth_del_{idx}", disabled=len(st.session_state.authors_list) <= 1):
+                st.session_state.authors_list.pop(idx)
+                st.rerun()
+                
+        updated_authors.append({"name": auth_name, "orcid": auth_orcid})
+
+    # Update our state matrix on the fly with whatever the user typed
+    st.session_state.authors_list = updated_authors
+
+    # Click action to add an empty author input slot row
+    if st.button("➕ Add Author"):
+        st.session_state.authors_list.append({"name": "", "orcid": ""})
+        st.rerun()
+
+    st.markdown("---")
+
+    # --- MAIN SUBMISSION FORM ---
+    # Now we execute the core metadata entry form for the rest of the fixed elements
     with st.form("metadata_standards_form", clear_on_submit=True):
-        # --- DUBLIN CORE METADATA ELEMENT SET (DCMES) ---
-        st.subheader("📋 Dublin Core Metadata Element Set (DCMES)")
+        st.subheader("📋 Core Project Overview")
         
         title = st.text_input(
             "Title (dc:title)*", 
             placeholder="e.g., Impact of Open Textbooks on Course-Level Retention Metrics"
         )
-        
-        col_author1, col_author2 = st.columns(2)
-        with col_author1:
-            creator = st.text_input(
-                "Creator / Authors (dc:creator)", 
-                placeholder="e.g., Dr. Jane Doe, Prof. John Smith"
-            )
-        with col_author2:
-            orcid_link = st.text_input(
-                "ORCID iD Identifier Link (dc:creator URL)", 
-                placeholder="e.g., https://orcid.org"
-            )
-            
         description = st.text_area(
             "Description / Abstract (dc:description)", 
             placeholder="Summary of research objectives, design schema, and core conceptual findings..."
@@ -134,28 +168,17 @@ if app_mode == "1. Study Metadata Schema Registry":
         st.markdown("### 📍 1. The Study Scope (The 'When' and 'Where')")
         col_scope1, col_scope2, col_scope3 = st.columns(3)
         with col_scope1:
-            # Standardized CEDS Academic Year ranges
             academic_year = st.selectbox(
                 "Academic Year Designator*",
-                options=[
-                    "2026-2027", "2025-2026", "2024-2025", "2023-2024", 
-                    "2022-2023", "2021-2022", "2020-2021", "Prior to 2020"
-                ],
+                options=["2026-2027", "2025-2026", "2024-2025", "2023-2024", "2022-2023", "2021-2022", "2020-2021", "Prior to 2020"],
                 index=2
             )
         with col_scope2:
-            # CEDS State Alphanumeric Codes
             state_origin = st.selectbox(
                 "State of Origin",
-                options=[
-                    "National/Multi-State", "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DE", "FL", "GA", 
-                    "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", 
-                    "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", 
-                    "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY"
-                ]
+                options=["National/Multi-State", "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY"]
             )
         with col_scope3:
-            # CEDS Geographic Locale Category options
             locale_setting = st.selectbox(
                 "Locale (Geographic Setting)", 
                 options=["City", "Suburban", "Town", "Rural", "Virtual / Online Learning Environment"]
@@ -167,30 +190,15 @@ if app_mode == "1. Study Metadata Schema Registry":
         st.markdown("### 👥 2. The Population (The 'Who')")
         col_pop1, col_pop2 = st.columns(2)
         with col_pop1:
-            # CEDS Standard Grade Level Classifications
             grade_level = st.multiselect(
                 "Grade Level (Baseline Starting Point)",
-                options=[
-                    "Early Childhood / Pre-K", "Kindergarten", "Grade 1", "Grade 2", "Grade 3", 
-                    "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8", "Grade 9", 
-                    "Grade 10", "Grade 11", "Grade 12", "Postsecondary (Undergraduate)", 
-                    "Postsecondary (Graduate)", "Adult Education"
-                ],
+                options=["Early Childhood / Pre-K", "Kindergarten", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10", "Grade 11", "Grade 12", "Postsecondary (Undergraduate)", "Postsecondary (Graduate)", "Adult Education"],
                 default=["Postsecondary (Undergraduate)"]
             )
         with col_pop2:
-            # CEDS Program Type options
             program_type = st.multiselect(
                 "Program Type / Student Subgroup",
-                options=[
-                    "Regular / General Education Program", 
-                    "English Learner (EL) Program", 
-                    "Special Education / IDEA Services", 
-                    "Title I Schoolwide Program", 
-                    "Migrant Education Program", 
-                    "Career and Technical Education (CTE)", 
-                    "College Preparatory / Gifted Program"
-                ],
+                options=["Regular / General Education Program", "English Learner (EL) Program", "Special Education / IDEA Services", "Title I Schoolwide Program", "Migrant Education Program", "Career and Technical Education (CTE)", "College Preparatory / Gifted Program"],
                 default=["Regular / General Education Program"]
             )
             
@@ -200,56 +208,38 @@ if app_mode == "1. Study Metadata Schema Registry":
         st.markdown("### 🛠️ 3. The Methodology (The 'What')")
         col_meth1, col_meth2, col_meth3 = st.columns(3)
         with col_meth1:
-            # CEDS Course/Assessment Subject options
             academic_subject = st.selectbox(
                 "Assessment Academic Subject", 
-                options=[
-                    "Mathematics", "Reading / English Language Arts", "Science", 
-                    "Social Studies / History", "Foreign Language Education", 
-                    "Fine and Performing Arts", "Computer and Information Sciences", 
-                    "Interdisciplinary / General Academic"
-                ]
+                options=["Mathematics", "Reading / English Language Arts", "Science", "Social Studies / History", "Foreign Language Education", "Fine and Performing Arts", "Computer and Information Sciences", "Interdisciplinary / General Academic"]
             )
         with col_meth2:
-            # CEDS Assessment Purpose classifications
             assessment_purpose = st.selectbox(
                 "Assessment Purpose", 
-                options=[
-                    "Research Intervention Evaluation", 
-                    "State Accountability Assessment", 
-                    "Diagnostic Benchmark Assessment", 
-                    "Formative / Progress Monitoring Assessment", 
-                    "Summative / End-of-Course Evaluation",
-                    "Placement / College Readiness Testing"
-                ]
+                options=["Research Intervention Evaluation", "State Accountability Assessment", "Diagnostic Benchmark Assessment", "Formative / Progress Monitoring Assessment", "Summative / End-of-Course Evaluation", "Placement / College Readiness Testing"]
             )
         with col_meth3:
-            # CEDS Course Level Type designations
             course_level_type = st.selectbox(
                 "Course Level Type Rigor", 
-                options=[
-                    "Regular / Standard Rigor", 
-                    "Remedial / Developmental / Basic", 
-                    "Advanced Placement (AP)", 
-                    "International Baccalaureate (IB)", 
-                    "Honors Level", 
-                    "Dual Enrollment / Postsecondary Credit"
-                ]
+                options=["Regular / Standard Rigor", "Remedial / Developmental / Basic", "Advanced Placement (AP)", "International Baccalaureate (IB)", "Honors Level", "Dual Enrollment / Postsecondary Credit"]
             )
             
         st.divider()
         
-        submit_metadata = st.form_submit_button("🚀 Submit to Community Ledger")
+        submit_metadata = st.form_submit_button("🚀 Submit Complete Study Record")
         
         if submit_metadata:
+            # Check if at least one author name was filled out in our dynamic list
+            has_author = any(auth["name"].strip() for auth in st.session_state.authors_list)
+            
             if not title:
                 st.error("DCMES Core Field Title (dc:title) is required to index the study.")
+            elif not has_author:
+                st.error("At least one Creator/Author Name is required.")
             else:
-                # Compile structural data dictionary payload for browser memory tracking
+                # Compile structural data dictionary payload capturing the full array of authors
                 metadata_payload = {
                     "title": title,
-                    "creator": creator,
-                    "orcid": orcid_link,
+                    "creators_matrix": [a for a in st.session_state.authors_list if a["name"].strip()],
                     "description": description,
                     "subject": keywords,
                     "language": language,
@@ -262,8 +252,10 @@ if app_mode == "1. Study Metadata Schema Registry":
                     "assessment_purpose": assessment_purpose,
                     "course_level_type": course_level_type
                 }
-                st.success("Metadata payload logged successfully to the temporary memory ledger!")
-
+                st.success(f"Metadata payload for '{title}' logged with {len(metadata_payload['creators_matrix'])} author(s) successfully!")
+                
+                # Reset authors list back to a clean default state for the next session
+                st.session_state.authors_list = [{"name": "", "orcid": ""}]
 
 
 # ==========================================
