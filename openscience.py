@@ -12,14 +12,17 @@ import os
 import sqlite3
 
 # --- DATABASE INITIALIZATION ---
-# 1. Global Cloud Shared Database (Supabase/Postgres) via Streamlit Secrets
 try:
-    # Changed "postgresql" to "sql" to match Streamlit's connection secrets framework
     shared_conn = st.connection("sql", type="sql")
 except Exception:
     shared_conn = None
 
+# 🌟 ADD THESE THREE LINES RIGHT HERE:
 local_df = None
+df_studies = pd.DataFrame()
+df_vars = pd.DataFrame()
+
+# Your page configuration follows below
 st.set_page_config(page_title="Open Educational Metadata Portal", layout="wide")
 st.title("🔬 Open Educational Metadata Portal")
 st.caption("An Open Source, Community-Driven Engine for Standardized Educational Research and Psychometrics.")
