@@ -17,7 +17,7 @@ try:
     shared_conn = st.connection("postgresql", type="sql")
 except Exception:
     shared_conn = None
-
+local_df = None
 st.set_page_config(page_title="Open Educational Metadata Portal", layout="wide")
 st.title("🔬 Open Educational Metadata Portal")
 st.caption("An Open Source, Community-Driven Engine for Standardized Educational Research and Psychometrics.")
