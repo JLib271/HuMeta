@@ -5,11 +5,46 @@ import json
 import urllib.parse
 import requests
 import base64
-
-# --- New Database Imports ---
 import tempfile
 import os
 import sqlite3
+
+# Mapping of theoretical frameworks to their standard psychometric constructs/variables
+THEORY_MAP = {
+    "Theory of Planned Behavior": [
+        "Attitude Toward the Behavior | Construct | A person's favorable or unfavorable evaluation of the behavior",
+        "Subjective Norms | Construct | Perceived social pressure to perform or not perform the behavior",
+        "Perceived Behavioral Control | Construct | Perceived ease or difficulty of performing the behavior",
+        "Behavioral Intention | Construct | Indication of an individual's readiness to perform a given behavior"
+    ],
+    "Self-Determination Theory": [
+        "Autonomy | Construct | The need to feel in command of one's life and actions",
+        "Competence | Construct | The need to feel effective in interacting with the environment",
+        "Relatedness | Construct | The need to feel a sense of belonging and attachment to other people",
+        "Intrinsic Motivation / Extrinsic Motivation | Construct | Internal drive versus external rewards/pressures"
+    ],
+    "Diffusion of Innovations Theory": [
+        "Relative Advantage | Construct | The degree to which an innovation is perceived as better than the idea it supersedes",
+        "Compatibility | Construct | How well the innovation aligns with the values, experiences, and needs of potential adopters",
+        "Complexity | Construct | The degree to which an innovation is perceived as difficult to understand and use",
+        "Trialability | Construct | The degree to which an innovation may be experimented with before a full commitment",
+        "Observability | Construct | The distinct visibility of the results of an innovation to others"
+    ],
+    "Technology Acceptance Model": [
+        "Perceived Usefulness (PU) | Construct | The degree to which a person believes a system enhances job performance",
+        "Perceived Ease of Use (PEOU) | Construct | The degree to which a person believes a system is free of effort",
+        "Attitude Toward Using | Construct | The user's evaluation of the desirability of employing the application",
+        "Behavioral Intention to Use | Construct | The user's likelihood to adopt or continue using the technology"
+    ],
+    "Social Cognitive Theory": [
+        "Self-Efficacy | Construct | One's belief in their capability to execute behaviors necessary to produce specific performance attainments",
+        "Outcome Expectations | Construct | Beliefs about the consequences of specific actions",
+        "Observational Learning (Modeling) | Construct | Acquiring information/behaviors by watching others",
+        "Behavioral Capability | Construct | Knowledge and skill to perform a given behavior",
+        "Reinforcement / Reciprocal Determinism | Construct | The dynamic interaction of person, environment, and behavior"
+    ]
+}
+
 
 # --- DATABASE INITIALIZATION ---
 try:
@@ -95,29 +130,71 @@ with st.form("study_submission_form", clear_on_submit=True):
     
     st.divider()
     st.subheader("Theoretical & Conceptual Framework")
-    framework = st.text_area(
-        "Theoretical Framework", 
-        placeholder="e.g., Self-Determination Theory (SDT), Technology Acceptance Model (TAM)..."
+    
+    # 1. Transform the input into a structured query with multi-selection capability
+    selected_theories = st.multiselect(
+        "Which theoretical framework(s) inform your study?",
+        options=[
+            "Theory of Planned Behavior", 
+            "Self-Determination Theory", 
+            "Diffusion of Innovations Theory",
+            "Technology Acceptance Model", 
+            "Social Cognitive Theory", 
+            "Other"
+        ]
     )
     
+    # 2. Render an on-the-fly custom text window if 'Other' is picked by the user
+    other_framework = ""
+    if "Other" in selected_theories:
+        other_framework = st.text_input("Please specify your alternative theoretical framework:")
+
     st.divider()
     st.subheader("Study Variables Layout")
-    st.caption("Define the properties of what you are measuring (do not upload raw collection spreadsheets here).")
-    
-    # Dynamic variables entry text strings parsed dynamically 
+    st.caption("Define the properties of what you are measuring. Checking frameworks above will automatically pre-populate known baseline constructs below.")
+
+    # 3. Compute dynamic text string content matching selected models
+    prepopulated_vars = []
+    for theory in selected_theories:
+        if theory in THEORY_MAP:
+            prepopulated_vars.extend(THEORY_MAP[theory])
+            
+    # Fallback to defaults if no matching structural frames are selected
+    if not prepopulated_vars:
+        default_value = "Course Grade | Dependent Variable | Final numerical score percentage scaled 0-100\nTextbook Cost | Independent Variable | Total out of pocket dollar cost calculated at checkout"
+    else:
+        # Combine the selected items cleanly separated by a line break
+        default_value = "\n".join(prepopulated_vars)
+
+    # 4. Bind the generated variables directly as the default layout payload string
     variables_input = st.text_area(
         "List variables being collected (One per line format -> Name | Type | Operational Definition)",
-        value="Course Grade | Dependent Variable | Final numerical score percentage scaled 0-100\nTextbook Cost | Independent Variable | Total out of pocket dollar cost calculated at checkout",
-        help="Use the pipe symbol '|' to break out properties easily."
+        value=default_value,
+        help="You can append, edit, or remove rows freely to customize your study's precise profile metrics.",
+        height=250
     )
+
     
     submit_btn = st.form_submit_button("💾 Save Study Record")
 
-    if submit_btn:
+        if submit_btn:
         if not title:
             st.error("Study Title is required.")
         else:
-            # Process variable strings into clean array structures
+            # 1. PROCESS THE CHECKBOX SELECTIONS
+            frameworks_to_save = [t for t in selected_theories if t != "Other"]
+            
+            # If they checked "Other" and typed in the custom text box, add it to our list
+            if "Other" in selected_theories and other_framework.strip():
+                frameworks_to_save.append(other_framework.strip())
+                
+            # Combine all selected frameworks into a single text string separated by commas
+            if frameworks_to_save:
+                final_framework_string = ", ".join(frameworks_to_save)
+            else:
+                final_framework_string = "None Specified"
+                
+            # 2. PROCESS VARIABLE STRINGS INTO CLEAN STRUCTURES
             parsed_variables = []
             for line in variables_input.strip().split("\n"):
                 if "|" in line:
@@ -157,10 +234,10 @@ with st.form("study_submission_form", clear_on_submit=True):
                     with shared_conn.session as session:
                         # Save main study layer
                         res = session.execute(
-                            """INSERT INTO studies (title, authors, abstract, keywords, theoretical_framework) 
-                               VALUES (:title, :authors, :abstract, :keywords, :framework) RETURNING id;""",
-                            {"title": title, "authors": authors, "abstract": abstract, "keywords": keywords, "framework": framework}
-                        )
+    """INSERT INTO studies (title, authors, abstract, keywords, theoretical_framework) 
+       VALUES (:title, :authors, :abstract, :keywords, :framework) RETURNING id;""",
+    {"title": title, "authors": authors, "abstract": abstract, "keywords": keywords, "framework": final_framework_string} #  New variable mapping
+)
                         # Handles platform returning styles
                         try:
                             study_id = res.fetchone()[0]
