@@ -310,20 +310,20 @@ if app_mode == "1. Study Metadata Schema Registry":
                 st.session_state.authors_list = [{"name": "", "orcid": ""}]
 
 # ==========================================
-# MODULE 2: VARIABLE INSTRUMENT ARCHITECT
+# MODULE 2: VARIABLE ARCHITECT & INSTRUMENT EXPORTER
 # ==========================================
 elif app_mode == "2. Variable Instrument Architect":
     st.header("📐 Variable Architect & Instrument Exporter")
-    st.caption("Design variable frameworks, configure measurement items, and instantly download standardized DDI-compliant XML/CSV blueprints.")
+    st.caption("Design variable frameworks, configure measurement items, and instantly download standardized DDI-compliant templates or clean survey forms.")
     st.markdown("---")
     
     # --- SECTION A: REPOSITORY & STUDY INDEXING (ICPSR / DATAVERSE STANDARDS) ---
     st.subheader("📚 1. Social Science Repository Metadata (ICPSR / Dataverse Alignment)")
     st.caption("Align study indexing with major repositories using rich, study-level methodology and citation tracing variables.")
     
-    # Explicit user guidance for obtaining a DOI via KCWorks
+    # Updated text specifying de-identified research artifacts
     st.info(
-        "💡 **Need a DOI for your study artifacts?** Please submit your research data, code, or materials directly to the "
+        "💡 **Need a DOI for your study artifacts?** Please submit **de-identified** research artifacts directly to the "
         "[STEMEd+ Commons Collection in KCWorks](https://kcworks.org) to receive a unique persistent DOI before completing this index profile."
     )
     
@@ -335,150 +335,183 @@ elif app_mode == "2. Variable Instrument Architect":
         )
         data_type = st.selectbox("Data Collection Type / Media Vector", ["Quantitative Matrix", "Qualitative Text Transcript", "Audio/Video Media", "Mixed Matrix"])
     with col_rep2:
-        unit_of_analysis = st.selectbox("Unit of Analysis (DDI Core)", ["Individual (Student/Teacher)", "Group/Classroom", "Organization/Institution", "Geographic/School District"])
+        unit_of_analysis = st.selectbox("Unit of Analysis (DDI Core)", ["Individual (Student/Teacher)", "Group/Classroom", "Organization/Institution", "Geographic/School District Level"])
         sampling_procedure = st.text_input("Sampling Procedure", placeholder="e.g., Convenience sample, Stratified random sampling...")
-
-
-    # --- SECTION B: PSYCHOMETRIC SCALE CONFIGURATOR (APA PsycTESTS STANDARDS) ---
-    st.subheader("🧪 2. Psychometric Scale Metadata (APA PsycTESTS Alignment)")
-    st.caption("Capture construct operationalization parameters including standard validity, reliability scores, and origin scales.")
-    
-    col_psy1, col_psy2 = st.columns(2)
-    with col_psy1:
-        origin_scale = st.text_input("Origin Scale Name", placeholder="e.g., Scientific Attitude Scale (SAS), Intrinsic Motivation Inventory (IMI)")
-        reliability_metric = st.selectbox("Reliability Estimate Method", ["Cronbach's Alpha (α)", "McDonald's Omega (ω)", "Test-Retest Coefficient", "None/Qualitative"])
-    with col_psy2:
-        reliability_value = st.number_input("Reported Reliability Value (if known)", min_value=0.0, max_value=1.0, value=0.80, step=0.01)
-        validity_framework = st.text_input("Construct Validity Support", placeholder="e.g., Confirmatory Factor Analysis (CFA) supported, Face validity verified")
 
     st.divider()
 
-    # --- SECTION C: VARIABLE DICTIONARY GENERATOR (DDI SCHEMA STANDARDS) ---
-    st.subheader("🧠 3. DDI Variable Schema Configuration")
+    # --- SECTION B: VARIABLE CONFIGURATION (DDI SCHEMA STANDARDS) ---
+    st.subheader("🧠 2. Study Variable & Framework Configuration")
     st.caption("Establish DDI-compliant metadata linking conceptual variables, parent constructs, target question items, and response scaling categories.")
 
-    # 1. Demographics Selection Grid
-    st.markdown("**Core Demographic Variables**")
-    collect_gender = st.checkbox("Include Gender Variable", value=True)
-    collect_age = st.checkbox("Include Age Variable", value=True)
+    # 1. Expanded Demographics Selection Grid (DDI-Core / CEDS options)
+    st.markdown("**Core Demographic Variables (CEDS Standards)**")
+    col_dem1, col_dem2 = st.columns(2)
+    with col_dem1:
+        collect_gender = st.checkbox("Include Gender Category", value=True)
+        collect_age = st.checkbox("Include Age / Birthdate Metrics", value=True)
+        collect_race = st.checkbox("Include Race / Ethnicity Classifications")
+    with col_dem2:
+        collect_ses = st.checkbox("Include Socioeconomic Status Indicators (e.g., Free/Reduced Lunch, Income Level)")
+        collect_lep = st.checkbox("Include English Proficiency / Language Status Flags")
+        collect_disability = st.checkbox("Include Disability / Special Education Services Markers")
     
-    # 2. Theoretical Structural Framework Selector
-    selected_framework = st.selectbox(
-        "Choose core guiding theoretical framework to populate variables:",
-        ["None / Custom Only", "Theory of Planned Behavior (TPB)", "Self-Determination Theory (SDT)", "Technology Acceptance Model (TAM)"]
+    # 2. Multi-Select Theoretical Structural Framework Selector
+    # Changed to multiselect to allow multiple theories to inform a single study instrument
+    selected_frameworks = st.multiselect(
+        "Choose core guiding theoretical framework(s) to populate variables:",
+        options=["Theory of Planned Behavior (TPB)", "Self-Determination Theory (SDT)", "Technology Acceptance Model (TAM)"]
     )
     
     # Compile variable items collection matrix mapping exactly to DDI specifications
     active_items = []
     
+    # Append selected standardized CEDS demographic variables
     if collect_gender:
-        active_items.append({
-            "Variable_ID": "VAR_GENDER",
-            "Concept_Construct": "Demographics",
-            "Variable_Label": "Participant Gender",
-            "Question_Item_Text": "What gender category do you most closely identify with?",
-            "Response_Scale_Options": "Woman | Man | Non-binary | Prefer to self-describe | Prefer not to say",
-            "Norm_Schema": "DDI-Core / CEDS"
-        })
+        active_items.append({"Variable_ID": "VAR_GENDER", "Concept_Construct": "Demographics", "Variable_Label": "Participant Gender", "Question_Item_Text": "What gender category do you most closely identify with?", "Response_Scale_Options": "Woman | Man | Non-binary | Prefer to self-describe | Prefer not to say", "Framework_Source": "CEDS / DDI-Core"})
     if collect_age:
-        active_items.append({
-            "Variable_ID": "VAR_AGE",
-            "Concept_Construct": "Demographics",
-            "Variable_Label": "Participant Age",
-            "Question_Item_Text": "Please enter your age in numerical years:",
-            "Response_Scale_Options": "Continuous Integer Entry",
-            "Norm_Schema": "DDI-Core / CEDS"
-        })
-        
-    if selected_framework in THEORY_MAP:
-        st.markdown(f"**Pre-populated DDI variable elements for {selected_framework}:**")
-        theory_data = THEORY_MAP[selected_framework]
-        for construct, props in theory_data.items():
-            include = st.checkbox(f"Include DDI Variable: {construct}", value=True)
-            if include:
-                # Dynamically construct unique IDs matching the DDI schema naming conventions
-                var_id = f"VAR_{construct.upper().replace(' ', '_').replace('/', '_').replace('(', '').replace(')', '')}"
-                active_items.append({
-                    "Variable_ID": var_id,
-                    "Concept_Construct": construct,
-                    "Variable_Label": f"{selected_framework} - {construct}",
-                    "Question_Item_Text": props["item"],
-                    "Response_Scale_Options": props["scale"],
-                    "Norm_Schema": f"DDI-Lifecycle / APA PsycTESTS ({origin_scale if origin_scale else 'Standard Mapping'})"
-                })
-                
-    # 3. Dynamic Injection Module for Custom / Alternative Constructs
-    with st.expander("➕ Inject Additional Custom DDI Variables (Quantitative, Text, Media References)"):
-        custom_name = st.text_input("Variable Identifier / ID Code", placeholder="e.g., VAR_ENGAGEMENT")
-        custom_construct = st.text_input("Concept / Parent Construct", placeholder="e.g., Course Engagement")
-        custom_label = st.text_input("Variable Label", placeholder="e.g., Self-Reported Hours Using OER")
-        custom_type = st.selectbox("Data Classification Type", ["Quantitative / Ordinal Scale", "Text / Qualitative Response", "Other Media Link / Reference"])
-        custom_item = st.text_input("Operational Question Text Prompt", placeholder="e.g., How many hours a week do you spend using OER platforms?")
-        custom_scale = st.text_input("Scale Categories / Code Values Matrix", placeholder="e.g., 1=0-5 hours | 2=6-10 hours | 3=11+ hours")
-        
-        if st.button("Add Custom Variable Entry"):
-            if custom_name and custom_item:
-                st.session_state.session_instruments.append({
-                    "Variable_ID": custom_name.upper().strip(),
-                    "Concept_Construct": custom_construct,
-                    "Variable_Label": custom_label,
-                    "Question_Item_Text": custom_item,
-                    "Response_Scale_Options": custom_scale,
-                    "Norm_Schema": f"DDI-Custom ({custom_type})"
-                })
-                st.toast(f"Custom DDI variable {custom_name} added successfully!")
+        active_items.append({"Variable_ID": "VAR_AGE", "Concept_Construct": "Demographics", "Variable_Label": "Participant Age", "Question_Item_Text": "Please enter your age in numerical years:", "Response_Scale_Options": "Continuous Integer Entry", "Framework_Source": "CEDS / DDI-Core"})
+    if collect_race:
+        active_items.append({"Variable_ID": "VAR_RACE_ETHNICITY", "Concept_Construct": "Demographics", "Variable_Label": "Participant Race/Ethnicity", "Question_Item_Text": "Select the racial/ethnic categories that best describe you:", "Response_Scale_Options": "American Indian or Alaska Native | Asian | Black or African American | Hispanic or Latino | Native Hawaiian or Other Pacific Islander | White | Two or More Races", "Framework_Source": "CEDS / DDI-Core"})
+    if collect_ses:
+        active_items.append({"Variable_ID": "VAR_ECONOMIC_STATUS", "Concept_Construct": "Demographics", "Variable_Label": "Socioeconomic Status Indicator", "Question_Item_Text": "Does the participant qualify for economic assistance programs (e.g., Free or Reduced Price Lunch)?", "Response_Scale_Options": "Yes | No | Unknown", "Framework_Source": "CEDS / DDI-Core"})
+    if collect_lep:
+        active_items.append({"Variable_ID": "VAR_ENGLISH_PROFICIENCY", "Concept_Construct": "Demographics", "Variable_Label": "English Learner Status", "Question_Item_Text": "Is the participant classified as an English Learner (EL) / Limited English Proficient (LEP)?", "Response_Scale_Options": "Yes | No", "Framework_Source": "CEDS / DDI-Core"})
+    if collect_disability:
+        active_items.append({"Variable_ID": "VAR_DISABILITY_STATUS", "Concept_Construct": "Demographics", "Variable_Label": "Special Education Disability Status", "Question_Item_Text": "Is the participant receiving services under the Individuals with Disabilities Education Act (IDEA)?", "Response_Scale_Options": "Yes | No", "Framework_Source": "CEDS / DDI-Core"})
 
-    # Merge static map array selections with active session array configurations
-    final_instrument_list = active_items + st.session_state.session_instruments
+    # Iterate through all checked frameworks and append their constructs
+    for framework in selected_frameworks:
+        if framework in THEORY_MAP:
+            st.markdown(f"**Pre-populated variables for: {framework}**")
+            theory_data = THEORY_MAP[framework]
+            for construct, props in theory_data.items():
+                include = st.checkbox(f"Include {construct} ({framework})", value=True)
+                if include:
+                    var_id = f"VAR_{construct.upper().replace(' ', '_').replace('/', '_').replace('(', '').replace(')', '')}"
+                    active_items.append({
+                        "Variable_ID": var_id,
+                        "Concept_Construct": construct,
+                        "Variable_Label": f"{framework} - {construct}",
+                        "Question_Item_Text": props["item"],
+                        "Response_Scale_Options": props["scale"],
+                        "Framework_Source": framework
+                    })
+                
+    # 3. Custom Variable CSV Uploader (GitHub Push Suggestion Prep)
+    st.markdown(" ")
+    st.subheader("➕ 3. Bulk Import Custom Variables & Suggestions")
+    st.caption("Download our standardized CSV schema template to design custom constructs offline. Uploading your file will populate the active workspace and can serve as your official schema suggestion payload.")
+    
+    # Create the template CSV for download
+    custom_template_df = pd.DataFrame(columns=["Variable_ID", "Concept_Construct", "Variable_Label", "Question_Item_Text", "Response_Scale_Options", "Framework_Source"])
+    custom_template_df.loc[0] = ["VAR_SAMPLE_ID", "Sample Construct", "Sample Label Text", "This is an example survey prompt item question?", "1=Option A | 2=Option B | 3=Option C", "Name of New or Existing Theoretical Framework"]
+    template_csv_bytes = custom_template_df.to_csv(index=False).encode('utf-8')
+    
+    st.download_button(
+        label="📥 Download Custom Variables CSV Template",
+        data=template_csv_bytes,
+        file_name="custom_variables_schema_template.csv",
+        mime="text/csv"
+    )
+    
+    uploaded_custom_vars = st.file_uploader("Upload your completed Custom Variables CSV file", type=["csv"])
+    
+    uploaded_items = []
+    if uploaded_custom_vars is not None:
+        try:
+            uploaded_df = pd.read_csv(uploaded_custom_vars)
+            required_fields = ["Variable_ID", "Concept_Construct", "Variable_Label", "Question_Item_Text", "Response_Scale_Options", "Framework_Source"]
+            if all(field in uploaded_df.columns for field in required_fields):
+                uploaded_items = uploaded_df.to_dict(orient="records")
+                st.success(f"✅ Successfully imported {len(uploaded_items)} custom variable definitions into active session workspace!")
+                st.dataframe(uploaded_df, use_container_width=True, hide_index=True)
+                
+                # Proactive offer tool for generating GitHub Pull Requests from this file
+                st.info("💡 **Want to contribute these variables to our global open source system?** When you connect your repository, these uploaded records will format into automated GitHub Suggestion tickets for review.")
+            else:
+                st.error("❌ Column mismatch. Please verify your file headers perfectly match the downloaded template format.")
+        except Exception as e:
+            st.error(f"Error parsing custom variable spreadsheet file: {e}")
+
+    # Merge active form items with newly imported custom spreadsheet items
+    final_instrument_list = active_items + uploaded_items + st.session_state.session_instruments
     
     if final_instrument_list:
         df_manifest = pd.DataFrame(final_instrument_list)
-        st.subheader("📋 Configured DDI Variable Manifest Mapping Spec")
+        
+        # --- RENAME DATA GRID FOR ACCESSIBILITY ---
+        st.subheader("📋 Your Active Study Instrument Summary Table")
         st.dataframe(df_manifest, use_container_width=True, hide_index=True)
         
         # --- EXPORT PIPELINES ---
-        col_exp1, col_exp2 = st.columns(2)
+        col_exp1, col_exp2, col_exp3 = st.columns(3)
         
         with col_exp1:
-            # Generate the data dictionary metadata sheet (CSV) aligned with ICPSR/Harvard Dataverse codebook variables
+            # 1. Structured Data Dictionary Metadata CSV File
             csv_buffer = io.StringIO()
             df_manifest.to_csv(csv_buffer, index=False)
             st.download_button(
-                label="📥 Download DDI Metadata Sheet (.csv)",
+                label="📥 Download Metadata Sheet (.csv)",
                 data=csv_buffer.getvalue(),
-                file_name="ddi_social_science_metadata_sheet.csv",
+                file_name="educational_study_metadata_sheet.csv",
                 mime="text/csv",
                 use_container_width=True
             )
             
         with col_exp2:
-            # Generate deployment survey text configuration map (TXT) that replicates APA PsycTESTS profiling layouts
-            txt_manifest = "=== DDI & APA PsycTESTS COMPLIANT STUDY INSTRUMENT MANIFEST ===\n"
+            # 2. Complete Technical Schema Mapping TXT File (Retained original)
+            txt_manifest = "=== DDI & CEDS COMPLIANT TECHNICAL STUDY METADATA MANIFEST ===\n"
             txt_manifest += f"Repository Context Code: {repository_id if repository_id else 'Not Cataloged'}\n"
             txt_manifest += f"Unit of Analysis: {unit_of_analysis}\n"
-            txt_manifest += f"Psychometric Target Scale: {origin_scale if origin_scale else 'Custom Build'}\n"
-            txt_manifest += f"Reported Scale Reliability: {reliability_metric} = {reliability_value}\n"
             txt_manifest += "=" * 60 + "\n\n"
-            
             for idx, row in df_manifest.iterrows():
                 txt_manifest += f"DDI Variable ID:  {row['Variable_ID']}\n"
                 txt_manifest += f"Concept/Construct: {row['Concept_Construct']}\n"
                 txt_manifest += f"Variable Label:    {row['Variable_Label']}\n"
                 txt_manifest += f"Question Text:     {row['Question_Item_Text']}\n"
-                txt_manifest += f"Code / Response Categories Matrix:\n   {row['Response_Scale_Options']}\n"
-                txt_manifest += f"Metadata Schema Compliance Trace: {row['Norm_Schema']}\n"
+                txt_manifest += f"Response Scaling:  {row['Response_Scale_Options']}\n"
+                txt_manifest += f"Framework Source:  {row['Framework_Source']}\n"
                 txt_manifest += "-" * 60 + "\n\n"
                 
             st.download_button(
-                label="📥 Download Deployment Survey Form (.txt)",
+                label="📥 Download Technical Manifest (.txt)",
                 data=txt_manifest,
-                file_name="ddi_survey_instrument_form.txt",
+                file_name="technical_study_metadata_manifest.txt",
+                mime="text/plain",
+                use_container_width=True
+            )
+            
+        with col_exp3:
+            # 🌟 3. NEW FEATURE: Clean, Print-Ready Survey Instrument File TXT
+            clean_survey = f"=== SURVEY INSTRUMENT FOR STUDY MANIFEST ===\n"
+            if repository_id:
+                clean_survey += f"Study Reference DOI: {repository_id}\n"
+            clean_survey += "Instructions: Please read each question carefully and select or enter the option that best describes your response.\n"
+            clean_survey += "=" * 60 + "\n\n"
+            
+            for idx, row in df_manifest.iterrows():
+                clean_survey += f"Q{idx+1}. {row['Question_Item_Text']}\n"
+                # Formatting options cleanly for participant deployment views
+                options = str(row['Response_Scale_Options'])
+                if "|" in options:
+                    for opt in options.split("|"):
+                        clean_survey += f"   [ ] {opt.strip()}\n"
+                elif "Continuous" in options:
+                    clean_survey += "   [_______________________________________]\n"
+                else:
+                    clean_survey += f"   Options: {options}\n"
+                clean_survey += "\n"
+                
+            st.download_button(
+                label="📥 Download Deployment Survey Form (.txt)",
+                data=clean_survey,
+                file_name="clean_participant_survey_form.txt",
                 mime="text/plain",
                 use_container_width=True
             )
     else:
-        st.info("No structural framework or variable items selected yet.")
-
+        st.info("No structural frameworks, demographic indicators, or custom variables selected yet.")
 
 # ==========================================
 # MODULE 3: COMMUNITY STORAGE SYNCHRONIZATION
