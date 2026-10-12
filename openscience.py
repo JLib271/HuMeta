@@ -460,43 +460,56 @@ elif app_mode == "2. Variable Instrument Architect":
                 
                 if not github_token:
                     st.warning("⚠️ GitHub automation token is unconfigured. Link your GITHUB_PAT in Streamlit secrets to activate submission pipelines.")
-                else:
-                                    # Proactive offer tool for generating GitHub Pull Requests from this file
-                st.markdown("---")
-                st.markdown("### 🚀 Contribute Custom Framework to Global Schema")
-                st.caption("Want to make these variables part of our open-source system? Clicking below will generate a pre-formatted suggestion ticket on our GitHub repository. Our automated actions will immediately process it into a secure Pull Request branch package.")
-                
-                # Unpack the active spreadsheet rows into an optimized text chunk for the issue ticket body
-                uploaded_custom_vars.seek(0)
-                raw_csv_text = uploaded_custom_vars.read().decode('utf-8')
-                first_framework = str(uploaded_df["Framework_Source"].iloc[0]) if not uploaded_df.empty else "Custom Framework"
-                
-                # Format URL parameters for the pre-filled issue route
-                issue_title = urllib.parse.quote(f"[Schema Suggestion] Add {first_framework}")
-                issue_body = urllib.parse.quote(
-                    f"**New Theoretical Framework Submission**\n\n"
-                    f"**Framework Target Name:** {first_framework}\n\n"
-                    f"### RAW SCHEMA PAYLOAD\n"
-                    f"```csv\n{raw_csv_text}\n```\n\n"
-                    f"---\n*Submitted securely via the Open Educational Metadata Portal Variable Ingest Box.*"
-                )
-                
-                # Build the user hyperlink target
-                github_issue_url = f"https://github.com{issue_title}&body={issue_body}"
-                
-                # Render an elegant, accessible action link button style
-                st.markdown(
-                    f'<a href="{github_issue_url}" target="_blank">'
-                    f'<button style="background-color:#1A365D; color:white; border:none; padding:12px 24px; text-align:center; text-decoration:none; display:inline-block; font-size:16px; border-radius:6px; cursor:pointer; font-weight:bold; width:100%;">'
-                    f'📦 Open Pre-filled GitHub Ingestion Ticket</button></a>',
-                    unsafe_allow_html=True
-                )
+                            else:
+                # 🌟 Corrected Indentation: Shifted everything forward by 16 spaces
+                st.error("❌ Column mismatch. Please verify your file headers perfectly match the downloaded template format.")
+        except Exception as e:
+            st.error(f"Error parsing custom variable spreadsheet file: {e}")
 
+    # Merge active form items with newly imported custom spreadsheet items
+    final_instrument_list = active_items + uploaded_items + st.session_state.session_instruments
+    
+    if final_instrument_list:
+        df_manifest = pd.DataFrame(final_instrument_list)
+        
+        # --- RENAME DATA GRID FOR ACCESSIBILITY ---
+        st.subheader("📋 Your Active Study Instrument Summary Table")
+        st.dataframe(df_manifest, use_container_width=True, hide_index=True)
+        
+        # --- EXPORT PIPELINES & REPOSITORY ACTION BUTTONS ---
+        st.markdown("---")
+        st.markdown("### 🚀 Contribute Custom Framework to Global Schema")
+        st.caption("Want to make these variables part of our open-source system? Clicking below will generate a pre-formatted suggestion ticket on our GitHub repository. Our automated actions will immediately process it into a secure Pull Request branch package.")
+        
+        # Unpack the active spreadsheet rows into an optimized text chunk for the issue ticket body
+        uploaded_custom_vars.seek(0)
+        raw_csv_text = uploaded_custom_vars.read().decode('utf-8')
+        first_framework = str(uploaded_df["Framework_Source"].iloc[0]) if not uploaded_df.empty else "Custom Framework"
+        
+        # Format URL parameters for the pre-filled issue route
+        issue_title = urllib.parse.quote(f"[Schema Suggestion] Add {first_framework}")
+        issue_body = urllib.parse.quote(
+            f"**New Theoretical Framework Submission**\n\n"
+            f"**Framework Target Name:** {first_framework}\n\n"
+            f"### RAW SCHEMA PAYLOAD\n"
+            f"```csv\n{raw_csv_text}\n```\n\n"
+            f"---\n*Submitted securely via the Open Educational Metadata Portal Variable Ingest Box.*"
+        )
+        
+        # Build the user hyperlink target
+        github_issue_url = f"https://github.com{issue_title}&body={issue_body}"
+        
+        # Render an elegant, accessible action link button style
+        st.markdown(
+            f'<a href="{github_issue_url}" target="_blank">'
+            f'<button style="background-color:#1A365D; color:white; border:none; padding:12px 24px; text-align:center; text-decoration:none; display:inline-block; font-size:16px; border-radius:6px; cursor:pointer; font-weight:bold; width:100%;">'
+            f'📦 Open Pre-filled GitHub Ingestion Ticket</button></a>',
+            unsafe_allow_html=True
+        )
+        st.markdown("---")
+        
+        col_exp1, col_exp2, col_exp3 = st.columns(3)
 
-                st.dataframe(uploaded_df, use_container_width=True, hide_index=True)
-                
-                # Proactive offer tool for generating GitHub Pull Requests from this file
-                st.info("💡 **Want to contribute these variables to our global open source system?** When you connect your repository, these uploaded records will format into automated GitHub Suggestion tickets for review.")
             else:
                 st.error("❌ Column mismatch. Please verify your file headers perfectly match the downloaded template format.")
         except Exception as e:
