@@ -473,7 +473,7 @@ elif app_mode == "2. Variable Instrument Architect":
         st.caption("Want to make these variables part of our open-source system? Clicking below will generate a pre-formatted suggestion ticket on our GitHub repository. Our automated actions will immediately process it into a secure Pull Request branch package.")
         
         # Unpack the active spreadsheet rows into an optimized text chunk for the issue ticket body
-            uploaded_custom_vars = st.file_uploader("Upload your completed Custom Variables CSV file", type=["csv"])
+    uploaded_custom_vars = st.file_uploader("Upload your completed Custom Variables CSV file", type=["csv"])
     
     uploaded_items = []
     if uploaded_custom_vars is not None:
