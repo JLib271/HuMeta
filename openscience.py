@@ -500,7 +500,6 @@ elif app_mode == "2. Variable Instrument Architect":
                     st.success(f"✅ Successfully imported {filtered_count} custom variable definitions into active session workspace!")
                 
                 st.dataframe(uploaded_df, use_container_width=True, hide_index=True)
-                st.info("💡 **Want to contribute these variables to our global open source system?** When you connect your repository, these uploaded records will format into automated GitHub Suggestion tickets for review.")
             else:
                 st.error("❌ Column mismatch. Please verify your file headers perfectly match the downloaded template format.")
         except Exception as e:
@@ -516,21 +515,19 @@ elif app_mode == "2. Variable Instrument Architect":
         st.subheader("📋 Your Active Study Instrument Summary Table")
         st.dataframe(df_manifest, use_container_width=True, hide_index=True)
         
-        # --- EXPORT PIPELINES & REPOSITORY ACTION BUTTONS ---
+                # --- MODULE 2 VARIABLES SCHEMA PROPOSAL ENTRY ---
         st.markdown("---")
-        st.markdown("### 🚀 Contribute Custom Framework to Global Schema")
-        st.caption("Want to make these variables part of our open-source system? Clicking below will generate a pre-formatted suggestion ticket on our GitHub repository. Our automated actions will immediately process it into a secure Pull Request branch package.")
+        st.markdown("### 🚀 Propose Custom Framework Variables to Global Schema")
+        st.caption("Want to make your uploaded CSV variables part of our permanent core dropdown systems?")
         
-        # 🌟 SAFETY WRAPPER: Only build the GitHub Ticket button if a custom CSV file was actually uploaded
+        # SAFETY WRAPPER: Only build the capsule layout if a custom CSV file was uploaded
         if uploaded_custom_vars is not None:
             # Unpack the active spreadsheet rows into an optimized text chunk for the issue ticket body
             uploaded_custom_vars.seek(0)
             raw_csv_text = uploaded_custom_vars.read().decode('utf-8')
             first_framework = str(uploaded_df["Framework_Source"].iloc[0]) if not uploaded_df.empty else "Custom Framework"
             
-            # Format URL parameters for the pre-filled issue route
-            issue_title = urllib.parse.quote(f"[Schema Suggestion] Add {first_framework}")
-            issue_body = urllib.parse.quote(
+            pasteboard_content = (
                 f"**New Theoretical Framework Submission**\n\n"
                 f"**Framework Target Name:** {first_framework}\n\n"
                 f"### RAW SCHEMA PAYLOAD\n"
@@ -538,21 +535,25 @@ elif app_mode == "2. Variable Instrument Architect":
                 f"---\n*Submitted securely via the Open Educational Metadata Portal Variable Ingest Box.*"
             )
             
-            # Targets your exact repo issue tracking endpoint securely
-            github_issue_url = f"https://github.com{issue_title}&body={issue_body}"
+            st.markdown("##### **Step 1: Copy your generated variable payload capsule**")
+            st.code(pasteboard_content, language="markdown")
             
-            # Render an elegant, accessible action link button style
+            st.markdown("##### **Step 2: Open ticket page and paste**")
+            short_title = urllib.parse.quote(f"[Schema Suggestion] Add {first_framework}")
+            safe_url = f"https://github.com{short_title}"
+            
             st.markdown(
-                f'<a href="{github_issue_url}" target="_blank">'
-                f'<button style="background-color:#1A365D; color:white; border:none; padding:12px 24px; text-align:center; text-decoration:none; display:inline-block; font-size:16px; border-radius:6px; cursor:pointer; font-weight:bold; width:100%;">'
-                f'📦 Open Pre-filled GitHub Ingestion Ticket</button></a>',
+                f'<a href="{safe_url}" target="_blank">'
+                f'<button style="background-color:#1A365D; color:white; border:none; padding:10px 20px; text-align:center; text-decoration:none; display:inline-block; font-size:14px; border-radius:6px; cursor:pointer; font-weight:bold; width:100%;">'
+                f'📦 Open Pre-filled Ingestion Ticket Page</button></a>',
                 unsafe_allow_html=True
             )
         else:
-            # Fallback message displayed when they are viewing core framework items but haven't uploaded an external CSV yet
+            # Fallback message displayed when they haven't uploaded an external CSV yet
             st.warning("📥 To submit brand new constructs or alternative theoretical schemas to our open repository, please download the template, fill it out, and upload your custom CSV file above.")
             
         st.markdown("---")
+
         col_exp1, col_exp2, col_exp3 = st.columns(3)
 
 
