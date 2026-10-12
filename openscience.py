@@ -280,16 +280,7 @@ if app_mode == "1. Study Metadata Schema Registry":
             
         st.divider()
         
-        # --- SUBMIT BUTTON & VALIDATION (INSIDE THE FORM CONTAINER BOUNDARY) ---
-        # Notice the exact 4-space indentation layout applied here:
-        submit_metadata = st.form_submit_button("🚀 Submit Complete Study Record")
-        
-        if submit_metadata:
-            has_author = any(auth["name"].strip() for auth in st.session_state.authors_list)
-            
-            if not title:
-                st.error("DCMES Core Field Title (dc:title) is required to index the study.")
-        # --- SUBMIT BUTTON & VALIDATION (INSIDE THE FORM CONTAINER) ---
+               # --- SUBMIT BUTTON & VALIDATION (INSIDE THE FORM CONTAINER) ---
         submit_metadata = st.form_submit_button("🚀 Submit Complete Study Record")
         
         if submit_metadata:
@@ -320,12 +311,12 @@ if app_mode == "1. Study Metadata Schema Registry":
                     "assessment_purpose": assessment_purpose,
                     "course_level_type": course_level_type
                 }
-                st.success(f"Metadata payload for '{title}' logged with DDI schemas and {len(metadata_payload['creators_matrix'])} author(s) successfully!")
+                st.success(f"Metadata payload for '{title}' logged successfully!")
                 
                 # Reset authors list back to a clean default state for the next session
                 st.session_state.authors_list = [{"name": "", "orcid": ""}]
 
-    # 🌟 STEPPING COMPLETELY OUT OF THE FORM CONTAINER FOR DISPATCH MODULES
+    # 🌟 STEPPING COMPLETELY OUT OF THE FORM CONTAINER FOR DISPATCH SUGGESTION MODULES
     # This code is flat against the left margin (no indentation spaces)
     
     # --- MODULE 1 EXTENSION PIPELINE BUTTON ---
@@ -359,6 +350,7 @@ if app_mode == "1. Study Metadata Schema Registry":
                 f'📦 Open Pre-filled Ingestion Ticket Page</button></a>',
                 unsafe_allow_html=True
             )
+
 
 # ==========================================
 # MODULE 2: VARIABLE ARCHITECT & INSTRUMENT EXPORTER
