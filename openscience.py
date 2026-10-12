@@ -5,9 +5,7 @@ import json
 import urllib.parse
 import requests
 import base64
-import tempfile
-import os
-import sqlite3
+from sqlalchemy import text  # Required for clean database operations
 
 # Mapping of theoretical frameworks to their standard psychometric constructs/variables
 THEORY_MAP = {
@@ -45,64 +43,99 @@ THEORY_MAP = {
     ]
 }
 
-# --- UNIFIED DATABASE INITIALIZATION ---
-# Fallback to local SQLite if a cloud database is not linked or fails in Streamlit Secrets
+# --- GLOBAL DATABASE CONNECTION ---
 try:
     db_url = st.secrets["connections"]["sql"]["url"]
     shared_conn = st.connection("sql", type="sql", url=db_url)
 except Exception as e:
     shared_conn = None
 
-# Initialize default states so rendering handles don't crash
+# Initialize application global states
 local_df = None
 df_studies = pd.DataFrame()
 df_vars = pd.DataFrame()
 
-# Page Configuration Layout 
+# Page Layout Configurations
 st.set_page_config(page_title="Open Educational Metadata Portal", layout="wide")
 st.title("🔬 Open Educational Metadata Portal")
 st.caption("An Open Source, Community-Driven Engine for Standardized Educational Research and Psychometrics.")
 
-# Ensure local tables structure exists for offline mode sessions
-def init_local_tables(conn):
-    cursor = conn.cursor()
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS studies (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT NOT NULL,
-            authors TEXT,
-            abstract TEXT,
-            keywords TEXT,
-            theoretical_framework TEXT
-        );
-    """)
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS variables (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            study_id INTEGER,
-            variable_name TEXT NOT NULL,
-            variable_type TEXT,
-            operational_definition TEXT,
-            FOREIGN KEY(study_id) REFERENCES studies(id)
-        );
-    """)
-    conn.commit()
-
-# --- STEP 1: CHOOSE TARGET ENGINE WORKFLOW ---
+# --- STEP 1: WORKSPACE SELECTION ENGINE ---
 st.sidebar.header("⚙️ Workspace Engine")
-db_mode = st.sidebar.radio("Data Saving Destination:", ["Local Locked (SQLite File)", "Global Collaborative Hub"])
+db_mode = st.sidebar.radio("Data Saving Destination:", ["Local Locked (CSV File)", "Global Collaborative Hub"])
 
-# Setup sandboxed local SQLite session tracking
-if "local_db_path" not in st.session_state:
-    temp_dir = tempfile.gettempdir()
-    st.session_state.local_db_path = os.path.join(temp_dir, "opened_metadata_session.db")
-    conn = sqlite3.connect(st.session_state.local_db_path)
-    init_local_tables(conn)
-    conn.close()
+# Initialize a temporary session database to collect items submitted via the webform
+if "session_studies" not in st.session_state:
+    st.session_state.session_studies = []
 
-# --- STEP 2: USER METADATA SUBMISSION FORM ---
+# --- STEP 2: SIDEBAR CSV UPLOADER & TEMPLATE GENERATOR ---
+with st.sidebar:
+    st.markdown("---")
+    st.header("📂 Local CSV Import/Export")
+    
+    # 1. Downloadable CSV Template generation
+    template_data = pd.DataFrame(columns=["title", "authors", "abstract", "keywords", "theoretical_framework", "variables_layout"])
+    template_data.loc[0] = [
+        "Sample Study Title", 
+        "Jane Doe, John Smith", 
+        "This is a sample abstract summary.", 
+        "open education, OER", 
+        "Self-Determination Theory", 
+        "Course Grade | Dependent Variable | Final score\nTextbook Cost | Independent Variable | Cost at checkout"
+    ]
+    csv_template = template_data.to_csv(index=False).encode('utf-8')
+    
+    st.download_button(
+        label="📥 Download CSV Template",
+        data=csv_template,
+        file_name="opened_metadata_template.csv",
+        mime="text/csv"
+    )
+    
+    st.markdown("---")
+    
+    # 2. File Uploader for local CSV
+    uploaded_file = st.file_uploader("Upload your local metadata CSV file", type=["csv"])
+
+    if uploaded_file is not None:
+        try:
+            user_csv_df = pd.read_csv(uploaded_file)
+            required_cols = ["title", "authors", "abstract", "keywords", "theoretical_framework", "variables_layout"]
+            
+            if all(col in user_csv_df.columns for col in required_cols):
+                local_df = user_csv_df.copy()
+                st.success("✅ CSV uploaded and parsed!")
+                st.dataframe(local_df[["title", "authors"]], use_container_width=True, hide_index=True)
+            else:
+                st.error("❌ Invalid layout. Use the template provided above.")
+        except Exception as e:
+            st.error(f"Error reading CSV: {e}")
+
+# --- STEP 3: USER METADATA SUBMISSION FORM ---
 st.header("📝 Submit New Study Metadata")
 
+st.subheader("Theoretical & Conceptual Framework")
+selected_theories = st.multiselect(
+    "Which theoretical framework(s) inform your study?",
+    options=["Theory of Planned Behavior", "Self-Determination Theory", "Diffusion of Innovations Theory", "Technology Acceptance Model", "Social Cognitive Theory", "Other"]
+)
+
+other_framework = ""
+if "Other" in selected_theories:
+    other_framework = st.text_input("Please specify your alternative theoretical framework:")
+
+# Compute auto-populated variables on the fly
+prepopulated_vars = []
+for theory in selected_theories:
+    if theory in THEORY_MAP:
+        prepopulated_vars.extend(THEORY_MAP[theory])
+        
+if not prepopulated_vars:
+    default_value = "Course Grade | Dependent Variable | Final numerical score percentage scaled 0-100\nTextbook Cost | Independent Variable | Total out of pocket dollar cost calculated at checkout"
+else:
+    default_value = "\n".join(prepopulated_vars)
+
+# Start fixed text layout entry form
 with st.form("study_submission_form", clear_on_submit=True):
     st.subheader("Core Project Details")
     title = st.text_input("Study Title*", placeholder="e.g., Impact of Open Textbooks on Retention")
@@ -111,65 +144,28 @@ with st.form("study_submission_form", clear_on_submit=True):
     keywords = st.text_input("Keywords (comma separated)", placeholder="e.g., open education, OER, equity")
     
     st.divider()
-    st.subheader("Theoretical & Conceptual Framework")
-    
-    # 1. Transform the input into a structured query with multi-selection capability
-    selected_theories = st.multiselect(
-        "Which theoretical framework(s) inform your study?",
-        options=[
-            "Theory of Planned Behavior", 
-            "Self-Determination Theory", 
-            "Diffusion of Innovations Theory",
-            "Technology Acceptance Model", 
-            "Social Cognitive Theory", 
-            "Other"
-        ]
-    )
-    
-    # 2. Render an on-the-fly custom text window if 'Other' is picked by the user
-    other_framework = ""
-    if "Other" in selected_theories:
-        other_framework = st.text_input("Please specify your alternative theoretical framework:")
-
-    st.divider()
     st.subheader("Study Variables Layout")
-    st.caption("Define the properties of what you are measuring. Checking frameworks above will automatically pre-populate known baseline constructs below.")
+    st.caption("Define the properties of what you are measuring.")
 
-    # 3. Compute dynamic text string content matching selected models
-    prepopulated_vars = []
-    for theory in selected_theories:
-        if theory in THEORY_MAP:
-            prepopulated_vars.extend(THEORY_MAP[theory])
-            
-    # Fallback to defaults if no matching structural frames are selected
-    if not prepopulated_vars:
-        default_value = "Course Grade | Dependent Variable | Final numerical score percentage scaled 0-100\nTextbook Cost | Independent Variable | Total out of pocket dollar cost calculated at checkout"
-    else:
-        default_value = "\n".join(prepopulated_vars)
-
-    # 4. Bind the generated variables directly as the default layout payload string
     variables_input = st.text_area(
         "List variables being collected (One per line format -> Name | Type | Operational Definition)",
         value=default_value,
-        help="You can append, edit, or remove rows freely to customize your study's precise profile metrics.",
         height=250
     )
     
     submit_btn = st.form_submit_button("💾 Save Study Record")
 
-    # Cleaned, unified, and perfectly indented submission logic block
     if submit_btn:
         if not title:
             st.error("Study Title is required.")
         else:
-            # Gather checkbox values into a structured text string
+            # Format framework strings
             frameworks_to_save = [t for t in selected_theories if t != "Other"]
             if "Other" in selected_theories and other_framework.strip():
                 frameworks_to_save.append(other_framework.strip())
-                
             final_framework_string = ", ".join(frameworks_to_save) if frameworks_to_save else "None Specified"
                 
-            # Process variable strings into clean array matrix tuples
+            # Process variables array layout
             parsed_variables = []
             for line in variables_input.strip().split("\n"):
                 if "|" in line:
@@ -183,39 +179,33 @@ with st.form("study_submission_form", clear_on_submit=True):
                     if line.strip():
                         parsed_variables.append((line.strip(), "Not Specified", "No definition provided"))
 
-            # --- ROUTING SAVE PATHWAYS ---
-            if db_mode == "Local Locked (SQLite File)":
-                conn = sqlite3.connect(st.session_state.local_db_path)
-                cursor = conn.cursor()
-                cursor.execute(
-                    "INSERT INTO studies (title, authors, abstract, keywords, theoretical_framework) VALUES (?, ?, ?, ?, ?)",
-                    (title, authors, abstract, keywords, final_framework_string)
-                )
-                study_id = cursor.lastrowid
-                
-                for var in parsed_variables:
-                    cursor.execute(
-                        "INSERT INTO variables (study_id, variable_name, variable_type, operational_definition) VALUES (?, ?, ?, ?)",
-                        (study_id, var[0], var[1], var[2])
-                    )
-                conn.commit()
-                conn.close()
-                st.success("Successfully logged study to your temporary local instance!")
+            # --- ROUTING SAVE PATHS ---
+            if db_mode == "Local Locked (CSV File)":
+                # Appends record to browser's session history array
+                st.session_state.session_studies.append({
+                    "title": title,
+                    "authors": authors,
+                    "abstract": abstract,
+                    "keywords": keywords,
+                    "theoretical_framework": final_framework_string,
+                    "variables_layout": variables_input
+                })
+                st.success("Successfully logged study to your current web session registry!")
                 st.rerun()
                 
             elif db_mode == "Global Collaborative Hub":
                 if shared_conn is not None:
-                    from sqlalchemy import text
                     with shared_conn.session as session:
                         res = session.execute(
                             text("""INSERT INTO studies (title, authors, abstract, keywords, theoretical_framework) 
+
                                    VALUES (:title, :authors, :abstract, :keywords, :framework) RETURNING id;"""),
                             {"title": title, "authors": authors, "abstract": abstract, "keywords": keywords, "framework": final_framework_string}
                         )
                         try:
-                            study_id = res.fetchone()[0]
+                            study_id = res.fetchone()
                         except Exception:
-                            study_id = session.execute(text("SELECT max(id) FROM studies;")).fetchone()[0]
+                            study_id = session.execute(text("SELECT max(id) FROM studies;")).fetchone()
                         
                         for var in parsed_variables:
                             session.execute(
@@ -224,30 +214,52 @@ with st.form("study_submission_form", clear_on_submit=True):
                                 {"study_id": study_id, "name": var[0], "type": var[1], "def": var[2]}
                             )
                         session.commit()
-                    st.success("Successfully broadcasted your study metadata layout live to the global community database!")
+                    st.success("Successfully broadcasted study layout metadata live to the global community database!")
                     st.rerun()
                 else:
                     st.error("Global database engine credentials are unconfigured or offline. Please save using 'Local Locked' mode.")
 
-# --- STEP 3: DATA VISUALIZATION EXPLORER REGISTRIES ---
+# --- STEP 4: DATA EXPLORER REGISTRY DATA PROCESSING ---
 st.divider()
 st.header("🔍 Explored Studies Registries")
 
-if db_mode == "Local Locked (SQLite File)":
-    conn = sqlite3.connect(st.session_state.local_db_path)
-    try:
-        df_studies = pd.read_sql_query("SELECT * FROM studies ORDER BY id DESC", conn)
-        df_vars = pd.read_sql_query("SELECT * FROM variables", conn)
-    finally:
-        conn.close()
+if db_mode == "Local Locked (CSV File)":
+    # Combine uploaded CSV records with any records typed manually into the form during this session
+    combined_list = []
+    if local_df is not None:
+        combined_list.extend(local_df.to_dict(orient="records"))
+    if st.session_state.session_studies:
+        combined_list.extend(st.session_state.session_studies)
         
-    # Provide local SQLite backup file downloading stream
-    with open(st.session_state.local_db_path, "rb") as f:
+    if combined_list:
+        df_studies = pd.DataFrame(combined_list)
+        df_studies['id'] = range(1, len(df_studies) + 1)
+        
+        # Build matching variables structural dataframe on the fly for viewing
+        vars_list = []
+        for idx, row in df_studies.iterrows():
+            if pd.notna(row['variables_layout']):
+                for line in str(row['variables_layout']).strip().split("\n"):
+                    if "|" in line:
+                        parts = [p.strip() for p in line.split("|")]
+                        v_name = parts[0] if len(parts) > 0 else ""
+                        v_type = parts[1] if len(parts) > 1 else "Not Specified"
+                        v_def = parts[2] if len(parts) > 2 else "No definition provided"
+                    else:
+                        v_name = line.strip()
+                        v_type = "Not Specified"
+                        v_def = "No definition provided"
+                    if v_name:
+                        vars_list.append({"study_id": row['id'], "variable_name": v_name, "variable_type": v_type, "operational_definition": v_def})
+        df_vars = pd.DataFrame(vars_list)
+        
+        # 🌟 EXPORT BACKOUT BUTTON: Download accumulated work as a spreadsheet
+        csv_download = df_studies[["title", "authors", "abstract", "keywords", "theoretical_framework", "variables_layout"]].to_csv(index=False).encode('utf-8')
         st.sidebar.download_button(
-            label="📥 Download Local Registry (.db)",
-            data=f.read(),
-            file_name="open_ed_metadata_registry.db",
-            mime="application/x-sqlite3"
+            label="📥 Download Current Local Registry (.csv)",
+            data=csv_download,
+            file_name="open_ed_metadata_registry.csv",
+            mime="text/csv"
         )
 else:
     if shared_conn is not None:
@@ -259,13 +271,14 @@ else:
     else:
         st.warning("Public Collaborative Database running in offline mode. Configure Streamlit Secrets to enable the global community hub.")
 
-# Render output cards natively using interactive expanders
+# --- STEP 5: VISUALIZE DATA LAYOUT REGISTRY ---
 if not df_studies.empty:
     for idx, row in df_studies.iterrows():
-        with st.expander(f"📚 {row['title']} — by {row['authors'] if row['authors'] else 'Unknown'}"):
-            st.markdown(f"**Keywords:** `{row['keywords']}`")
-            st.markdown(f"### Abstract\n{row['abstract'] if row['abstract'] else '*No summary provided.*'}")
-            st.markdown(f"### Theoretical Framework\n{row['theoretical_framework'] if row['theoretical_framework'] else '*None specified.*'}")
+        author_text = row['authors'] if pd.notna(row['authors']) and row['authors'] else 'Unknown'
+        with st.expander(f"📚 {row['title']} — by {author_text}"):
+            st.markdown(f"**Keywords:** `{row['keywords'] if pd.notna(row['keywords']) else 'None'}`")
+            st.markdown(f"### Abstract\n{row['abstract'] if pd.notna(row['abstract']) else '*No summary provided.*'}")
+            st.markdown(f"### Theoretical Framework\n{row['theoretical_framework'] if pd.notna(row['theoretical_framework']) else '*None specified.*'}")
             
             if not df_vars.empty:
                 matched_vars = df_vars[df_vars['study_id'] == row['id']]
