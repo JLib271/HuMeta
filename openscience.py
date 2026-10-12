@@ -98,10 +98,19 @@ if app_mode == "1. Study Metadata Schema Registry":
             "Title (dc:title)*", 
             placeholder="e.g., Impact of Open Textbooks on Course-Level Retention Metrics"
         )
-        creator = st.text_input(
-            "Creator / Authors (dc:creator)", 
-            placeholder="e.g., Dr. Jane Doe, Prof. John Smith"
-        )
+        
+        col_author1, col_author2 = st.columns(2)
+        with col_author1:
+            creator = st.text_input(
+                "Creator / Authors (dc:creator)", 
+                placeholder="e.g., Dr. Jane Doe, Prof. John Smith"
+            )
+        with col_author2:
+            orcid_link = st.text_input(
+                "ORCID iD Identifier Link (dc:creator URL)", 
+                placeholder="e.g., https://orcid.org"
+            )
+            
         description = st.text_area(
             "Description / Abstract (dc:description)", 
             placeholder="Summary of research objectives, design schema, and core conceptual findings..."
@@ -117,32 +126,117 @@ if app_mode == "1. Study Metadata Schema Registry":
         
         st.divider()
         
-        # --- COMMON EDUCATION DATA STANDARDS (CEDS) ---
+        # --- COMMON EDUCATION DATA STANDARDS (CEDS ALIGNMENT) ---
         st.subheader("🌐 Common Education Data Standards (CEDS Alignment)")
+        st.caption("Standardized dropdown and checkbox matrices mapping directly to CEDS element repositories.")
         
-        ceds_scope = st.selectbox(
-            "Study Scope / Operational Level", 
-            options=[
-                "Course-Level Evaluation", 
-                "Program-Wide / Departmental Assessment",
-                "Institutional-Wide Study", 
-                "Multi-Institutional Cluster", 
-                "National / State Assessment"
-            ]
-        )
+        # 1. The Study Scope (The "When" and "Where")
+        st.markdown("### 📍 1. The Study Scope (The 'When' and 'Where')")
+        col_scope1, col_scope2, col_scope3 = st.columns(3)
+        with col_scope1:
+            # Standardized CEDS Academic Year ranges
+            academic_year = st.selectbox(
+                "Academic Year Designator*",
+                options=[
+                    "2026-2027", "2025-2026", "2024-2025", "2023-2024", 
+                    "2022-2023", "2021-2022", "2020-2021", "Prior to 2020"
+                ],
+                index=2
+            )
+        with col_scope2:
+            # CEDS State Alphanumeric Codes
+            state_origin = st.selectbox(
+                "State of Origin",
+                options=[
+                    "National/Multi-State", "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DE", "FL", "GA", 
+                    "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", 
+                    "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", 
+                    "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY"
+                ]
+            )
+        with col_scope3:
+            # CEDS Geographic Locale Category options
+            locale_setting = st.selectbox(
+                "Locale (Geographic Setting)", 
+                options=["City", "Suburban", "Town", "Rural", "Virtual / Online Learning Environment"]
+            )
+            
+        st.markdown(" ")
         
-        st.markdown("**Target Study Population Profile**")
-        pop_k12 = st.checkbox("K-12 Learners")
-        pop_undergrad = st.checkbox("Undergraduate Students")
-        pop_grad = st.checkbox("Graduate Students / Professional Learners")
-        pop_faculty = st.checkbox("Instructors / Faculty Members")
-        pop_admin = st.checkbox("Educational Administrators")
+        # 2. The Population (The "Who")
+        st.markdown("### 👥 2. The Population (The 'Who')")
+        col_pop1, col_pop2 = st.columns(2)
+        with col_pop1:
+            # CEDS Standard Grade Level Classifications
+            grade_level = st.multiselect(
+                "Grade Level (Baseline Starting Point)",
+                options=[
+                    "Early Childhood / Pre-K", "Kindergarten", "Grade 1", "Grade 2", "Grade 3", 
+                    "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8", "Grade 9", 
+                    "Grade 10", "Grade 11", "Grade 12", "Postsecondary (Undergraduate)", 
+                    "Postsecondary (Graduate)", "Adult Education"
+                ],
+                default=["Postsecondary (Undergraduate)"]
+            )
+        with col_pop2:
+            # CEDS Program Type options
+            program_type = st.multiselect(
+                "Program Type / Student Subgroup",
+                options=[
+                    "Regular / General Education Program", 
+                    "English Learner (EL) Program", 
+                    "Special Education / IDEA Services", 
+                    "Title I Schoolwide Program", 
+                    "Migrant Education Program", 
+                    "Career and Technical Education (CTE)", 
+                    "College Preparatory / Gifted Program"
+                ],
+                default=["Regular / General Education Program"]
+            )
+            
+        st.markdown(" ")
         
-        st.markdown("**Research Methodology Framework**")
-        method_quant = st.checkbox("Quantitative Experimental / Quasi-Experimental")
-        method_qual = st.checkbox("Qualitative (Interviews, Case Studies, Coding)")
-        method_mixed = st.checkbox("Mixed-Methods Architecture")
-        
+        # 3. The Methodology (The "What")
+        st.markdown("### 🛠️ 3. The Methodology (The 'What')")
+        col_meth1, col_meth2, col_meth3 = st.columns(3)
+        with col_meth1:
+            # CEDS Course/Assessment Subject options
+            academic_subject = st.selectbox(
+                "Assessment Academic Subject", 
+                options=[
+                    "Mathematics", "Reading / English Language Arts", "Science", 
+                    "Social Studies / History", "Foreign Language Education", 
+                    "Fine and Performing Arts", "Computer and Information Sciences", 
+                    "Interdisciplinary / General Academic"
+                ]
+            )
+        with col_meth2:
+            # CEDS Assessment Purpose classifications
+            assessment_purpose = st.selectbox(
+                "Assessment Purpose", 
+                options=[
+                    "Research Intervention Evaluation", 
+                    "State Accountability Assessment", 
+                    "Diagnostic Benchmark Assessment", 
+                    "Formative / Progress Monitoring Assessment", 
+                    "Summative / End-of-Course Evaluation",
+                    "Placement / College Readiness Testing"
+                ]
+            )
+        with col_meth3:
+            # CEDS Course Level Type designations
+            course_level_type = st.selectbox(
+                "Course Level Type Rigor", 
+                options=[
+                    "Regular / Standard Rigor", 
+                    "Remedial / Developmental / Basic", 
+                    "Advanced Placement (AP)", 
+                    "International Baccalaureate (IB)", 
+                    "Honors Level", 
+                    "Dual Enrollment / Postsecondary Credit"
+                ]
+            )
+            
         st.divider()
         
         submit_metadata = st.form_submit_button("🚀 Submit to Community Ledger")
@@ -151,29 +245,25 @@ if app_mode == "1. Study Metadata Schema Registry":
             if not title:
                 st.error("DCMES Core Field Title (dc:title) is required to index the study.")
             else:
-                # Compile structural data dictionary payload for session state tracking or global ingestion
+                # Compile structural data dictionary payload for browser memory tracking
                 metadata_payload = {
                     "title": title,
                     "creator": creator,
+                    "orcid": orcid_link,
                     "description": description,
                     "subject": keywords,
                     "language": language,
-                    "scope": ceds_scope,
-                    "population": [
-                        p for p, checked in {
-                            "K-12": pop_k12, "Undergrad": pop_undergrad, 
-                            "Grad": pop_grad, "Faculty": pop_faculty, "Admin": pop_admin
-                        }.items() if checked
-                    ],
-                    "methodology": [
-                        m for m, checked in {
-                            "Quantitative": method_quant, 
-                            "Qualitative": method_qual, 
-                            "Mixed-Methods": method_mixed
-                        }.items() if checked
-                    ]
+                    "academic_year": academic_year,
+                    "state": state_origin,
+                    "locale": locale_setting,
+                    "grade_levels": grade_level,
+                    "program_types": program_type,
+                    "academic_subject": academic_subject,
+                    "assessment_purpose": assessment_purpose,
+                    "course_level_type": course_level_type
                 }
                 st.success("Metadata payload logged successfully to the temporary memory ledger!")
+
 
 
 # ==========================================
