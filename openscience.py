@@ -14,13 +14,16 @@ import sqlite3
 # --- DATABASE INITIALIZATION ---
 # 1. Global Cloud Shared Database (Supabase/Postgres) via Streamlit Secrets
 try:
-    shared_conn = st.connection("postgresql", type="sql")
+    # Changed "postgresql" to "sql" to match Streamlit's connection secrets framework
+    shared_conn = st.connection("sql", type="sql")
 except Exception:
     shared_conn = None
+
 local_df = None
 st.set_page_config(page_title="Open Educational Metadata Portal", layout="wide")
 st.title("🔬 Open Educational Metadata Portal")
 st.caption("An Open Source, Community-Driven Engine for Standardized Educational Research and Psychometrics.")
+
 
 import streamlit as st
 import pandas as pd
