@@ -442,8 +442,6 @@ elif app_mode == "2. Variable Instrument Architect":
     
     uploaded_custom_vars = st.file_uploader("Upload your completed Custom Variables CSV file", type=["csv"])
     
-       uploaded_custom_vars = st.file_uploader("Upload your completed Custom Variables CSV file", type=["csv"])
-    
     uploaded_items = []
     if uploaded_custom_vars is not None:
         try:
