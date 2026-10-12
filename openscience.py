@@ -87,40 +87,94 @@ app_mode = st.sidebar.radio(
 # ==========================================
 if app_mode == "1. Study Metadata Schema Registry":
     st.header("📝 Standardized Study Metadata Submission")
+    st.caption("Aligning educational research metadata elements across Dublin Core (DCMES) and CEDS standards.")
     st.markdown("---")
     
     with st.form("metadata_standards_form", clear_on_submit=True):
+        # --- DUBLIN CORE METADATA ELEMENT SET (DCMES) ---
         st.subheader("📋 Dublin Core Metadata Element Set (DCMES)")
-        title = st.text_input("Title (dc:title)*", placeholder="e.g., Analysis of Open Textbook Impact on Retention metrics")
-        creator = st.text_input("Creator/Authors (dc:creator)", placeholder="e.g., Dr. Jane Doe, Prof. John Smith")
-        description = st.text_area("Description/Abstract (dc:description)", placeholder="Summary of research goals...")
-        keywords = st.text_input("Subject Keywords (dc:subject)", placeholder="OER, Motivation, Grades")
         
-        st.subheader("📚 IEEE Learning Object Metadata (LOM)")
-        lom_context = st.multiselect("Educational Context (LOM 5.6)", ["Higher Education", "K-12 Education", "Vocational", "Informal Learning"])
-        lom_role = st.selectbox("Intended End User Role (LOM 5.5)", ["Learner", "Teacher", "Author", "Manager"])
+        title = st.text_input(
+            "Title (dc:title)*", 
+            placeholder="e.g., Impact of Open Textbooks on Course-Level Retention Metrics"
+        )
+        creator = st.text_input(
+            "Creator / Authors (dc:creator)", 
+            placeholder="e.g., Dr. Jane Doe, Prof. John Smith"
+        )
+        description = st.text_area(
+            "Description / Abstract (dc:description)", 
+            placeholder="Summary of research objectives, design schema, and core conceptual findings..."
+        )
+        keywords = st.text_input(
+            "Subject Keywords (dc:subject)", 
+            placeholder="e.g., OER, Student Motivation, Retention, Psychometrics"
+        )
+        language = st.selectbox(
+            "Language (dc:language)", 
+            options=["English (en)", "Spanish (es)", "French (fr)", "Other / Multilingual"]
+        )
         
+        st.divider()
+        
+        # --- COMMON EDUCATION DATA STANDARDS (CEDS) ---
         st.subheader("🌐 Common Education Data Standards (CEDS Alignment)")
-        ceds_scope = st.selectbox("Study Scope / Level", ["Institutional-Wide", "Course-Level Evaluation", "Multi-Institutional Cluster", "National Assessment"])
+        
+        ceds_scope = st.selectbox(
+            "Study Scope / Operational Level", 
+            options=[
+                "Course-Level Evaluation", 
+                "Program-Wide / Departmental Assessment",
+                "Institutional-Wide Study", 
+                "Multi-Institutional Cluster", 
+                "National / State Assessment"
+            ]
+        )
         
         st.markdown("**Target Study Population Profile**")
-        pop_undergrad = st.checkbox("Undergraduate Students")
-        pop_grad = st.checkbox("Graduate Students")
         pop_k12 = st.checkbox("K-12 Learners")
+        pop_undergrad = st.checkbox("Undergraduate Students")
+        pop_grad = st.checkbox("Graduate Students / Professional Learners")
         pop_faculty = st.checkbox("Instructors / Faculty Members")
+        pop_admin = st.checkbox("Educational Administrators")
         
         st.markdown("**Research Methodology Framework**")
         method_quant = st.checkbox("Quantitative Experimental / Quasi-Experimental")
-        method_qual = st.checkbox("Qualitative (Interviews, Case Studies)")
+        method_qual = st.checkbox("Qualitative (Interviews, Case Studies, Coding)")
         method_mixed = st.checkbox("Mixed-Methods Architecture")
+        
+        st.divider()
         
         submit_metadata = st.form_submit_button("🚀 Submit to Community Ledger")
         
         if submit_metadata:
             if not title:
-                st.error("DCMES Core Field Title is required.")
+                st.error("DCMES Core Field Title (dc:title) is required to index the study.")
             else:
-                st.success("Metadata payload logged successfully to memory ledger!")
+                # Compile structural data dictionary payload for session state tracking or global ingestion
+                metadata_payload = {
+                    "title": title,
+                    "creator": creator,
+                    "description": description,
+                    "subject": keywords,
+                    "language": language,
+                    "scope": ceds_scope,
+                    "population": [
+                        p for p, checked in {
+                            "K-12": pop_k12, "Undergrad": pop_undergrad, 
+                            "Grad": pop_grad, "Faculty": pop_faculty, "Admin": pop_admin
+                        }.items() if checked
+                    ],
+                    "methodology": [
+                        m for m, checked in {
+                            "Quantitative": method_quant, 
+                            "Qualitative": method_qual, 
+                            "Mixed-Methods": method_mixed
+                        }.items() if checked
+                    ]
+                }
+                st.success("Metadata payload logged successfully to the temporary memory ledger!")
+
 
 # ==========================================
 # MODULE 2: VARIABLE ARCHITECT & FILE EXPORTER
