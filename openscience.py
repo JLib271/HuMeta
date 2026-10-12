@@ -177,20 +177,41 @@ st.divider()
 st.header("🔍 Explored Studies Registries")
 
 if db_mode == "Local Locked (SQLite File)":
-    conn = sqlite3.connect(st.session_state.local_db_path)
-    try:
-        df_studies = pd.read_sql_query("SELECT * FROM studies ORDER BY id DESC", conn)
-        df_vars = pd.read_sql_query("SELECT * FROM variables", conn)
-    finally:
-        conn.close()
+    # If the user uploaded a local CSV file, use it. Otherwise, initialize an empty registry dataframe.
+    if local_df is not None:
+        df_studies = local_df.copy()
+        # Create a sequential ID to match the rest of your app's rendering loops
+        df_studies['id'] = range(1, len(df_studies) + 1)
         
-    # Provide direct backup recovery file package to download local file safely
-    with open(st.session_state.local_db_path, "rb") as f:
+        # Unpack variables layout into a structured dataframe to match your rendering expectations
+        vars_list = []
+        for idx, row in df_studies.iterrows():
+            if pd.notna(row['variables_layout']):
+                for line in str(row['variables_layout']).strip().split("\n"):
+                    if "|" in line:
+                        parts = [p.strip() for p in line.split("|")]
+                        v_name = parts[0] if len(parts) > 0 else line.strip()
+                        v_type = parts[1] if len(parts) > 1 else "Not Specified"
+                        v_def = parts[2] if len(parts) > 2 else "No definition"
+                    else:
+                        v_name = line.strip()
+                        v_type = "Not Specified"
+                        v_def = "No definition"
+                    if v_name:
+                        vars_list.append({"study_id": row['id'], "variable_name": v_name, "variable_type": v_type, "operational_definition": v_def})
+        df_vars = pd.DataFrame(vars_list)
+    else:
+        df_studies = pd.DataFrame(columns=["id", "title", "authors", "abstract", "keywords", "theoretical_framework", "variables_layout"])
+        df_vars = pd.DataFrame(columns=["study_id", "variable_name", "variable_type", "operational_definition"])
+        
+    # Provide a simple export mechanism to save their work back out to an Excel/CSV file layout
+    if not df_studies.empty:
+        csv_download = df_studies.to_csv(index=False).encode('utf-8')
         st.sidebar.download_button(
-            label="📥 Download Local Registry (.db)",
-            data=f.read(),
-            file_name="open_ed_metadata_registry.db",
-            mime="application/x-sqlite3"
+            label="📥 Download Local Registry (.csv)",
+            data=csv_download,
+            file_name="open_ed_metadata_registry.csv",
+            mime="text/csv"
         )
 else:
     if shared_conn is not None:
