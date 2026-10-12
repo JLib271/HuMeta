@@ -87,11 +87,10 @@ app_mode = st.sidebar.radio(
 # ==========================================
 if app_mode == "1. Study Metadata Schema Registry":
     st.header("📝 Standardized Study Metadata Submission")
-    st.caption("Aligning educational research metadata elements across Dublin Core (DCMES) and CEDS standards.")
+    st.caption("Aligning educational research metadata elements across Dublin Core (DCMES), CEDS, and DDI standards.")
     st.markdown("---")
     
     # --- DYNAMIC AUTHOR TRACKING INITIALIZATION ---
-    # We use st.session_state to track an array of authors independently of form boundaries
     if "authors_list" not in st.session_state:
         st.session_state.authors_list = [{"name": "", "orcid": ""}]
 
@@ -101,7 +100,7 @@ if app_mode == "1. Study Metadata Schema Registry":
     # Render interactive input text fields dynamically for every author in session memory
     updated_authors = []
     for idx, author in enumerate(st.session_state.authors_list):
-        col_name, col_orcid, col_del = st.columns([4, 4, 1])
+        col_name, col_orcid, col_del = st.columns([4, 5, 1])
         
         with col_name:
             auth_name = st.text_input(
@@ -119,7 +118,6 @@ if app_mode == "1. Study Metadata Schema Registry":
             )
         with col_del:
             st.markdown("<div style='padding-top: 28px;'></div>", unsafe_allow_html=True)
-            # Disable the delete button if there's only 1 author entry left
             if st.button("🗑️", key=f"auth_del_{idx}", disabled=len(st.session_state.authors_list) <= 1):
                 st.session_state.authors_list.pop(idx)
                 st.rerun()
@@ -129,7 +127,6 @@ if app_mode == "1. Study Metadata Schema Registry":
     # Update our state matrix on the fly with whatever the user typed
     st.session_state.authors_list = updated_authors
 
-    # Click action to add an empty author input slot row
     if st.button("➕ Add Author"):
         st.session_state.authors_list.append({"name": "", "orcid": ""})
         st.rerun()
@@ -137,7 +134,6 @@ if app_mode == "1. Study Metadata Schema Registry":
     st.markdown("---")
 
     # --- MAIN SUBMISSION FORM ---
-    # Now we execute the core metadata entry form for the rest of the fixed elements
     with st.form("metadata_standards_form", clear_on_submit=True):
         st.subheader("📋 Core Project Overview")
         
@@ -158,6 +154,59 @@ if app_mode == "1. Study Metadata Schema Registry":
             options=["English (en)", "Spanish (es)", "French (fr)", "Other / Multilingual"]
         )
         
+        st.divider()
+
+        # --- DDI (DATA DOCUMENTATION INITIATIVE) STANDARD METADATA ---
+        st.subheader("📊 Data Documentation Initiative (DDI Metadata Schema)")
+        st.caption("Capturing structural data-level context, collection methods, and lifecycle tracking frameworks.")
+        
+        col_ddi1, col_ddi2 = st.columns(2)
+        with col_ddi1:
+            unit_of_analysis = st.selectbox(
+                "Unit of Analysis (ddi:UnitOfAnalysis)",
+                options=[
+                    "Individual (Student / Learner)",
+                    "Individual (Teacher / Instructor)",
+                    "Group / Classroom Level",
+                    "Organization / Institution (School/University)",
+                    "Geographic / School District Level",
+                    "Other / Multi-Level"
+                ]
+            )
+            data_collection_mode = st.selectbox(
+                "Data Collection Mode (ddi:ModeOfCollection)",
+                options=[
+                    "Self-Administered Questionnaire: Web/Online",
+                    "Self-Administered Questionnaire: Paper",
+                    "Face-to-Face Interview / Qualitative Audio",
+                    "Focus Group / Transcript Coding",
+                    "Automated Ingestion / Server Log Extraction",
+                    "Mixed Modes"
+                ]
+            )
+        with col_ddi2:
+            sampling_procedure = st.selectbox(
+                "Sampling Procedure (ddi:SamplingProcedure)",
+                options=[
+                    "Non-probability: Total Universe / Census",
+                    "Non-probability: Convenience / Availability Sampling",
+                    "Non-probability: Purposive / Judgmental Sampling",
+                    "Probability: Simple Random Sampling",
+                    "Probability: Stratified Random Sampling",
+                    "Probability: Cluster / Multi-Stage Sampling"
+                ]
+            )
+            time_method = st.selectbox(
+                "Time Method / Study Design (ddi:TimeMethod)",
+                options=[
+                    "Cross-sectional / Single Time Point Assessment",
+                    "Longitudinal: Cohort Study / Repeated Measures",
+                    "Longitudinal: Trend / Multiple Intervals",
+                    "Experimental / Pre-Post Testing",
+                    "Time Series Analysis"
+                ]
+            )
+            
         st.divider()
         
         # --- COMMON EDUCATION DATA STANDARDS (CEDS ALIGNMENT) ---
@@ -228,7 +277,6 @@ if app_mode == "1. Study Metadata Schema Registry":
         submit_metadata = st.form_submit_button("🚀 Submit Complete Study Record")
         
         if submit_metadata:
-            # Check if at least one author name was filled out in our dynamic list
             has_author = any(auth["name"].strip() for auth in st.session_state.authors_list)
             
             if not title:
@@ -236,13 +284,17 @@ if app_mode == "1. Study Metadata Schema Registry":
             elif not has_author:
                 st.error("At least one Creator/Author Name is required.")
             else:
-                # Compile structural data dictionary payload capturing the full array of authors
+                # Compile structural data dictionary payload capturing Dublin Core, CEDS, and DDI parameters
                 metadata_payload = {
                     "title": title,
                     "creators_matrix": [a for a in st.session_state.authors_list if a["name"].strip()],
                     "description": description,
                     "subject": keywords,
                     "language": language,
+                    "ddi_unit_of_analysis": unit_of_analysis,
+                    "ddi_collection_mode": data_collection_mode,
+                    "ddi_sampling_procedure": sampling_procedure,
+                    "ddi_time_method": time_method,
                     "academic_year": academic_year,
                     "state": state_origin,
                     "locale": locale_setting,
@@ -252,11 +304,10 @@ if app_mode == "1. Study Metadata Schema Registry":
                     "assessment_purpose": assessment_purpose,
                     "course_level_type": course_level_type
                 }
-                st.success(f"Metadata payload for '{title}' logged with {len(metadata_payload['creators_matrix'])} author(s) successfully!")
+                st.success(f"Metadata payload for '{title}' logged with DDI schemas and {len(metadata_payload['creators_matrix'])} author(s) successfully!")
                 
                 # Reset authors list back to a clean default state for the next session
                 st.session_state.authors_list = [{"name": "", "orcid": ""}]
-
 
 # ==========================================
 # MODULE 2: VARIABLE INSTRUMENT ARCHITECT
