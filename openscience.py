@@ -340,16 +340,16 @@ if app_mode == "1. Study Metadata Schema Registry":
             st.markdown("##### **Step 1: Copy your generated metadata payload capsule**")
             st.code(schema_payload, language="markdown")
             
-            st.markdown("##### **Step 2: Open the ticket page and paste**")
-            # 🌟 BULLETPROOF SOLUTION: Raw URL containing NO special characters or query encodings
+                        st.markdown("##### **Step 2: Open the ticket page and paste**")
             static_github_url = "https://github.com"
             
+            # Displays the URL as a clean text lane to completely prevent browser interception
             st.markdown(
-                f"1. Click this link to go to the tracker: [{static_github_url}]({static_github_url})\n"
-                f"2. Type **`[Schema Suggestion] Update Metadata`** in the Issue Title lane.\n"
-                f"3. Paste your copied payload into the large description box below it and hit submit!"
+                f"1. Copy this link address: `{static_github_url}`\n"
+                f"2. Paste it into your browser's address bar at the top of your screen and press Enter.\n"
+                f"3. Type **`[Schema Suggestion] Update Metadata`** in the Issue Title lane.\n"
+                f"4. Paste your copied payload into the large description box below it and hit submit!"
             )
-
 
 
 # ==========================================
@@ -543,10 +543,16 @@ elif app_mode == "2. Variable Instrument Architect":
             
             st.markdown("##### **Step 1: Copy your generated variable payload capsule**")
             st.code(pasteboard_content, language="markdown")
+
+            st.markdown("##### **Step 2: Open the ticket page and paste**")
+            static_github_url = "https://github.com"
             
-            st.markdown("##### **Step 2: Open ticket page and paste**")
-            short_title = urllib.parse.quote(f"[Schema Suggestion] Add {first_framework}")
-            safe_url = f"https://github.com{short_title}"
+            st.markdown(
+                f"1. Copy this link address: `{static_github_url}`\n"
+                f"2. Paste it into your browser's address bar at the top of your screen and press Enter.\n"
+                f"3. Type **`[Schema Suggestion] Add {first_framework}`** in the Issue Title lane.\n"
+                f"4. Paste your copied payload into the large description box below it and hit submit!"
+            )
             
             st.markdown(
                 f'<a href="{safe_url}" target="_blank">'
@@ -1074,11 +1080,12 @@ with st.expander("💡 Click to Draft an Analytics Function Suggestion"):
         st.code(analytics_payload, language="markdown")
         
         st.markdown("##### **Step 2: Open the ticket page and paste**")
-        # 🌟 BULLETPROOF SOLUTION: Raw URL containing NO special characters or query encodings
         static_github_url = "https://github.com"
         
         st.markdown(
-            f"1. Click this link to go to the tracker: [{static_github_url}]({static_github_url})\n"
-            f"2. Type **`[Analytics Suggestion] Extend Functions`** in the Issue Title lane.\n"
-            f"3. Paste your copied payload into the large description box below it and hit submit!"
+            f"1. Copy this link address: `{static_github_url}`\n"
+            f"2. Paste it into your browser's address bar at the top of your screen and press Enter.\n"
+            f"3. Type **`[Analytics Suggestion] Extend Functions`** in the Issue Title lane.\n"
+            f"4. Paste your copied payload into the large description box below it and hit submit!"
         )
+
