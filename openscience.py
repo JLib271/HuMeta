@@ -442,22 +442,24 @@ elif app_mode == "2. Variable Instrument Architect":
     
     uploaded_custom_vars = st.file_uploader("Upload your completed Custom Variables CSV file", type=["csv"])
     
+       uploaded_custom_vars = st.file_uploader("Upload your completed Custom Variables CSV file", type=["csv"])
+    
     uploaded_items = []
     if uploaded_custom_vars is not None:
         try:
             uploaded_df = pd.read_csv(uploaded_custom_vars)
             required_fields = ["Variable_ID", "Concept_Construct", "Variable_Label", "Question_Item_Text", "Response_Scale_Options", "Framework_Source"]
-                if all(field in uploaded_df.columns for field in required_fields):
+            
+            if all(field in uploaded_df.columns for field in required_fields):
                 uploaded_items = uploaded_df.to_dict(orient="records")
                 st.success(f"✅ Successfully imported {len(uploaded_items)} custom variable definitions into active session workspace!")
                 st.dataframe(uploaded_df, use_container_width=True, hide_index=True)
-                
-                # Proactive offer tool for generating GitHub Pull Requests from this file
                 st.info("💡 **Want to contribute these variables to our global open source system?** When you connect your repository, these uploaded records will format into automated GitHub Suggestion tickets for review.")
             else:
                 st.error("❌ Column mismatch. Please verify your file headers perfectly match the downloaded template format.")
         except Exception as e:
             st.error(f"Error parsing custom variable spreadsheet file: {e}")
+
 
 
     # Merge active form items with newly imported custom spreadsheet items
