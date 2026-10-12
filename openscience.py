@@ -92,7 +92,7 @@ app_mode = st.sidebar.radio(
 # ==========================================
 if app_mode == "1. Study Metadata Schema Registry":
     st.header("📝 Standardized Study Metadata Submission")
-    st.caption("Aligning educational research metadata elements across Dublin Core (DCMES), CEDS, and DDI standards.")
+    st.caption("Aligning educational research metadata elements across Dublin Core (DCMES) and CEDS standards.")
     st.markdown("---")
     
     # --- DYNAMIC AUTHOR TRACKING INITIALIZATION ---
@@ -105,7 +105,7 @@ if app_mode == "1. Study Metadata Schema Registry":
     # Render interactive input text fields dynamically for every author in session memory
     updated_authors = []
     for idx, author in enumerate(st.session_state.authors_list):
-        col_name, col_orcid, col_del = st.columns([4, 5, 1])
+        col_name, col_orcid, col_del = st.columns(3)
         
         with col_name:
             auth_name = st.text_input(
@@ -139,6 +139,7 @@ if app_mode == "1. Study Metadata Schema Registry":
     st.markdown("---")
 
     # --- MAIN SUBMISSION FORM ---
+    # Everything inside this with block MUST be indented by exactly 4 spaces
     with st.form("metadata_standards_form", clear_on_submit=True):
         st.subheader("📋 Core Project Overview")
         
@@ -277,41 +278,18 @@ if app_mode == "1. Study Metadata Schema Registry":
                 options=["Regular / Standard Rigor", "Remedial / Developmental / Basic", "Advanced Placement (AP)", "International Baccalaureate (IB)", "Honors Level", "Dual Enrollment / Postsecondary Credit"]
             )
             
-            # --- MODULE 1 EXTENSION PIPELINE BUTTON ---
-    st.markdown("---")
-    st.markdown("### 🚀 Propose Extensions to Core Study Metadata Architecture")
-    st.caption("Suggest new Dublin Core (DCMES) descriptors, alternative CEDS geographic drop-down indicators, or updated standard options.")
-    
-    with st.expander("💡 Click to Draft a Metadata Schema Suggestion"):
-        suggested_schema_field = st.text_input("Target Element / Field Code to Change", placeholder="e.g., CEDS Section 2 - Alternative Grade Classifications")
-        suggested_schema_text = st.text_area("Detailed Suggestion / Additions Details", placeholder="Describe new drop-down selections, alternative labels, or documentation requirements...")
-        
-        if suggested_schema_field and suggested_schema_text:
-            schema_payload = (
-                f"**Study Metadata Architecture Amendment Proposal**\n\n"
-                f"**Target Allocation Segment:** {suggested_schema_field}\n\n"
-                f"### PROPOSED SUB-MATRIX SELECTIONS\n"
-                f"```text\n{suggested_schema_text}\n```\n\n"
-                f"---\n*Submitted securely via the Study Metadata Schema Registry Interface Box.*"
-            )
-            
-            st.markdown("##### **Step 1: Copy your generated metadata payload capsule**")
-            st.code(schema_payload, language="markdown")
-            
-            st.markdown("##### **Step 2: Open ticket page and paste**")
-            short_title = urllib.parse.quote(f"[Schema Suggestion] Update Metadata: {suggested_schema_field}")
-            safe_url = f"https://github.com{short_title}"
-            
-            st.markdown(
-                f'<a href="{safe_url}" target="_blank">'
-                f'<button style="background-color:#1A365D; color:white; border:none; padding:10px 20px; text-align:center; text-decoration:none; display:inline-block; font-size:14px; border-radius:6px; cursor:pointer; font-weight:bold; width:100%;">'
-                f'📦 Open Pre-filled Ingestion Ticket Page</button></a>',
-                unsafe_allow_html=True
-            )
-
         st.divider()
         
-               # --- SUBMIT BUTTON & VALIDATION (INSIDE THE FORM CONTAINER) ---
+        # --- SUBMIT BUTTON & VALIDATION (INSIDE THE FORM CONTAINER BOUNDARY) ---
+        # Notice the exact 4-space indentation layout applied here:
+        submit_metadata = st.form_submit_button("🚀 Submit Complete Study Record")
+        
+        if submit_metadata:
+            has_author = any(auth["name"].strip() for auth in st.session_state.authors_list)
+            
+            if not title:
+                st.error("DCMES Core Field Title (dc:title) is required to index the study.")
+        # --- SUBMIT BUTTON & VALIDATION (INSIDE THE FORM CONTAINER) ---
         submit_metadata = st.form_submit_button("🚀 Submit Complete Study Record")
         
         if submit_metadata:
@@ -381,7 +359,6 @@ if app_mode == "1. Study Metadata Schema Registry":
                 f'📦 Open Pre-filled Ingestion Ticket Page</button></a>',
                 unsafe_allow_html=True
             )
-
 
 # ==========================================
 # MODULE 2: VARIABLE ARCHITECT & INSTRUMENT EXPORTER
