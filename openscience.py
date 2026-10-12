@@ -488,24 +488,6 @@ elif app_mode == "2. Variable Instrument Architect":
         st.markdown("### 🚀 Contribute Custom Framework to Global Schema")
         st.caption("Want to make these variables part of our open-source system? Clicking below will generate a pre-formatted suggestion ticket on our GitHub repository. Our automated actions will immediately process it into a secure Pull Request branch package.")
         
-        # Unpack the active spreadsheet rows into an optimized text chunk for the issue ticket body
-    uploaded_custom_vars = st.file_uploader("Upload your completed Custom Variables CSV file", type=["csv"])
-
-    # Merge active form items with newly imported custom spreadsheet items
-    final_instrument_list = active_items + uploaded_items + st.session_state.session_instruments
-    
-    if final_instrument_list:
-        df_manifest = pd.DataFrame(final_instrument_list)
-        
-        # --- RENAME DATA GRID FOR ACCESSIBILITY ---
-        st.subheader("📋 Your Active Study Instrument Summary Table")
-        st.dataframe(df_manifest, use_container_width=True, hide_index=True)
-        
-        # --- EXPORT PIPELINES & REPOSITORY ACTION BUTTONS ---
-        st.markdown("---")
-        st.markdown("### 🚀 Contribute Custom Framework to Global Schema")
-        st.caption("Want to make these variables part of our open-source system? Clicking below will generate a pre-formatted suggestion ticket on our GitHub repository. Our automated actions will immediately process it into a secure Pull Request branch package.")
-        
         # 🌟 SAFETY WRAPPER: Only build the GitHub Ticket button if a custom CSV file was actually uploaded
         if uploaded_custom_vars is not None:
             # Unpack the active spreadsheet rows into an optimized text chunk for the issue ticket body
