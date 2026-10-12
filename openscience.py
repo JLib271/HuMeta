@@ -317,7 +317,7 @@ elif app_mode == "2. Variable Instrument Architect":
     st.caption("Design variable frameworks, configure measurement items, and instantly download standardized DDI-compliant templates or clean survey forms.")
     st.markdown("---")
     
-    # --- SECTION A: REPOSITORY & STUDY INDEXING (ICPSR / DATAVERSE STANDARDS) ---
+        # --- SECTION A: REPOSITORY & STUDY INDEXING (ICPSR / DATAVERSE STANDARDS) ---
     st.subheader("📚 1. Social Science Repository Metadata (ICPSR / Dataverse Alignment)")
     st.caption("Align study indexing with major repositories using rich, study-level methodology and citation tracing variables.")
     
@@ -333,12 +333,33 @@ elif app_mode == "2. Variable Instrument Architect":
             "Persistent Identifier / DOI (e.g., from KCWorks, Harvard Dataverse, or ICPSR)", 
             placeholder="e.g., doi:10.xxxx/kcworks..."
         )
-        data_type = st.selectbox("Data Collection Type / Media Vector", ["Quantitative Matrix", "Qualitative Text Transcript", "Audio/Video Media", "Mixed Matrix"])
+        unit_of_analysis = st.selectbox(
+            "Unit of Analysis (DDI Core)", 
+            options=["Individual (Student/Teacher)", "Group/Classroom", "Organization/Institution", "Geographic/School District Level"]
+        )
     with col_rep2:
-        unit_of_analysis = st.selectbox("Unit of Analysis (DDI Core)", ["Individual (Student/Teacher)", "Group/Classroom", "Organization/Institution", "Geographic/School District Level"])
-        sampling_procedure = st.text_input("Sampling Procedure", placeholder="e.g., Convenience sample, Stratified random sampling...")
+        # Standardized DDI/ICPSR sampling methodology dropdown selection matrix
+        sampling_method = st.selectbox(
+            "Sampling Procedure / Methodology Type",
+            options=[
+                "Non-probability: Convenience / Availability Sampling",
+                "Non-probability: Purposive / Judgmental Sampling",
+                "Non-probability: Snowball / Network Voluntarism",
+                "Probability: Simple Random Sampling",
+                "Probability: Stratified Random Sampling",
+                "Probability: Cluster / Multi-Stage Area Sampling",
+                "Total Universe / Complete Census Ingestion",
+                "Other / Mixed Framework Specification"
+            ]
+        )
+        # Required fillable text area block ensuring thorough methodological description
+        sampling_procedure = st.text_area(
+            "Sampling Method Explanation / Implementation Context*",
+            placeholder="Describe your sampling criteria, recruitment parameters, and response yield thresholds..."
+        )
 
     st.divider()
+
 
     # --- SECTION B: VARIABLE CONFIGURATION (DDI SCHEMA STANDARDS) ---
     st.subheader("🧠 2. Study Variable & Framework Configuration")
