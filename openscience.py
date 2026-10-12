@@ -574,16 +574,29 @@ elif app_mode == "3. Community Data Repository Sync":
 # ==========================================
 elif app_mode == "4. Descriptive & Scale Analytics":
     st.header("📊 Descriptive & Scale Analytics Engine")
-    st.caption("Analyze item matrices, process missing value patterns, and compute aggregate survey construct values on the fly.")
+    st.caption("Analyze item matrices, evaluate structural scale internal consistency coefficients, compute correlations, and export analytical packages.")
     st.markdown("---")
     
-    # Provide a simple option to load demo data if the user doesn't have a file ready
-    data_source = st.radio("Analytics Workspace Mode:", ["Use Synthetic Sample Instrument Dataset", "Upload Custom Data Sheet (.csv)"])
+    # 1. RIGOROUS USER DATA INGEST INSTRUCTIONS
+    st.subheader("📂 1. Ingest Data Sheet Mapping Workspace")
+    data_source = st.radio("Analytics Dataset Source Selection:", ["Use Standard Synthetic Sample Dataset", "Upload Custom Research Data Sheet (.csv)"])
+    
+    # Detailed warning blueprint box instructing users on exact label column expectations
+    st.info(
+        "📝 **Strict CSV Data Schema Ingestion Requirements:**\n\n"
+        "To execute structural calculations without errors, your custom file **must conform exactly** to these criteria:\n"
+        "* **Demographics:** Include columns labeled precisely as `Age` (Numeric Integer values) and `Gender` (Text values match: `Woman`, `Man`, `Non-binary`, `Prefer not to say`).\n"
+        "* **Psychometric Scales:** Scale item columns must follow the prefix notation pattern matching your constructs so the engine can automatically bundle them together:\n"
+        "  - **Theory of Planned Behavior:** Columns must be named starting with `TPB_` (e.g., `TPB_Attitude_1`, `TPB_Norms_2`, `TPB_Control_3`).\n"
+        "  - **Self-Determination Theory:** Columns must be named starting with `SDT_` (e.g., `SDT_Autonomy_1`, `SDT_Competence_2`).\n"
+        "  - **Technology Acceptance Model:** Columns must be named starting with `TAM_` (e.g., `TAM_Usefulness_1`, `TAM_EaseOfUse_2`).\n"
+        "* **Values Scaling:** Psychometric matrix items must contain continuous numeric data vectors (e.g., standard Likert items scored 1-5 or 1-7)."
+    )
     
     df_analytics = None
     
-    if data_source == "Use Synthetic Sample Instrument Dataset":
-        # Generate clean reproducible psychometric dataset distributions
+    if data_source == "Use Standard Synthetic Sample Dataset":
+        # Generate stable, clean psychometric sample data arrays
         np.random.seed(42)
         n_samples = 100
         synthetic_data = {
@@ -594,7 +607,8 @@ elif app_mode == "4. Descriptive & Scale Analytics":
             "TPB_Attitude_Item2": np.random.choice([1, 2, 3, 4, 5], size=n_samples, p=[0.02, 0.08, 0.25, 0.45, 0.2]),
             "SDT_Autonomy_Item1": np.random.choice([1, 2, 3], size=n_samples, p=[0.1, 0.4, 0.5]),
             "SDT_Autonomy_Item2": np.random.choice([1, 2, 3], size=n_samples, p=[0.05, 0.35, 0.60]),
-            "Qualitative_Notes": np.random.choice(["Excellent resource distribution", "Instruction format needs editing iterations", "Satisfactory scale"], size=n_samples)
+            "TAM_Usefulness_Item1": np.random.choice([1, 2, 3, 4, 5], size=n_samples, p=[0.05, 0.05, 0.15, 0.45, 0.30]),
+            "TAM_Usefulness_Item2": np.random.choice([1, 2, 3, 4, 5], size=n_samples, p=[0.03, 0.07, 0.20, 0.40, 0.30])
         }
         df_analytics = pd.DataFrame(synthetic_data)
     else:
@@ -604,48 +618,134 @@ elif app_mode == "4. Descriptive & Scale Analytics":
             
     if df_analytics is not None:
         st.subheader("📋 Dataset Workspace Snapshot")
-        st.dataframe(df_analytics.head(10), use_container_width=True)
+        st.dataframe(df_analytics.head(10), use_container_width=True, hide_index=True)
         
-        # Separate numeric data fields automatically from text properties strings
-        numeric_cols = df_analytics.select_dtypes(include=[np.number]).columns.tolist()
-        numeric_cols = [c for c in numeric_cols if "ID" not in c] # Filter out sequence identification columns
+        # Isolate continuous variables and item scores
+        all_numeric_cols = df_analytics.select_dtypes(include=[np.number]).columns.tolist()
+        numeric_cols = [c for c in all_numeric_cols if "ID" not in c]
         
+        # --- 2. ADD AXES LABELS TO THE DISTRIBUTION CHART VISUALIZER ---
+        st.divider()
+        st.subheader("📊 2. Distribution Data Chart Visualizer")
         if numeric_cols:
-            col1, col2 = st.columns(2)
+            selected_col = st.selectbox("Select Target Variable for Distribution Evaluation:", numeric_cols)
             
-            with col1:
-                st.subheader("📈 Statistical Summarization Matrix")
-                selected_col = st.selectbox("Select Target Variable for Distribution Evaluation:", numeric_cols)
-                
-                # Descriptive evaluation math operations using Pandas data engine structures
+            col_chart1, col_chart2 = st.columns([1, 2])
+            with col_chart1:
                 desc_stats = df_analytics[selected_col].describe()
+                st.markdown(f"**Descriptive Vectors for `{selected_col}`:**")
                 st.dataframe(pd.DataFrame(desc_stats), use_container_width=True)
+            with col_chart2:
+                # Compile accurate counting distributions for categorical/Likert scales
+                counts_df = df_analytics[selected_col].value_counts().sort_index().reset_index()
+                counts_df.columns = ["Response Categories", "Frequency (Participant Count)"]
                 
-            with col2:
-                st.subheader("📊 Distribution Data Chart Visualizer")
-                # Build an distribution layout map tracking standard item responses dynamically
-                counts = df_analytics[selected_col].value_counts().sort_index()
-                st.bar_chart(counts, use_container_width=True)
+                # Render bar chart with explicit, scannable axes labels
+                st.markdown(f"**Response Value Counts for `{selected_col}`**")
+                st.bar_chart(counts_df.set_index("Response Categories"), y="Frequency (Participant Count)", use_container_width=True)
+        
+        # --- 3. AUTOMATED COMPOSITE SCALE INDEX ARCHITECT & CRONBACH'S ALPHA ---
+        st.divider()
+        st.subheader("🧮 3. Automated Composite Scale Index & Reliability Architect")
+        st.caption("The engine crawls your dataset column tags to dynamically bind scales as averages of their matched item matrices and calculates Alpha coefficients.")
+        
+        # Define internal mathematical function to compute standard Cronbach's Alpha
+        def calculate_cronbach_alpha(scale_df):
+            clean_df = scale_df.dropna()
+            n_items = clean_df.shape[1]
+            if n_items <= 1:
+                return 0.0
+            item_variances = clean_df.var(ddof=1, axis=0).sum()
+            total_variance = clean_df.sum(axis=1).var(ddof=1)
+            if total_variance == 0:
+                return 0.0
+            alpha = (n_items / (n_items - 1)) * (1 - (item_variances / total_variance))
+            return alpha
+
+        # Detect prefix structural grouping columns
+        scale_prefixes = {"TPB_": "Theory of Planned Behavior", "SDT_": "Self-Determination Theory", "TAM_": "Technology Acceptance Model"}
+        computed_scales_manifest = {}
+        scale_summary_text = "=== CRONBACH'S ALPHA INTERNAL CONSISTENCY PROFILE ===\n"
+        
+        for prefix, scale_name in scale_prefixes.items():
+            matched_items = [col for col in df_analytics.columns if col.startswith(prefix)]
+            if len(matched_items) >= 2:
+                # 🌟 AUTOMATED AVERAGING LOGIC: Compute index values dynamically across rows
+                scale_score_col = f"Scale_Composite_{prefix.replace('_', '')}"
+                df_analytics[scale_score_col] = df_analytics[matched_items].mean(axis=1)
                 
-            # Aggregate Construct Calculator Module
-            st.markdown("---")
-            st.subheader("🧮 Composite Scale Index Architect")
-            st.caption("Select multiple psychometric indicator items to calculate their aggregate composite index tracking score value.")
+                # Compute Cronbach's Alpha
+                alpha_val = calculate_cronbach_alpha(df_analytics[matched_items])
+                computed_scales_manifest[scale_name] = {"column": scale_score_col, "items": matched_items, "alpha": alpha_val}
+                
+                # Visual verification reporting output card matrix
+                col_m1, col_m2 = st.columns(2)
+                with col_m1:
+                    st.metric(label=f"🌐 {scale_name} Mean Index", value=f"{df_analytics[scale_score_col].mean():.2f}")
+                with col_m2:
+                    st.metric(label=f"🧬 {scale_name} Cronbach's Alpha (α)", value=f"{alpha_val:.3f}", help="Values above 0.70 represent high scale profiling reliability standards.")
+                
+                scale_summary_text += f"Scale Target: {scale_name}\nIncluded Item Items: {', '.join(matched_items)}\nCalculated Reliability (Cronbach's Alpha): {alpha_val:.4f}\n\n"
+                st.markdown(" ")
+
+        # --- 4. MIXED VARIABLE DATA CORRELATIONS MATRIX ENGINE ---
+        st.divider()
+        st.subheader("🔗 4. Statistical Correlation Matrix Model")
+        st.caption("Processes correlations across all active items, using spearman ordinal rules or continuous Pearson coefficient vectors depending on item classifications.")
+        
+        # Accumulate demographic variables alongside newly constructed index average scores
+        correlation_targets = []
+        if "Age" in df_analytics.columns:
+            correlation_targets.append("Age")
             
-            selected_scale_cols = st.multiselect("Select columns to calculate combined scale value (e.g., combining Item1 and Item2):", numeric_cols)
-            if selected_scale_cols:
-                # Add calculated composite indexing vectors onto memory dataframes dynamically
-                df_analytics["Composite_Scale_Score"] = df_analytics[selected_scale_cols].mean(axis=1)
-                st.success(f"Composite Scale Index successfully constructed for: {', '.join(selected_scale_cols)}")
-                
-                c_col1, c_col2 = st.columns(2)
-                with c_col1:
-                    st.metric(label="Overall Scale Framework Mean Score", value=f"{df_analytics['Composite_Scale_Score'].mean():.2f}")
-                with c_col2:
-                    st.metric(label="Overall Scale Framework Median Score", value=f"{df_analytics['Composite_Scale_Score'].median():.2f}")
-                    
-                st.line_chart(df_analytics["Composite_Scale_Score"], use_container_width=True)
+        for scale_name, properties in computed_scales_manifest.items():
+            correlation_targets.append(properties["column"])
+            
+        if len(correlation_targets) >= 2:
+            # Build correlation dataframe using Spearman rank-order correlation matrix 
+            # as it accommodates mixed numeric classifications (Age vs Likert Scale averages) safely
+            correlation_matrix = df_analytics[correlation_targets].corr(method="spearman")
+            
+            # Clean column labels to look friendly to social-science readers
+            friendly_labels = {col: col.replace("Scale_Composite_", "Index: ") for col in correlation_targets}
+            clean_corr_matrix = correlation_matrix.rename(index=friendly_labels, columns=friendly_labels)
+            
+            st.markdown("**Spearman Rank Correlation Matrix ($r_s$):**")
+            st.dataframe(clean_corr_matrix.style.background_gradient(cmap="coolwarm", axis=None).format("{:.3f}"), use_container_width=True)
         else:
-            st.warning("No continuous numeric variable items identified in the targeted workspace tracking file sheet.")
+            st.warning("Insufficient structural aggregate composite dimensions available to compute multi-variable correlation grids.")
+            clean_corr_matrix = pd.DataFrame()
+
+        # --- 5. COMPREHENSIVE COMPENDIUM DOWNLOAD EXPORT ENGINE ---
+        st.divider()
+        st.subheader("📥 5. Download Evaluation Compendium")
+        st.caption("Generate a compiled analytical summary workbook detailing item statistics, alpha values, and tracking matrix structures.")
+        
+                # Construct summary string document stream
+        summary_report = "========================================================\n"
+        summary_report += "   OPEN EDUCATIONAL METADATA RESEARCH REPORT COMPENDIUM\n"
+        summary_report += "========================================================\n\n"
+        summary_report += f"Dataset Evaluation Context Size: {df_analytics.shape[0]} Observations / Rows\n"
+        summary_report += f"Total Attribute Column Matrix: {df_analytics.shape[1]} Structural Fields\n\n"
+        
+        summary_report += scale_summary_text + "\n"
+        
+        summary_report += "=== GLOBAL VARIABLE DESCRIPTIVE VECTOR MATRIX ===\n"
+        desc_summary = df_analytics[numeric_cols].describe().to_string()
+        summary_report += desc_summary + "\n\n"
+        
+        if not clean_corr_matrix.empty:
+            summary_report += "=== MULTI-VARIABLE MIXED INTER-CORRELATION MATRIX ===\n"
+            summary_report += clean_corr_matrix.to_string() + "\n"
+            
+        st.download_button(
+            label="📥 Download Complete Analytical Summary Report (.txt)",
+            data=summary_report,
+            file_name="educational_analytics_summary_compendium.txt",
+            mime="text/plain",
+            use_container_width=True
+        )
+
+
 
 
