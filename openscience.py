@@ -13,11 +13,14 @@ import sqlite3
 
 # --- DATABASE INITIALIZATION ---
 try:
-    shared_conn = st.connection("sql", type="sql")
-except Exception:
+    # Safely extract the secret URL string from your app container environment
+    db_url = st.secrets["connections"]["sql"]["url"]
+    
+    # Force initialize the SQL connection wrapper directly with the target URL
+    shared_conn = st.connection("sql", type="sql", url=db_url)
+except Exception as e:
     shared_conn = None
 
-# 🌟 ADD THESE THREE LINES RIGHT HERE:
 local_df = None
 df_studies = pd.DataFrame()
 df_vars = pd.DataFrame()
