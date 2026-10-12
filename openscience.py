@@ -340,15 +340,14 @@ if app_mode == "1. Study Metadata Schema Registry":
             st.markdown("##### **Step 1: Copy your generated metadata payload capsule**")
             st.code(schema_payload, language="markdown")
             
-            st.markdown("##### **Step 2: Open ticket page and paste**")
-            short_title = urllib.parse.quote(f"[Schema Suggestion] Update Metadata: {suggested_schema_field}")
-            safe_url = f"https://github.com{short_title}"
+            st.markdown("##### **Step 2: Open the ticket page and paste**")
+            # 🌟 BULLETPROOF SOLUTION: Raw URL containing NO special characters or query encodings
+            static_github_url = "https://github.com"
             
-            # 🌟 ONLY ONE NATIVE LINK BUTTON REMAINS HERE
-            st.link_button(
-                label="📦 Open Pre-filled Ingestion Ticket Page",
-                url=safe_url,
-                use_container_width=True
+            st.markdown(
+                f"1. Click this link to go to the tracker: [{static_github_url}]({static_github_url})\n"
+                f"2. Type **`[Schema Suggestion] Update Metadata`** in the Issue Title lane.\n"
+                f"3. Paste your copied payload into the large description box below it and hit submit!"
             )
 
 
