@@ -592,7 +592,34 @@ elif app_mode == "4. Descriptive & Scale Analytics":
         "  - **Technology Acceptance Model:** Columns must be named starting with `TAM_` (e.g., `TAM_Usefulness_1`, `TAM_EaseOfUse_2`).\n"
         "* **Values Scaling:** Psychometric matrix items must contain continuous numeric data vectors (e.g., standard Likert items scored 1-5 or 1-7)."
     )
+        # --- AUTOMATED DATA TEMPLATE GENERATION & DOWNLOAD ---
+    # Create a structured DataFrame matching your exact schema requirements
+    template_cols = [
+        "Participant_ID", "Age", "Gender", 
+        "TPB_Attitude_1", "TPB_Norms_2", "TPB_Control_3", 
+        "SDT_Autonomy_1", "SDT_Competence_2", 
+        "TAM_Usefulness_1", "TAM_EaseOfUse_2"
+    ]
+    analytics_template_df = pd.DataFrame(columns=template_cols)
     
+    # Inject a clean placeholder row as a visual guide for the researcher
+    analytics_template_df.loc[0] = [1, 21, "Woman", 4, 5, 3, 4, 5, 4, 4]
+    analytics_template_df.loc[1] = [2, 19, "Man", 2, 3, 4, 3, 2, 5, 5]
+    
+    # Convert the structured matrix into downloadable CSV bytes
+    analytics_template_csv = analytics_template_df.to_csv(index=False).encode('utf-8')
+    
+    # Render the download trigger button
+    st.download_button(
+        label="📥 Download Analytics CSV Template File",
+        data=analytics_template_csv,
+        file_name="analytics_data_ingest_template.csv",
+        mime="text/csv",
+        use_container_width=True
+    )
+    
+    st.markdown("---")
+
     df_analytics = None
     
     if data_source == "Use Standard Synthetic Sample Dataset":
