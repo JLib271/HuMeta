@@ -311,6 +311,7 @@ if app_mode == "1. Study Metadata Schema Registry":
 
         st.divider()
         
+               # --- SUBMIT BUTTON & VALIDATION (INSIDE THE FORM CONTAINER) ---
         submit_metadata = st.form_submit_button("🚀 Submit Complete Study Record")
         
         if submit_metadata:
@@ -345,6 +346,42 @@ if app_mode == "1. Study Metadata Schema Registry":
                 
                 # Reset authors list back to a clean default state for the next session
                 st.session_state.authors_list = [{"name": "", "orcid": ""}]
+
+    # 🌟 STEPPING COMPLETELY OUT OF THE FORM CONTAINER FOR DISPATCH MODULES
+    # This code is flat against the left margin (no indentation spaces)
+    
+    # --- MODULE 1 EXTENSION PIPELINE BUTTON ---
+    st.markdown("---")
+    st.markdown("### 🚀 Propose Extensions to Core Study Metadata Architecture")
+    st.caption("Suggest new Dublin Core (DCMES) descriptors, alternative CEDS geographic drop-down indicators, or updated standard options.")
+    
+    with st.expander("💡 Click to Draft a Metadata Schema Suggestion"):
+        suggested_schema_field = st.text_input("Target Element / Field Code to Change", placeholder="e.g., CEDS Section 2 - Alternative Grade Classifications", key="mod1_suggest_field")
+        suggested_schema_text = st.text_area("Detailed Suggestion / Additions Details", placeholder="Describe new drop-down selections, alternative labels, or documentation requirements...", key="mod1_suggest_text")
+        
+        if suggested_schema_field and suggested_schema_text:
+            schema_payload = (
+                f"**Study Metadata Architecture Amendment Proposal**\n\n"
+                f"**Target Allocation Segment:** {suggested_schema_field}\n\n"
+                f"### PROPOSED SUB-MATRIX SELECTIONS\n"
+                f"```text\n{suggested_schema_text}\n```\n\n"
+                f"---\n*Submitted securely via the Study Metadata Schema Registry Interface Box.*"
+            )
+            
+            st.markdown("##### **Step 1: Copy your generated metadata payload capsule**")
+            st.code(schema_payload, language="markdown")
+            
+            st.markdown("##### **Step 2: Open ticket page and paste**")
+            short_title = urllib.parse.quote(f"[Schema Suggestion] Update Metadata: {suggested_schema_field}")
+            safe_url = f"https://github.com{short_title}"
+            
+            st.markdown(
+                f'<a href="{safe_url}" target="_blank">'
+                f'<button style="background-color:#1A365D; color:white; border:none; padding:10px 20px; text-align:center; text-decoration:none; display:inline-block; font-size:14px; border-radius:6px; cursor:pointer; font-weight:bold; width:100%;">'
+                f'📦 Open Pre-filled Ingestion Ticket Page</button></a>',
+                unsafe_allow_html=True
+            )
+
 
 # ==========================================
 # MODULE 2: VARIABLE ARCHITECT & INSTRUMENT EXPORTER
