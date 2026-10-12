@@ -1,0 +1,86 @@
+name: Secure Code Suggestion PR Gateway
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  generate-proposal-pr:
+    # Restrict execution strictly to validated schema suggestion issue tags
+    if: startsWith(github.event.issue.title, '[Schema Suggestion]')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      
+    steps:
+      - name: Checkout Source Code Tree
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      # Isolate and extract the custom framework title from the ticket heading text strings
+      - name: Extract Framework Metadata Targets
+        id: extract_meta
+        run: |
+          TITLE="${{ github.event.issue.title }}"
+          FRAMEWORK=$(echo "$TITLE" | sed 's/\[Schema Suggestion\] Add //')
+          echo "framework_name=$FRAMEWORK" >> $GITHUB_OUTPUT
+          
+          # Extract the CSV block contents wrapped between the markdown code block backticks
+          echo "Extracting raw CSV spreadsheet block strings..."
+          sed -n '/```csv/,/```/p' << 'EOF' > temp_extracted.csv
+          ${{ github.event.issue.body }}
+          EOF
+          # Clean out structural backtick lines to leave a valid CSV data matrix table file
+          sed -i '/```/d' temp_extracted.csv
+        
+      - name: Setup Python Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # Inject our parsed payload strings straight into the python layout compiler variables
+      - name: Run Schema Processing Script Engine
+        env:
+          FRAMEWORK_NAME: \${{ steps.extract_meta.outputs.framework_name }}
+        run: |
+          pip install pandas
+          # Read text content of our cleaned data file safely
+          CSV_CONTENT=\$(cat temp_extracted.csv)
+          export CSV_CONTENT
+          python .github/scripts/parse_csv_suggestion.py
+
+      # Packages code changes securely into a review branch with You as the final gatekeeper
+      - name: Create Pull Request for Admin Review
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: \${{ secrets.GITHUB_TOKEN }}
+          commit-message: "propose: add user custom framework schema elements to openscience.py mapping dictionary"
+          committer: GitHub <noreply@github.com>
+          author: github-actions[bot] <github-actions[bot]@://github.com>
+          branch: proposal-schema-\${{ github.event.issue.number }}
+          title: "[Schema Update] Propose Framework: \${{ steps.extract_meta.outputs.framework_name }}"
+          body: |
+            🤖 **Automated Data Processing Report:**
+            This Pull Request was generated automatically from a user-uploaded custom variables CSV template file on your metadata portal webpage.
+            
+            ### Actions Required by Admin (Human-in-the-Loop):
+            1. Click on the **"Files changed"** tab above to review the additions to the `THEORY_MAP` block inside `openscience.py`.
+            2. If the variables, definitions, and item texts are scientifically sound, click **"Merge Pull Request"**.
+            3. Streamlit Cloud will immediately pick up the merge and push the new theoretical framework live to your dashboard.
+          labels: |
+            community-suggestion
+            human-review-required
+
+      # Drop a successful status notice back to the user on the original ticket
+      - name: Close Processing Ticket with Success Comment
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: \${{ github.event.issue.number }}
+          body: |
+            🤖 **Metadata Ingestion Engine Status Update:**
+            Thank you! Your proposed theoretical framework variable data rows have been parsed by our validation engines and successfully packaged into a pending Pull Request review branch. 
+            
+            An administrator has been alerted. Once approved and merged by a human review officer, your variables will update live on the main application interface!
