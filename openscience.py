@@ -6,6 +6,7 @@ import os
 import tempfile
 import sqlite3
 from sqlalchemy import text
+import requests
 
 # ==========================================
 # 1. PSYCHOMETRIC & METADATA DICTIONARIES
