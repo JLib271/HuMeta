@@ -461,39 +461,37 @@ elif app_mode == "2. Variable Instrument Architect":
                 if not github_token:
                     st.warning("⚠️ GitHub automation token is unconfigured. Link your GITHUB_PAT in Streamlit secrets to activate submission pipelines.")
                 else:
-                    if st.button("📦 Propose Uploaded Variables to Global Portal"):
-                        with st.spinner("Transmitting schema payload to repository pipeline..."):
-                            # Read uploaded file raw bytes to pass across the web hook request payload cleanly
-                            uploaded_custom_vars.seek(0)
-                            raw_csv_text = uploaded_custom_vars.read().decode('utf-8')
-                            
-                            # Safely extract first framework name string from rows to build a descriptive PR heading
-                            first_framework = str(uploaded_df["Framework_Source"].iloc[0]) if not uploaded_df.empty else "Custom Framework"
-                            
-                            # Format standardized GitHub API Repository Dispatch endpoint
-                            # Targets user 'JLib271' and repo 'OpenEdMetadata'
-                            api_url = "https://github.com"
-                            
-                            headers = {
-                                "Authorization": f"token {github_token}",
-                                "Accept": "application/vnd.github.v3+json"
-                            }
-                            
-                            payload = {
-                                "event_type": "propose_custom_schema",
-                                "client_payload": {
-                                    "framework_name": first_framework,
-                                    "csv_content": raw_csv_text
-                                }
-                            }
-                            
-                            # Fire web request
-                            response = requests.post(api_url, json=payload, headers=headers)
-                            
-                            if response.status_code == 204:
-                                st.success("🎉 Success! Your proposal has been transmitted. A formal Pull Request has been queued for developer verification!")
-                            else:
-                                st.error(f"Network automation failure ({response.status_code}): {response.text}")
+                                    # Proactive offer tool for generating GitHub Pull Requests from this file
+                st.markdown("---")
+                st.markdown("### 🚀 Contribute Custom Framework to Global Schema")
+                st.caption("Want to make these variables part of our open-source system? Clicking below will generate a pre-formatted suggestion ticket on our GitHub repository. Our automated actions will immediately process it into a secure Pull Request branch package.")
+                
+                # Unpack the active spreadsheet rows into an optimized text chunk for the issue ticket body
+                uploaded_custom_vars.seek(0)
+                raw_csv_text = uploaded_custom_vars.read().decode('utf-8')
+                first_framework = str(uploaded_df["Framework_Source"].iloc[0]) if not uploaded_df.empty else "Custom Framework"
+                
+                # Format URL parameters for the pre-filled issue route
+                issue_title = urllib.parse.quote(f"[Schema Suggestion] Add {first_framework}")
+                issue_body = urllib.parse.quote(
+                    f"**New Theoretical Framework Submission**\n\n"
+                    f"**Framework Target Name:** {first_framework}\n\n"
+                    f"### RAW SCHEMA PAYLOAD\n"
+                    f"```csv\n{raw_csv_text}\n```\n\n"
+                    f"---\n*Submitted securely via the Open Educational Metadata Portal Variable Ingest Box.*"
+                )
+                
+                # Build the user hyperlink target
+                github_issue_url = f"https://github.com{issue_title}&body={issue_body}"
+                
+                # Render an elegant, accessible action link button style
+                st.markdown(
+                    f'<a href="{github_issue_url}" target="_blank">'
+                    f'<button style="background-color:#1A365D; color:white; border:none; padding:12px 24px; text-align:center; text-decoration:none; display:inline-block; font-size:16px; border-radius:6px; cursor:pointer; font-weight:bold; width:100%;">'
+                    f'📦 Open Pre-filled GitHub Ingestion Ticket</button></a>',
+                    unsafe_allow_html=True
+                )
+
 
                 st.dataframe(uploaded_df, use_container_width=True, hide_index=True)
                 
