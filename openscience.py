@@ -743,35 +743,169 @@ elif app_mode == "4. Descriptive & Scale Analytics":
             st.warning("Insufficient structural aggregate composite dimensions available to compute multi-variable correlation grids.")
             clean_corr_matrix = pd.DataFrame()
 
-        # --- 5. COMPREHENSIVE COMPENDIUM DOWNLOAD EXPORT ENGINE ---
+                # --- 5. COMPREHENSIVE PDF REPORT GENERATION ENGINE ---
         st.divider()
         st.subheader("📥 5. Download Evaluation Compendium")
-        st.caption("Generate a compiled analytical summary workbook detailing item statistics, alpha values, and tracking matrix structures.")
+        st.caption("Generate a compiled analytical summary PDF handbook detailing item statistics, alpha metrics, and active distribution data charts.")
+
+        # Create a binary buffer to hold the compiled PDF data in memory
+        pdf_buffer = io.BytesIO()
         
-                # Construct summary string document stream
-        summary_report = "========================================================\n"
-        summary_report += "   OPEN EDUCATIONAL METADATA RESEARCH REPORT COMPENDIUM\n"
-        summary_report += "========================================================\n\n"
-        summary_report += f"Dataset Evaluation Context Size: {df_analytics.shape[0]} Observations / Rows\n"
-        summary_report += f"Total Attribute Column Matrix: {df_analytics.shape[1]} Structural Fields\n\n"
-        
-        summary_report += scale_summary_text + "\n"
-        
-        summary_report += "=== GLOBAL VARIABLE DESCRIPTIVE VECTOR MATRIX ===\n"
-        desc_summary = df_analytics[numeric_cols].describe().to_string()
-        summary_report += desc_summary + "\n\n"
-        
-        if not clean_corr_matrix.empty:
-            summary_report += "=== MULTI-VARIABLE MIXED INTER-CORRELATION MATRIX ===\n"
-            summary_report += clean_corr_matrix.to_string() + "\n"
+        try:
+            from reportlab.lib.pagesizes import letter
+            from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image
+            from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+            from reportlab.lib import colors
+            import matplotlib.pyplot as plt
             
-        st.download_button(
-            label="📥 Download Complete Analytical Summary Report (.txt)",
-            data=summary_report,
-            file_name="educational_analytics_summary_compendium.txt",
-            mime="text/plain",
-            use_container_width=True
-        )
+            # --- 1. SILENT VISUALIZATION GRAPH COMPILATION ---
+            # Compile Distribution Graph
+            fig_dist, ax_dist = plt.subplots(figsize=(6, 3))
+            counts_df.plot(kind="bar", x="Response Categories", y="Frequency (Participant Count)", ax=ax_dist, color="#1f77b4", legend=False)
+            ax_dist.set_title(f"Distribution: {selected_col}")
+            ax_dist.set_xlabel("Response Categories")
+            ax_dist.set_ylabel("Frequency")
+            plt.tight_layout()
+            
+            dist_img_path = os.path.join(tempfile.gettempdir(), "temp_dist_chart.png")
+            fig_dist.savefig(dist_img_path, dpi=200)
+            plt.close(fig_dist)
+            
+            # Compile Correlation Matrix Graph (If data is available)
+            corr_img_path = None
+            if not clean_corr_matrix.empty:
+                fig_corr, ax_corr = plt.subplots(figsize=(5, 4))
+                cax = ax_corr.matshow(clean_corr_matrix, cmap="coolwarm", vmin=-1, vmax=1)
+                fig_corr.colorbar(cax)
+                
+                ticks = np.arange(len(clean_corr_matrix.columns))
+                ax_corr.set_xticks(ticks)
+                ax_corr.set_yticks(ticks)
+                ax_corr.set_xticklabels(clean_corr_matrix.columns, rotation=45, ha="left", fontsize=8)
+                ax_corr.set_yticklabels(clean_corr_matrix.index, fontsize=8)
+                ax_corr.set_title("Spearman Rank Correlation Matrix", pad=20)
+                plt.tight_layout()
+                
+                corr_img_path = os.path.join(tempfile.gettempdir(), "temp_corr_chart.png")
+                fig_corr.savefig(corr_img_path, dpi=200)
+                plt.close(fig_corr)
+
+            # --- 2. BUILD THE STRUCTURAL PDF FRAMEWORK ---
+            doc = SimpleDocTemplate(
+                pdf_buffer, 
+                pagesize=letter,
+                rightMargin=40, leftMargin=40, topMargin=40, bottomMargin=40,
+                title="Open Educational Metadata Analysis Report"
+            )
+            
+            styles = getSampleStyleSheet()
+            
+            # Custom accessible text style elements
+            title_style = ParagraphStyle(
+                'ReportTitle', parent=styles['Heading1'],
+                fontSize=22, textColor=colors.HexColor("#1A365D"), spaceAfter=12
+            )
+            h2_style = ParagraphStyle(
+                'SectionHeader', parent=styles['Heading2'],
+                fontSize=14, textColor=colors.HexColor("#2B6CB0"), spaceBefore=14, spaceAfter=8
+            )
+            body_style = ParagraphStyle(
+                'ReportBody', parent=styles['BodyText'],
+                fontSize=10, leading=14, textColor=colors.HexColor("#2D3748")
+            )
+            code_style = ParagraphStyle(
+                'CodeStyle', parent=styles['Normal'],
+                fontName='Courier', fontSize=8, leading=10, textColor=colors.HexColor("#1A202C")
+            )
+
+            story = []
+            
+            # Title & Subheaders Block
+            story.append(Paragraph("<b>Open Educational Metadata Report Compendium</b>", title_style))
+            story.append(Paragraph(f"<b>Dataset Sample Metric Matrix Size:</b> {df_analytics.shape[0]} Rows | {df_analytics.shape[1]} Columns", body_style))
+            story.append(Spacer(1, 15))
+            
+            # Cronbach's Alpha Reliability Block
+            story.append(Paragraph("<b>1. Cronbach's Alpha Scale Reliability Internal Consistency</b>", h2_style))
+            for line in scale_summary_text.split("\n"):
+                if line.strip() and "CRONBACH" not in line:
+                    story.append(Paragraph(line, body_style))
+            story.append(Spacer(1, 10))
+            
+            # Variable Distribution and Visual Graphs Section
+            story.append(Paragraph(f"<b>2. Distribution Visualization Graph: {selected_col}</b>", h2_style))
+            if os.path.exists(dist_img_path):
+                story.append(Image(dist_img_path, width=320, height=160))
+            story.append(Spacer(1, 15))
+            
+            # Structural Correlation Matrix Table Section
+            if not clean_corr_matrix.empty and corr_img_path and os.path.exists(corr_img_path):
+                story.append(Paragraph("<b>3. Mixed Multi-Variable Inter-Correlation Matrix</b>", h2_style))
+                
+                # Transform correlation values array framework into a readable text grid layout
+                corr_data = [["Variable"] + list(clean_corr_matrix.columns)]
+                for idx, row in clean_corr_matrix.iterrows():
+                    corr_data.append([str(idx)] + [f"{val:.3f}" for val in row])
+                
+                corr_table = Table(corr_data, hAlign='LEFT')
+                corr_table.setStyle(TableStyle([
+                    ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#E2E8F0")),
+                    ('TEXTCOLOR', (0,0), (-1,0), colors.HexColor("#1A202C")),
+                    ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+                    ('FONTNAME', (0,0), (-1,0), 'Helvetica-Bold'),
+                    ('FONTSIZE', (0,0), (-1,-1), 8),
+                    ('BOTTOMPADDING', (0,0), (-1,-1), 4),
+                    ('TOPPADDING', (0,0), (-1,-1), 4),
+                    ('GRID', (0,0), (-1,-1), 0.5, colors.HexColor("#CBD5E0")),
+                ]))
+                
+                story.append(corr_table)
+                story.append(Spacer(1, 15))
+                story.append(Paragraph("<b>Correlation Map Matrix Diagram:</b>", body_style))
+                story.append(Image(corr_img_path, width=240, height=192))
+                story.append(Spacer(1, 15))
+                
+            # Descriptive Evaluation Table Block Annex
+            story.append(Paragraph("<b>4. Global Item Descriptive Metric Summaries Annex</b>", h2_style))
+            desc_df = df_analytics[numeric_cols].describe().round(3).reset_index()
+            desc_data = [list(desc_df.columns)] + desc_df.values.tolist()
+            
+            # Format raw numerical rows safely into clean string representations for table rendering
+            string_desc_data = []
+            for row in desc_data:
+                string_desc_data.append([f"{item:.3f}" if isinstance(item, (int, float)) else str(item) for item in row])
+                
+            desc_table = Table(string_desc_data, hAlign='LEFT')
+            desc_table.setStyle(TableStyle([
+                ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#EDF2F7")),
+                ('FONTNAME', (0,0), (-1,0), 'Helvetica-Bold'),
+                ('FONTSIZE', (0,0), (-1,-1), 7),
+                ('GRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E2E8F0")),
+                ('ALIGN', (0,0), (-1,-1), 'LEFT'),
+            ]))
+            story.append(desc_table)
+
+            # Build and lock down document stream data
+            doc.build(story)
+            
+            # Clean up background image paths from server storage space
+            if os.path.exists(dist_img_path):
+                os.unlink(dist_img_path)
+            if corr_img_path and os.path.exists(corr_img_path):
+                os.unlink(corr_img_path)
+                
+            # --- 3. STREAM STREAM INTERFACE COMPONENT DOWNLOAD ---
+            st.download_button(
+                label="📥 Download Complete Analytical Summary Report (.pdf)",
+                data=pdf_buffer.getvalue(),
+                file_name="educational_analytics_summary_report.pdf",
+                mime="application/pdf",
+                use_container_width=True
+            )
+            
+        except Exception as pdf_error:
+            st.error(f"Failed to assemble PDF Report Compendium structure: {pdf_error}. Ensure reportlab and matplotlib packages exist.")
+
 
 
 
