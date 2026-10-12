@@ -280,7 +280,7 @@ if app_mode == "1. Study Metadata Schema Registry":
             
         st.divider()
         
-               # --- SUBMIT BUTTON & VALIDATION (INSIDE THE FORM CONTAINER) ---
+                # --- SUBMIT BUTTON & VALIDATION (INSIDE THE FORM CONTAINER) ---
         submit_metadata = st.form_submit_button("🚀 Submit Complete Study Record")
         
         if submit_metadata:
@@ -316,7 +316,7 @@ if app_mode == "1. Study Metadata Schema Registry":
                 # Reset authors list back to a clean default state for the next session
                 st.session_state.authors_list = [{"name": "", "orcid": ""}]
 
-    # 🌟 STEPPING COMPLETELY OUT OF THE FORM CONTAINER FOR DISPATCH SUGGESTION MODULES
+    # 🌟 STEPPING COMPLETELY OUT OF THE FORM CONTAINER FOR DISPATCH MODULES
     # This code is flat against the left margin (no indentation spaces)
     
     # --- MODULE 1 EXTENSION PIPELINE BUTTON ---
@@ -344,12 +344,13 @@ if app_mode == "1. Study Metadata Schema Registry":
             short_title = urllib.parse.quote(f"[Schema Suggestion] Update Metadata: {suggested_schema_field}")
             safe_url = f"https://github.com{short_title}"
             
-            st.markdown(
-                f'<a href="{safe_url}" target="_blank">'
-                f'<button style="background-color:#1A365D; color:white; border:none; padding:10px 20px; text-align:center; text-decoration:none; display:inline-block; font-size:14px; border-radius:6px; cursor:pointer; font-weight:bold; width:100%;">'
-                f'📦 Open Pre-filled Ingestion Ticket Page</button></a>',
-                unsafe_allow_html=True
+            # 🌟 ONLY ONE NATIVE LINK BUTTON REMAINS HERE
+            st.link_button(
+                label="📦 Open Pre-filled Ingestion Ticket Page",
+                url=safe_url,
+                use_container_width=True
             )
+
 
 
 # ==========================================
