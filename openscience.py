@@ -1052,40 +1052,33 @@ elif app_mode == "4. Descriptive & Scale Analytics":
         else:
             st.warning("No continuous numeric variable items identified in the targeted workspace tracking file sheet.")
 
-    # --- MODULE 4 ANALYTICS SUGGESTION PIPELINE BUTTON ---
-    st.markdown("---")
-    st.markdown("### 🚀 Propose Alternative Statistical & Analytical Functions")
-    st.caption("Suggest new mathematical equations, code models, plotting styles, or data analysis methods (e.g., ANOVA, multi-level regression equations).")
+# --- MODULE 4 ANALYTICS SUGGESTION PIPELINE BUTTON ---
+st.markdown("---")
+st.markdown("### 🚀 Propose Alternative Statistical & Analytical Functions")
+st.caption("Suggest new mathematical equations, code models, plotting styles, or data analysis methods (e.g., ANOVA, multi-level regression equations).")
+
+with st.expander("💡 Click to Draft an Analytics Function Suggestion"):
+    suggested_stat_metric = st.text_input("Proposed Statistical Function Title", placeholder="e.g., Add Two-Way ANOVA Matrix Calculations", key="mod4_suggest_metric")
+    suggested_stat_code = st.text_area("Proposed Python Code block / Mathematical Formula", placeholder="def calculate_anova():\n    # Provide code suggestions or mathematical description models here...", height=150, key="mod4_suggest_code")
     
-    with st.expander("💡 Click to Draft an Analytics Function Suggestion"):
-        suggested_stat_metric = st.text_input("Proposed Statistical Function Title", placeholder="e.g., Add Two-Way ANOVA Matrix Calculations")
-        suggested_stat_code = st.text_area("Proposed Python Code block / Mathematical Formula", placeholder="def calculate_anova():\n    # Provide code suggestions or mathematical description models here...", height=150)
+    if suggested_stat_metric and suggested_stat_code:
+        analytics_payload = (
+            f"**Analytics Engine Function Enhancement Proposal**\n\n"
+            f"**Target Statistical Metric:** {suggested_stat_metric}\n\n"
+            f"### PROPOSED PYTHON ALGORITHM CODE\n"
+            f"```text\n{suggested_stat_code}\n```\n\n"
+            f"---\n*Submitted securely via the Descriptive & Scale Analytics Suggestion Pipeline Interface.*"
+        )
         
-        if suggested_stat_metric and suggested_stat_code:
-            analytics_payload = (
-                f"**Analytics Engine Function Enhancement Proposal**\n\n"
-                f"**Target Statistical Metric:** {suggested_stat_metric}\n\n"
-                f"### PROPOSED PYTHON ALGORITHM CODE\n"
-                f"```text\n{suggested_stat_code}\n```\n\n"
-                f"---\n*Submitted securely via the Descriptive & Scale Analytics Suggestion Pipeline Interface.*"
-            )
-            
-            st.markdown("##### **Step 1: Copy your generated analytical payload capsule**")
-            st.code(analytics_payload, language="markdown")
-            
-            st.markdown("##### **Step 2: Open ticket page and paste**")
-            short_title = urllib.parse.quote(f"[Analytics Suggestion] Extend Functions: {suggested_stat_metric}")
-            safe_url = f"https://github.com{short_title}"
-            
-            st.markdown(
-                f'<a href="{safe_url}" target="_blank">'
-                f'<button style="background-color:#2B6CB0; color:white; border:none; padding:10px 20px; text-align:center; text-decoration:none; display:inline-block; font-size:14px; border-radius:6px; cursor:pointer; font-weight:bold; width:100%;">'
-                f'📦 Open Pre-filled Analytics Ingestion Ticket</button></a>',
-                unsafe_allow_html=True
-            )
-
-
-
-
-
-
+        st.markdown("##### **Step 1: Copy your generated analytical payload capsule**")
+        st.code(analytics_payload, language="markdown")
+        
+        st.markdown("##### **Step 2: Open the ticket page and paste**")
+        # 🌟 BULLETPROOF SOLUTION: Raw URL containing NO special characters or query encodings
+        static_github_url = "https://github.com"
+        
+        st.markdown(
+            f"1. Click this link to go to the tracker: [{static_github_url}]({static_github_url})\n"
+            f"2. Type **`[Analytics Suggestion] Extend Functions`** in the Issue Title lane.\n"
+            f"3. Paste your copied payload into the large description box below it and hit submit!"
+        )
