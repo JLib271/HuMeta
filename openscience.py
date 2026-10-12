@@ -449,6 +449,51 @@ elif app_mode == "2. Variable Instrument Architect":
             if all(field in uploaded_df.columns for field in required_fields):
                 uploaded_items = uploaded_df.to_dict(orient="records")
                 st.success(f"✅ Successfully imported {len(uploaded_items)} custom variable definitions into active session workspace!")
+                                # Proactive offer tool for generating GitHub Pull Requests from this file
+                st.markdown("---")
+                st.markdown("### 🚀 Contribute Custom Framework to Global Schema")
+                st.caption("Want to make these variables part of our open-source system? Clicking below will securely transmit this CSV data to our automated repository pipelines to generate a formal Pull Request for administrator review.")
+                
+                # Fetch token and build API dispatch payload
+                github_token = st.secrets.get("GITHUB_PAT")
+                
+                if not github_token:
+                    st.warning("⚠️ GitHub automation token is unconfigured. Link your GITHUB_PAT in Streamlit secrets to activate submission pipelines.")
+                else:
+                    if st.button("📦 Propose Uploaded Variables to Global Portal"):
+                        with st.spinner("Transmitting schema payload to repository pipeline..."):
+                            # Read uploaded file raw bytes to pass across the web hook request payload cleanly
+                            uploaded_custom_vars.seek(0)
+                            raw_csv_text = uploaded_custom_vars.read().decode('utf-8')
+                            
+                            # Safely extract first framework name string from rows to build a descriptive PR heading
+                            first_framework = str(uploaded_df["Framework_Source"].iloc[0]) if not uploaded_df.empty else "Custom Framework"
+                            
+                            # Format standardized GitHub API Repository Dispatch endpoint
+                            # Targets user 'JLib271' and repo 'OpenEdMetadata'
+                            api_url = "https://github.com"
+                            
+                            headers = {
+                                "Authorization": f"token {github_token}",
+                                "Accept": "application/vnd.github.v3+json"
+                            }
+                            
+                            payload = {
+                                "event_type": "propose_custom_schema",
+                                "client_payload": {
+                                    "framework_name": first_framework,
+                                    "csv_content": raw_csv_text
+                                }
+                            }
+                            
+                            # Fire web request
+                            response = requests.post(api_url, json=payload, headers=headers)
+                            
+                            if response.status_code == 204:
+                                st.success("🎉 Success! Your proposal has been transmitted. A formal Pull Request has been queued for developer verification!")
+                            else:
+                                st.error(f"Network automation failure ({response.status_code}): {response.text}")
+
                 st.dataframe(uploaded_df, use_container_width=True, hide_index=True)
                 
                 # Proactive offer tool for generating GitHub Pull Requests from this file
