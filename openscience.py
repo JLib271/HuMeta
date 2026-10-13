@@ -427,7 +427,7 @@ if app_mode == "1. Study Metadata Schema Registry":
         suggested_schema_field = st.text_input("Target Element / Field Code to Change", placeholder="e.g., CEDS Section 2 - Alternative Grade Classifications", key="mod1_suggest_field")
         suggested_schema_text = st.text_area("Detailed Suggestion / Additions Details", placeholder="Describe new drop-down selections, alternative labels, or documentation requirements...", key="mod1_suggest_text")
         
-                if suggested_schema_field and suggested_schema_text:
+    if suggested_schema_field and suggested_schema_text:
             # Bypasses multi-line quotation leaks completely using isolated string tuples
             schema_payload = (
                 f"**Study Metadata Architecture Amendment Proposal**\n\n"
