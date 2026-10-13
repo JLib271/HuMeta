@@ -99,7 +99,13 @@ st.caption("Standardized Study Registries and Psychometric Instrument Architects
 st.sidebar.header("⚙️ Core Controls")
 app_mode = st.sidebar.radio(
     "Navigate Workspace Module:",
-    ["1. Study Metadata Schema Registry", "2. Variable Instrument Architect", "3. Community Data Repository Sync", "4. Descriptive & Scale Analytics"]
+    [
+        "1. Study Metadata Schema Registry", 
+        "2. Variable Instrument Architect", 
+        "3. Community Data Repository Sync", 
+        "4. Descriptive & Scale Analytics",
+        "5. Live Central Database Viewer" # <-- ADD THIS LINE
+    ]
 )
 
 # ==========================================
@@ -972,3 +978,62 @@ with st.expander("💡 Click to Draft an Analytics Function Suggestion"):
             f"3. Type **`[Analytics Suggestion] Extend Functions`** in the Issue Title lane.\n"
             f"4. Paste your copied payload into the large description box below it and hit submit!"
         )
+# ==========================================
+# MODULE 5: LIVE CENTRAL DATABASE VIEWER
+# ==========================================
+elif app_mode == "5. Live Central Database Viewer":
+    st.header("🗄️ Central Repository Live Database Viewer")
+    st.caption("Direct, read-only access to the underlying structured SQL tables storing public community metadata records.")
+    st.markdown("---")
+
+    st.subheader("📊 Select Table to Query")
+    st.markdown("Click a button below to pull the real-time datasets straight from the central database.")
+
+    col_btn1, col_btn2 = st.columns(2)
+    
+    # Initialize a session state variable to track which table is active
+    if "active_db_view" not in st.session_state:
+        st.session_state.active_db_view = "studies"
+
+    with col_btn1:
+        if st.button("📋 View Core Studies Table (`studies`)", use_container_width=True, type="primary" if st.session_state.active_db_view == "studies" else "secondary"):
+            st.session_state.active_db_view = "studies"
+            st.rerun()
+
+    with col_btn2:
+        if st.button("📐 View Mapped Variables Table (`variables`)", use_container_width=True, type="primary" if st.session_state.active_db_view == "variables" else "secondary"):
+            st.session_state.active_db_view = "variables"
+            st.rerun()
+
+    st.markdown("---")
+
+    # Execute dynamic query based on user selection
+    try:
+        with st.spinner(f"Querying live `{st.session_state.active_db_view}` matrix from Supabase..."):
+            # Fetch raw data rows directly from the target table
+            db_response = supabase.table(st.session_state.active_db_view).select("*").order("created_at", descending=True).execute()
+            
+            if db_response.data:
+                display_df = pd.DataFrame(db_response.data)
+                
+                # Interface presentation and download engine
+                st.subheader(f"📂 Active Grid: `{st.session_state.active_db_view}` Table Records")
+                st.markdown(f"Displaying the latest **{len(display_df)}** submissions recorded in the cloud architecture.")
+                
+                # Render the data frame inside an interactive, sortable UI grid
+                st.dataframe(display_df, use_container_width=True, hide_index=True)
+                
+                # Allow users to instantly download the raw database state as a CSV
+                raw_csv_bytes = display_df.to_csv(index=False).encode('utf-8')
+                st.download_button(
+                    label=f"📥 Download Raw `{st.session_state.active_db_view}` Dataset (.csv)",
+                    data=raw_csv_bytes,
+                    file_name=f"supabase_central_repository_{st.session_state.active_db_view}.csv",
+                    mime="text/csv"
+                )
+            else:
+                st.info(f"The `{st.session_state.active_db_view}` table is currently connected but contains no data entries yet.")
+                
+    except Exception as db_view_error:
+        st.error(f"Failed to query central database: {db_view_error}")
+        st.info("💡 Troubleshooting tip: Verify that your Supabase tables are named exactly 'studies' or 'variables' and that your API credentials have permission to read them.")
