@@ -7,3 +7,4 @@ SQLAlchemy
 matplotlib
 reportlab
 supabase
+PyGithub>=2.1.0
