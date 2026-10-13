@@ -859,7 +859,7 @@ elif app_mode == "4. Descriptive & Scale Analytics":
             return alpha
 
         scale_prefixes = {"TPB_": "Theory of Planned Behavior", "SDT_": "Self-Determination Theory", "TAM_": "Technology Acceptance Model"}
-        computed_scales_manifest = {}
+        computed_scales_manifest = {{}}
         scale_summary_text = "=== CRONBACH'S ALPHA INTERNAL CONSISTENCY PROFILE ===\n"
         
         for prefix, scale_name in scale_prefixes.items():
