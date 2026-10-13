@@ -1014,30 +1014,53 @@ if app_mode == "5. Live Central Database Viewer":
 
     st.markdown("---")
 
+        # Ensure a fallback database target view is actively mapped
+    target_table = str(st.session_state.get("active_db_view", "studies")).strip().lower()
+
     try:
-        with st.spinner(f"Querying live `{st.session_state.active_db_view}` matrix from Supabase..."):
-            # Use .from_() instead of .table() to align with the Python PostgREST router
-            db_response = supabase.from_(st.session_state.active_db_view).select("*").execute()
+        with st.spinner(f"Connecting to live API public schema: `{target_table}`..."):
             
-            if db_response.data:
+            # Explicitly force schema, clear all whitespace, and cast clean routing strings
+            db_response = (
+                supabase.schema("public")
+                .from_(target_table)
+                .select("*")
+                .execute()
+            )
+            
+            if db_response.data is not None:
                 display_df = pd.DataFrame(db_response.data)
                 
-                st.subheader(f"📂 Active Grid: `{st.session_state.active_db_view}` Table Records")
-                st.markdown(f"Displaying the latest **{len(display_df)}** submissions recorded in the cloud architecture.")
-                
-                st.dataframe(display_df, use_container_width=True, hide_index=True)
-                
-                raw_csv_bytes = display_df.to_csv(index=False).encode('utf-8')
-                st.download_button(
-                    label=f"📥 Download Raw `{st.session_state.active_db_view}` Dataset (.csv)",
-                    data=raw_csv_bytes,
-                    file_name=f"supabase_central_repository_{st.session_state.active_db_view}.csv",
-                    mime="text/csv"
-                )
+                if not display_df.empty:
+                    st.subheader(f"📂 Live Matrix Grid: `{target_table}` Records")
+                    st.markdown(f"Displaying **{len(display_df)}** verified metadata structures from the cloud repository.")
+                    
+                    st.dataframe(display_df, use_container_width=True, hide_index=True)
+                    
+                    # Automated binary download streamer
+                    raw_csv_bytes = display_df.to_csv(index=False).encode('utf-8')
+                    st.download_button(
+                        label=f"📥 Download Raw `{target_table}` Spreadsheet (.csv)",
+                        data=raw_csv_bytes,
+                        file_name=f"central_repository_{target_table}_export.csv",
+                        mime="text/csv",
+                        use_container_width=True
+                    )
+                else:
+                    st.info(f"The structural cloud matrix `{target_table}` connected successfully but contains 0 entries.")
             else:
-                st.info(f"The `{st.session_state.active_db_view}` table is currently connected but contains no data entries yet.")
+                st.error("The API router returned an empty data object frame.")
                 
     except Exception as db_view_error:
         st.error(f"Failed to query central database: {db_view_error}")
+        
+        # Add live structural debug tracking directly to your application view container
+        st.markdown("### 🔧 API Connection Debug Panel")
+        st.json({
+            "Attempted Target Table": target_table,
+            "Session State Active Registry Value": st.session_state.get("active_db_view"),
+            "Supabase Config Endpoint Key Map": st.secrets["SUPABASE_URL"]
+        })
+
 
 
