@@ -1043,16 +1043,89 @@ elif app_mode == "4. Descriptive & Scale Analytics":
 # --- MODULE 4 ANALYTICS SUGGESTION PIPELINE BUTTON ---
     st.markdown("---")
     st.markdown("### 🚀 Propose Alternative Statistical & Analytical Functions")
-    st.caption("Seeking custom calculations?")
+    st.caption("Seeking custom calculations? Enter a metric or statistical test title below. If you don't know the code, our system will auto-generate a Python template for you!")
     
-    suggested_stat_metric = st.text_input("Proposed Statistical Function Title", key="mod4_metric")
-    suggested_stat_code = st.text_area("Proposed Python Code block", key="mod4_code")
+    suggested_stat_metric = st.text_input("Proposed Statistical Function Title", placeholder="e.g., Two-Way ANOVA, Chi-Square Test", key="mod4_metric")
+    suggested_stat_code = st.text_area("Proposed Python Code block (Optional)", placeholder="Leave blank to let the system auto-create the statistical calculation template...", height=100, key="mod4_code")
     
-    if st.button("🚀 Push Function to GitHub as Pull Request", key="submit_mod4_pr_btn"):
-        # Lines inside an inner "if" block get indented by 8 spaces (2 tabs)
-        with st.spinner("Connecting to GitHub API..."):
-            # Your PyGithub execution code runs here...
-            st.write("PR opened!")
+    if suggested_stat_metric:
+        if st.button("🚀 Push Function to GitHub as Pull Request", key="submit_mod4_pr_btn"):
+            with st.spinner("Analyzing request and auto-generating statistical code block..."):
+                
+                # 1. AUTO-GENERATION ENGINE: Check if the user left the code block blank
+                final_code_block = suggested_stat_code.strip()
+                if not final_code_block:
+                    metric_lower = suggested_stat_metric.lower()
+                    
+                    # Programmatic boilerplate generation rules based on common research models
+                    if "anova" in metric_lower:
+                        final_code_block = (
+                            "import statsmodels.api as sm\n"
+                            "from statsmodels.formula.api import ols\n\n"
+                            "def calculate_custom_anova(df, dependent_var, independent_vars):\n"
+                            "    # Auto-generated ANOVA formula wrapper\n"
+                            "    formula = f'{dependent_var} ~ C({independent_vars[0]}) * C({independent_vars[1]})'\n"
+                            "    model = ols(formula, data=df).fit()\n"
+                            "    anova_table = sm.stats.anova_lm(model, typ=2)\n"
+                            "    return anova_table"
+                        )
+                    elif "chi" in metric_lower or "square" in metric_lower:
+                        final_code_block = (
+                            "from scipy.stats import chi2_contingency\n\n"
+                            "def calculate_custom_chisquare(df, col1, col2):\n"
+                            "    # Auto-generated Chi-Square contingency analyzer\n"
+                            "    contingency_table = pd.crosstab(df[col1], df[col2])\n"
+                            "    chi2, p, dof, expected = chi2_contingency(contingency_table)\n"
+                            "    return {'chi2_stat': chi2, 'p_value': p, 'degrees_of_freedom': dof}"
+                        )
+                    elif "regression" in metric_lower:
+                        final_code_block = (
+                            "import statsmodels.api as sm\n\n"
+                            "def calculate_custom_regression(df, y_col, x_cols):\n"
+                            "    # Auto-generated Linear Regression (OLS) model\n"
+                            "    X = sm.add_constant(df[x_cols])\n"
+                            "    y = df[y_col]\n"
+                            "    model = sm.OLS(y, X).fit()\n"
+                            "    return model.summary()"
+                        )
+                    else:
+                        # Standard fail-safe mathematical descriptive vector blueprint
+                        final_code_block = (
+                            "import numpy as np\n"
+                            "import scipy.stats as stats\n\n"
+                            f"def calculate_{suggested_stat_metric.lower().replace(' ', '_')}(data_vector):\n"
+                            f"    # Standard evaluation model for {suggested_stat_metric}\n"
+                            "    clean_data = data_vector[~np.isnan(data_vector)]\n"
+                            "    metric_mean = np.mean(clean_data)\n"
+                            "    metric_variance = np.var(clean_data)\n"
+                            "    return {'mean': metric_mean, 'variance': metric_variance}"
+                        )
+                
+                # 2. Package the payload safely into an isolated string block
+                analytics_payload = (
+                    f"**Analytics Engine Function Enhancement Proposal**\n\n"
+                    f"**Target Statistical Metric:** {suggested_stat_metric}\n\n"
+                    f"### PROPOSED PYTHON ALGORITHM CODE\n"
+                    f"```text\n{final_code_block}\n```\n\n"
+                    f"---\n*Submitted securely via the Descriptive & Scale Analytics Suggestion Pipeline Interface.*"
+                )
+                
+                # 3. Fire your global PyGithub worker function
+                safe_filename = f"analytics_proposal_{suggested_stat_metric.lower().replace(' ', '_')}.txt"
+                summary_title = f"Add Analytics Metric: {suggested_stat_metric}"
+                
+                result_message = automate_github_pull_request(
+                    suggestion_type="Analytics",
+                    file_name=safe_filename,
+                    file_content=analytics_payload,
+                    title_summary=summary_title
+                )
+                
+                if "❌" in result_message:
+                    st.error(result_message)
+                else:
+                    st.success(result_message)
+
 
 # ==========================================
 # MODULE 5: LIVE CENTRAL DATABASE VIEWER
