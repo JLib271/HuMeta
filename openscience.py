@@ -618,12 +618,12 @@ elif app_mode == "2. Variable Instrument Architect":
         st.markdown("### 🚀 Propose Custom Framework Variables to Global Schema")
         st.caption("Want to make your uploaded CSV variables part of our permanent core dropdown systems?")
         
-            if uploaded_custom_vars is not None:
+        if uploaded_custom_vars is not None:
             uploaded_custom_vars.seek(0)
             raw_csv_text = uploaded_custom_vars.read().decode('utf-8')
             first_framework = str(uploaded_df["Framework_Source"].iloc[0]) if not uploaded_df.empty else "Custom Framework"
             
-            # Bypasses multi-line string restrictions safely using a tuple format
+            # Formats the file content safely to avoid f-string syntax breaking
             pasteboard_content = (
                 f"**New Theoretical Framework Submission**\n\n"
                 f"**Framework Target Name:** {first_framework}\n\n"
@@ -653,6 +653,7 @@ elif app_mode == "2. Variable Instrument Architect":
                         st.error(result_message)
                     else:
                         st.success(result_message)
+
     
         else:
             st.warning("📥 To submit brand new constructs or alternative theoretical schemas to our open repository, please download the template, fill it out, and upload your custom CSV file above.")
