@@ -1014,10 +1014,10 @@ if app_mode == "5. Live Central Database Viewer":
 
     st.markdown("---")
 
-    try:
+        try:
         with st.spinner(f"Querying live `{st.session_state.active_db_view}` matrix from Supabase..."):
-            db_response = supabase.schema("public").table(st.session_state.active_db_view).select("*").order("created_at", desc=True).execute()
-
+            # Use .from_() instead of .table() to align with the Python PostgREST router
+            db_response = supabase.from_(st.session_state.active_db_view).select("*").execute()
             
             if db_response.data:
                 display_df = pd.DataFrame(db_response.data)
@@ -1039,4 +1039,5 @@ if app_mode == "5. Live Central Database Viewer":
                 
     except Exception as db_view_error:
         st.error(f"Failed to query central database: {db_view_error}")
+
 
