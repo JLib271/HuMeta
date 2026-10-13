@@ -971,7 +971,6 @@ with st.expander("💡 Click to Draft an Analytics Function Suggestion"):
             f"### PROPOSED PYTHON ALGORITHM CODE\n"
             f"```text\n{suggested_stat_code}\n```\n\n"
             f"---\n*Submitted securely via the Descriptive & Scale Analytics Suggestion Pipeline Interface.*"""
-        )
         
         st.markdown("##### **Step 1: Copy your generated analytical payload capsule**")
         st.code(analytics_payload, language="markdown")
