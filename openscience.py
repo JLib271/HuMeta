@@ -8,6 +8,22 @@ import sqlite3
 from sqlalchemy import text
 import requests
 import urllib.parse
+import streamlit as st
+from supabase import create_client, Client
+
+# Initialize Supabase Client
+@st.cache_resource
+def init_supabase() -> Client:
+    url = st.secrets["SUPABASE_URL"]
+    key = st.secrets["SUPABASE_KEY"]
+    return create_client(url, key)
+
+# Securely connect to your database
+try:
+    supabase = init_supabase()
+except Exception as e:
+    st.error("Database connection configuration missing. Please verify your Streamlit Cloud Secrets.")
+    st.stop()
 
 # ==========================================
 # 1. PSYCHOMETRIC & METADATA DICTIONARIES
