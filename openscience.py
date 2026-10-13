@@ -1014,7 +1014,7 @@ if app_mode == "5. Live Central Database Viewer":
 
     st.markdown("---")
 
-        try:
+    try:
         with st.spinner(f"Querying live `{st.session_state.active_db_view}` matrix from Supabase..."):
             # Use .from_() instead of .table() to align with the Python PostgREST router
             db_response = supabase.from_(st.session_state.active_db_view).select("*").execute()
