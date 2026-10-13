@@ -1028,49 +1028,44 @@ if app_mode == "5. Live Central Database Viewer":
         # 1. Cleanly grab the target table from your button session state
     target_table = str(st.session_state.get("active_db_view", "studies")).strip().lower()
 
+       target_table = str(st.session_state.get("active_db_view", "studies")).strip().lower()
+
     try:
-        with st.spinner(f"Querying table layer: `{target_table}`..."):
+        with st.spinner(f"Establishing isolated API handshake for `{target_table}`..."):
+            from supabase import create_client as standalone_client
             
-            # 2. Query the direct physical table explicitly bypass old views
-            db_response = (
-                supabase
-                .from_(target_table)
-                .select("*")
-                .execute()
-            )
+            # 1. Pull and scrub credentials directly inside this local block
+            local_url = str(st.secrets["SUPABASE_URL"]).strip().rstrip("/")
+            local_key = str(st.secrets["SUPABASE_KEY"]).strip()
             
-            # 3. Render the data if the connection succeeds
+            # 2. Build a brand new client completely separate from the rest of the script
+            direct_supabase = standalone_client(local_url, local_key)
+            
+            # 3. Query your table explicitly using the clean standalone client
+            db_response = direct_supabase.from_(target_table).select("*").execute()
+            
             if db_response.data is not None:
                 display_df = pd.DataFrame(db_response.data)
                 
+                st.subheader(f"📂 Connected Matrix: `{target_table}`")
                 if not display_df.empty:
-                    st.subheader(f"📂 Live Matrix Grid: `{target_table}` Records")
                     st.dataframe(display_df, use_container_width=True, hide_index=True)
                     
-                    # Automated spreadsheet download button
+                    # File download streaming framework
                     raw_csv_bytes = display_df.to_csv(index=False).encode('utf-8')
                     st.download_button(
-                        label=f"📥 Download Raw `{target_table}` Spreadsheet (.csv)",
+                        label=f"📥 Download Raw `{target_table}` Dataset (.csv)",
                         data=raw_csv_bytes,
-                        file_name=f"central_repository_{target_table}_export.csv",
+                        file_name=f"supabase_central_repository_{target_table}.csv",
                         mime="text/csv",
                         use_container_width=True
                     )
                 else:
-                    st.info(f"The table `{target_table}` is active but currently contains 0 records. Try submitting a study in Module 1 to populate it!")
-            else:
-                st.error("The API router returned an empty dataset object.")
-                
+                    st.info(f"Connection Live! The `{target_table}` table is ready and completely empty.")
+                    
     except Exception as db_view_error:
         st.error(f"Failed to query central database: {db_view_error}")
-        
-        # Keep the debug panel active to monitor live routing states
-        st.markdown("### 🔧 API Connection Debug Panel")
-        st.json({
-            "Attempted Target Table": target_table,
-            "Session State Active Registry Value": st.session_state.get("active_db_view"),
-            "Supabase Config Endpoint Key Map": st.secrets["SUPABASE_URL"]
-        })
+
 
 
 
