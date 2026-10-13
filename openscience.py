@@ -341,7 +341,7 @@ if app_mode == "1. Study Metadata Schema Registry":
         suggested_schema_field = st.text_input("Target Element / Field Code to Change", key="mod1_suggest_field")
         suggested_schema_text = st.text_area("Detailed Suggestion / Additions Details", key="mod1_suggest_text")
         if suggested_schema_field and suggested_schema_text:
-            schema_payload = f"**Metadata Proposal**
+            schema_payload = f"""**Metadata Proposal**"""
 
 **Field:** {suggested_schema_field}
 
