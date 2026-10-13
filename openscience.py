@@ -1016,7 +1016,7 @@ if app_mode == "5. Live Central Database Viewer":
 
     try:
         with st.spinner(f"Querying live `{st.session_state.active_db_view}` matrix from Supabase..."):
-            db_response = supabase.table(st.session_state.active_db_view).select("*").order("created_at", descending=True).execute()
+            db_response = supabase.table(st.session_state.active_db_view).select("*").order("created_at", desc=True).execute()
             
             if db_response.data:
                 display_df = pd.DataFrame(db_response.data)
