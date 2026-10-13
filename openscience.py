@@ -308,7 +308,7 @@ if app_mode == "1. Study Metadata Schema Registry":
             
         st.divider()
         
-        # --- SUBMIT BUTTON & VALIDATION (INSIDE THE FORM CONTAINER) ---
+            # --- SUBMIT BUTTON & VALIDATION (INSIDE THE FORM CONTAINER) ---
         submit_metadata = st.form_submit_button("🚀 Submit Complete Study Record")
         
         if submit_metadata:
@@ -320,26 +320,39 @@ if app_mode == "1. Study Metadata Schema Registry":
                 st.error("At least one Creator/Author Name is required.")
             else:
                 try:
-                    # Compile clean creators string for database storage
-                    creators_string = ", ".join([a["name"].strip() for a in st.session_state.authors_list if a["name"].strip()])
-                    
-                    # Package metadata payload for direct insertion into Supabase table
-                    study_payload = {
-                        "study_title": title,
-                        "principal_investigator": creators_string,
-                        "institution": locale_setting, # Map setting context into structural string slots
-                        "funding_source": academic_year,
-                        "study_description": description if description else "No project description provided."
-                    }
-                    
-                    # Execute push synchronization to centralized SQL layer
-                    study_res = supabase.table("studies").insert(study_payload).execute()
-                    st.success(f"🎉 Success! Metadata for '{title}' has been securely committed to your live central repository database.")
-                    
-                    # Reset authors matrix configuration back to default baseline
-                    st.session_state.authors_list = [{"name": "", "orcid": ""}]
-                except Exception as db_err:
-                    st.error(f"Failed to synchronize live repository: {db_err}")
+                    with st.spinner("Establishing isolated API handshake for data ingestion..."):
+                        from supabase import create_client as form_client
+                        
+                        # 1. Pull and clean credentials directly inside the local submission loop
+                        local_url = str(st.secrets["SUPABASE_URL"]).strip().rstrip("/")
+                        local_key = str(st.secrets["SUPABASE_KEY"]).strip()
+                        
+                        # 2. Build the independent client object
+                        direct_form_supabase = form_client(local_url, local_key)
+                        
+                        # 3. Cleanly pack your author array down into a comma-separated string for standard database tracking
+                        authors_string = ", ".join([auth["name"].strip() for auth in st.session_state.authors_list if auth["name"].strip()])
+                        
+                        # 4. Map your user text inputs directly to your Supabase SQL column keys
+                        db_payload = {
+                            "study_title": str(title).strip(),
+                            "principal_investigator": authors_string,
+                            "institution": str(language), # Storing language indicator for layout tracking
+                            "funding_source": str(keywords).strip() if keywords else "N/A",
+                            "study_description": str(description).strip() if description else "No description provided."
+                        }
+                        
+                        # 5. Execute the clean database insert query
+                        direct_form_supabase.from_("studies").insert(db_payload).execute()
+                        
+                        st.success(f"🎉 Success! '{title}' has been permanently recorded in your live Supabase database!")
+                        
+                        # Reset authors list back to a clean default state for the next entry session
+                        st.session_state.authors_list = [{"name": "", "orcid": ""}]
+                        
+                except Exception as form_db_error:
+                    st.error(f"Failed to transmit data to the central repository: {form_db_error}")
+
 
     # --- MODULE 1 EXTENSION PIPELINE BUTTON ---
     st.markdown("---")
