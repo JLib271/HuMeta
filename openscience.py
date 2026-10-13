@@ -115,6 +115,70 @@ app_mode = st.sidebar.radio(
         "5. Live Central Database Viewer"
     ]
 )
+import time
+from github import Github
+
+def automate_github_pull_request(suggestion_type: str, file_name: str, file_content: str, title_summary: str) -> str:
+    """
+    Automates a full GitOps flow: Connects to GitHub via PAT, creates a branch,
+    commits a clean schema file into /suggestions, and triggers a live Pull Request.
+    """
+    try:
+        # 1. Initialize standalone GitHub engine using your hidden Secrets Token
+        if "GITHUB_PAT" not in st.secrets:
+            return "❌ Missing 'GITHUB_PAT' configuration token inside your Streamlit Cloud Secrets dashboard."
+            
+        token = st.secrets["GITHUB_PAT"].strip()
+        g = Github(token)
+        
+        # 2. Automatically detect your repository information
+        # (Replace 'your-username/your-repo-name' with your actual GitHub path)
+        repo_path = "openedmetadata/openedmetadata" 
+        repo = g.get_repo(repo_path)
+        
+        # 3. Establish structural branch identifiers
+        main_branch = repo.get_branch("main")
+        unique_timestamp = int(time.time())
+        new_branch_name = f"proposal-{suggestion_type.lower()}-{unique_timestamp}"
+        
+        # 4. Programmatically fork a new branch off your primary branch head
+        repo.create_git_ref(ref=f"refs/heads/{new_branch_name}", sha=main_branch.commit.sha)
+        
+        # 5. Commit the clean structural file into your new landing folder
+        target_path = f"suggestions/{file_name}"
+        commit_message = f"Community Schema Proposal: {title_summary}"
+        
+        repo.create_file(
+            path=target_path,
+            message=commit_message,
+            content=file_content,
+            branch=new_branch_name
+        )
+        
+        # 6. Execute an API call to open a live Pull Request back to your main branch
+        pr_body = f"""
+        ### 🚀 Community Metadata Architecture Proposal
+        An automated structural amendment suggestion has been compiled and submitted via the live portal interface.
+        
+        * **Proposal Type:** {suggestion_type}
+        * **Target Asset:** `{target_path}`
+        * **Submission Timestamp:** {unique_timestamp}
+        
+        Please evaluate, comment on, and merge this change into your global core schemas when ready.
+        """
+        
+        pull_request = repo.create_pull(
+            title=f"📁 [Schema Proposal] {title_summary}",
+            body=pr_body,
+            head=new_branch_name,
+            base="main"
+        )
+        
+        # Return success confirmation URL link back to the stream
+        return f"🎉 Success! A formal Pull Request has been opened automatically. Track it here: {pull_request.html_url}"
+        
+    except Exception as git_error:
+        return f"❌ Automated GitOps pipeline failure: {git_error}"
 
 # ==========================================
 # MODULE 1: STUDY-LEVEL METADATA REGISTRY
