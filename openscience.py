@@ -766,26 +766,21 @@ elif app_mode == "4. Descriptive & Scale Analytics":
     st.caption("Analyze item matrices, evaluate structural scale internal consistency coefficients, compute correlations, and export analytical packages.")
     st.markdown("---")
     
+    # Ingest Data Sheet Mapping Workspace
     st.subheader("📂 1. Ingest Data Sheet Mapping Workspace")
     data_source = st.radio("Analytics Dataset Source Selection:", ["Use Standard Synthetic Sample Dataset", "Upload Custom Research Data Sheet (.csv)"])
     
-        
+    # We use a sequence of clean st.markdown statements to avoid ALL multi-line string bugs completely
+    st.info("📝 **Strict CSV Data Schema Ingestion Requirements:**")
+    st.markdown("To execute structural calculations without errors, your custom file **must conform exactly** to these criteria:")
+    st.markdown("* **Demographics:** Include columns labeled precisely as `Age` (Numeric Integer values) and `Gender` (Text values match: `Woman`, `Man`, `Non-binary`, `Prefer not to say`).")
+    st.markdown("* **Psychometric Scales:** Scale item columns must follow the prefix notation pattern matching your constructs so the engine can automatically bundle them together:")
+    st.markdown("  - **Theory of Planned Behavior:** Columns must be named starting with `TPB_` (e.g., `TPB_Attitude_1`, `TPB_Norms_2`, `TPB_Control_3`).")
+    st.markdown("  - **Self-Determination Theory:** Columns must be named starting with `SDT_` (e.g., `SDT_Autonomy_1`, `SDT_Competence_2`).")
+    st.markdown("  - **Technology Acceptance Model:** Columns must be named starting with `TAM_` (e.g., `TAM_Usefulness_1`, `TAM_EaseOfUse_2`).")
+    st.markdown("* **Values Scaling:** Psychometric matrix items must contain continuous numeric data vectors (e.g., standard Likert items scored 1-5 or 1-7).")
+    st.markdown("---")
 
-    st.info(
-        r"""Strict CSV Data Schema Ingestion Requirements:
-
-To execute structural calculations without errors, your custom file **must conform exactly** to these criteria:
-* **Demographics:** Include columns labeled precisely as `Age` (Numeric Integer values) and `Gender` (Text values match: `Woman`, `Man`, `Non-binary`, `Prefer not to say`).
-* **Psychometric Scales:** Scale item columns must follow the prefix notation pattern matching your constructs so the engine can automatically bundle them together:
-  - **Theory of Planned Behavior:** Columns must be named starting with `TPB_` (e.g., `TPB_Attitude_1`, `TPB_Norms_2`, `TPB_Control_3`).
-  - **Self-Determination Theory:** Columns must be named starting with `SDT_` (e.g., `SDT_Autonomy_1`, `SDT_Competence_2`).
-  - **Technology Acceptance Model:** Columns must be named starting with `TAM_` (e.g., `TAM_Usefulness_1`, `TAM_EaseOfUse_2`).
-* **Values Scaling:** Psychometric matrix items must contain continuous numeric data vectors (e.g., standard Likert items scored 1-5 or 1-7)."""
-    )
-
-
-
-        
     template_cols = [
         "Participant_ID", "Age", "Gender", 
         "TPB_Attitude_1", "TPB_Norms_2", "TPB_Control_3", 
