@@ -614,34 +614,30 @@ elif app_mode == "2. Variable Instrument Architect":
         st.subheader("📋 Your Active Study Instrument Summary Table")
         st.dataframe(df_manifest, use_container_width=True, hide_index=True)
         
+                # --- MODULE 2 VARIABLES SCHEMA PROPOSAL ENTRY ---
         st.markdown("---")
         st.markdown("### 🚀 Propose Custom Framework Variables to Global Schema")
         st.caption("Want to make your uploaded CSV variables part of our permanent core dropdown systems?")
         
         if uploaded_custom_vars is not None:
-            uploaded_custom_vars.seek(0)
-            raw_csv_text = uploaded_custom_vars.read().decode('utf-8')
-            first_framework = str(uploaded_df["Framework_Source"].iloc[0]) if not uploaded_df.empty else "Custom Framework"
-            
-            # Formats the file content safely to avoid f-string syntax breaking
+            # Safe tuple-concatenated string block with ZERO risks of quotation leakage
             pasteboard_content = (
-                f"**New Theoretical Framework Submission**\n\n"
+                "**New Theoretical Framework Submission**\n\n"
                 f"**Framework Target Name:** {first_framework}\n\n"
-                f"### RAW SCHEMA PAYLOAD\n"
+                "### RAW SCHEMA PAYLOAD\n"
                 f"```csv\n{raw_csv_text}\n```\n\n"
-                f"---\n*Submitted securely via the Open Educational Metadata Portal Variable Ingest Box.*"
+                "---\n*Submitted securely via the Open Educational Metadata Portal Variable Ingest Box.*"
             )
             
             st.markdown("##### **Submit Framework Directly to GitHub**")
             st.caption("Clicking the button below will automatically create a branch and issue a formal pull request for this custom framework.")
             
-            # Automated PyGithub pull request launcher button for Module 2
+            # Automated PyGithub pull request button for Module 2
             if st.button("🚀 Push Framework to GitHub as Pull Request", key="submit_mod2_pr_btn"):
                 with st.spinner("Connecting to GitHub API, saving framework schema, and launching Pull Request..."):
                     safe_filename = f"framework_proposal_{first_framework.lower().replace(' ', '_')}.csv"
                     summary_title = f"Add Theoretical Framework: {first_framework}"
                     
-                    # Fire the automated pipeline function
                     result_message = automate_github_pull_request(
                         suggestion_type="Framework",
                         file_name=safe_filename,
@@ -653,12 +649,11 @@ elif app_mode == "2. Variable Instrument Architect":
                         st.error(result_message)
                     else:
                         st.success(result_message)
-
-    
         else:
             st.warning("📥 To submit brand new constructs or alternative theoretical schemas to our open repository, please download the template, fill it out, and upload your custom CSV file above.")
             
         st.markdown("---")
+
 
         # --- EXPORT PIPELINES ---
         col_exp1, col_exp2, col_exp3 = st.columns(3)
