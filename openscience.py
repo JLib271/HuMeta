@@ -770,7 +770,7 @@ elif app_mode == "4. Descriptive & Scale Analytics":
     data_source = st.radio("Analytics Dataset Source Selection:", ["Use Standard Synthetic Sample Dataset", "Upload Custom Research Data Sheet (.csv)"])
     
     st.info(
-        "📝 **Strict CSV Data Schema Ingestion Requirements:**\n\n"
+        r"📝 **Strict CSV Data Schema Ingestion Requirements:**\n\n"
         "To execute structural calculations without errors, your custom file **must conform exactly** to these criteria:\n"
         "* **Demographics:** Include columns labeled precisely as `Age` (Numeric Integer values) and `Gender` (Text values match: `Woman`, `Man`, `Non-binary`, `Prefer not to say`).\n"
         "* **Psychometric Scales:** Scale item columns must follow the prefix notation pattern matching your constructs so the engine can automatically bundle them together:\n"
