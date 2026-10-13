@@ -1,74 +1,129 @@
-# Open Educational Metadata 🔬
+# Open Educational Metadata Platform 🔬🌐
 
-An open-source, community-driven web interface and psychometric validation engine designed to standardize, align, and process educational survey data. This ecosystem natively implements the **Good, Rattan, & Dweck (2012) Sense of Belonging to Math Scale** alongside the **Canadian Institutes of Health Research (CIHR) Multi-Dimensional Gender Variables Framework**.
+An advanced, open-source, community-driven web interface and psychometric validation engine designed to standardize, align, and process educational survey data. This ecosystem is fully integrated with a live Postgres database and programmatic GitOps deployment pipelines, turning research tracking into a seamless cloud experience.
 
----
-
-## 🔒 3-Tier Security & Privacy Architecture
-To ensure compliance with institutional review boards (IRBs) and strict student data privacy standards, the portal segregates data into three operational tiers:
-
-*   **Tier 1: Public Study Metadata (Domain-Agnostic)**  
-    Captures high-level study characteristics (such as methodology, investigator, and institutional context) using unified metadata schemas across **Dublin Core**, **DDI**, and **IEEE LOM** standards. This tier contains no participant-level fields and is entirely safe for public index discovery.
-*   **Tier 2: Confidential Student Roster (Local processing)**  
-    Handles individual student responses, multi-dimensional socio-demographic indicators, scale configurations, and open unstructured text notes. **Privacy Guardrail Active:** All data parsed in this tier stays on the user's local machine inside volatile browser memory variables. No data is transmitted across the internet, logged to cookies, or stored in a persistent cloud infrastructure.
-*   **Tier 3: Public Anonymized Aggregates (Open Out-Port)**  
-    Calculates macro-level demographic matrices, mean subscale summaries, and automated scale reliability diagnostics. Researchers can click a button to download this fully scrubbed open-science data bundle as a `.csv` or `.txt` manifest to publish directly to public registries (e.g., OSF, ICPSR).
+## 🔗 Live Application Access
+The platform is fully compiled and deployed in a live cloud container:
+👉 **[Open Educational Metadata Portal](https://streamlit.app)**
 
 ---
 
-## 📋 Standardized Data Schema Dictionary
-For the internal calculation engine to process, score, and evaluate your datasets automatically, your local input CSV files must contain the following standard variable column headers. 
+## 🛠️ Key Architectural Layout (Modules 1–5)
 
-### 1. Identity & Demographic Keys
-*   `StudentID`: Unique alphanumeric tracker code used to separate participant rows.
-*   `Gender_Identity`: Structural identifier matching CIHR dimensions (`Woman`, `Man`, `Non-binary`, `Prefer not to answer`, or researcher-defined custom parameters).
+The system is split into five core functional layers managed by interactive sidebar navigation:
 
-### 2. Good et al. (2012) Belonging Subscales (1–5 Likert scale)
-Your input data file can use any combination of short or long versions of the scale. The engine adapts instantly to whatever items are present:
-*   **Membership Items:** `Belong_Community`, `Member_Math_World`, `Connected_Math`, `Fit_In_Math`
-*   **Acceptance Items:** `Feel_Accepted`, `Feel_Valued`, `Feel_Excluded` *(Reverse-scored)*, `Feel_Neglected` *(Reverse-scored)*, `Feel_Appreciated`
-*   **Affect Items:** `Feel_Anxious` *(Reverse-scored)*, `Feel_Comfortable`, `Feel_Inadequate` *(Reverse-scored)*, `Feel_At_Ease`, `Feel_Tense` *(Reverse-scored)*, `Feel_Confident`, `Feel_Stressed` *(Reverse-scored)*
-*   **Trust Items:** `Trust_Instructors`, `Trust_Evaluation`, `Trust_Materials`, `No_Need_To_Prove_Self`, `Instructors_Committed`
-*   **Desire to Fade Items:** `Try_To_Say_Little`, `Wish_Invisible`, `Fade_To_Background`, `Avoid_Attention` *(Note: Desire to Fade items are inverted by the engine so that a higher final score indicates positive belonging).*
-
-### 3. Qualitative Research Notes
-*   `Qualitative_Notes`: A text column for open unstructured observations, student survey comments, or teacher contextual field notes.
+1. **Study Metadata Schema Registry (Module 1):** Ingests core study metadata frames following strict Dublin Core Metadata Element Set (DCMES) criteria and pipes entries instantly into cloud storage.
+2. **Variable Instrument Architect (Module 2):** Connects variable definitions, properties, and continuous Likert scaling matrices directly to structural parent fields. Supports custom CSV asset template schema ingestion.
+3. **Community Data Repository Sync (Module 3):** Monitors connection integrity metrics, tracking encrypted data streams flowing across connected community workspace warehouses.
+4. **Descriptive & Scale Analytics Engine (Module 4):** Evaluates multi-item measurement configurations via an automated **Cronbach's Alpha Internal Consistency Profile**, computes background styled correlation heatmaps, compiles customized PDF summary reports via ReportLab, and features a smart template generator that automatically writes code files for newly proposed statistical test metrics.
+5. **Central Repository Live Database Viewer (Module 5):** Provides direct, read-only analytical access to active relational PostgreSQL tuples streaming straight from cloud tables, complete with direct `.csv` file download streaming engines.
 
 ---
 
-## 🛠️ Local Installation & Development
-If you wish to run this gateway locally on your own computer rather than using the live hosted cloud url, use your Mac terminal command-line interface:
+## 🤖 Integrated GitOps Pull Request Automation
+Rather than forcing researchers to manage complex command-line actions or leave the portal to copy-paste suggestions, Modules 1, 2, and 4 connect directly to the GitHub API via a secure **Personal Access Token (PAT)**. 
 
-1. **Clone or download this repository** code structure onto your system workspace.
-2. **Install dependencies:** Run the setup requirements command block to load python libraries:
+When a structural change or new analysis function is requested:
+1. The application automatically forks an independent branch off the head of the `main` branch.
+2. It saves the formatted data proposal into the `/suggestions` folder.
+3. It issues an official, structured **Pull Request (PR)**, allowing repository maintainers to seamlessly review and merge community additions into the core codebase with a single click.
+4. **Smart Template Engine:** If a user proposes an analytical calculation inside Module 4 but leaves the code block blank, the system automatically writes a clean statistical template script (e.g., using `scipy.stats` or `statsmodels`) and appends it to the Pull Request automatically.
+
+---
+
+## 📊 Core Cloud Architecture (Supabase Schema)
+
+Data persistence is managed via an active cloud **Supabase** instance. The database utilizes a strictly connected relational cascade pattern (`ON DELETE CASCADE`) to bind survey parameters to core studies in the `public` schema layer:
+
+```sql
+-- 1. Parent Studies Ingestion Table
+create table public.studies (
+    id uuid primary key default gen_random_uuid(),
+    study_title text not null,
+    principal_investigator text,
+    institution text,
+    funding_source text,
+    study_description text,
+    created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- 2. Child Variables Dictionary Table
+create table public.variables (
+    id uuid primary key default gen_random_uuid(),
+    study_id uuid references public.studies(id) on delete cascade,
+    variable_name text not null,
+    variable_label text,
+    data_type text,
+    measurement_unit text,
+    description text,
+    created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+```
+
+---
+
+## ⚙️ Secrets Deployment Configuration
+
+To host this application or configure an independent Streamlit Community Cloud mirror instance, populate your **App Secrets (`.toml`)** file inside your workspace management panel using this format:
+
+```toml
+# Cloud Data Warehouse Connection Tokens
+SUPABASE_URL = "https://supabase.co"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." # Extended anon/public client API key
+
+# GitOps Automation Security Token
+GITHUB_PAT = "ghp_YourPersonalAccessTokenFromGitHub..."
+```
+
+---
+
+## 🚀 Local Installation & Setup
+
+To run this application locally on your workstation for development or extension testing:
+
+1. **Clone the Repository:**
    ```bash
-   pip install streamlit pandas numpy plotly
+   git clone https://github.com
+   cd openedmetadata
    ```
-3. **Launch the web server engine:** Move to your target folder and activate the client app UI:
+
+2. **Configure Environment Secrets:**
+   Create a local directory configuration folder `.streamlit/` and place a `secrets.toml` file inside it containing your active keys:
+   ```bash
+   mkdir .streamlit
+   touch .streamlit/secrets.toml
+   ```
+
+3. **Install Dependencies:**
+   Ensure your Python environment is completely up to date and load the required library stack:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Launch the Engine:**
+   Run the boot sequence via your local Streamlit compiler:
    ```bash
    streamlit run openscience.py
    ```
 
 ---
 
-## 📈 Analytics Suite
-The calculation engine automatically performs the following actions on your active local data sessions:
-*   **Adaptive Item-Level Averaging:** Missing columns or short-scale modifications are evaluated seamlessly. Omissions do not skew calculations or penalize overall scores.
-*   **Automated Inversion Inverting:** Items marked as reverse-coded are inverted mathematically behind the scenes (`6 - entry_score`) before building averages.
-*   **Cronbach's Alpha Reliability Check:** Evaluates internal consistency parameters (\(\alpha\)) dynamically on subscales with two or more variables, alerting researchers to the structural reliability of their short forms.
-*   **Dynamic Column Verification Checker:** Displays a live validation matrix flagging missing variable headers and matching keys to prevent run calculation crashes.
-
----
-
-## 💡 How to Suggest New Metadata Columns
-Open Educational Metadata is designed to be fully customizable as education research evolves. If your local study tracks unique parameters (such as First Generation Status, Language Learner Indicators, or Socioeconomic Indices), please contribute them back to the ecosystem:
-
-1. Open your live app portal tab.
-2. Navigate to **Tier 2** → **"Propose New Schema Columns"** form sheet.
-3. Submit your column name key, subscale alignment category, and educational research justification.
-4. Download the updated text data manifest package at the bottom of the page and submit a **GitHub Pull Request (PR)** or log an issue containing your suggestion text bundle!
+## 📜 Dependencies Checklist (`requirements.txt`)
+The minimal library environment grid required for this portal consists of:
+```text
+streamlit>=1.30.0
+pandas>=2.0.0
+numpy>=1.24.0
+supabase>=2.3.0
+PyGithub>=2.1.0
+matplotlib>=3.7.0
+reportlab>=4.0.0
+scipy>=1.10.0
+statsmodels>=0.14.0
+```
 
 ---
 
 ## 📄 License & Terms
 Distributed under the **MIT License**. Other research institutions and education task forces are explicitly granted legal permission to copy, alter, scale, and redistribute this platform, provided proper attribution credit is maintained.
+
