@@ -770,8 +770,9 @@ elif app_mode == "4. Descriptive & Scale Analytics":
     data_source = st.radio("Analytics Dataset Source Selection:", ["Use Standard Synthetic Sample Dataset", "Upload Custom Research Data Sheet (.csv)"])
     
         
+
     st.info(
-        r"""📝 **Strict CSV Data Schema Ingestion Requirements:**
+        r"""Strict CSV Data Schema Ingestion Requirements:
 
 To execute structural calculations without errors, your custom file **must conform exactly** to these criteria:
 * **Demographics:** Include columns labeled precisely as `Age` (Numeric Integer values) and `Gender` (Text values match: `Woman`, `Man`, `Non-binary`, `Prefer not to say`).
@@ -781,6 +782,7 @@ To execute structural calculations without errors, your custom file **must confo
   - **Technology Acceptance Model:** Columns must be named starting with `TAM_` (e.g., `TAM_Usefulness_1`, `TAM_EaseOfUse_2`).
 * **Values Scaling:** Psychometric matrix items must contain continuous numeric data vectors (e.g., standard Likert items scored 1-5 or 1-7)."""
     )
+
 
 
         
