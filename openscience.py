@@ -8,7 +8,6 @@ import sqlite3
 from sqlalchemy import text
 import requests
 import urllib.parse
-import streamlit as st
 from supabase import create_client, Client
 
 # Initialize Supabase Client
@@ -155,7 +154,6 @@ if app_mode == "1. Study Metadata Schema Registry":
     st.markdown("---")
 
     # --- MAIN SUBMISSION FORM ---
-    # Everything inside this with block MUST be indented by exactly 4 spaces
     with st.form("metadata_standards_form", clear_on_submit=True):
         st.subheader("📋 Core Project Overview")
         
@@ -296,7 +294,7 @@ if app_mode == "1. Study Metadata Schema Registry":
             
         st.divider()
         
-                # --- SUBMIT BUTTON & VALIDATION (INSIDE THE FORM CONTAINER) ---
+        # --- SUBMIT BUTTON & VALIDATION (INSIDE THE FORM CONTAINER) ---
         submit_metadata = st.form_submit_button("🚀 Submit Complete Study Record")
         
         if submit_metadata:
@@ -307,34 +305,32 @@ if app_mode == "1. Study Metadata Schema Registry":
             elif not has_author:
                 st.error("At least one Creator/Author Name is required.")
             else:
-                # Compile structural data dictionary payload capturing Dublin Core, CEDS, and DDI parameters
-                metadata_payload = {
-                    "title": title,
-                    "creators_matrix": [a for a in st.session_state.authors_list if a["name"].strip()],
-                    "description": description,
-                    "subject": keywords,
-                    "language": language,
-                    "ddi_unit_of_analysis": unit_of_analysis,
-                    "ddi_collection_mode": data_collection_mode,
-                    "ddi_sampling_procedure": sampling_procedure,
-                    "ddi_time_method": time_method,
-                    "academic_year": academic_year,
-                    "state": state_origin,
-                    "locale": locale_setting,
-                    "grade_levels": grade_level,
-                    "program_types": program_type,
-                    "academic_subject": academic_subject,
-                    "assessment_purpose": assessment_purpose,
-                    "course_level_type": course_level_type
-                }
-                st.success(f"Metadata payload for '{title}' logged successfully!")
-                
-                # Reset authors list back to a clean default state for the next session
-                st.session_state.authors_list = [{"name": "", "orcid": ""}]
+                try:
+                    # 1. Insert parent study data row into Supabase
+                    study_payload = {
+                        "study_title": title,
+                        "study_description": description,
+                        "subject_keywords": keywords,
+                        "language": language,
+                        "unit_of_analysis": unit_of_analysis,
+                        "data_collection_mode": data_collection_mode,
+                        "sampling_procedure": sampling_procedure,
+                        "time_method": time_method,
+                        "academic_year": academic_year,
+                        "state_origin": state_origin,
+                        "locale_setting": locale_setting,
+                        "academic_subject": academic_subject,
+                        "assessment_purpose": assessment_purpose,
+                        "course_level_type": course_level_type
+                    }
+                    study_res = supabase.table("studies").insert(study_payload).execute()
+                    new_study_id = study_res.data[0]["id"] if study_res.data else None
+                    
+                    st.success(f"Metadata payload for '{title}' logged successfully in Supabase!")
+                    st.session_state.authors_list = [{"name": "", "orcid": ""}]
+                except Exception as error:
+                    st.error(f"Database insertion failed: {error}")
 
-    # 🌟 STEPPING COMPLETELY OUT OF THE FORM CONTAINER FOR DISPATCH MODULES
-    # This code is flat against the left margin (no indentation spaces)
-    
     # --- MODULE 1 EXTENSION PIPELINE BUTTON ---
     st.markdown("---")
     st.markdown("### 🚀 Propose Extensions to Core Study Metadata Architecture")
@@ -359,7 +355,6 @@ if app_mode == "1. Study Metadata Schema Registry":
             st.markdown("##### **Step 2: Open the ticket page and paste**")
             static_github_url = "https://github.com"
             
-            # Displays the URL as a clean text lane to completely prevent browser interception
             st.markdown(
                 f"1. Copy this link address: `{static_github_url}`\n"
                 f"2. Paste it into your browser's address bar at the top of your screen and press Enter.\n"
@@ -376,11 +371,9 @@ elif app_mode == "2. Variable Instrument Architect":
     st.caption("Design variable frameworks, configure measurement items, and instantly download standardized DDI-compliant templates or clean survey forms.")
     st.markdown("---")
     
-        # --- SECTION A: REPOSITORY & STUDY INDEXING (ICPSR / DATAVERSE STANDARDS) ---
     st.subheader("📚 1. Social Science Repository Metadata (ICPSR / Dataverse Alignment)")
     st.caption("Align study indexing with major repositories using rich, study-level methodology and citation tracing variables.")
     
-    # Updated text specifying de-identified research artifacts
     st.info(
         "💡 **Need a DOI for your study artifacts?** Please submit **de-identified** research artifacts directly to the "
         "[STEMEd+ Commons Collection in KCWorks](https://kcworks.org) to receive a unique persistent DOI before completing this index profile."
@@ -397,7 +390,6 @@ elif app_mode == "2. Variable Instrument Architect":
             options=["Individual (Student/Teacher)", "Group/Classroom", "Organization/Institution", "Geographic/School District Level"]
         )
     with col_rep2:
-        # Standardized DDI/ICPSR sampling methodology dropdown selection matrix
         sampling_method = st.selectbox(
             "Sampling Procedure / Methodology Type",
             options=[
@@ -411,7 +403,6 @@ elif app_mode == "2. Variable Instrument Architect":
                 "Other / Mixed Framework Specification"
             ]
         )
-        # Required fillable text area block ensuring thorough methodological description
         sampling_procedure = st.text_area(
             "Sampling Method Explanation / Implementation Context*",
             placeholder="Describe your sampling criteria, recruitment parameters, and response yield thresholds..."
@@ -419,12 +410,9 @@ elif app_mode == "2. Variable Instrument Architect":
 
     st.divider()
 
-
-    # --- SECTION B: VARIABLE CONFIGURATION (DDI SCHEMA STANDARDS) ---
     st.subheader("🧠 2. Study Variable & Framework Configuration")
     st.caption("Establish DDI-compliant metadata linking conceptual variables, parent constructs, target question items, and response scaling categories.")
 
-    # 1. Expanded Demographics Selection Grid (DDI-Core / CEDS options)
     st.markdown("**Core Demographic Variables (CEDS Standards)**")
     col_dem1, col_dem2 = st.columns(2)
     with col_dem1:
@@ -436,17 +424,13 @@ elif app_mode == "2. Variable Instrument Architect":
         collect_lep = st.checkbox("Include English Proficiency / Language Status Flags")
         collect_disability = st.checkbox("Include Disability / Special Education Services Markers")
     
-    # 2. Multi-Select Theoretical Structural Framework Selector
-    # Changed to multiselect to allow multiple theories to inform a single study instrument
     selected_frameworks = st.multiselect(
         "Choose core guiding theoretical framework(s) to populate variables:",
         options=["Theory of Planned Behavior (TPB)", "Self-Determination Theory (SDT)", "Technology Acceptance Model (TAM)"]
     )
     
-    # Compile variable items collection matrix mapping exactly to DDI specifications
     active_items = []
     
-    # Append selected standardized CEDS demographic variables
     if collect_gender:
         active_items.append({"Variable_ID": "VAR_GENDER", "Concept_Construct": "Demographics", "Variable_Label": "Participant Gender", "Question_Item_Text": "What gender category do you most closely identify with?", "Response_Scale_Options": "Woman | Man | Non-binary | Prefer to self-describe | Prefer not to say", "Framework_Source": "CEDS / DDI-Core"})
     if collect_age:
@@ -460,7 +444,6 @@ elif app_mode == "2. Variable Instrument Architect":
     if collect_disability:
         active_items.append({"Variable_ID": "VAR_DISABILITY_STATUS", "Concept_Construct": "Demographics", "Variable_Label": "Special Education Disability Status", "Question_Item_Text": "Is the participant receiving services under the Individuals with Disabilities Education Act (IDEA)?", "Response_Scale_Options": "Yes | No", "Framework_Source": "CEDS / DDI-Core"})
 
-    # Iterate through all checked frameworks and append their constructs
     for framework in selected_frameworks:
         if framework in THEORY_MAP:
             st.markdown(f"**Pre-populated variables for: {framework}**")
@@ -478,7 +461,6 @@ elif app_mode == "2. Variable Instrument Architect":
                         "Framework_Source": framework
                     })
                 
-       # --- 3. CUSTOM VARIABLE CSV UPLOADER WITH SAFETY FILTERING ---
     st.markdown(" ")
     st.subheader("➕ 3. Bulk Import Custom Variables & Suggestions")
     
@@ -488,7 +470,6 @@ elif app_mode == "2. Variable Instrument Architect":
         "If left in, the example will be automatically filtered out by the ingestion engine."
     )
     
-    # Create the template CSV for download
     custom_template_df = pd.DataFrame(columns=["Variable_ID", "Concept_Construct", "Variable_Label", "Question_Item_Text", "Response_Scale_Options", "Framework_Source"])
     custom_template_df.loc[0] = ["VAR_SAMPLE_ID", "Sample Construct", "Sample Label Text", "This is an example survey prompt item question?", "1=Option A | 2=Option B | 3=Option C", "Name of New or Existing Theoretical Framework"]
     template_csv_bytes = custom_template_df.to_csv(index=False).encode('utf-8')
@@ -509,7 +490,6 @@ elif app_mode == "2. Variable Instrument Architect":
             required_fields = ["Variable_ID", "Concept_Construct", "Variable_Label", "Question_Item_Text", "Response_Scale_Options", "Framework_Source"]
             
             if all(field in uploaded_df.columns for field in required_fields):
-                # Automated backend filtering guard to strip placeholder out safely
                 initial_count = len(uploaded_df)
                 uploaded_df = uploaded_df[uploaded_df["Variable_ID"] != "VAR_SAMPLE_ID"]
                 filtered_count = len(uploaded_df)
@@ -527,69 +507,13 @@ elif app_mode == "2. Variable Instrument Architect":
         except Exception as e:
             st.error(f"Error parsing custom variable spreadsheet file: {e}")
 
-    # Merge active form items with newly imported custom spreadsheet items
     final_instrument_list = active_items + uploaded_items + st.session_state.session_instruments
     
     if final_instrument_list:
         df_manifest = pd.DataFrame(final_instrument_list)
-        
-        # --- RENAME DATA GRID FOR ACCESSIBILITY ---
         st.subheader("📋 Your Active Study Instrument Summary Table")
         st.dataframe(df_manifest, use_container_width=True, hide_index=True)
         
-                # --- MODULE 2 VARIABLES SCHEMA PROPOSAL ENTRY ---
-        st.markdown("---")
-        st.markdown("### 🚀 Propose Custom Framework Variables to Global Schema")
-        st.caption("Want to make your uploaded CSV variables part of our permanent core dropdown systems?")
-        
-        # SAFETY WRAPPER: Only build the capsule layout if a custom CSV file was uploaded
-        if uploaded_custom_vars is not None:
-            # Unpack the active spreadsheet rows into an optimized text chunk for the issue ticket body
-            uploaded_custom_vars.seek(0)
-            raw_csv_text = uploaded_custom_vars.read().decode('utf-8')
-            first_framework = str(uploaded_df["Framework_Source"].iloc[0]) if not uploaded_df.empty else "Custom Framework"
-            
-            pasteboard_content = (
-                f"**New Theoretical Framework Submission**\n\n"
-                f"**Framework Target Name:** {first_framework}\n\n"
-                f"### RAW SCHEMA PAYLOAD\n"
-                f"```csv\n{raw_csv_text}\n```\n\n"
-                f"---\n*Submitted securely via the Open Educational Metadata Portal Variable Ingest Box.*"
-            )
-            
-            st.markdown("##### **Step 1: Copy your generated variable payload capsule**")
-            st.code(pasteboard_content, language="markdown")
-
-            st.markdown("##### **Step 2: Open the ticket page and paste**")
-            static_github_url = "https://github.com"
-            
-            st.markdown(
-                f"1. Copy this link address: `{static_github_url}`\n"
-                f"2. Paste it into your browser's address bar at the top of your screen and press Enter.\n"
-                f"3. Type **`[Schema Suggestion] Add {first_framework}`** in the Issue Title lane.\n"
-                f"4. Paste your copied payload into the large description box below it and hit submit!"
-            )
-            
-        else:
-            # Fallback message displayed when they haven't uploaded an external CSV yet
-            st.warning("📥 To submit brand new constructs or alternative theoretical schemas to our open repository, please download the template, fill it out, and upload your custom CSV file above.")
-            
-        st.markdown("---")
-
-        col_exp1, col_exp2, col_exp3 = st.columns(3)
-
-
-
-    # Merge active form items with newly imported custom spreadsheet items
-    final_instrument_list = active_items + uploaded_items + st.session_state.session_instruments
-    
-    if final_instrument_list:
-        df_manifest = pd.DataFrame(final_instrument_list)
-        
-        # --- RENAME DATA GRID FOR ACCESSIBILITY ---
-        st.subheader("📋 Your Active Study Instrument Summary Table")
-        st.dataframe(df_manifest, use_container_width=True, hide_index=True)
-                # --- MODULE 2 VARIABLES SCHEMA PROPOSAL ENTRY ---
         st.markdown("---")
         st.markdown("### 🚀 Propose Custom Framework Variables to Global Schema")
         st.caption("Want to make your uploaded CSV variables part of our permanent core dropdown systems?")
@@ -611,7 +535,6 @@ elif app_mode == "2. Variable Instrument Architect":
             st.code(pasteboard_content, language="markdown")
             
             st.markdown("##### **Step 2: Open the ticket page and paste**")
-            # 🌟 BULLETPROOF SOLUTION: Raw URL containing NO special characters or query encodings
             static_github_url = "https://github.com"
             
             st.markdown(
@@ -620,7 +543,6 @@ elif app_mode == "2. Variable Instrument Architect":
                 f"3. Paste your copied payload into the large description box below it and hit submit!"
             )
         else:
-            # Fallback message displayed when they haven't uploaded an external CSV yet
             st.warning("📥 To submit brand new constructs or alternative theoretical schemas to our open repository, please download the template, fill it out, and upload your custom CSV file above.")
             
         st.markdown("---")
@@ -629,7 +551,6 @@ elif app_mode == "2. Variable Instrument Architect":
         col_exp1, col_exp2, col_exp3 = st.columns(3)
         
         with col_exp1:
-            # 1. Structured Data Dictionary Metadata CSV File
             csv_buffer = io.StringIO()
             df_manifest.to_csv(csv_buffer, index=False)
             st.download_button(
@@ -641,7 +562,6 @@ elif app_mode == "2. Variable Instrument Architect":
             )
             
         with col_exp2:
-            # 2. Complete Technical Schema Mapping TXT File (Retained original)
             txt_manifest = "=== DDI & CEDS COMPLIANT TECHNICAL STUDY METADATA MANIFEST ===\n"
             txt_manifest += f"Repository Context Code: {repository_id if repository_id else 'Not Cataloged'}\n"
             txt_manifest += f"Unit of Analysis: {unit_of_analysis}\n"
@@ -664,7 +584,6 @@ elif app_mode == "2. Variable Instrument Architect":
             )
             
         with col_exp3:
-            # 🌟 3. NEW FEATURE: Clean, Print-Ready Survey Instrument File TXT
             clean_survey = f"=== SURVEY INSTRUMENT FOR STUDY MANIFEST ===\n"
             if repository_id:
                 clean_survey += f"Study Reference DOI: {repository_id}\n"
@@ -673,7 +592,6 @@ elif app_mode == "2. Variable Instrument Architect":
             
             for idx, row in df_manifest.iterrows():
                 clean_survey += f"Q{idx+1}. {row['Question_Item_Text']}\n"
-                # Formatting options cleanly for participant deployment views
                 options = str(row['Response_Scale_Options'])
                 if "|" in options:
                     for opt in options.split("|"):
@@ -716,14 +634,16 @@ elif app_mode == "3. Community Data Repository Sync":
             st.success("✅ Local file successfully parsed into system memory workspace matrix!")
             st.dataframe(df_user_raw.head(10), use_container_width=True)
             
-            # Lock database routing unless user checks off privacy framework parameters explicitly
             if check_names and check_dates and check_irb:
                 if st.button("🚀 Push De-Identified Dataset to Collective Global Repository"):
-                    if shared_conn is not None:
-                        st.info("Uploading data to cloud platform...")
-                        # Connection transactions route out here to target table maps
-                    else:
-                        st.success("Data validation completed! (Running in safe local standalone mode - file verification matches repository ingest schema parameters).")
+                    try:
+                        # Convert DataFrame to dictionary payload for Supabase dynamic insert
+                        data_payloads = df_user_raw.to_dict(orient="records")
+                        # Synchronize row matrix to Supabase community repository table
+                        supabase.table("community_repository").insert(data_payloads).execute()
+                        st.success("🎉 Data synchronization complete! Rows safely committed to collective repository analytics.")
+                    except Exception as db_err:
+                        st.error(f"Cloud synchronization failed: {db_err}")
             else:
                 st.warning("⚠️ Access locked. Complete the mandatory De-Identification Compliance Checklist above to enable global server synchronization paths.")
         except Exception as e:
@@ -737,11 +657,9 @@ elif app_mode == "4. Descriptive & Scale Analytics":
     st.caption("Analyze item matrices, evaluate structural scale internal consistency coefficients, compute correlations, and export analytical packages.")
     st.markdown("---")
     
-    # 1. RIGOROUS USER DATA INGEST INSTRUCTIONS
     st.subheader("📂 1. Ingest Data Sheet Mapping Workspace")
     data_source = st.radio("Analytics Dataset Source Selection:", ["Use Standard Synthetic Sample Dataset", "Upload Custom Research Data Sheet (.csv)"])
     
-    # Detailed warning blueprint box instructing users on exact label column expectations
     st.info(
         "📝 **Strict CSV Data Schema Ingestion Requirements:**\n\n"
         "To execute structural calculations without errors, your custom file **must conform exactly** to these criteria:\n"
@@ -752,8 +670,7 @@ elif app_mode == "4. Descriptive & Scale Analytics":
         "  - **Technology Acceptance Model:** Columns must be named starting with `TAM_` (e.g., `TAM_Usefulness_1`, `TAM_EaseOfUse_2`).\n"
         "* **Values Scaling:** Psychometric matrix items must contain continuous numeric data vectors (e.g., standard Likert items scored 1-5 or 1-7)."
     )
-        # --- AUTOMATED DATA TEMPLATE GENERATION & DOWNLOAD ---
-    # Create a structured DataFrame matching your exact schema requirements
+    
     template_cols = [
         "Participant_ID", "Age", "Gender", 
         "TPB_Attitude_1", "TPB_Norms_2", "TPB_Control_3", 
@@ -761,15 +678,10 @@ elif app_mode == "4. Descriptive & Scale Analytics":
         "TAM_Usefulness_1", "TAM_EaseOfUse_2"
     ]
     analytics_template_df = pd.DataFrame(columns=template_cols)
-    
-    # Inject a clean placeholder row as a visual guide for the researcher
     analytics_template_df.loc[0] = [1, 21, "Woman", 4, 5, 3, 4, 5, 4, 4]
     analytics_template_df.loc[1] = [2, 19, "Man", 2, 3, 4, 3, 2, 5, 5]
-    
-    # Convert the structured matrix into downloadable CSV bytes
     analytics_template_csv = analytics_template_df.to_csv(index=False).encode('utf-8')
     
-    # Render the download trigger button
     st.download_button(
         label="📥 Download Analytics CSV Template File",
         data=analytics_template_csv,
@@ -783,7 +695,6 @@ elif app_mode == "4. Descriptive & Scale Analytics":
     df_analytics = None
     
     if data_source == "Use Standard Synthetic Sample Dataset":
-        # Generate stable, clean psychometric sample data arrays
         np.random.seed(42)
         n_samples = 100
         synthetic_data = {
@@ -807,11 +718,9 @@ elif app_mode == "4. Descriptive & Scale Analytics":
         st.subheader("📋 Dataset Workspace Snapshot")
         st.dataframe(df_analytics.head(10), use_container_width=True, hide_index=True)
         
-        # Isolate continuous variables and item scores
         all_numeric_cols = df_analytics.select_dtypes(include=[np.number]).columns.tolist()
         numeric_cols = [c for c in all_numeric_cols if "ID" not in c]
         
-        # --- 2. ADD AXES LABELS TO THE DISTRIBUTION CHART VISUALIZER ---
         st.divider()
         st.subheader("📊 2. Distribution Data Chart Visualizer")
         if numeric_cols:
@@ -823,20 +732,16 @@ elif app_mode == "4. Descriptive & Scale Analytics":
                 st.markdown(f"**Descriptive Vectors for `{selected_col}`:**")
                 st.dataframe(pd.DataFrame(desc_stats), use_container_width=True)
             with col_chart2:
-                # Compile accurate counting distributions for categorical/Likert scales
                 counts_df = df_analytics[selected_col].value_counts().sort_index().reset_index()
                 counts_df.columns = ["Response Categories", "Frequency (Participant Count)"]
                 
-                # Render bar chart with explicit, scannable axes labels
                 st.markdown(f"**Response Value Counts for `{selected_col}`**")
                 st.bar_chart(counts_df.set_index("Response Categories"), y="Frequency (Participant Count)", use_container_width=True)
         
-        # --- 3. AUTOMATED COMPOSITE SCALE INDEX ARCHITECT & CRONBACH'S ALPHA ---
         st.divider()
         st.subheader("🧮 3. Automated Composite Scale Index & Reliability Architect")
         st.caption("The engine crawls your dataset column tags to dynamically bind scales as averages of their matched item matrices and calculates Alpha coefficients.")
         
-        # Define internal mathematical function to compute standard Cronbach's Alpha
         def calculate_cronbach_alpha(scale_df):
             clean_df = scale_df.dropna()
             n_items = clean_df.shape[1]
@@ -849,7 +754,6 @@ elif app_mode == "4. Descriptive & Scale Analytics":
             alpha = (n_items / (n_items - 1)) * (1 - (item_variances / total_variance))
             return alpha
 
-        # Detect prefix structural grouping columns
         scale_prefixes = {"TPB_": "Theory of Planned Behavior", "SDT_": "Self-Determination Theory", "TAM_": "Technology Acceptance Model"}
         computed_scales_manifest = {}
         scale_summary_text = "=== CRONBACH'S ALPHA INTERNAL CONSISTENCY PROFILE ===\n"
@@ -857,15 +761,12 @@ elif app_mode == "4. Descriptive & Scale Analytics":
         for prefix, scale_name in scale_prefixes.items():
             matched_items = [col for col in df_analytics.columns if col.startswith(prefix)]
             if len(matched_items) >= 2:
-                # 🌟 AUTOMATED AVERAGING LOGIC: Compute index values dynamically across rows
                 scale_score_col = f"Scale_Composite_{prefix.replace('_', '')}"
                 df_analytics[scale_score_col] = df_analytics[matched_items].mean(axis=1)
                 
-                # Compute Cronbach's Alpha
                 alpha_val = calculate_cronbach_alpha(df_analytics[matched_items])
                 computed_scales_manifest[scale_name] = {"column": scale_score_col, "items": matched_items, "alpha": alpha_val}
                 
-                # Visual verification reporting output card matrix
                 col_m1, col_m2 = st.columns(2)
                 with col_m1:
                     st.metric(label=f"🌐 {scale_name} Mean Index", value=f"{df_analytics[scale_score_col].mean():.2f}")
@@ -875,12 +776,10 @@ elif app_mode == "4. Descriptive & Scale Analytics":
                 scale_summary_text += f"Scale Target: {scale_name}\nIncluded Item Items: {', '.join(matched_items)}\nCalculated Reliability (Cronbach's Alpha): {alpha_val:.4f}\n\n"
                 st.markdown(" ")
 
-        # --- 4. MIXED VARIABLE DATA CORRELATIONS MATRIX ENGINE ---
         st.divider()
         st.subheader("🔗 4. Statistical Correlation Matrix Model")
         st.caption("Processes correlations across all active items, using spearman ordinal rules or continuous Pearson coefficient vectors depending on item classifications.")
         
-        # Accumulate demographic variables alongside newly constructed index average scores
         correlation_targets = []
         if "Age" in df_analytics.columns:
             correlation_targets.append("Age")
@@ -889,11 +788,7 @@ elif app_mode == "4. Descriptive & Scale Analytics":
             correlation_targets.append(properties["column"])
             
         if len(correlation_targets) >= 2:
-            # Build correlation dataframe using Spearman rank-order correlation matrix 
-            # as it accommodates mixed numeric classifications (Age vs Likert Scale averages) safely
             correlation_matrix = df_analytics[correlation_targets].corr(method="spearman")
-            
-            # Clean column labels to look friendly to social-science readers
             friendly_labels = {col: col.replace("Scale_Composite_", "Index: ") for col in correlation_targets}
             clean_corr_matrix = correlation_matrix.rename(index=friendly_labels, columns=friendly_labels)
             
@@ -903,12 +798,10 @@ elif app_mode == "4. Descriptive & Scale Analytics":
             st.warning("Insufficient structural aggregate composite dimensions available to compute multi-variable correlation grids.")
             clean_corr_matrix = pd.DataFrame()
 
-                # --- 5. COMPREHENSIVE PDF REPORT GENERATION ENGINE ---
         st.divider()
         st.subheader("📥 5. Download Evaluation Compendium")
         st.caption("Generate a compiled analytical summary PDF handbook detailing item statistics, alpha metrics, and active distribution data charts.")
 
-        # Create a binary buffer to hold the compiled PDF data in memory
         pdf_buffer = io.BytesIO()
         
         try:
@@ -918,8 +811,6 @@ elif app_mode == "4. Descriptive & Scale Analytics":
             from reportlab.lib import colors
             import matplotlib.pyplot as plt
             
-            # --- 1. SILENT VISUALIZATION GRAPH COMPILATION ---
-            # Compile Distribution Graph
             fig_dist, ax_dist = plt.subplots(figsize=(6, 3))
             counts_df.plot(kind="bar", x="Response Categories", y="Frequency (Participant Count)", ax=ax_dist, color="#1f77b4", legend=False)
             ax_dist.set_title(f"Distribution: {selected_col}")
@@ -931,7 +822,6 @@ elif app_mode == "4. Descriptive & Scale Analytics":
             fig_dist.savefig(dist_img_path, dpi=200)
             plt.close(fig_dist)
             
-            # Compile Correlation Matrix Graph (If data is available)
             corr_img_path = None
             if not clean_corr_matrix.empty:
                 fig_corr, ax_corr = plt.subplots(figsize=(5, 4))
@@ -950,7 +840,6 @@ elif app_mode == "4. Descriptive & Scale Analytics":
                 fig_corr.savefig(corr_img_path, dpi=200)
                 plt.close(fig_corr)
 
-            # --- 2. BUILD THE STRUCTURAL PDF FRAMEWORK ---
             doc = SimpleDocTemplate(
                 pdf_buffer, 
                 pagesize=letter,
@@ -960,7 +849,6 @@ elif app_mode == "4. Descriptive & Scale Analytics":
             
             styles = getSampleStyleSheet()
             
-            # Custom accessible text style elements
             title_style = ParagraphStyle(
                 'ReportTitle', parent=styles['Heading1'],
                 fontSize=22, textColor=colors.HexColor("#1A365D"), spaceAfter=12
@@ -973,36 +861,27 @@ elif app_mode == "4. Descriptive & Scale Analytics":
                 'ReportBody', parent=styles['BodyText'],
                 fontSize=10, leading=14, textColor=colors.HexColor("#2D3748")
             )
-            code_style = ParagraphStyle(
-                'CodeStyle', parent=styles['Normal'],
-                fontName='Courier', fontSize=8, leading=10, textColor=colors.HexColor("#1A202C")
-            )
 
             story = []
             
-            # Title & Subheaders Block
             story.append(Paragraph("<b>Open Educational Metadata Report Compendium</b>", title_style))
             story.append(Paragraph(f"<b>Dataset Sample Metric Matrix Size:</b> {df_analytics.shape[0]} Rows | {df_analytics.shape[1]} Columns", body_style))
             story.append(Spacer(1, 15))
             
-            # Cronbach's Alpha Reliability Block
             story.append(Paragraph("<b>1. Cronbach's Alpha Scale Reliability Internal Consistency</b>", h2_style))
             for line in scale_summary_text.split("\n"):
                 if line.strip() and "CRONBACH" not in line:
                     story.append(Paragraph(line, body_style))
             story.append(Spacer(1, 10))
             
-            # Variable Distribution and Visual Graphs Section
             story.append(Paragraph(f"<b>2. Distribution Visualization Graph: {selected_col}</b>", h2_style))
             if os.path.exists(dist_img_path):
                 story.append(Image(dist_img_path, width=320, height=160))
             story.append(Spacer(1, 15))
             
-            # Structural Correlation Matrix Table Section
             if not clean_corr_matrix.empty and corr_img_path and os.path.exists(corr_img_path):
                 story.append(Paragraph("<b>3. Mixed Multi-Variable Inter-Correlation Matrix</b>", h2_style))
                 
-                # Transform correlation values array framework into a readable text grid layout
                 corr_data = [["Variable"] + list(clean_corr_matrix.columns)]
                 for idx, row in clean_corr_matrix.iterrows():
                     corr_data.append([str(idx)] + [f"{val:.3f}" for val in row])
@@ -1025,12 +904,10 @@ elif app_mode == "4. Descriptive & Scale Analytics":
                 story.append(Image(corr_img_path, width=240, height=192))
                 story.append(Spacer(1, 15))
                 
-            # Descriptive Evaluation Table Block Annex
             story.append(Paragraph("<b>4. Global Item Descriptive Metric Summaries Annex</b>", h2_style))
             desc_df = df_analytics[numeric_cols].describe().round(3).reset_index()
             desc_data = [list(desc_df.columns)] + desc_df.values.tolist()
             
-            # Format raw numerical rows safely into clean string representations for table rendering
             string_desc_data = []
             for row in desc_data:
                 string_desc_data.append([f"{item:.3f}" if isinstance(item, (int, float)) else str(item) for item in row])
@@ -1045,16 +922,13 @@ elif app_mode == "4. Descriptive & Scale Analytics":
             ]))
             story.append(desc_table)
 
-            # Build and lock down document stream data
             doc.build(story)
             
-            # Clean up background image paths from server storage space
             if os.path.exists(dist_img_path):
                 os.unlink(dist_img_path)
             if corr_img_path and os.path.exists(corr_img_path):
                 os.unlink(corr_img_path)
                 
-            # --- 3. STREAM STREAM INTERFACE COMPONENT DOWNLOAD ---
             st.download_button(
                 label="📥 Download Complete Analytical Summary Report (.pdf)",
                 data=pdf_buffer.getvalue(),
@@ -1065,8 +939,8 @@ elif app_mode == "4. Descriptive & Scale Analytics":
             
         except Exception as pdf_error:
             st.error(f"Failed to assemble PDF Report Compendium structure: {pdf_error}. Ensure reportlab and matplotlib packages exist.")
-        else:
-            st.warning("No continuous numeric variable items identified in the targeted workspace tracking file sheet.")
+    else:
+        st.warning("No continuous numeric variable items identified in the targeted workspace tracking file sheet.")
 
 # --- MODULE 4 ANALYTICS SUGGESTION PIPELINE BUTTON ---
 st.markdown("---")
@@ -1077,7 +951,7 @@ with st.expander("💡 Click to Draft an Analytics Function Suggestion"):
     suggested_stat_metric = st.text_input("Proposed Statistical Function Title", placeholder="e.g., Add Two-Way ANOVA Matrix Calculations", key="mod4_suggest_metric")
     suggested_stat_code = st.text_area("Proposed Python Code block / Mathematical Formula", placeholder="def calculate_anova():\n    # Provide code suggestions or mathematical description models here...", height=150, key="mod4_suggest_code")
     
-    if suggested_stat_metric and suggested_stat_code:
+    if suggested_stat_metric and ...:
         analytics_payload = (
             f"**Analytics Engine Function Enhancement Proposal**\n\n"
             f"**Target Statistical Metric:** {suggested_stat_metric}\n\n"
@@ -1098,4 +972,3 @@ with st.expander("💡 Click to Draft an Analytics Function Suggestion"):
             f"3. Type **`[Analytics Suggestion] Extend Functions`** in the Issue Title lane.\n"
             f"4. Paste your copied payload into the large description box below it and hit submit!"
         )
-
