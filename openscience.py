@@ -427,40 +427,37 @@ if app_mode == "1. Study Metadata Schema Registry":
         suggested_schema_field = st.text_input("Target Element / Field Code to Change", placeholder="e.g., CEDS Section 2 - Alternative Grade Classifications", key="mod1_suggest_field")
         suggested_schema_text = st.text_area("Detailed Suggestion / Additions Details", placeholder="Describe new drop-down selections, alternative labels, or documentation requirements...", key="mod1_suggest_text")
         
-        if suggested_schema_field and suggested_schema_text:
-            schema_payload = f"""**Study Metadata Architecture Amendment Proposal**
-
-**Target Allocation Segment:** {suggested_schema_field}
-
-### PROPOSED SUB-MATRIX SELECTIONS
-```text
-{suggested_schema_text}
-```
-
----
+                if suggested_schema_field and suggested_schema_text:
+            # Bypasses multi-line quotation leaks completely using isolated string tuples
+            schema_payload = (
+                f"**Study Metadata Architecture Amendment Proposal**\n\n"
+                f"**Target Element:** {suggested_schema_field}\n\n"
+                f"### PROPOSED ALTERNATIVE SELECTIONS / LABELS\n"
+                f"```text\n{suggested_schema_text}\n```\n\n"
+                f"---\n*Submitted securely via the Study Metadata Schema Registry Interface Box.*"
+            )
+            
             st.markdown("##### **Submit Change Directly to GitHub**")
             st.caption("Clicking the button below will automatically fork a branch, save your suggestion, and issue a formal pull request.")
             
-            # This triggers your new automated PyGithub pipeline function
+            # This triggers your automated PyGithub pipeline function
             if st.button("🚀 Push Proposal to GitHub as Pull Request", key="submit_mod1_pr_btn"):
                 with st.spinner("Talking to GitHub API, creating branch, and launching Pull Request..."):
-                    # Generate a clean filename and summary string
                     safe_filename = f"metadata_proposal_{suggested_schema_field.lower().replace(' ', '_')}.txt"
                     summary_title = f"Update Metadata Section: {suggested_schema_field}"
                     
-                    # Run the automated GitOps function you pasted at the top of the file
                     result_message = automate_github_pull_request(
                         suggestion_type="Metadata",
                         file_name=safe_filename,
-                        file_content=schema_payload, # Hooks into your existing schema_payload text string
+                        file_content=schema_payload,
                         title_summary=summary_title
                     )
                     
-                    # Display the final status or the live PR link on the screen!
                     if "❌" in result_message:
                         st.error(result_message)
                     else:
                         st.success(result_message)
+
 
 # ==========================================
 # MODULE 2: VARIABLE ARCHITECT & INSTRUMENT EXPORTER
@@ -859,7 +856,7 @@ elif app_mode == "4. Descriptive & Scale Analytics":
             return alpha
 
         scale_prefixes = {"TPB_": "Theory of Planned Behavior", "SDT_": "Self-Determination Theory", "TAM_": "Technology Acceptance Model"}
-        computed_scales_manifest = {{}}
+        computed_scales_manifest = {}
         scale_summary_text = "=== CRONBACH'S ALPHA INTERNAL CONSISTENCY PROFILE ===\n"
         
         for prefix, scale_name in scale_prefixes.items():
