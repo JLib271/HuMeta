@@ -10,12 +10,20 @@ import requests
 import urllib.parse
 from supabase import create_client, Client
 
-# Initialize Supabase Client
+# Initialize Supabase Client Safely
 @st.cache_resource
 def init_supabase() -> Client:
-    url = st.secrets["SUPABASE_URL"]
-    key = st.secrets["SUPABASE_KEY"]
+    # 1. Pull raw values from secrets and strip hidden whitespace characters
+    url = st.secrets["SUPABASE_URL"].strip().rstrip("/")
+    key = st.secrets["SUPABASE_KEY"].strip()
+    
+    # 2. DEFENSIVE FIX: If the bare URL is failing with PGRST125, 
+    # append the strict REST endpoint suffix that PostgREST requires to map public tables
+    if not url.endswith("/rest/v1"):
+        url = f"{url}/rest/v1"
+        
     return create_client(url, key)
+
 
 # Securely connect to your database
 try:
