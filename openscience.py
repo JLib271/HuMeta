@@ -438,21 +438,29 @@ if app_mode == "1. Study Metadata Schema Registry":
 ```
 
 ---
-*Submitted securely via the Study Metadata Schema Registry Interface Box.*"""
+            st.markdown("##### **Submit Change Directly to GitHub**")
+            st.caption("Clicking the button below will automatically fork a branch, save your suggestion, and issue a formal pull request.")
             
-            st.markdown("##### **Step 1: Copy your generated metadata payload capsule**")
-            st.code(schema_payload, language="markdown")
-            
-            st.markdown("##### **Step 2: Open the ticket page and paste**")
-            static_github_url = "https://github.com"
-            
-            st.markdown(
-                f"1. Copy this link address: `{static_github_url}`\n"
-                f"2. Paste it into your browser's address bar at the top of your screen and press Enter.\n"
-                f"3. Type **`[Schema Suggestion] Update Metadata`** in the Issue Title lane.\n"
-                f"4. Paste your copied payload into the large description box below it and hit submit!"
-            )
-
+            # This triggers your new automated PyGithub pipeline function
+            if st.button("🚀 Push Proposal to GitHub as Pull Request", key="submit_mod1_pr_btn"):
+                with st.spinner("Talking to GitHub API, creating branch, and launching Pull Request..."):
+                    # Generate a clean filename and summary string
+                    safe_filename = f"metadata_proposal_{suggested_schema_field.lower().replace(' ', '_')}.txt"
+                    summary_title = f"Update Metadata Section: {suggested_schema_field}"
+                    
+                    # Run the automated GitOps function you pasted at the top of the file
+                    result_message = automate_github_pull_request(
+                        suggestion_type="Metadata",
+                        file_name=safe_filename,
+                        file_content=schema_payload, # Hooks into your existing schema_payload text string
+                        title_summary=summary_title
+                    )
+                    
+                    # Display the final status or the live PR link on the screen!
+                    if "❌" in result_message:
+                        st.error(result_message)
+                    else:
+                        st.success(result_message)
 
 # ==========================================
 # MODULE 2: VARIABLE ARCHITECT & INSTRUMENT EXPORTER
