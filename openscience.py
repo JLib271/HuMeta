@@ -1028,8 +1028,6 @@ if app_mode == "5. Live Central Database Viewer":
         # 1. Cleanly grab the target table from your button session state
     target_table = str(st.session_state.get("active_db_view", "studies")).strip().lower()
 
-       target_table = str(st.session_state.get("active_db_view", "studies")).strip().lower()
-
     try:
         with st.spinner(f"Establishing isolated API handshake for `{target_table}`..."):
             from supabase import create_client as standalone_client
