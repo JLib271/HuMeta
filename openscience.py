@@ -1025,27 +1025,29 @@ if app_mode == "5. Live Central Database Viewer":
         # Ensure a fallback database target view is actively mapped
     target_table = str(st.session_state.get("active_db_view", "studies")).strip().lower()
 
+        # 1. Cleanly grab the target table from your button session state
+    target_table = str(st.session_state.get("active_db_view", "studies")).strip().lower()
+
     try:
-        with st.spinner(f"Connecting to live API public schema: `{target_table}`..."):
+        with st.spinner(f"Querying table layer: `{target_table}`..."):
             
-            # Explicitly force schema, clear all whitespace, and cast clean routing strings
+            # 2. Query the direct physical table explicitly bypass old views
             db_response = (
-                supabase.schema("public")
+                supabase
                 .from_(target_table)
                 .select("*")
                 .execute()
             )
             
+            # 3. Render the data if the connection succeeds
             if db_response.data is not None:
                 display_df = pd.DataFrame(db_response.data)
                 
                 if not display_df.empty:
                     st.subheader(f"📂 Live Matrix Grid: `{target_table}` Records")
-                    st.markdown(f"Displaying **{len(display_df)}** verified metadata structures from the cloud repository.")
-                    
                     st.dataframe(display_df, use_container_width=True, hide_index=True)
                     
-                    # Automated binary download streamer
+                    # Automated spreadsheet download button
                     raw_csv_bytes = display_df.to_csv(index=False).encode('utf-8')
                     st.download_button(
                         label=f"📥 Download Raw `{target_table}` Spreadsheet (.csv)",
@@ -1055,20 +1057,21 @@ if app_mode == "5. Live Central Database Viewer":
                         use_container_width=True
                     )
                 else:
-                    st.info(f"The structural cloud matrix `{target_table}` connected successfully but contains 0 entries.")
+                    st.info(f"The table `{target_table}` is active but currently contains 0 records. Try submitting a study in Module 1 to populate it!")
             else:
-                st.error("The API router returned an empty data object frame.")
+                st.error("The API router returned an empty dataset object.")
                 
     except Exception as db_view_error:
         st.error(f"Failed to query central database: {db_view_error}")
         
-        # Add live structural debug tracking directly to your application view container
+        # Keep the debug panel active to monitor live routing states
         st.markdown("### 🔧 API Connection Debug Panel")
         st.json({
             "Attempted Target Table": target_table,
             "Session State Active Registry Value": st.session_state.get("active_db_view"),
             "Supabase Config Endpoint Key Map": st.secrets["SUPABASE_URL"]
         })
+
 
 
 
