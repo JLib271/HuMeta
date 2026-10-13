@@ -133,7 +133,7 @@ def automate_github_pull_request(suggestion_type: str, file_name: str, file_cont
         
         # 2. Automatically detect your repository information
         # (Replace 'your-username/your-repo-name' with your actual GitHub path)
-        repo_path = "openedmetadata/openedmetadata" 
+        repo_path = "JLib271/OpenEdMetadata" 
         repo = g.get_repo(repo_path)
         
         # 3. Establish structural branch identifiers
