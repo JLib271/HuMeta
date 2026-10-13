@@ -989,7 +989,7 @@ with st.expander("💡 Click to Draft an Analytics Function Suggestion"):
 # ==========================================
 # MODULE 5: LIVE CENTRAL DATABASE VIEWER
 # ==========================================
-elif app_mode == "5. Live Central Database Viewer":
+if app_mode == "5. Live Central Database Viewer":
     st.header("🗄️ Central Repository Live Database Viewer")
     st.caption("Direct, read-only access to the underlying structured SQL tables storing public community metadata records.")
     st.markdown("---")
