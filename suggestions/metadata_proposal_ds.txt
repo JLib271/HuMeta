@@ -1,0 +1,11 @@
+**Study Metadata Architecture Amendment Proposal**
+
+**Target Element:** ds
+
+### PROPOSED ALTERNATIVE SELECTIONS / LABELS
+```text
+dsd
+```
+
+---
+*Submitted securely via the Study Metadata Schema Registry Interface Box.*
