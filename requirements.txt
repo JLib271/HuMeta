@@ -8,3 +8,4 @@ matplotlib
 reportlab
 supabase
 PyGithub>=2.1.0
+streamlit-flow-component>=1.6.1,<2.0.0
