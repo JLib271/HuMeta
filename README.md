@@ -76,28 +76,34 @@ remains in git history even if it is later removed.
 
 ---
 
-## 🔐 Researcher sign-in (CILogon)
+## 🔐 Researcher sign-in (Google)
 
 Every module works without signing in. Signing in is required only to submit
 items for review (study summaries, public datasets, suggestions), so that each
-pull request is tied to a verified researcher. The app uses Streamlit's built-in
-OpenID Connect sign-in with [CILogon](https://www.cilogon.org/oidc), the same
-federated institutional login used by STEMEd+ Commons / Knowledge Commons.
+pull request is tied to a real account. The app uses Streamlit's built-in
+OpenID Connect sign-in with Google, so any Google account works, including
+university Google Workspace accounts. Pull requests show the submitter's display
+name and a short hashed account reference, never their email address.
 
-Pull requests show the submitter's display name and a short hashed account
-reference — never their email address. The app asks for the standard
-`openid profile email` scopes.
+To set it up (about 10 minutes, free):
 
-To set it up:
+1. In [Google Cloud Console](https://console.cloud.google.com/), create a
+   project, then open **APIs & Services → OAuth consent screen**. Choose
+   **External**, fill in the app name and support email, and keep only the
+   basic `openid`, `email`, and `profile` scopes.
+2. Under **Audience**, click **Publish app** so it is "In production".
+   (In "Testing" mode only the test users you list can sign in.) Apps that use
+   only the basic scopes don't need Google's verification review.
+3. Open **Credentials → Create credentials → OAuth client ID**, choose
+   **Web application**, and add the authorized redirect URI
+   `https://<your-app>.streamlit.app/oauth2callback`
+   (add `http://localhost:8501/oauth2callback` too for local testing).
+4. Copy the client ID and secret into the app's secrets (below). Without an
+   `[auth]` section the app still runs; only submissions are disabled.
 
-1. Register an OIDC client with CILogon (<https://cilogon.org/oauth2/register>),
-   or ask the STEMEd+ Commons / Knowledge Commons administrators whether to
-   register through their CILogon COmanage registry instead. Use the callback
-   URL `https://<your-app>.streamlit.app/oauth2callback` and request the
-   `openid`, `email`, and `profile` scopes. CILogon administrators must approve
-   the client before it works.
-2. Add the client to the app's secrets (below). Without an `[auth]` section the
-   app still runs; only submissions are disabled.
+The code uses whichever OpenID Connect provider is in `[auth]`, so switching
+later (for example to CILogon or Microsoft) only needs new secrets and a new
+button label.
 
 ---
 
@@ -115,14 +121,14 @@ GITHUB_REPO = "JLib271/OpenEdMetadata"
 [auth]
 redirect_uri = "https://<your-app>.streamlit.app/oauth2callback"
 cookie_secret = "a-long-random-string"   # e.g. python -c "import secrets; print(secrets.token_urlsafe(32))"
-client_id = "cilogon:/client_id/..."
+client_id = "xxxxxxxx.apps.googleusercontent.com"
 client_secret = "..."
-server_metadata_url = "https://cilogon.org/.well-known/openid-configuration"
+server_metadata_url = "https://accounts.google.com/.well-known/openid-configuration"
 ```
 
 For local development, put the same content in `.streamlit/secrets.toml`
 (already git-ignored) and use `http://localhost:8501/oauth2callback` as the
-redirect URI (it must also be registered with CILogon).
+redirect URI (it must also be listed in the Google OAuth client).
 
 Supabase is no longer used: remove `SUPABASE_URL`, `SUPABASE_KEY`, and
 `APP_URL` from existing deployments' secrets.

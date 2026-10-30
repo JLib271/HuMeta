@@ -334,7 +334,7 @@ PROGRAM_TYPE_OPTIONS = [
 ]
 
 def auth_is_configured() -> bool:
-    """True when an [auth] section (CILogon OpenID Connect) exists in secrets."""
+    """True when an [auth] section (Google OpenID Connect) exists in secrets."""
     try:
         return "auth" in st.secrets
     except Exception:
@@ -822,10 +822,10 @@ with st.sidebar:
             st.logout()
     else:
         st.caption(
-            "Sign in with your institution through CILogon to submit study summaries, "
+            "Sign in with a Google account (including university Google accounts) to submit study summaries, "
             "public datasets, or suggestions for review."
         )
-        if st.button("Sign in with CILogon", use_container_width=True, type="primary"):
+        if st.button("Sign in with Google", use_container_width=True, type="primary"):
             st.login()
 
 st.title("🔬 Open Educational Metadata Portal")
@@ -914,7 +914,7 @@ def open_review_pull_request(
     """
     try:
         if not researcher_is_signed_in():
-            return "❌ Sign in with CILogon before submitting items for review."
+            return "❌ Sign in with Google before submitting items for review."
         if "GITHUB_PAT" not in st.secrets:
             return "❌ Missing 'GITHUB_PAT' in the app's secrets."
 
@@ -1048,7 +1048,7 @@ st.markdown("---")
 publish_disabled = not signed_in
 publish_hint = (
     None if signed_in
-    else "Sign in with CILogon (sidebar) to submit this for maintainer review."
+    else "Sign in with Google (sidebar) to submit this for maintainer review."
 )
 
 # ==========================================
