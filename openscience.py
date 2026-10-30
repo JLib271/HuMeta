@@ -5,21 +5,32 @@ import numpy as np
 import io
 import json
 import os
-import tempfile
-import sqlite3
+import re
+import hashlib
+import time
 import uuid
 from pathlib import Path
-from sqlalchemy import text
-import requests
 import urllib.parse
-from supabase import create_client, Client
+from github import Github
 from streamlit_flow import streamlit_flow
 from streamlit_flow.elements import StreamlitFlowEdge, StreamlitFlowNode
 from streamlit_flow.layouts import ManualLayout
 from streamlit_flow.state import StreamlitFlowState
 
-DATASET_BUCKET = "study-datasets"
-PUBLIC_DATASET_BUCKET = "public-study-datasets"
+# Storage model (no database):
+# - Private study records and Module 2 plans live only in a project file the
+#   researcher downloads and re-opens; the app never stores them.
+# - Private datasets are analyzed in memory for the current session only.
+# - Public study summaries and datasets live in this GitHub repository under
+#   published/. Researchers submit them as pull requests; they become public
+#   only after a maintainer merges, and the deployed app reads them from disk.
+APP_DIR = Path(__file__).resolve().parent
+PUBLISHED_DIR = APP_DIR / "published"
+PUBLISHED_SUMMARIES_DIR = PUBLISHED_DIR / "study_summaries"
+PUBLISHED_DATASETS_DIR = PUBLISHED_DIR / "datasets"
+DEFAULT_GITHUB_REPO = "JLib271/OpenEdMetadata"
+PUBLIC_DATASET_MAX_MB = 25
+PROJECT_FILE_FORMAT = "openedmetadata-project"
 UNIT_OF_ANALYSIS_OPTIONS = [
     "Individual (person / participant)",
     "Group / household / community",
@@ -322,45 +333,129 @@ PROGRAM_TYPE_OPTIONS = [
     "Other / not listed",
 ]
 
-def create_supabase_client() -> Client:
-    """Create an isolated Supabase client for the current Streamlit session."""
-    url = str(st.secrets["SUPABASE_URL"]).strip().rstrip("/")
-    key = str(st.secrets["SUPABASE_KEY"]).strip()
-    return create_client(url, key)
+def auth_is_configured() -> bool:
+    """True when an [auth] section (CILogon OpenID Connect) exists in secrets."""
+    try:
+        return "auth" in st.secrets
+    except Exception:
+        return False
 
 
-def store_auth_session(auth_session) -> None:
-    auth_user = auth_session.user
-    if auth_user is None:
-        raise ValueError("Supabase returned an authentication session without a user.")
-    st.session_state["supabase_auth"] = {
-        "access_token": auth_session.access_token,
-        "refresh_token": auth_session.refresh_token,
-        "email": auth_user.email
+def researcher_is_signed_in() -> bool:
+    return auth_is_configured() and bool(getattr(st.user, "is_logged_in", False))
+
+
+def researcher_display_name() -> str:
+    name = str(st.user.get("name") or "").strip() if researcher_is_signed_in() else ""
+    return name or "Signed-in researcher"
+
+
+def researcher_reference() -> str:
+    """Stable, non-identifying reference for a signed-in researcher.
+
+    The OIDC subject is hashed so pull requests can be traced to an account
+    without publishing an email address or raw identifier.
+    """
+    if not researcher_is_signed_in():
+        return ""
+    subject = str(st.user.get("sub") or st.user.get("email") or "")
+    return hashlib.sha256(subject.encode("utf-8")).hexdigest()[:12] if subject else ""
+
+
+# ---------- Researcher-kept project files ----------
+
+def empty_project() -> dict:
+    return {
+        "format": PROJECT_FILE_FORMAT,
+        "schema_version": 1,
+        "study": None,
+        "module2_plan": {},
     }
 
 
-def authenticated_supabase_client() -> tuple[Client | None, str | None]:
-    saved_session = st.session_state.get("supabase_auth")
-    if not saved_session:
-        return None, None
+def current_project() -> dict:
+    if "project" not in st.session_state:
+        st.session_state["project"] = empty_project()
+    return st.session_state["project"]
 
-    try:
-        client = create_supabase_client()
-        response = client.auth.set_session(
-            saved_session["access_token"],
-            saved_session["refresh_token"]
-        )
-        if response.session:
-            store_auth_session(response.session)
-        auth_user = response.user or (response.session.user if response.session else None)
-        if auth_user is None:
-            st.session_state.pop("supabase_auth", None)
-            return None, "Supabase could not validate the signed-in user."
-        return client, auth_user.id
-    except Exception as auth_error:
-        st.session_state.pop("supabase_auth", None)
-        return None, f"Your sign-in session expired or is no longer valid: {auth_error}"
+
+def parse_project_file(raw_bytes: bytes) -> dict:
+    project = json.loads(raw_bytes.decode("utf-8"))
+    if not isinstance(project, dict) or project.get("format") != PROJECT_FILE_FORMAT:
+        raise ValueError("This is not an Open Educational Metadata project file.")
+    study = project.get("study")
+    if study is not None and (not isinstance(study, dict) or not study.get("id")):
+        raise ValueError("The project file's study record is missing or malformed.")
+    plan = project.get("module2_plan") or {}
+    if not isinstance(plan, dict):
+        raise ValueError("The project file's Module 2 plan is malformed.")
+    loaded = empty_project()
+    loaded.update({"study": study, "module2_plan": plan})
+    return loaded
+
+
+def project_file_bytes() -> bytes:
+    project = dict(current_project())
+    project["saved_at_utc"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    return json.dumps(project, ensure_ascii=False, indent=2).encode("utf-8")
+
+
+def project_file_name() -> str:
+    study = current_project().get("study") or {}
+    slug = re.sub(r"[^a-z0-9]+", "_", str(study.get("study_title") or "study").lower()).strip("_")
+    return f"{(slug or 'study')[:60]}.oem-project.json"
+
+
+def render_project_download(key: str, label: str = "Download project file") -> None:
+    st.download_button(
+        label,
+        data=project_file_bytes(),
+        file_name=project_file_name(),
+        mime="application/json",
+        key=key,
+        use_container_width=True,
+        help="Keep this file somewhere safe (e.g., your institution's storage). "
+        "The app does not keep a copy; open it again from the sidebar to continue.",
+    )
+
+
+# ---------- Published (public) records in this repository ----------
+
+def _read_json_files(folder: Path) -> list[dict]:
+    records = []
+    if not folder.is_dir():
+        return records
+    for path in sorted(folder.glob("*.json")):
+        try:
+            record = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if isinstance(record, dict):
+            record["_file"] = path.name
+            records.append(record)
+    return records
+
+
+@st.cache_data(ttl=300, show_spinner=False)
+def load_published_summaries() -> list[dict]:
+    return _read_json_files(PUBLISHED_SUMMARIES_DIR)
+
+
+@st.cache_data(ttl=300, show_spinner=False)
+def load_published_datasets() -> list[dict]:
+    datasets = []
+    for record in _read_json_files(PUBLISHED_DATASETS_DIR):
+        csv_name = os.path.basename(str(record.get("csv_file") or ""))
+        csv_path = PUBLISHED_DATASETS_DIR / csv_name
+        if csv_name.endswith(".csv") and csv_path.is_file():
+            record["_csv_path"] = str(csv_path)
+            datasets.append(record)
+    return datasets
+
+
+def safe_slug(value: str, fallback: str = "item", max_length: int = 60) -> str:
+    slug = re.sub(r"[^a-z0-9]+", "-", str(value).lower()).strip("-")
+    return (slug or fallback)[:max_length].strip("-") or fallback
 
 
 def context_search_terms(value: str) -> list[str]:
@@ -658,13 +753,6 @@ def find_measure_suggestions(
         matches.append(measure)
     return matches
 
-# Global Cloud Connection Initialization
-try:
-    db_url = st.secrets["connections"]["sql"]["url"]
-    shared_conn = st.connection("sql", type="sql", url=db_url)
-except Exception:
-    shared_conn = None
-
 # App configuration and session setup
 st.set_page_config(page_title="Open Educational Metadata Engine", layout="wide")
 if "session_instruments" not in st.session_state:
@@ -680,69 +768,65 @@ app_mode = st.sidebar.radio(
         "2. Variable Instrument Architect",
         "3. Community Data Repository Sync",
         "4. Descriptive & Scale Analytics",
-        "5. Live Central Database Viewer"
+        "5. Published Repository Viewer"
     ],
     key="app_mode"
 )
 
-if "token_hash" in st.query_params:
-    try:
-        if st.query_params.get("type") != "email":
-            raise ValueError("The sign-in link has an unsupported token type.")
-        auth_client = create_supabase_client()
-        auth_response = auth_client.auth.verify_otp({
-            "token_hash": st.query_params["token_hash"],
-            "type": st.query_params["type"]
-        })
-        if auth_response.session:
-            store_auth_session(auth_response.session)
-            st.session_state["auth_notice"] = "Email sign-in confirmed."
-        else:
-            raise ValueError("Supabase verified the link but did not return an active session.")
-        st.query_params.clear()
-    except Exception as auth_error:
-        st.session_state["auth_error"] = f"Could not verify the sign-in link: {auth_error}"
-        st.query_params.clear()
-
-user_client, current_user_id = authenticated_supabase_client()
+signed_in = researcher_is_signed_in()
 
 with st.sidebar:
     st.divider()
-    st.subheader("🔐 Researcher account")
-    if current_user_id:
-        auth_email = st.session_state["supabase_auth"].get("email") or "Signed-in researcher"
-        st.caption(f"Signed in as {auth_email}")
-        if st.button("Sign out", use_container_width=True):
+    st.subheader("📁 Project file")
+    st.caption(
+        "Your study record and Module 2 plan are kept in a project file on your own "
+        "computer. The app never stores them."
+    )
+    project_upload = st.file_uploader(
+        "Open a project file",
+        type=["json"],
+        key="project_file_upload",
+        help="Open a .oem-project.json file you downloaded earlier.",
+    )
+    if project_upload is not None:
+        upload_marker = (project_upload.name, project_upload.size)
+        if st.session_state.get("loaded_project_marker") != upload_marker:
             try:
-                if user_client:
-                    user_client.auth.sign_out()
-            finally:
-                st.session_state.pop("supabase_auth", None)
-                st.rerun()
+                st.session_state["project"] = parse_project_file(project_upload.getvalue())
+                st.session_state["loaded_project_marker"] = upload_marker
+                st.success("Project opened.")
+            except (ValueError, UnicodeDecodeError, json.JSONDecodeError) as project_error:
+                st.error(f"Could not open the project file: {project_error}")
+    sidebar_project = current_project()
+    if sidebar_project.get("study") or sidebar_project.get("module2_plan"):
+        sidebar_study = sidebar_project.get("study") or {}
+        st.caption(f"Current study: **{sidebar_study.get('study_title') or 'Untitled draft'}**")
+        render_project_download(key="sidebar_project_download")
+        if st.button("Start a new project", use_container_width=True):
+            st.session_state["project"] = empty_project()
+            st.session_state.pop("loaded_project_marker", None)
+            st.rerun()
     else:
-        if st.session_state.get("auth_notice"):
-            st.success(st.session_state.pop("auth_notice"))
-        if st.session_state.get("auth_error"):
-            st.error(st.session_state.pop("auth_error"))
-        with st.form("email_magic_link_form"):
-            login_email = st.text_input("Email address", key="login_email")
-            send_magic_link = st.form_submit_button("Email me a sign-in link")
-        if send_magic_link:
-            try:
-                redirect_url = str(st.secrets["APP_URL"]).strip().rstrip("/")
-                if not login_email.strip() or not redirect_url:
-                    raise ValueError("Enter a valid email address and configure APP_URL.")
-                auth_client = create_supabase_client()
-                auth_client.auth.sign_in_with_otp({
-                    "email": login_email.strip(),
-                    "options": {
-                        "email_redirect_to": redirect_url,
-                        "should_create_user": True
-                    }
-                })
-                st.success("Check your email for a secure sign-in link.")
-            except Exception as auth_error:
-                st.error(f"Could not send the sign-in link: {auth_error}")
+        st.caption("No study yet — save one in Module 1, or open a project file.")
+
+    st.divider()
+    st.subheader("🔐 Researcher sign-in")
+    if not auth_is_configured():
+        st.caption(
+            "Sign-in is not configured for this deployment. Everything works without it "
+            "except submitting items for public listing."
+        )
+    elif signed_in:
+        st.caption(f"Signed in as {researcher_display_name()}")
+        if st.button("Sign out", use_container_width=True):
+            st.logout()
+    else:
+        st.caption(
+            "Sign in with your institution through CILogon to submit study summaries, "
+            "public datasets, or suggestions for review."
+        )
+        if st.button("Sign in with CILogon", use_container_width=True, type="primary"):
+            st.login()
 
 st.title("🔬 Open Educational Metadata Portal")
 st.caption("Standardized Study Registries and Psychometric Instrument Architects under DCMES, IEEE LOM, and CEDS Standards.")
@@ -758,6 +842,7 @@ value_propositions = [
             "Describe the study, research team, population, and design.",
             "Record its content domain or topic and study context.",
             "Document ethics, permissions, and data-stewardship metadata.",
+            "Save it to a project file you keep — the app stores nothing private.",
         ],
     ),
     (
@@ -779,9 +864,9 @@ value_propositions = [
         "for frictionless, public-facing discovery.",
         "3. Community Data Repository Sync",
         [
-            "Review permissions, identifiers, and disclosure risks.",
-            "Upload datasets to private or public storage with explicit confirmation.",
-            "Review datasets available to your account.",
+            "Browse and download datasets researchers have published.",
+            "Review permissions, identifiers, and disclosure risks before public release.",
+            "Submit a de-identified dataset for maintainer review (private data is never stored).",
         ],
     ),
     (
@@ -792,90 +877,117 @@ value_propositions = [
         "and relationship analyses.",
         "4. Descriptive & Scale Analytics",
         [
-            "Select a dataset and map its columns to Module 2 variables.",
+            "Upload a private dataset (kept in memory only) or pick a published one, then map its columns to Module 2 variables.",
             "Inspect distributions, descriptive statistics, and categorical responses.",
             "Review composite scores, reliability, correlations, and download a report.",
         ],
     ),
     (
-        "5. Live Central Database Viewer",
-        "🧪 Validated Measurement Registry",
-        "Offers a vetted repository of reliable and psychometrically valid instruments to "
-        "measure complex human and behavioral variables accurately.",
-        "5. Live Central Database Viewer",
+        "5. Published Repository Viewer",
+        "🧪 Open Published Registry",
+        "Shows the reviewed, publicly shared study summaries, dataset catalog, and research "
+        "measure catalog maintained in the project's GitHub repository.",
+        "5. Published Repository Viewer",
         [
-            "Select a repository table available to your account.",
-            "Browse authorized records and check whether the table contains data.",
+            "Choose published study summaries, datasets, or measures.",
+            "Browse the reviewed public records.",
             "Download the displayed table as CSV.",
         ],
     ),
 ]
 
-import time
-from github import Github
+ALLOWED_PR_FOLDERS = ("suggestions/", "published/study_summaries/", "published/datasets/")
 
-def automate_github_pull_request(suggestion_type: str, file_name: str, file_content: str, title_summary: str) -> str:
-    """
-    Automates a full GitOps flow: Connects to GitHub via PAT, creates a branch,
-    commits a clean schema file into /suggestions, and triggers a live Pull Request.
+
+def open_review_pull_request(
+    suggestion_type: str,
+    title_summary: str,
+    files: dict[str, str | bytes] | None = None,
+    delete_paths: list[str] | None = None,
+    description: str = "",
+) -> str:
+    """Open a pull request that maintainers must review before anything is public.
+
+    ``files`` maps repository paths to content. Paths are restricted to the
+    folders in ALLOWED_PR_FOLDERS and their file names are sanitized, so
+    researcher-entered text cannot write elsewhere in the repository.
     """
     try:
-        # 1. Initialize standalone GitHub engine using your hidden Secrets Token
+        if not researcher_is_signed_in():
+            return "❌ Sign in with CILogon before submitting items for review."
         if "GITHUB_PAT" not in st.secrets:
-            return "❌ Missing 'GITHUB_PAT' configuration token inside your Streamlit Cloud Secrets dashboard."
-            
-        token = st.secrets["GITHUB_PAT"].strip()
-        g = Github(token)
-        
-        # 2. Automatically detect your repository information
-        # (Replace 'your-username/your-repo-name' with your actual GitHub path)
-        repo_path = "JLib271/OpenEdMetadata" 
-        repo = g.get_repo(repo_path)
-        
-        # 3. Establish structural branch identifiers
-        main_branch = repo.get_branch("main")
-        unique_timestamp = int(time.time())
-        unique_suffix = uuid.uuid4().hex[:8]
-        new_branch_name = f"proposal-{suggestion_type.lower()}-{unique_timestamp}-{unique_suffix}"
-        
-        # 4. Programmatically fork a new branch off your primary branch head
-        repo.create_git_ref(ref=f"refs/heads/{new_branch_name}", sha=main_branch.commit.sha)
-        
-        # 5. Commit the clean structural file into your new landing folder
-        target_path = f"suggestions/{file_name}"
-        commit_message = f"Community Schema Proposal: {title_summary}"
-        
-        repo.create_file(
-            path=target_path,
-            message=commit_message,
-            content=file_content,
-            branch=new_branch_name
+            return "❌ Missing 'GITHUB_PAT' in the app's secrets."
+
+        def checked_path(path: str) -> str:
+            folder, _, name = str(path).rpartition("/")
+            folder = f"{folder}/"
+            safe_name = re.sub(r"[^A-Za-z0-9_.-]", "_", os.path.basename(name)).strip("._")
+            if folder not in ALLOWED_PR_FOLDERS or not safe_name:
+                raise ValueError(f"Refusing to write outside the allowed folders: {path}")
+            return folder + safe_name
+
+        files = {checked_path(path): content for path, content in (files or {}).items()}
+        delete_paths = [checked_path(path) for path in (delete_paths or [])]
+        if not files and not delete_paths:
+            return "❌ Nothing to submit."
+
+        repo = Github(str(st.secrets["GITHUB_PAT"]).strip()).get_repo(
+            str(st.secrets.get("GITHUB_REPO", DEFAULT_GITHUB_REPO)).strip()
         )
-        
-        # 6. Execute an API call to open a live Pull Request back to your main branch
-        pr_body = f"""
-        ### 🚀 Community Metadata Architecture Proposal
-        An automated structural amendment suggestion has been compiled and submitted via the live portal interface.
-        
-        * **Proposal Type:** {suggestion_type}
-        * **Target Asset:** `{target_path}`
-        * **Submission Timestamp:** {unique_timestamp}
-        
-        Please evaluate, comment on, and merge this change into your global core schemas when ready.
-        """
-        
+        base_branch = repo.default_branch
+        unique_timestamp = int(time.time())
+        new_branch_name = (
+            f"proposal-{safe_slug(suggestion_type, 'item', 20)}-"
+            f"{unique_timestamp}-{uuid.uuid4().hex[:8]}"
+        )
+        repo.create_git_ref(
+            ref=f"refs/heads/{new_branch_name}",
+            sha=repo.get_branch(base_branch).commit.sha,
+        )
+        commit_message = f"{suggestion_type}: {title_summary}"[:200]
+        for path, content in files.items():
+            repo.create_file(path=path, message=commit_message, content=content, branch=new_branch_name)
+        for path in delete_paths:
+            existing = repo.get_contents(path, ref=new_branch_name)
+            repo.delete_file(path, f"Remove {path}", existing.sha, branch=new_branch_name)
+
+        changed = "\n".join(f"- Add/update `{path}`" for path in files)
+        removed = "\n".join(f"- Remove `{path}`" for path in delete_paths)
+        pr_body = (
+            "### Community submission for maintainer review\n\n"
+            f"* **Type:** {suggestion_type}\n"
+            f"* **Submitted by:** {researcher_display_name()} "
+            f"(account ref `{researcher_reference()}`)\n\n"
+            f"{description}\n\n"
+            f"**Files**\n{changed}\n{removed}\n\n"
+            "Before merging, check that nothing identifies participants and that the "
+            "submitter's confirmations are plausible. Merged content is public and stays "
+            "in git history even if later removed."
+        )
         pull_request = repo.create_pull(
-            title=f"📁 [Schema Proposal] {title_summary}",
+            title=f"[{suggestion_type}] {title_summary}"[:250],
             body=pr_body,
             head=new_branch_name,
-            base="main"
+            base=base_branch,
         )
-        
-        # Return success confirmation URL link back to the stream
-        return f"🎉 Success! A formal Pull Request has been opened automatically. Track it here: {pull_request.html_url}"
-        
+        return (
+            "🎉 Submitted for review. It becomes public only after a maintainer merges it. "
+            f"Track it here: {pull_request.html_url}"
+        )
     except Exception as git_error:
-        return f"❌ Automated GitOps pipeline failure: {git_error}"
+        return f"❌ Could not open the pull request: {git_error}"
+
+
+def automate_github_pull_request(suggestion_type: str, file_name: str, file_content: str, title_summary: str) -> str:
+    """Submit a suggestion file into suggestions/ as a pull request."""
+    # File names are built from researcher-typed titles; flatten any "/" so the
+    # file always lands directly in suggestions/.
+    flat_name = re.sub(r"[^A-Za-z0-9_.-]", "_", str(file_name)).strip("._")
+    return open_review_pull_request(
+        suggestion_type=f"{suggestion_type} Proposal",
+        title_summary=title_summary,
+        files={f"suggestions/{flat_name or uuid.uuid4().hex[:12]}": file_content},
+    )
 
 
 def navigate_to_module(module: str) -> None:
@@ -931,13 +1043,13 @@ else:
 
 st.markdown("---")
 
-preview_mode = app_mode != "About this app" and not current_user_id
-if preview_mode:
-    st.info(
-        "Module preview: this is the actual module interface. Enter your email in the sidebar "
-        "to receive a secure sign-in link before saving information, submitting proposals, "
-        "uploading datasets, or accessing account data."
-    )
+# Nothing private is stored by the app, so every module is fully usable without
+# signing in. Sign-in is required only to submit items for public review.
+publish_disabled = not signed_in
+publish_hint = (
+    None if signed_in
+    else "Sign in with CILogon (sidebar) to submit this for maintainer review."
+)
 
 # ==========================================
 # MODULE 1: STUDY-LEVEL METADATA REGISTRY
@@ -1224,7 +1336,7 @@ if app_mode == "1. Study Metadata Schema Registry":
             placeholder="Optional: oversight reference, agreement restrictions, retention or de-identification requirements.",
         )
 
-        submit_metadata = st.form_submit_button("Save Study Metadata", disabled=preview_mode)
+        submit_metadata = st.form_submit_button("Save study to project file")
         
         if submit_metadata:
             has_author = any(auth["name"].strip() for auth in st.session_state.authors_list)
@@ -1234,95 +1346,94 @@ if app_mode == "1. Study Metadata Schema Registry":
             elif not has_author:
                 st.error("At least one Creator/Author Name is required.")
             else:
-                submission_status = None
                 try:
-                    with st.status("Connecting to Supabase and saving the study record...", expanded=False) as submission_status:
-                        # Keep author details structured in the study description.
-                        authors = [
-                            {
-                                "name": str(auth.get("name") or "").strip(),
-                                "orcid": str(auth.get("orcid") or "").strip()
-                            }
-                            for auth in st.session_state.authors_list
-                        ]
-                        authors = [author for author in authors if author["name"] or author["orcid"]]
-                        authors_string = ", ".join(
-                            author["name"] for author in authors if author["name"]
-                        )
-                        study_date_range = study_dates if isinstance(study_dates, (tuple, list)) else ()
-                        study_start_date = (
-                            study_date_range[0].isoformat()
-                            if len(study_date_range) >= 1 and study_date_range[0]
-                            else ""
-                        )
-                        study_end_date = (
-                            study_date_range[1].isoformat()
-                            if len(study_date_range) >= 2 and study_date_range[1]
-                            else ""
-                        )
-                        
-                        # Preserve every form value in the existing studies table schema.
-                        study_metadata = {
-                            "authors": authors,
-                            "study_doi_or_persistent_identifier": str(study_identifier or "").strip(),
-                            "institution": str(institution or "").strip(),
-                            "funding_source": str(funding_source or "").strip(),
-                            "research_questions_and_aims": str(research_questions or "").strip(),
-                            "subject_keywords": str(keywords or "").strip(),
-                            "language": str(language or "").strip(),
-                            "unit_of_analysis": str(unit_of_analysis or "").strip(),
-                            "sampling_procedure": str(sampling_procedure or "").strip(),
-                            "time_method": str(time_method or "").strip(),
-                            "study_start_date": study_start_date,
-                            "study_end_date": study_end_date,
-                            "state_origin": str(state_origin or "").strip(),
-                            "locale_setting": str(locale_setting or "").strip(),
-                            "participant_populations": participant_populations or [],
-                            "study_settings": study_settings or [],
-                            "grade_level": grade_level or [],
-                            "undergraduate_level": undergraduate_level or [],
-                            "program_type": program_type or [],
-                            "content_domain": str(content_domain or "").strip(),
-                            "ethics_review_status": str(review_status or "").strip(),
-                            "consent_or_authorization": str(consent_model or "").strip(),
-                            "data_sensitivity_and_identifiers": data_sensitivity or [],
-                            "planned_data_access": str(sharing_plan or "").strip(),
-                            "governance_notes": str(governance_notes or "").strip()
+                    # Keep author details structured in the study description.
+                    authors = [
+                        {
+                            "name": str(auth.get("name") or "").strip(),
+                            "orcid": str(auth.get("orcid") or "").strip()
                         }
-                        description_record = {
-                            "description": str(description or "").strip() or "No description provided.",
-                            "metadata": study_metadata
-                        }
+                        for auth in st.session_state.authors_list
+                    ]
+                    authors = [author for author in authors if author["name"] or author["orcid"]]
+                    authors_string = ", ".join(
+                        author["name"] for author in authors if author["name"]
+                    )
+                    study_date_range = study_dates if isinstance(study_dates, (tuple, list)) else ()
+                    study_start_date = (
+                        study_date_range[0].isoformat()
+                        if len(study_date_range) >= 1 and study_date_range[0]
+                        else ""
+                    )
+                    study_end_date = (
+                        study_date_range[1].isoformat()
+                        if len(study_date_range) >= 2 and study_date_range[1]
+                        else ""
+                    )
+                    
+                    # Preserve every form value in the existing studies table schema.
+                    study_metadata = {
+                        "authors": authors,
+                        "study_doi_or_persistent_identifier": str(study_identifier or "").strip(),
+                        "institution": str(institution or "").strip(),
+                        "funding_source": str(funding_source or "").strip(),
+                        "research_questions_and_aims": str(research_questions or "").strip(),
+                        "subject_keywords": str(keywords or "").strip(),
+                        "language": str(language or "").strip(),
+                        "unit_of_analysis": str(unit_of_analysis or "").strip(),
+                        "sampling_procedure": str(sampling_procedure or "").strip(),
+                        "time_method": str(time_method or "").strip(),
+                        "study_start_date": study_start_date,
+                        "study_end_date": study_end_date,
+                        "state_origin": str(state_origin or "").strip(),
+                        "locale_setting": str(locale_setting or "").strip(),
+                        "participant_populations": participant_populations or [],
+                        "study_settings": study_settings or [],
+                        "grade_level": grade_level or [],
+                        "undergraduate_level": undergraduate_level or [],
+                        "program_type": program_type or [],
+                        "content_domain": str(content_domain or "").strip(),
+                        "ethics_review_status": str(review_status or "").strip(),
+                        "consent_or_authorization": str(consent_model or "").strip(),
+                        "data_sensitivity_and_identifiers": data_sensitivity or [],
+                        "planned_data_access": str(sharing_plan or "").strip(),
+                        "governance_notes": str(governance_notes or "").strip()
+                    }
+                    description_record = {
+                        "description": str(description or "").strip() or "No description provided.",
+                        "metadata": study_metadata
+                    }
 
-                        # The documented Supabase table has five columns; keep this insert
-                        # compatible while retaining the complete form as structured text.
-                        db_payload = {
-                            "study_title": str(title).strip(),
-                            "principal_investigator": authors_string,
-                            "institution": str(institution or "").strip(),
-                            "funding_source": str(funding_source or "").strip(),
-                            "study_description": json.dumps(description_record, ensure_ascii=False),
-                            "user_id": current_user_id
-                        }
-                        
-                        user_client.table("studies").insert(db_payload).execute()
-                        submission_status.update(
-                            label="Study record saved to Supabase.",
-                            state="complete",
-                            expanded=False
-                        )
-                        
-                        # Reset authors list back to a clean default state for the next entry session
-                        st.session_state.authors_list = [{"name": "", "orcid": ""}]
-                    st.success(f"Study record saved: {title.strip()}")
-                except Exception as form_db_error:
-                    if submission_status is not None:
-                        submission_status.update(
-                            label="Could not save the study record.",
-                            state="error",
-                            expanded=True
-                        )
-                    st.error(f"Failed to transmit data to the central repository: {form_db_error}")
+                    # Same record shape as before (the earlier database used it),
+                    # now kept only in the researcher's project file.
+                    project = current_project()
+                    existing_study = project.get("study") or {}
+                    study_record = {
+                        "id": existing_study.get("id") or str(uuid.uuid4()),
+                        "study_title": str(title).strip(),
+                        "principal_investigator": authors_string,
+                        "institution": str(institution or "").strip(),
+                        "funding_source": str(funding_source or "").strip(),
+                        "study_description": json.dumps(description_record, ensure_ascii=False),
+                        "created_at": existing_study.get("created_at")
+                        or time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                    }
+                    project["study"] = study_record
+                    st.session_state["project"] = project
+
+                    # Reset authors list back to a clean default state for the next entry session
+                    st.session_state.authors_list = [{"name": "", "orcid": ""}]
+                    st.session_state["module1_saved_notice"] = title.strip()
+                except Exception as form_error:
+                    st.error(f"Could not build the study record: {form_error}")
+
+    if st.session_state.get("module1_saved_notice"):
+        st.success(
+            f"Study record ready: {st.session_state['module1_saved_notice']}. Download the "
+            "project file to keep it — the app does not store a copy."
+        )
+    if current_project().get("study"):
+        render_project_download(key="module1_project_download")
 
 
     # --- MODULE 1 EXTENSION PIPELINE BUTTON ---
@@ -1351,7 +1462,8 @@ if app_mode == "1. Study Metadata Schema Registry":
             if st.button(
                 "🚀 Push Proposal to GitHub as Pull Request",
                 key="submit_mod1_pr_btn",
-                disabled=preview_mode,
+                disabled=publish_disabled,
+                help=publish_hint,
             ):
                 with st.spinner("Talking to GitHub API, creating branch, and launching Pull Request..."):
                     safe_filename = f"metadata_proposal_{suggested_schema_field.lower().replace(' ', '_')}.txt"
@@ -1382,33 +1494,18 @@ elif app_mode == "2. Variable Instrument Architect":
     st.markdown("---")
     
     st.subheader("Study context (optional)")
-    st.caption("Choose a saved Module 1 study to reference its context. Theory and measurement planning now happens here.")
+    st.caption(
+        "Uses the study in your current project (saved in Module 1 or opened from a "
+        "project file in the sidebar). Theory and measurement planning happens here."
+    )
 
-    saved_studies = []
-    if not preview_mode:
-        try:
-            saved_studies = (
-                user_client.table("studies")
-                .select("id,study_title,study_description,created_at")
-                .eq("user_id", current_user_id)
-                .order("created_at", desc=True)
-                .execute()
-                .data
-                or []
-            )
-        except Exception as study_error:
-            st.error(f"Could not load your saved Module 1 studies: {study_error}")
-
-    selected_study = None
+    project = current_project()
+    selected_study = project.get("study") or None
     study_metadata = {}
-    saved_module2_plan = {}
-    if saved_studies:
-        selected_study = st.selectbox(
-            "Saved study",
-            options=saved_studies,
-            format_func=lambda study: study.get("study_title") or "Untitled study",
-            key="module2_source_study",
-        )
+    saved_module2_plan = project.get("module2_plan") or {}
+    if not isinstance(saved_module2_plan, dict):
+        saved_module2_plan = {}
+    if selected_study:
         try:
             description_record = json.loads(selected_study.get("study_description") or "{}")
             if isinstance(description_record, dict):
@@ -1418,27 +1515,6 @@ elif app_mode == "2. Variable Instrument Architect":
         except (TypeError, json.JSONDecodeError):
             st.warning("This study's saved metadata could not be read as structured JSON.")
             study_metadata = {}
-        try:
-            plan_response = (
-                user_client.table("study_module2_plans")
-                .select("plan_json")
-                .eq("study_id", selected_study["id"])
-                .eq("owner_id", current_user_id)
-                .maybe_single()
-                .execute()
-            )
-            if plan_response.data:
-                plan_json = plan_response.data.get("plan_json", {})
-                if isinstance(plan_json, str):
-                    plan_json = json.loads(plan_json)
-                if isinstance(plan_json, dict):
-                    saved_module2_plan = plan_json
-        except Exception as plan_error:
-            st.error(
-                "Could not load this study's saved Module 2 plan. Confirm that "
-                "supabase/setup_auth_storage.sql has been applied: "
-                f"{plan_error}"
-            )
         with st.expander("Study context from Module 1"):
             st.write(f"**Study:** {selected_study.get('study_title') or 'Untitled study'}")
             st.write(f"**Persistent identifier:** {study_metadata.get('study_doi_or_persistent_identifier') or 'Not provided'}")
@@ -1446,14 +1522,11 @@ elif app_mode == "2. Variable Instrument Architect":
             st.write(f"**Population:** {', '.join(study_metadata.get('participant_populations', [])) or 'Not specified'}")
             st.write(f"**Study settings:** {', '.join(study_metadata.get('study_settings', [])) or 'Not specified'}")
             st.write(f"**Study period:** {study_metadata.get('study_start_date') or 'Not specified'} to {study_metadata.get('study_end_date') or 'Not specified'}")
-    elif preview_mode:
-        st.info("Sign in and save a study in Module 1 to include saved study context.")
-        study_metadata = {
-            "study_title": "Example study (preview only)",
-            "unit_of_analysis": "Individual (person / participant)",
-        }
     else:
-        st.info("No saved studies found. You can still build a standalone theory and measurement draft.")
+        st.info(
+            "No study in your current project. You can still build a standalone theory and "
+            "measurement draft, or save a study in Module 1 / open a project file first."
+        )
     repository_id = study_metadata.get("study_doi_or_persistent_identifier", "")
     unit_of_analysis = study_metadata.get("unit_of_analysis", "Not specified")
     sampling_method = study_metadata.get("sampling_procedure", "Not specified")
@@ -1461,10 +1534,10 @@ elif app_mode == "2. Variable Instrument Architect":
     if study_metadata.get("sampling_procedure"):
         sampling_procedure = str(study_metadata["sampling_procedure"])
 
-    workflow_key = selected_study.get("id") if selected_study else ("preview" if preview_mode else "draft")
+    workflow_key = selected_study.get("id") if selected_study else "draft"
     st.subheader("Find previously shared studies with related context")
     st.caption(
-        "Search summaries that researchers have explicitly shared. Use a topic, population, "
+        "Search summaries that researchers chose to publish (reviewed before listing). Use a topic, population, "
         "setting, or other context; results are design examples, not validated recommendations."
     )
     discovery_query = st.text_input(
@@ -1479,21 +1552,9 @@ elif app_mode == "2. Variable Instrument Architect":
         key=f"module2_discovery_query_{workflow_key}",
     )
     search_terms = context_search_terms(discovery_query)
-    if preview_mode:
-        st.info("Sign in to search study summaries that researchers have explicitly shared for discovery.")
-    elif search_terms:
+    if search_terms:
         try:
-            shared_studies = (
-                user_client.table("study_discovery")
-                .select(
-                    "study_id,study_title,context_tags,study_metadata,published_at"
-                )
-                .order("published_at", desc=True)
-                .limit(500)
-                .execute()
-                .data
-                or []
-            )
+            shared_studies = load_published_summaries()
             scored_studies = []
             query_terms = set(search_terms)
             for shared_study in shared_studies:
@@ -1505,8 +1566,8 @@ elif app_mode == "2. Variable Instrument Architect":
             scored_studies.sort(key=lambda result: result[0], reverse=True)
             if not shared_studies:
                 st.info(
-                    "No studies have been shared for context discovery yet. This search will show "
-                    "opted-in study summaries as they become available."
+                    "No study summaries have been published yet. This search will show "
+                    "summaries as researchers submit them and maintainers approve them."
                 )
             elif not scored_studies:
                 st.info("No shared study summaries matched these context terms.")
@@ -1547,11 +1608,7 @@ elif app_mode == "2. Variable Instrument Architect":
                             "valid for your study. Item text and participant data are not shared."
                         )
         except Exception as discovery_error:
-            st.error(
-                "Could not search shared study summaries. Confirm that "
-                "supabase/setup_auth_storage.sql has been applied: "
-                f"{discovery_error}"
-            )
+            st.error(f"Could not read the published study summaries: {discovery_error}")
     else:
         st.info("Enter a topic, population, setting, or other context to search shared studies.")
 
@@ -1596,14 +1653,15 @@ elif app_mode == "2. Variable Instrument Architect":
         key=f"module2_content_tags_{workflow_key}",
     )
     share_study_for_discovery = False
-    if selected_study and not preview_mode:
+    if selected_study:
         share_study_for_discovery = st.checkbox(
-            "Share a limited study summary with signed-in researchers for context discovery",
+            "Publish a limited study summary for context discovery (public, after maintainer review)",
             value=bool(saved_module2_plan.get("share_for_discovery", False)),
             help=(
-                "Sharing includes the study title, selected study-design metadata, theory constructs, "
+                "The summary includes the study title, selected study-design metadata, theory constructs, "
                 "and measurement metadata. It never includes participant data or item text. "
-                "Only share information you are authorized to make discoverable."
+                "It is submitted as a public GitHub pull request and listed once a maintainer merges it. "
+                "Only share information you are authorized to make public."
             ),
             key=f"module2_share_discovery_{workflow_key}",
         )
@@ -1625,8 +1683,6 @@ elif app_mode == "2. Variable Instrument Architect":
     ]
     if saved_custom_frameworks:
         default_theory_choices.append("Other (write in)")
-    elif preview_mode:
-        default_theory_choices = ["Theory of Planned Behavior (TPB)"]
     selected_theories = st.multiselect(
         "Theory, model, or framework",
         options=theory_choice_options,
@@ -2409,10 +2465,6 @@ elif app_mode == "2. Variable Instrument Architect":
     df_manifest = pd.DataFrame(final_instrument_list).reindex(columns=variable_fields)
     st.session_state["module2_variable_manifest"] = df_manifest.to_dict(orient="records")
     st.subheader("Step 4 — Build the Conceptual Framework")
-    st.warning(
-        "Building, editing, and saving a conceptual framework requires you to be signed in. "
-        "You can view the diagram in preview mode, but editing and downloads are disabled."
-    )
     st.caption(
         "The diagram includes every included theory-derived variable, demographic/context variable, "
         "and custom variable. Its IEO-inspired layout places demographic/context inputs on the left, "
@@ -2573,7 +2625,7 @@ elif app_mode == "2. Variable Instrument Architect":
                 )
             details["position"] = (x_position, index * 120)
 
-        flow_identity = selected_study.get("id") if selected_study else ("preview" if preview_mode else "draft")
+        flow_identity = selected_study.get("id") if selected_study else "draft"
         flow_state_key = f"module2_conceptual_flow_v2_{flow_identity}"
         seeded_edges_key = f"{flow_state_key}_seeded"
         edge_sources_key = f"{flow_state_key}_edge_sources"
@@ -2604,8 +2656,8 @@ elif app_mode == "2. Variable Instrument Architect":
                 node_type="default",
                 source_position="right",
                 target_position="left",
-                draggable=not preview_mode,
-                connectable=not preview_mode,
+                draggable=True,
+                connectable=True,
                 style={"width": 230, "padding": 10, "borderRadius": 8},
             )
             for node_id, details in model_nodes_by_id.items()
@@ -2715,7 +2767,7 @@ elif app_mode == "2. Variable Instrument Architect":
             layout=ManualLayout(),
             height=560,
             fit_view=True,
-            allow_new_edges=not preview_mode,
+            allow_new_edges=True,
             enable_edge_menu=False,
             enable_node_menu=False,
             enable_pane_menu=False,
@@ -2732,7 +2784,7 @@ elif app_mode == "2. Variable Instrument Architect":
         )
         current_flow_state = st.session_state[flow_state_key]
         current_edges = list(current_flow_state.edges)
-        if current_edges and not preview_mode:
+        if current_edges:
             edge_labels = {
                 edge.id: (
                     f"{model_nodes_by_id.get(edge.source, {}).get('label', edge.source)} "
@@ -2814,7 +2866,7 @@ elif app_mode == "2. Variable Instrument Architect":
                 edge_directions.pop(chosen_edge_id, None)
                 edge_rationales.pop(chosen_edge_id, None)
                 st.rerun()
-        if current_flow_state.nodes and not preview_mode:
+        if current_flow_state.nodes:
             with st.expander("Add a path without dragging connection handles"):
                 node_options = list(model_nodes_by_id)
                 node_labels = {
@@ -2895,7 +2947,6 @@ elif app_mode == "2. Variable Instrument Architect":
                 "Explain how the selected theory constructs become this study's variables, "
                 "why the proposed paths are expected, and how the data types will evidence those relationships."
             ),
-            disabled=preview_mode,
             key=f"module2_conceptual_narrative_{flow_identity}",
         )
         st.subheader("Step 5 — Review Variables and Measurement Metadata")
@@ -2927,172 +2978,164 @@ elif app_mode == "2. Variable Instrument Architect":
             }
             for edge in current_edges
         ]
-        st.markdown("**Save this plan with the selected Module 1 study**")
-        if selected_study and not preview_mode:
-            if st.button(
-                "Save Module 2 plan",
-                key=f"module2_save_plan_{flow_identity}",
-            ):
-                plan_to_save = {
-                    "schema_version": 1,
+        st.markdown("**Save this plan to your project file**")
+        plan_to_save = {
+            "schema_version": 1,
+            "selected_theories": selected_theories,
+            "other_theory_sources": str(other_framework_sources or ""),
+            "selected_demographic_variables": selected_demographic_variables,
+            "other_demographic_variables": other_demographic_variables,
+            "study_context": {
+                "content_domain": content_domain.strip(),
+                "target_action": target_action.strip(),
+                "context": context_description.strip(),
+                "timeframe": timeframe.strip(),
+                "content_tags": content_tags.strip(),
+            },
+            "share_for_discovery": share_study_for_discovery,
+            "variables": df_manifest.fillna("").astype(str).to_dict(orient="records"),
+            "custom_variables": (
+                pd.DataFrame(uploaded_items)
+                .fillna("")
+                .astype(str)
+                .to_dict(orient="records")
+            ),
+            "diagram": {
+                "nodes": diagram_nodes,
+                "edges": diagram_edges,
+            },
+            "narrative": conceptual_framework_description.strip(),
+        }
+        if st.button(
+            "Save Module 2 plan to project",
+            key=f"module2_save_plan_{flow_identity}",
+        ):
+            project = current_project()
+            project["module2_plan"] = plan_to_save
+            st.session_state["project"] = project
+            st.session_state["module2_saved_notice"] = True
+        if st.session_state.get("module2_saved_notice"):
+            st.success(
+                "Plan saved to your project. Download the project file to keep it — "
+                "the app does not store a copy."
+            )
+            render_project_download(key=f"module2_project_download_{flow_identity}")
+
+        if selected_study:
+            study_id = str(selected_study.get("id"))
+            summary_path = f"published/study_summaries/{safe_slug(study_id, 'study')}.json"
+            already_published = (APP_DIR / summary_path).is_file()
+            if share_study_for_discovery:
+                public_variable_fields = [
+                    "Framework_Source",
+                    "Concept_Construct",
+                    "Variable_Label",
+                    "Content_Domain",
+                    "Content_Tags",
+                    "Behavioral_Target",
+                    "Target_Action",
+                    "Context",
+                    "Timeframe",
+                    "Response_Scale",
+                    "Language",
+                    "Scoring",
+                    "Source_Citation",
+                    "Source_URL",
+                    "Instrument_Name",
+                    "Validation_Status",
+                ]
+                shared_variables = []
+                for variable in df_manifest.fillna("").astype(str).to_dict(orient="records"):
+                    shared_variables.append({
+                        field: variable.get(field, "")
+                        for field in public_variable_fields
+                        if variable.get(field, "")
+                    })
+                context_summary = "; ".join(
+                    f"{label}: {value}"
+                    for label, value in (
+                        ("Domain", content_domain),
+                        ("Target behavior", target_action),
+                        ("Context", context_description),
+                        ("Timeframe", timeframe),
+                        ("Tags", content_tags),
+                    )
+                    if value.strip()
+                )
+                participant_populations = study_metadata.get("participant_populations", [])
+                study_settings = study_metadata.get("study_settings", [])
+                published_metadata = {
+                    "context_summary": context_summary,
+                    "time_method": study_metadata.get("time_method", ""),
+                    "unit_of_analysis": study_metadata.get("unit_of_analysis", ""),
+                    "participant_populations": participant_populations,
+                    "study_settings": study_settings,
+                    "content_domain": content_domain.strip(),
                     "selected_theories": selected_theories,
-                    "other_theory_sources": str(other_framework_sources or ""),
-                    "selected_demographic_variables": selected_demographic_variables,
-                    "other_demographic_variables": other_demographic_variables,
-                    "study_context": {
-                        "content_domain": content_domain.strip(),
-                        "target_action": target_action.strip(),
-                        "context": context_description.strip(),
-                        "timeframe": timeframe.strip(),
-                        "content_tags": content_tags.strip(),
-                    },
-                    "share_for_discovery": share_study_for_discovery,
-                    "variables": df_manifest.fillna("").astype(str).to_dict(orient="records"),
-                    "custom_variables": (
-                        pd.DataFrame(uploaded_items)
-                        .fillna("")
-                        .astype(str)
-                        .to_dict(orient="records")
-                    ),
-                    "diagram": {
-                        "nodes": diagram_nodes,
-                        "edges": diagram_edges,
-                    },
-                    "narrative": conceptual_framework_description.strip(),
+                    "variables": shared_variables,
                 }
-                try:
-                    (
-                        user_client.table("study_module2_plans")
-                        .upsert({
-                            "study_id": selected_study["id"],
-                            "owner_id": current_user_id,
-                            "plan_json": plan_to_save,
-                            "updated_at": time.strftime(
-                                "%Y-%m-%dT%H:%M:%SZ", time.gmtime()
+                search_tags = context_search_terms(
+                    " ".join(
+                        [
+                            context_summary,
+                            " ".join(selected_theories),
+                            " ".join(selected_study_areas),
+                            " ".join(participant_populations if isinstance(participant_populations, list) else []),
+                            " ".join(study_settings if isinstance(study_settings, list) else []),
+                        ]
+                    )
+                )
+                summary_record = {
+                    "schema_version": 1,
+                    "study_id": study_id,
+                    "study_title": selected_study.get("study_title") or "Shared study",
+                    "context_tags": search_tags,
+                    "study_metadata": published_metadata,
+                    "published_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                }
+                st.markdown("**Publish a limited study summary**")
+                with st.expander("Preview exactly what will be published"):
+                    st.json(summary_record)
+                summary_consent = st.checkbox(
+                    "I confirm this summary contains no participant data or confidential "
+                    "information and I am authorized to make it public.",
+                    key=f"module2_summary_consent_{flow_identity}",
+                )
+                if st.button(
+                    "Update published summary" if already_published else "Submit summary for public listing",
+                    key=f"module2_submit_summary_{flow_identity}",
+                    disabled=publish_disabled or not summary_consent,
+                    help=publish_hint,
+                ):
+                    with st.spinner("Opening a pull request for maintainer review..."):
+                        result_message = open_review_pull_request(
+                            suggestion_type="Study Summary",
+                            title_summary=str(summary_record["study_title"])[:120],
+                            files={
+                                summary_path: json.dumps(summary_record, ensure_ascii=False, indent=2)
+                            },
+                            description="Adds or updates a limited study summary for context discovery.",
+                        )
+                    (st.error if "❌" in result_message else st.success)(result_message)
+            elif already_published:
+                st.info("A summary of this study is currently published for context discovery.")
+                if st.button(
+                    "Request removal of the published summary",
+                    key=f"module2_remove_summary_{flow_identity}",
+                    disabled=publish_disabled,
+                    help=publish_hint,
+                ):
+                    with st.spinner("Opening a removal pull request..."):
+                        result_message = open_review_pull_request(
+                            suggestion_type="Remove Study Summary",
+                            title_summary=str(selected_study.get("study_title") or study_id)[:120],
+                            delete_paths=[summary_path],
+                            description=(
+                                "Removes this study summary from the listing. Earlier versions "
+                                "remain in git history."
                             ),
-                        }, on_conflict="study_id")
-                        .execute()
-                    )
-                    st.success("Module 2 plan saved with this Module 1 study.")
-                    was_shared = bool(saved_module2_plan.get("share_for_discovery", False))
-                    if share_study_for_discovery or was_shared:
-                        try:
-                            if share_study_for_discovery:
-                                public_variable_fields = [
-                                    "Framework_Source",
-                                    "Concept_Construct",
-                                    "Variable_Label",
-                                    "Content_Domain",
-                                    "Content_Tags",
-                                    "Behavioral_Target",
-                                    "Target_Action",
-                                    "Context",
-                                    "Timeframe",
-                                    "Response_Scale",
-                                    "Language",
-                                    "Scoring",
-                                    "Source_Citation",
-                                    "Source_URL",
-                                    "Instrument_Name",
-                                    "Validation_Status",
-                                ]
-                                shared_variables = []
-                                for variable in df_manifest.fillna("").astype(str).to_dict(
-                                    orient="records"
-                                ):
-                                    shared_variables.append({
-                                        field: variable.get(field, "")
-                                        for field in public_variable_fields
-                                        if variable.get(field, "")
-                                    })
-                                context_summary = "; ".join(
-                                    f"{label}: {value}"
-                                    for label, value in (
-                                        ("Domain", content_domain),
-                                        ("Target behavior", target_action),
-                                        ("Context", context_description),
-                                        ("Timeframe", timeframe),
-                                        ("Tags", content_tags),
-                                    )
-                                    if value.strip()
-                                )
-                                published_metadata = {
-                                    "context_summary": context_summary,
-                                    "time_method": study_metadata.get("time_method", ""),
-                                    "unit_of_analysis": study_metadata.get("unit_of_analysis", ""),
-                                    "participant_populations": study_metadata.get(
-                                        "participant_populations", []
-                                    ),
-                                    "study_settings": study_metadata.get("study_settings", []),
-                                    "content_domain": content_domain.strip(),
-                                    "selected_theories": selected_theories,
-                                    "variables": shared_variables,
-                                }
-                                search_tags = context_search_terms(
-                                    " ".join(
-                                        [
-                                            context_summary,
-                                            " ".join(selected_theories),
-                                            " ".join(selected_study_areas),
-                                            " ".join(
-                                                published_metadata["participant_populations"]
-                                                if isinstance(
-                                                    published_metadata["participant_populations"],
-                                                    list,
-                                                )
-                                                else []
-                                            ),
-                                            " ".join(
-                                                published_metadata["study_settings"]
-                                                if isinstance(
-                                                    published_metadata["study_settings"],
-                                                    list,
-                                                )
-                                                else []
-                                            ),
-                                        ]
-                                    )
-                                )
-                                (
-                                    user_client.table("study_discovery")
-                                    .upsert(
-                                        {
-                                            "study_id": selected_study["id"],
-                                            "owner_id": current_user_id,
-                                            "study_title": selected_study.get("study_title")
-                                            or "Shared study",
-                                            "context_tags": search_tags,
-                                            "study_metadata": published_metadata,
-                                        },
-                                        on_conflict="study_id",
-                                    )
-                                    .execute()
-                                )
-                                st.success("The limited study summary is now discoverable to signed-in researchers.")
-                            else:
-                                (
-                                    user_client.table("study_discovery")
-                                    .delete()
-                                    .eq("study_id", selected_study["id"])
-                                    .eq("owner_id", current_user_id)
-                                    .execute()
-                                )
-                                st.success("The study summary was removed from context discovery.")
-                        except Exception as discovery_save_error:
-                            st.error(
-                                "The Module 2 plan was saved, but its study-discovery sharing "
-                                "setting could not be updated. Confirm that "
-                                "supabase/setup_auth_storage.sql has been applied: "
-                                f"{discovery_save_error}"
-                            )
-                except Exception as save_error:
-                    st.error(
-                        "Could not save the Module 2 plan. Confirm that "
-                        "supabase/setup_auth_storage.sql has been applied and that "
-                        f"you still own this study: {save_error}"
-                    )
-        elif not preview_mode:
-            st.info("Select a saved Module 1 study to save this plan. Drafts remain available for download.")
+                        )
+                    (st.error if "❌" in result_message else st.success)(result_message)
         diagram_json = json.dumps({
             "schema_version": 1,
             "nodes": diagram_nodes,
@@ -3123,22 +3166,22 @@ elif app_mode == "2. Variable Instrument Architect":
             "Suggestion title",
             value=f"Theory and variable suggestion: {default_framework_names}" if default_framework_names else "",
             max_chars=120,
-            key=f"module2_proposal_title_{selected_study.get('id') if selected_study else ('preview' if preview_mode else 'draft')}",
+            key=f"module2_proposal_title_{selected_study.get('id') if selected_study else 'draft'}",
         )
         proposal_rationale = st.text_area(
             "Literature basis and reason for the suggestion",
             placeholder="Summarize the theory's established constructs and explain why this suggestion would help researchers.",
-            key=f"module2_proposal_rationale_{selected_study.get('id') if selected_study else ('preview' if preview_mode else 'draft')}",
+            key=f"module2_proposal_rationale_{selected_study.get('id') if selected_study else 'draft'}",
         )
         public_proposal_consent = st.checkbox(
             "I confirm this proposal contains no confidential or identifying information and may be published in a public GitHub pull request.",
-            key=f"module2_public_proposal_consent_{selected_study.get('id') if selected_study else ('preview' if preview_mode else 'draft')}",
-            disabled=preview_mode,
+            key=f"module2_public_proposal_consent_{selected_study.get('id') if selected_study else 'draft'}",
         )
         if st.button(
             "Submit Theory and Variable Suggestion for Review",
             key="submit_mod2_pr_btn",
-            disabled=preview_mode or not public_proposal_consent,
+            disabled=publish_disabled or not public_proposal_consent,
+            help=publish_hint,
         ):
             if not proposal_title.strip() or not proposal_rationale.strip():
                 st.error("Enter a suggestion title and a literature basis before submitting.")
@@ -3187,7 +3230,6 @@ elif app_mode == "2. Variable Instrument Architect":
                 data=diagram_json,
                 file_name="conceptual_framework_diagram.json",
                 mime="application/json",
-                disabled=preview_mode,
                 use_container_width=True,
             )
         with download_col2:
@@ -3196,7 +3238,6 @@ elif app_mode == "2. Variable Instrument Architect":
                 data=df_manifest.to_csv(index=False).encode("utf-8"),
                 file_name="theory_variable_data_type_map.csv",
                 mime="text/csv",
-                disabled=preview_mode,
                 use_container_width=True,
             )
         with download_col3:
@@ -3205,7 +3246,6 @@ elif app_mode == "2. Variable Instrument Architect":
                 data=conceptual_csv,
                 file_name="conceptual_framework_relationships.csv",
                 mime="text/csv",
-                disabled=preview_mode,
                 use_container_width=True,
             )
         st.subheader("Download Variable Matrices and Draft")
@@ -3216,7 +3256,6 @@ elif app_mode == "2. Variable Instrument Architect":
             data=csv_buffer.getvalue(),
             file_name="educational_study_metadata_sheet.csv",
             mime="text/csv",
-            disabled=preview_mode,
             use_container_width=True,
         )
 
@@ -3262,7 +3301,6 @@ elif app_mode == "2. Variable Instrument Architect":
             data=txt_manifest,
             file_name="technical_study_metadata_manifest.txt",
             mime="text/plain",
-            disabled=preview_mode,
             use_container_width=True,
         )
 
@@ -3315,7 +3353,6 @@ elif app_mode == "2. Variable Instrument Architect":
             data=clean_survey,
             file_name="clean_participant_survey_form.txt",
             mime="text/plain",
-            disabled=preview_mode,
             use_container_width=True,
         )
     else:
@@ -3327,160 +3364,152 @@ elif app_mode == "2. Variable Instrument Architect":
 # MODULE 3: COMMUNITY STORAGE SYNCHRONIZATION
 # ==========================================
 elif app_mode == "3. Community Data Repository Sync":
-    st.header("🌐 Supabase Dataset Library")
-    st.caption("Upload and manage datasets owned by your signed-in account, with a deliberate private or public access choice.")
+    st.header("🌐 Public Dataset Library")
+    st.caption(
+        "Browse datasets researchers have published, or submit a de-identified dataset for "
+        "public release. Submissions are reviewed by a maintainer before they are listed."
+    )
+    st.info(
+        "🔒 **Private datasets are never stored.** To analyze data you can't make public, use "
+        "Module 4 and upload the file there: it is held in memory for your session only and "
+        "is discarded when you leave or reload the page."
+    )
     st.markdown("---")
-    
-    st.subheader("🔒 Permission and privacy review")
+
+    st.subheader("Published datasets")
+    published_datasets = load_published_datasets()
+    if not published_datasets:
+        st.info("No datasets have been published yet.")
+    else:
+        st.dataframe(
+            pd.DataFrame(
+                [
+                    {
+                        "Title": item.get("dataset_title", ""),
+                        "Description": item.get("description", ""),
+                        "License": item.get("license", ""),
+                        "Rows": item.get("row_count", ""),
+                        "Columns": item.get("column_count", ""),
+                        "Published": item.get("submitted_at_utc", ""),
+                    }
+                    for item in published_datasets
+                ]
+            ),
+            use_container_width=True,
+            hide_index=True,
+        )
+        download_choice = st.selectbox(
+            "Download a published dataset",
+            published_datasets,
+            format_func=lambda item: item.get("dataset_title") or item.get("csv_file"),
+            key="module3_download_choice",
+        )
+        st.download_button(
+            "Download CSV",
+            data=Path(download_choice["_csv_path"]).read_bytes(),
+            file_name=os.path.basename(download_choice["_csv_path"]),
+            mime="text/csv",
+        )
+
+    st.markdown("---")
+    st.subheader("Submit a dataset for public release")
     st.warning(
-        "Review consent, IRB requirements, data-use agreements, ownership, and disclosure risk "
-        "with the appropriate people. These confirmations are not approval or a guarantee that "
-        "data are safe to share."
+        "Public release is permanent in practice: once merged, the file is downloadable by anyone "
+        "and remains in the repository's history even if later removed. Review consent, IRB "
+        "requirements, data-use agreements, ownership, and disclosure risk with the appropriate "
+        "people first. These confirmations are not approval or a guarantee that data are safe to share."
     )
     check_authority = st.checkbox(
-        "I have permission from the data owner and applicable consent/approvals for this upload."
+        "I have permission from the data owner and applicable consent/approvals for public release."
     )
     check_identifiers = st.checkbox(
-        "I reviewed direct and indirect identifiers, sensitive fields, and small groups."
+        "I removed direct and indirect identifiers and reviewed sensitive fields and small groups."
     )
-    check_risk = st.checkbox(
-        "I selected an access level consistent with permissions and disclosure-risk review."
+    public_release_confirmed = st.checkbox(
+        "I understand the dataset will be public and cannot be fully retracted."
     )
-    access_level = st.radio(
-        "Dataset access",
-        ["Private — owner only", "Public — anyone with the link"],
-        help="Public files can be downloaded by anyone who obtains their URL; public release may be difficult to reverse."
+    dataset_title = st.text_input("Dataset title", placeholder="e.g., First-year student engagement survey (de-identified)")
+    dataset_description = st.text_area(
+        "Short description",
+        placeholder="What was collected, from whom (in general terms), when, and how variables are coded.",
     )
-    public_release_confirmed = False
-    if access_level.startswith("Public"):
-        public_release_confirmed = st.checkbox(
-            "I explicitly authorize public release and verified that the data owner, consent, agreements, and privacy review permit it."
-        )
-    
-    st.markdown("---")
-    st.subheader("Upload a dataset")
-    dataset_title = st.text_input("Dataset title", placeholder="e.g., First-year student engagement survey")
+    dataset_license = st.selectbox(
+        "License",
+        ["CC BY 4.0", "CC0 1.0 (public domain)", "CC BY-NC 4.0", "Other (describe in description)"],
+    )
     uploaded_data_file = st.file_uploader(
-        "Choose a research dataset (.csv)",
+        "Choose a de-identified dataset (.csv)",
         type=["csv"],
-        max_upload_size=50,
-        help="CSV files up to 50 MB. Public and private datasets are stored in separate Supabase buckets."
+        max_upload_size=PUBLIC_DATASET_MAX_MB,
+        help=f"CSV files up to {PUBLIC_DATASET_MAX_MB} MB.",
     )
-    
+
     if uploaded_data_file is not None:
         try:
             uploaded_bytes = uploaded_data_file.getvalue()
             df_user_raw = pd.read_csv(io.BytesIO(uploaded_bytes))
             if df_user_raw.empty:
                 raise ValueError("The uploaded CSV has no data rows.")
-            st.success("CSV parsed successfully. Review the preview before syncing.")
+            st.success("CSV parsed successfully. Review the preview before submitting.")
             st.dataframe(df_user_raw.head(10), use_container_width=True)
-            
             st.caption(
                 f"{len(df_user_raw):,} rows · {len(df_user_raw.columns):,} columns · "
                 f"{len(uploaded_bytes) / (1024 * 1024):.2f} MB"
             )
 
-            ready_to_upload = (
+            ready_to_submit = (
                 bool(dataset_title.strip())
                 and check_authority
                 and check_identifiers
-                and check_risk
-                and (not access_level.startswith("Public") or public_release_confirmed)
+                and public_release_confirmed
             )
-            if ready_to_upload:
-                if st.button(
-                    "☁️ Upload dataset to Supabase",
-                    type="primary",
-                    disabled=preview_mode,
-                ):
-                    bucket_id = PUBLIC_DATASET_BUCKET if access_level.startswith("Public") else DATASET_BUCKET
-                    safe_filename = os.path.basename(uploaded_data_file.name).replace("\\", "_")
-                    object_path = f"{current_user_id}/{uuid.uuid4().hex}/{safe_filename}"
-                    uploaded_object = False
-                    try:
-                        with st.status("Uploading dataset and recording ownership...", expanded=False) as upload_status:
-                            user_client.storage.from_(bucket_id).upload(
-                                path=object_path,
-                                file=uploaded_bytes,
-                                file_options={"content-type": "text/csv", "upsert": "false"}
-                            )
-                            uploaded_object = True
-                            dataset_record = {
-                                "owner_id": current_user_id,
-                                "dataset_title": dataset_title.strip(),
-                                "file_name": safe_filename,
-                                "object_path": object_path,
-                                "bucket_id": bucket_id,
-                                "access_level": "public" if bucket_id == PUBLIC_DATASET_BUCKET else "private",
-                                "row_count": len(df_user_raw),
-                                "column_count": len(df_user_raw.columns),
-                                "byte_size": len(uploaded_bytes)
-                            }
-                            user_client.table("study_datasets").insert(dataset_record).execute()
-                            upload_status.update(label="Dataset uploaded and recorded.", state="complete")
-                        if bucket_id == PUBLIC_DATASET_BUCKET:
-                            public_url = user_client.storage.from_(bucket_id).get_public_url(object_path)
-                            st.success("Dataset published. Anyone with its URL can download it.")
-                            st.code(public_url)
-                        else:
-                            st.success("Dataset stored privately under your account.")
-                    except Exception as upload_error:
-                        cleanup_message = ""
-                        if uploaded_object:
-                            try:
-                                user_client.storage.from_(bucket_id).remove([object_path])
-                            except Exception as cleanup_error:
-                                cleanup_message = f" The uploaded object could not be removed during cleanup: {cleanup_error}"
-                        st.error(
-                            f"Supabase upload failed: {upload_error}. Confirm the setup SQL and "
-                            f"authenticated-user policies are applied.{cleanup_message}"
-                        )
-            else:
-                st.warning("Enter a title and complete all required permission/privacy confirmations before uploading.")
+            if not ready_to_submit:
+                st.warning("Enter a title and complete all confirmations before submitting.")
+            if st.button(
+                "Submit dataset for public release",
+                type="primary",
+                disabled=publish_disabled or not ready_to_submit,
+                help=publish_hint,
+            ):
+                dataset_id = uuid.uuid4().hex[:10]
+                base_name = f"{safe_slug(dataset_title, 'dataset', 50)}-{dataset_id}"
+                metadata_record = {
+                    "schema_version": 1,
+                    "dataset_id": dataset_id,
+                    "dataset_title": dataset_title.strip(),
+                    "description": dataset_description.strip(),
+                    "license": dataset_license,
+                    "csv_file": f"{base_name}.csv",
+                    "original_file_name": os.path.basename(uploaded_data_file.name),
+                    "row_count": len(df_user_raw),
+                    "column_count": len(df_user_raw.columns),
+                    "columns": [str(column) for column in df_user_raw.columns],
+                    "byte_size": len(uploaded_bytes),
+                    "submitted_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                }
+                with st.spinner("Opening a pull request for maintainer review..."):
+                    result_message = open_review_pull_request(
+                        suggestion_type="Public Dataset",
+                        title_summary=dataset_title.strip()[:120],
+                        files={
+                            f"published/datasets/{base_name}.csv": uploaded_bytes,
+                            f"published/datasets/{base_name}.json": json.dumps(
+                                metadata_record, ensure_ascii=False, indent=2
+                            ),
+                        },
+                        description=(
+                            "Public dataset submission. The submitter confirmed permission, "
+                            "de-identification, and understanding that release is public. "
+                            "**Inspect the CSV for identifiers before merging.**"
+                        ),
+                    )
+                (st.error if "❌" in result_message else st.success)(result_message)
         except pd.errors.EmptyDataError:
             st.error("The uploaded CSV is empty or does not contain a readable header row.")
         except (UnicodeDecodeError, pd.errors.ParserError, ValueError) as e:
             st.error(f"Could not parse the uploaded CSV: {e}")
         except Exception as e:
             st.error(f"Error reading uploaded dataset: {e}")
-
-    st.divider()
-    st.subheader("Your datasets")
-    if preview_mode:
-        st.info("Sign in to view your dataset library. Preview example:")
-        st.dataframe(
-            pd.DataFrame(
-                [
-                    {
-                        "dataset_title": "Example student engagement survey",
-                        "file_name": "engagement_survey.csv",
-                        "access_level": "private",
-                        "row_count": 120,
-                        "column_count": 8,
-                        "byte_size": 15360,
-                    }
-                ]
-            ),
-            use_container_width=True,
-            hide_index=True,
-        )
-    else:
-        try:
-            own_datasets = (
-                user_client.table("study_datasets")
-                .select("id,dataset_title,file_name,bucket_id,access_level,row_count,column_count,byte_size,created_at")
-                .eq("owner_id", current_user_id)
-                .order("created_at", desc=True)
-                .execute()
-                .data
-            )
-            if own_datasets:
-                st.dataframe(pd.DataFrame(own_datasets), use_container_width=True, hide_index=True)
-            else:
-                st.info("No datasets have been uploaded to your account yet.")
-        except Exception as library_error:
-            st.error(f"Could not load your dataset library: {library_error}")
 
 # ==========================================
 # MODULE 4: DESCRIPTIVE & SCALE ANALYTICS
@@ -3495,28 +3524,16 @@ elif app_mode == "4. Descriptive & Scale Analytics":
     
     # Ingest Data Sheet Mapping Workspace
     st.subheader("📂 1. Ingest Data Sheet Mapping Workspace")
-    if preview_mode:
-        available_datasets = []
-        st.info("Sign in to select saved datasets. The synthetic sample is available in preview.")
-    else:
-        try:
-            available_datasets = (
-                user_client.table("study_datasets")
-            .select("id,dataset_title,file_name,object_path,bucket_id,access_level,row_count,column_count,created_at")
-            .order("created_at", desc=True)
-            .execute()
-            .data
-            )
-        except Exception as dataset_error:
-            available_datasets = []
-            st.error(f"Could not load authorized datasets from Supabase: {dataset_error}")
-
-    data_source_options = ["Use Standard Synthetic Sample Dataset"]
+    private_source = "Upload a private dataset (.csv) — analyzed in this session only, never stored"
+    published_source = "Use a published public dataset"
+    synthetic_source = "Use Standard Synthetic Sample Dataset"
+    available_datasets = load_published_datasets()
+    data_source_options = [private_source]
     if available_datasets:
-        data_source_options.insert(0, "Use a dataset from Supabase")
-    data_source_options.append("Upload Custom Research Data Sheet (.csv)")
+        data_source_options.append(published_source)
+    data_source_options.append(synthetic_source)
     data_source = st.radio("Analytics Dataset Source Selection:", data_source_options)
-    
+
     st.info(
         "There are no required column names or theory prefixes. Use the Module 2 matrix to "
         "map numeric columns for scores and categorical columns for response distributions. "
@@ -3549,27 +3566,22 @@ elif app_mode == "4. Descriptive & Scale Analytics":
     st.markdown("---")
     df_analytics = None
     
-    if data_source == "Use a dataset from Supabase" and available_datasets:
+    if data_source == published_source and available_datasets:
         try:
             selected_dataset = st.selectbox(
                 "Select a dataset",
                 available_datasets,
                 format_func=lambda item: (
-                    f"{item['dataset_title']} — {item['file_name']} "
-                    f"({item['access_level']}, {item['row_count']} rows)"
+                    f"{item.get('dataset_title') or item.get('csv_file')} "
+                    f"({item.get('row_count', '?')} rows)"
                 ),
                 key="analytics_dataset_id"
             )
-            file_bytes = user_client.storage.from_(selected_dataset["bucket_id"]).download(
-                selected_dataset["object_path"]
-            )
-            df_analytics = pd.read_csv(io.BytesIO(file_bytes))
-            st.info(f"Analyzing `{selected_dataset['file_name']}` from Supabase. Stored data is not modified.")
-        except (KeyError, TypeError, pd.errors.EmptyDataError, pd.errors.ParserError) as e:
-            st.error(f"Could not load the selected Supabase dataset: {e}")
-        except Exception as e:
-            st.error(f"Supabase denied or failed the dataset download: {e}")
-    elif data_source == "Use Standard Synthetic Sample Dataset":
+            df_analytics = pd.read_csv(selected_dataset["_csv_path"])
+            st.info(f"Analyzing the published dataset `{selected_dataset.get('csv_file')}`.")
+        except (KeyError, TypeError, OSError, pd.errors.EmptyDataError, pd.errors.ParserError) as e:
+            st.error(f"Could not load the selected published dataset: {e}")
+    elif data_source == synthetic_source:
         st.info("This is synthetic demonstration data, not observed research data.")
         np.random.seed(42)
         n_samples = 100
@@ -3587,9 +3599,18 @@ elif app_mode == "4. Descriptive & Scale Analytics":
         }
         df_analytics = pd.DataFrame(synthetic_data)
     else:
-        uploaded_analytics_file = st.file_uploader("Upload target tracking matrix sheet (.csv)", type=["csv"])
+        st.caption(
+            "🔒 Your file is read into memory for this browser session only. It is not saved, "
+            "uploaded to GitHub, or shared, and it is discarded when you reload or leave the page."
+        )
+        uploaded_analytics_file = st.file_uploader(
+            "Upload your dataset (.csv)", type=["csv"], key="analytics_private_upload"
+        )
         if uploaded_analytics_file is not None:
-            df_analytics = pd.read_csv(uploaded_analytics_file)
+            try:
+                df_analytics = pd.read_csv(uploaded_analytics_file)
+            except (UnicodeDecodeError, pd.errors.EmptyDataError, pd.errors.ParserError) as e:
+                st.error(f"Could not read the uploaded CSV: {e}")
 
     if df_analytics is not None:
         numeric_columns = df_analytics.select_dtypes(include=[np.number]).columns
@@ -3637,8 +3658,8 @@ elif app_mode == "4. Descriptive & Scale Analytics":
                     "Mappings are researcher-defined, not inferred from column names."
                 )
                 mapping_source = (
-                    str(selected_dataset.get("id", ""))
-                    if data_source == "Use a dataset from Supabase"
+                    str(selected_dataset.get("dataset_id", ""))
+                    if data_source == published_source
                     else data_source
                 )
                 mapping_identity = uuid.uuid5(
@@ -3854,8 +3875,11 @@ elif app_mode == "4. Descriptive & Scale Analytics":
             ax_dist.set_ylabel("Frequency")
             plt.tight_layout()
             
-            dist_img_path = os.path.join(tempfile.gettempdir(), "temp_dist_chart.png")
-            fig_dist.savefig(dist_img_path, dpi=200)
+            # Charts stay in memory: they are derived from possibly private data
+            # and a shared temp path would mix up concurrent users' reports.
+            dist_img_path = io.BytesIO()
+            fig_dist.savefig(dist_img_path, format="png", dpi=200)
+            dist_img_path.seek(0)
             plt.close(fig_dist)
             
             corr_img_path = None
@@ -3872,8 +3896,9 @@ elif app_mode == "4. Descriptive & Scale Analytics":
                 ax_corr.set_title(f"{correlation_method} Correlation Matrix", pad=20)
                 plt.tight_layout()
                 
-                corr_img_path = os.path.join(tempfile.gettempdir(), "temp_corr_chart.png")
-                fig_corr.savefig(corr_img_path, dpi=200)
+                corr_img_path = io.BytesIO()
+                fig_corr.savefig(corr_img_path, format="png", dpi=200)
+                corr_img_path.seek(0)
                 plt.close(fig_corr)
 
             doc = SimpleDocTemplate(
@@ -3910,11 +3935,11 @@ elif app_mode == "4. Descriptive & Scale Analytics":
             story.append(Spacer(1, 10))
             
             story.append(Paragraph(f"<b>2. Distribution Visualization Graph: {selected_col}</b>", h2_style))
-            if os.path.exists(dist_img_path):
+            if dist_img_path is not None:
                 story.append(Image(dist_img_path, width=320, height=160))
             story.append(Spacer(1, 15))
             
-            if not clean_corr_matrix.empty and corr_img_path and os.path.exists(corr_img_path):
+            if not clean_corr_matrix.empty and corr_img_path is not None:
                 story.append(Paragraph("<b>3. Mixed Multi-Variable Inter-Correlation Matrix</b>", h2_style))
                 corr_data = [["Variable"] + list(clean_corr_matrix.columns)]
                 for idx, row in clean_corr_matrix.iterrows():
@@ -3957,10 +3982,6 @@ elif app_mode == "4. Descriptive & Scale Analytics":
 
             doc.build(story)
             
-            if os.path.exists(dist_img_path):
-                os.unlink(dist_img_path)
-            if corr_img_path and os.path.exists(corr_img_path):
-                os.unlink(corr_img_path)
                 
             st.download_button(
                 label="📥 Download Complete Analytical Summary Report (.pdf)",
@@ -3987,7 +4008,8 @@ elif app_mode == "4. Descriptive & Scale Analytics":
         if st.button(
             "🚀 Push Function to GitHub as Pull Request",
             key="submit_mod4_pr_btn",
-            disabled=preview_mode,
+            disabled=publish_disabled,
+            help=publish_hint,
         ):
             with st.spinner("Analyzing request and auto-generating statistical code block..."):
                 
@@ -4069,81 +4091,58 @@ elif app_mode == "4. Descriptive & Scale Analytics":
 # ==========================================
 # MODULE 5: LIVE CENTRAL DATABASE VIEWER
 # ==========================================
-if app_mode == "5. Live Central Database Viewer":
-    st.header("🗄️ Central Repository Live Database Viewer")
-    st.caption("Read-only access to study and variable records visible to your signed-in account under Supabase Row Level Security.")
+if app_mode == "5. Published Repository Viewer":
+    st.header("🗄️ Published Repository Viewer")
+    st.caption(
+        "Read-only view of everything researchers have published through reviewed pull "
+        "requests: study summaries, the public dataset catalog, and the measure catalog."
+    )
     st.markdown("---")
 
-    st.subheader("📊 Select Table to Query")
-    st.markdown("Click a button below to pull the real-time datasets straight from the central database.")
+    view_options = {
+        "Published study summaries": "summaries",
+        "Public dataset catalog": "datasets",
+        "Research measure catalog": "measures",
+    }
+    view_label = st.radio("Select a table", list(view_options), horizontal=True, key="active_repository_view")
+    view = view_options[view_label]
 
-    col_btn1, col_btn2 = st.columns(2)
-    
-    if "active_db_view" not in st.session_state:
-        st.session_state.active_db_view = "studies"
-
-    with col_btn1:
-        if st.button("📋 View Core Studies Table (`studies`)", use_container_width=True, type="primary" if st.session_state.active_db_view == "studies" else "secondary"):
-            st.session_state.active_db_view = "studies"
-            st.rerun()
-
-    with col_btn2:
-        if st.button("📐 View Mapped Variables Table (`variables`)", use_container_width=True, type="primary" if st.session_state.active_db_view == "variables" else "secondary"):
-            st.session_state.active_db_view = "variables"
-            st.rerun()
-
-    st.markdown("---")
-
-    target_table = str(st.session_state.get("active_db_view", "studies")).strip().lower()
-
-    if preview_mode:
-        st.subheader(f"📂 Preview: `{target_table}`")
-        st.caption("Illustrative sample only — sign in to view authorized repository records.")
-        if target_table == "studies":
-            display_df = pd.DataFrame(
-                [
-                    {
-                        "study_title": "Example: Student engagement and open learning",
-                        "principal_investigator": "Example Research Team",
-                        "institution": "Example University",
-                        "funding_source": "Example Foundation",
-                    }
-                ]
-            )
-        else:
-            display_df = pd.DataFrame(
-                [
-                    {
-                        "variable_name": "Example learning engagement",
-                        "variable_label": "Student engagement",
-                        "data_type": "Ordinal",
-                        "description": "Illustrative measure; not a real study record.",
-                    }
-                ]
-            )
-        st.dataframe(display_df, use_container_width=True, hide_index=True)
+    if view == "summaries":
+        records = [
+            {
+                "study_title": item.get("study_title", ""),
+                "content_domain": (item.get("study_metadata") or {}).get("content_domain", ""),
+                "frameworks": ", ".join((item.get("study_metadata") or {}).get("selected_theories", []) or []),
+                "unit_of_analysis": (item.get("study_metadata") or {}).get("unit_of_analysis", ""),
+                "variable_count": len((item.get("study_metadata") or {}).get("variables", []) or []),
+                "published_at": item.get("published_at", ""),
+            }
+            for item in load_published_summaries()
+        ]
+    elif view == "datasets":
+        records = [
+            {
+                key: value for key, value in item.items()
+                if not key.startswith("_") and key != "columns"
+            }
+            for item in load_published_datasets()
+        ]
     else:
         try:
-            with st.spinner(f"Loading `{target_table}` records you are authorized to view..."):
-                db_response = user_client.from_(target_table).select("*").execute()
+            records = load_measure_catalog()
+        except (OSError, ValueError, json.JSONDecodeError) as catalog_error:
+            records = []
+            st.error(f"Could not read the measure catalog: {catalog_error}")
 
-                if db_response.data is not None:
-                    display_df = pd.DataFrame(db_response.data)
-
-                    st.subheader(f"📂 Connected Matrix: `{target_table}`")
-                    if not display_df.empty:
-                        st.dataframe(display_df, use_container_width=True, hide_index=True)
-
-                        raw_csv_bytes = display_df.to_csv(index=False).encode('utf-8')
-                        st.download_button(
-                            label=f"📥 Download Raw `{target_table}` Dataset (.csv)",
-                            data=raw_csv_bytes,
-                            file_name=f"supabase_central_repository_{target_table}.csv",
-                            mime="text/csv",
-                            use_container_width=True
-                        )
-                    else:
-                        st.info(f"Connection Live! The `{target_table}` table is ready and completely empty.")
-
-        except Exception as db_view_error:
-            st.error(f"Failed to query central database: {db_view_error}")
+    display_df = pd.DataFrame(records)
+    if display_df.empty:
+        st.info(f"Nothing has been published in “{view_label}” yet.")
+    else:
+        st.dataframe(display_df.astype(str), use_container_width=True, hide_index=True)
+        st.download_button(
+            label=f"📥 Download {view_label} (.csv)",
+            data=display_df.to_csv(index=False).encode("utf-8"),
+            file_name=f"openedmetadata_{view}.csv",
+            mime="text/csv",
+            use_container_width=True,
+        )
