@@ -156,6 +156,36 @@ Supabase is no longer used: remove `SUPABASE_URL`, `SUPABASE_KEY`, and
    streamlit run openscience.py
    ```
 
+5. **Run the tests** (the same checks run on every pull request):
+   ```bash
+   pip install -r requirements-dev.txt
+   python -m pytest -v                 # unit tests + opens every app page headlessly
+   python scripts/validate_library.py  # instrument library checks
+   ruff check --select F,E9 openscience.py oem tests scripts
+   ```
+
+---
+
+## 🧭 Project Structure
+
+```text
+openscience.py            Streamlit entry point: page config, sidebar, router
+oem/                      Core logic with no Streamlit dependency
+  library.py              Load instruments, items, constructs, scales, standard variables
+  naming.py               Shared variable-naming rules
+  codebook.py             Build and export codebooks (CSV / JSON)
+  vocab.py                Controlled vocabularies used by the forms
+  app/common.py           Streamlit helpers shared by all pages
+  app/pages/              One file per module, each with render()
+library/                  Instrument library (CC BY-SA 4.0 content; see library/README.md)
+tests/                    pytest suite, including an app smoke test
+scripts/validate_library.py   Library validator (also runs in CI)
+published/, suggestions/  Reviewed public records submitted through the app
+```
+
+New logic should go in `oem/` with tests in `tests/`; pages should stay thin and
+call into it. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ---
 
 ## 📜 Dependencies Checklist (`requirements.txt`)
