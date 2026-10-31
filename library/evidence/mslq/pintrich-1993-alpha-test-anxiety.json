@@ -1,0 +1,30 @@
+{
+  "id": "pintrich-1993-alpha-test-anxiety",
+  "instrument_id": "mslq",
+  "version_id": "mslq-1991-en",
+  "dimension_id": "test-anxiety",
+  "evidence_type": "internal_consistency",
+  "statistic": {
+    "name": "cronbach_alpha",
+    "value": 0.8,
+    "occasion": "single administration"
+  },
+  "sample": {
+    "n": null,
+    "education_level": "undergraduate",
+    "setting": "formal_classroom",
+    "country": "US",
+    "description": "College students in the MSLQ development sample reported by Pintrich et al. (1993)."
+  },
+  "source": {
+    "kind": "published",
+    "citation": "Pintrich, P. R., Smith, D. A. F., Garcia, T., & McKeachie, W. J. (1993). Reliability and predictive validity of the Motivated Strategies for Learning Questionnaire (MSLQ). Educational and Psychological Measurement, 53(3), 801-813.",
+    "doi": "10.1177/0013164493053003024"
+  },
+  "review": {
+    "status": "draft",
+    "needs_check": [
+      "Fill in sample n (reported as 380 in the 1991 manual; confirm it is the same sample) and sample description from the paper."
+    ]
+  }
+}

@@ -1,0 +1,188 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/JLib271/OpenEdMetadata/library/schema/items.schema.json",
+  "title": "Item file",
+  "description": "The items in one version of one instrument. Serves two purposes: a crosswalk that links items across versions (always allowed, no text needed), and item text (only when the instrument's access.item_text_shareable is true). Answer keys are only allowed when access.answer_key_shareable is true.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "instrument_id",
+    "version_id",
+    "items"
+  ],
+  "properties": {
+    "instrument_id": {
+      "type": "string"
+    },
+    "version_id": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "description": "Where the item text or numbering was taken from."
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "item_id",
+          "number",
+          "response_type"
+        ],
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+            "description": "Stable within the instrument. The same unchanged item keeps the same item_id in every version file; a changed item gets a new item_id with derived_from."
+          },
+          "number": {
+            "type": "string",
+            "description": "Position or label in this version, e.g. '12' or 'Q12'."
+          },
+          "response_type": {
+            "enum": [
+              "single_response",
+              "multiple_response",
+              "likert",
+              "open_response",
+              "observation_code"
+            ]
+          },
+          "stem": {
+            "type": "string",
+            "description": "Item text. Only if item text is shareable."
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "label"
+              ],
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string",
+                  "description": "Only if item text is shareable."
+                },
+                "is_correct": {
+                  "type": "boolean",
+                  "description": "Only if the answer key is shareable."
+                },
+                "image": {
+                  "type": "string",
+                  "description": "Image answer choice, path relative to the item file's folder. Only if item text is shareable."
+                }
+              }
+            }
+          },
+          "dimension_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "construct_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "reverse_scored": {
+            "type": "boolean"
+          },
+          "derived_from": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "item_id",
+              "relation"
+            ],
+            "properties": {
+              "item_id": {
+                "type": "string"
+              },
+              "relation": {
+                "enum": [
+                  "reworded",
+                  "domain_word_swapped",
+                  "options_changed",
+                  "translated",
+                  "split",
+                  "merged"
+                ]
+              },
+              "notes": {
+                "type": "string"
+              }
+            }
+          },
+          "notes": {
+            "type": "string"
+          },
+          "figures": {
+            "type": "array",
+            "description": "Figures shown with the stem. Only if item text is shareable.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "path"
+              ],
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "description": "Relative to the item file's folder."
+                },
+                "caption": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "requires_item_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            },
+            "description": "Items that must also be on any subtest that uses this item (e.g. a follow-up 'why did you choose' item)."
+          },
+          "flags": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "note"
+              ],
+              "properties": {
+                "type": {
+                  "enum": [
+                    "dif_gender",
+                    "dif_ethnicity",
+                    "dif_other",
+                    "population_caution",
+                    "removed",
+                    "other"
+                  ]
+                },
+                "note": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

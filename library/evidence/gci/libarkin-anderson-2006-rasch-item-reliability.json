@@ -1,0 +1,32 @@
+{
+  "id": "libarkin-anderson-2006-rasch-item-reliability",
+  "instrument_id": "gci",
+  "version_id": "gci-v4-2014",
+  "dimension_id": null,
+  "evidence_type": "irt_scaling",
+  "statistic": {
+    "name": "rasch_item_reliability",
+    "value": 0.99,
+    "notes": "Rasch item separation reliability from the GCI v.1.0 item-bank analysis. Applies to the 2014 items carried over from v.1.0 (numbering is preserved), not to items added later."
+  },
+  "sample": {
+    "n": null,
+    "education_level": "undergraduate",
+    "discipline": "geoscience",
+    "setting": "formal_classroom",
+    "country": "US",
+    "description": "Students in entry-level geoscience courses in the GCI v.1.0 development sample."
+  },
+  "source": {
+    "kind": "published",
+    "citation": "Libarkin, J. C., & Anderson, S. W. (2006). The Geoscience Concept Inventory: Application of Rasch analysis to concept inventory development in higher education. In X. Liu & W. J. Boone (Eds.), Applications of Rasch Measurement in Science Education (pp. 45-73). JAM Press.",
+    "doi": "10.17613/wnm5z-00x75",
+    "contributed_by": "Julie C. Libarkin (GCI developer), 2026-10-31"
+  },
+  "review": {
+    "status": "draft",
+    "needs_check": [
+      "Add sample n from the 2006 chapter."
+    ]
+  }
+}

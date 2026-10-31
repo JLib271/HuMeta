@@ -1,0 +1,579 @@
+{
+  "instrument_id": "climate-change-concept-inventory",
+  "version_id": "ccci-2018",
+  "source": "Libarkin et al. (2018) online supplement (revision v2), provided by the lead developer 2026-10-31. Numbering follows Table 1 of the paper. Single-response instructions: choose the one answer that most closely aligns with your understanding. Multiple-response instructions: choose one or more answers. Answer key deliberately omitted.",
+  "items": [
+    {
+      "item_id": "q01",
+      "number": "1",
+      "response_type": "single_response",
+      "stem": "Which is the most common form of radiation given off by the Sun?",
+      "options": [
+        {
+          "label": "A",
+          "text": "The Sun mostly gives off visible radiation."
+        },
+        {
+          "label": "B",
+          "text": "The Sun mostly gives off infrared radiation."
+        },
+        {
+          "label": "C",
+          "text": "The Sun mostly gives off ultraviolet radiation."
+        },
+        {
+          "label": "D",
+          "text": "The Sun does not give off radiation."
+        },
+        {
+          "label": "E",
+          "text": "I do not know."
+        }
+      ]
+    },
+    {
+      "item_id": "q02",
+      "number": "2",
+      "response_type": "single_response",
+      "stem": "What do greenhouse gases do as part of the greenhouse effect?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Greenhouse gases absorb energy emitted by Earth."
+        },
+        {
+          "label": "B",
+          "text": "Greenhouse gases reflect energy emitted by Earth."
+        },
+        {
+          "label": "C",
+          "text": "Greenhouse gases reflect energy reflected by Earth."
+        },
+        {
+          "label": "D",
+          "text": "Greenhouse gases absorb energy reflected by Earth."
+        },
+        {
+          "label": "E",
+          "text": "I do not know."
+        }
+      ]
+    },
+    {
+      "item_id": "q03",
+      "number": "3",
+      "response_type": "single_response",
+      "stem": "Averaged over long time periods, how does the amount of energy arriving from space compare to the amount of energy leaving Earth?",
+      "options": [
+        {
+          "label": "A",
+          "text": "The amount of energy arriving from space is greater than the amount of energy leaving Earth."
+        },
+        {
+          "label": "B",
+          "text": "The amount of energy arriving from space is less than the amount of energy leaving Earth."
+        },
+        {
+          "label": "C",
+          "text": "The amount of energy arriving from space is roughly equal to the amount of energy leaving Earth."
+        },
+        {
+          "label": "D",
+          "text": "I do not know."
+        }
+      ]
+    },
+    {
+      "item_id": "q04",
+      "number": "4",
+      "response_type": "single_response",
+      "stem": "Where will a photon emitted by a greenhouse gas molecule most likely go?",
+      "options": [
+        {
+          "label": "A",
+          "text": "In an upward direction relative to Earth’s surface."
+        },
+        {
+          "label": "B",
+          "text": "In a downward direction relative to Earth's surface."
+        },
+        {
+          "label": "C",
+          "text": "In a random direction relative to Earth’s surface."
+        },
+        {
+          "label": "D",
+          "text": "I do not know."
+        }
+      ]
+    },
+    {
+      "item_id": "q05",
+      "number": "5",
+      "response_type": "multiple_response",
+      "stem": "What information do ice cores from glaciers contain about Earth?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Ice cores contain information about Earth’s air temperature."
+        },
+        {
+          "label": "B",
+          "text": "Ice cores contain information about Earth’s seasonal precipitation."
+        },
+        {
+          "label": "C",
+          "text": "Ice cores contain information about Earth’s carbon dioxide concentration."
+        },
+        {
+          "label": "D",
+          "text": "Ice cores contain information about Earth’s daily weather events."
+        },
+        {
+          "label": "E",
+          "text": "I do not know."
+        }
+      ],
+      "notes": "Original item text ends with 'CHOOSE ALL THAT APPLY.'"
+    },
+    {
+      "item_id": "q06",
+      "number": "6",
+      "response_type": "multiple_response",
+      "stem": "Which statements about non-greenhouse gases are accurate?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Non-greenhouse gases do not absorb a lot of energy given off by the Sun."
+        },
+        {
+          "label": "B",
+          "text": "Non-greenhouse gases do not absorb a lot of energy given off by the Earth."
+        },
+        {
+          "label": "C",
+          "text": "Non-greenhouse gases absorb a lot of energy given off by the Earth."
+        },
+        {
+          "label": "D",
+          "text": "Non-greenhouse gases absorb a lot of energy given off by the Sun."
+        },
+        {
+          "label": "E",
+          "text": "I do not know."
+        }
+      ],
+      "notes": "Original item text ends with 'CHOOSE ALL THAT APPLY.'"
+    },
+    {
+      "item_id": "q07",
+      "number": "7",
+      "response_type": "single_response",
+      "stem": "How much incoming sunlight do greenhouse gases absorb?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Greenhouses gases absorb almost no incoming sunlight."
+        },
+        {
+          "label": "B",
+          "text": "Greenhouses gases absorb about half of the incoming sunlight."
+        },
+        {
+          "label": "C",
+          "text": "Greenhouses gases absorb most incoming sunlight."
+        },
+        {
+          "label": "D",
+          "text": "I do not know."
+        }
+      ]
+    },
+    {
+      "item_id": "q08",
+      "number": "8",
+      "response_type": "single_response",
+      "stem": "Which is the best definition of a positive feedback loop in the climate system?",
+      "options": [
+        {
+          "label": "A",
+          "text": "A change in the climate system leads to a response that benefits climate change."
+        },
+        {
+          "label": "B",
+          "text": "A change in the climate system leads to a response that slows down climate change."
+        },
+        {
+          "label": "C",
+          "text": "A change in the climate system leads to a response that speeds up climate change."
+        },
+        {
+          "label": "D",
+          "text": "A change in the climate system leads to a response that harms climate change."
+        },
+        {
+          "label": "E",
+          "text": "I do not know."
+        }
+      ]
+    },
+    {
+      "item_id": "q09",
+      "number": "9",
+      "response_type": "single_response",
+      "stem": "Which of the following is the best definition of a greenhouse gas?",
+      "options": [
+        {
+          "label": "A",
+          "text": "An atmospheric gas that is produced as plants grow."
+        },
+        {
+          "label": "B",
+          "text": "An atmospheric gas that absorbs infrared radiation."
+        },
+        {
+          "label": "C",
+          "text": "An atmospheric gas that produces acid rain."
+        },
+        {
+          "label": "D",
+          "text": "An atmospheric gas that absorbs ultraviolet radiation."
+        },
+        {
+          "label": "E",
+          "text": "I do not know."
+        }
+      ]
+    },
+    {
+      "item_id": "q10",
+      "number": "10",
+      "response_type": "single_response",
+      "stem": "Which is the most common form of radiation given off by Earth's surface?",
+      "options": [
+        {
+          "label": "A",
+          "text": "The Earth’s surface mostly gives off visible radiation."
+        },
+        {
+          "label": "B",
+          "text": "The Earth’s surface mostly gives off infrared radiation."
+        },
+        {
+          "label": "C",
+          "text": "The Earth’s surface mostly gives off ultraviolet radiation."
+        },
+        {
+          "label": "D",
+          "text": "Earth’s surface does not give off radiation."
+        },
+        {
+          "label": "E",
+          "text": "I do not know."
+        }
+      ]
+    },
+    {
+      "item_id": "q11",
+      "number": "11",
+      "response_type": "single_response",
+      "stem": "Which of the following statements about air temperature change over the past million years is most accurate?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Air temperature change over the past million years is slightly due to natural processes and mostly due to human activities."
+        },
+        {
+          "label": "B",
+          "text": "Air temperature change over the past million years is mostly due to natural processes and slightly due to human activities."
+        },
+        {
+          "label": "C",
+          "text": "Air temperature change over the past million years is about equally due to natural processes and human activities."
+        },
+        {
+          "label": "D",
+          "text": "Air temperature change over the past million years has not occurred whether due to natural processes or human activities."
+        },
+        {
+          "label": "E",
+          "text": "I do not know."
+        }
+      ]
+    },
+    {
+      "item_id": "q12",
+      "number": "12",
+      "response_type": "multiple_response",
+      "stem": "Which of the following could cause the Earth’s surface temperature to change?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Changes in the tilt of the Earth’s axis."
+        },
+        {
+          "label": "B",
+          "text": "Changes in the reflectivity of the Earth’s surface."
+        },
+        {
+          "label": "C",
+          "text": "Changes in methane concentrations in the atmosphere."
+        },
+        {
+          "label": "D",
+          "text": "Changes in carbon dioxide concentrations in the atmosphere."
+        },
+        {
+          "label": "E",
+          "text": "I do not know."
+        }
+      ],
+      "notes": "Original item text ends with 'CHOOSE ALL THAT APPLY.'"
+    },
+    {
+      "item_id": "q13",
+      "number": "13",
+      "response_type": "single_response",
+      "stem": "Which of the following will occur if the amount of ice floating in the ocean decreases?",
+      "options": [
+        {
+          "label": "A",
+          "text": "More sunlight will be reflected back into space and Earth’s temperature will decrease."
+        },
+        {
+          "label": "B",
+          "text": "Less sunlight will be reflected back into space and Earth’s temperature will increase."
+        },
+        {
+          "label": "C",
+          "text": "More sunlight will be reflected back into space and Earth’s temperature will increase."
+        },
+        {
+          "label": "D",
+          "text": "Less sunlight will be reflected back into space and Earth’s temperature will decrease."
+        },
+        {
+          "label": "E",
+          "text": "I do not know."
+        }
+      ]
+    },
+    {
+      "item_id": "q14",
+      "number": "14",
+      "response_type": "single_response",
+      "stem": "How does sunlight affect temperature on Earth?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Sunlight warms the air directly, but the air does not warm the land."
+        },
+        {
+          "label": "B",
+          "text": "Sunlight warms the land directly, but the land does not warm the air."
+        },
+        {
+          "label": "C",
+          "text": "Sunlight warms the air directly, and the air warms the land."
+        },
+        {
+          "label": "D",
+          "text": "Sunlight warms the land directly, and the land warms the air."
+        },
+        {
+          "label": "E",
+          "text": "I do not know."
+        }
+      ]
+    },
+    {
+      "item_id": "q15",
+      "number": "15",
+      "response_type": "single_response",
+      "stem": "Which of the following statements about global warming over the past 50 years is most accurate?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Global warming over the past 50 years is slightly due to natural processes and mostly due to human activities."
+        },
+        {
+          "label": "B",
+          "text": "Global warming over the past 50 years is mostly due to natural processes and slightly due to human activities."
+        },
+        {
+          "label": "C",
+          "text": "Global warming over the past 50 years is about equally due to natural processes and human activities."
+        },
+        {
+          "label": "D",
+          "text": "Global warming over the past 50 years has not occurred whether due to natural processes or human activities."
+        },
+        {
+          "label": "E",
+          "text": "I do not know."
+        }
+      ]
+    },
+    {
+      "item_id": "q16",
+      "number": "16",
+      "response_type": "multiple_response",
+      "stem": "Which of the following can be caused by climate change?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Climate change can cause food shortages."
+        },
+        {
+          "label": "B",
+          "text": "Climate change can cause changes in temperature."
+        },
+        {
+          "label": "C",
+          "text": "Climate change can cause water shortages."
+        },
+        {
+          "label": "D",
+          "text": "Climate change can cause changes in weather."
+        },
+        {
+          "label": "E",
+          "text": "I do not know."
+        }
+      ],
+      "notes": "Original item text ends with 'CHOOSE ALL THAT APPLY.'"
+    },
+    {
+      "item_id": "q17",
+      "number": "17",
+      "response_type": "single_response",
+      "stem": "Which of the following contributes to the transfer of thermal energy from place to place around the Earth?",
+      "options": [
+        {
+          "label": "A",
+          "text": "The movement of ocean water but not the movement of air."
+        },
+        {
+          "label": "B",
+          "text": "The movement of air but not the movement of ocean water."
+        },
+        {
+          "label": "C",
+          "text": "Both the movement of ocean water and the movement of air."
+        },
+        {
+          "label": "D",
+          "text": "Neither the movement of ocean water nor the movement of air."
+        },
+        {
+          "label": "E",
+          "text": "I do not know."
+        }
+      ]
+    },
+    {
+      "item_id": "q18",
+      "number": "18",
+      "response_type": "single_response",
+      "stem": "Which of the following best describes how plants take in carbon dioxide?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Plants take in carbon dioxide from rain."
+        },
+        {
+          "label": "B",
+          "text": "Plants take in carbon dioxide from sunlight."
+        },
+        {
+          "label": "C",
+          "text": "Plants take in carbon dioxide from air."
+        },
+        {
+          "label": "D",
+          "text": "Plants take in carbon dioxide from soil."
+        },
+        {
+          "label": "E",
+          "text": "I do not know."
+        }
+      ]
+    },
+    {
+      "item_id": "q19",
+      "number": "19",
+      "response_type": "single_response",
+      "stem": "Which of the following would most likely occur if the oceans stopped absorbing carbon dioxide?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Carbon dioxide in the atmosphere would remain the same."
+        },
+        {
+          "label": "B",
+          "text": "Carbon dioxide in the atmosphere would increase."
+        },
+        {
+          "label": "C",
+          "text": "Carbon dioxide in the atmosphere would decrease."
+        },
+        {
+          "label": "D",
+          "text": "I do not know."
+        }
+      ]
+    },
+    {
+      "item_id": "q20",
+      "number": "20",
+      "response_type": "single_response",
+      "stem": "How has the amount of carbon dioxide in the atmosphere changed since the start of the Industrial Revolution 150 years ago?",
+      "options": [
+        {
+          "label": "A",
+          "text": "The amount of carbon dioxide has remained the same."
+        },
+        {
+          "label": "B",
+          "text": "The amount of carbon dioxide has decreased."
+        },
+        {
+          "label": "C",
+          "text": "The amount of carbon dioxide has increased."
+        },
+        {
+          "label": "D",
+          "text": "I do not know."
+        }
+      ]
+    },
+    {
+      "item_id": "q21",
+      "number": "21",
+      "response_type": "single_response",
+      "stem": "Which is the best description of the differences between climate and weather?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Climate does not change over time, and weather does change over time."
+        },
+        {
+          "label": "B",
+          "text": "Climate changes over time, and weather does not change over time."
+        },
+        {
+          "label": "C",
+          "text": "Climate changes over long periods of time, and weather changes over short periods of time."
+        },
+        {
+          "label": "D",
+          "text": "Climate changes over short periods of time, and weather changes over long periods of time."
+        },
+        {
+          "label": "E",
+          "text": "I do not know."
+        }
+      ]
+    }
+  ]
+}
