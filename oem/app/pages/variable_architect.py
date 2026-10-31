@@ -928,7 +928,6 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     uploaded_items = []
     uploaded_frameworks = []
     raw_csv_text = ""
-    custom_vars_csv_valid = False
     saved_custom_variables = saved_module2_plan.get("custom_variables", [])
     if isinstance(saved_custom_variables, list):
         uploaded_items = [
@@ -949,7 +948,6 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
             ]
             
             if all(field in uploaded_df.columns for field in required_fields):
-                custom_vars_csv_valid = True
                 initial_count = len(uploaded_df)
                 uploaded_df = uploaded_df[uploaded_df["Variable_ID"] != "VAR_SAMPLE_ID"]
                 filtered_count = len(uploaded_df)
