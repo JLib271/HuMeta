@@ -91,6 +91,13 @@ library is never a claim that an instrument is valid for a particular study.
 Never include item text from restricted instruments, participant data, or
 unpublished results.
 
+## License
+
+Library records are CC BY-SA 4.0. Item text is released under each
+instrument's own license (`access.item_text_basis.license`), which the
+validator requires before any item text is accepted. See
+[`LICENSE.md`](LICENSE.md).
+
 ## Relationship to `catalogs/measure_catalog.json`
 
 The existing flat catalog read by Module 2 is superseded by this library once

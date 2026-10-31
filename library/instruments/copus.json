@@ -3,21 +3,38 @@
   "name": "Classroom Observation Protocol for Undergraduate STEM",
   "acronym": "COPUS",
   "instrument_type": "observation_protocol",
-  "respondent": ["observer"],
+  "respondent": [
+    "observer"
+  ],
   "description": "Observers mark which student and instructor activities happen in each 2-minute interval of a class session. The result describes how class time is spent; it is explicitly not a rating of teaching quality. Designed so faculty can use it reliably after a short training. Adapted from the Teaching Dimensions Observation Protocol (TDOP).",
-  "construct_ids": ["teaching_practices", "student_classroom_activity"],
-  "disciplines": ["general_stem"],
-  "education_levels": ["undergraduate"],
-  "settings": ["formal_classroom"],
+  "construct_ids": [
+    "teaching_practices",
+    "student_classroom_activity"
+  ],
+  "disciplines": [
+    "general_stem"
+  ],
+  "education_levels": [
+    "undergraduate"
+  ],
+  "settings": [
+    "formal_classroom"
+  ],
   "original_citation": {
     "text": "Smith, M. K., Jones, F. H. M., Gilbert, S. L., & Wieman, C. E. (2013). The Classroom Observation Protocol for Undergraduate STEM (COPUS): A new instrument to characterize university STEM classroom practices. CBE-Life Sciences Education, 12(4), 618-627.",
     "doi": "10.1187/cbe.13-08-0154"
   },
   "access": {
     "access_type": "open_download",
-    "item_text_shareable": false,
-    "terms_summary": "Paper protocol, Excel recording sheet, training guide and code descriptions are freely downloadable from the UBC CWSEI site and PhysPort. Republishing terms are not stated, so link rather than copy.",
-    "download_url": "https://cwsei.ubc.ca/resources/tools/copus"
+    "item_text_shareable": true,
+    "terms_summary": "Codes and protocol may be reused with credit to Smith, Jones, Gilbert & Wieman (2013), for noncommercial use, under the same license (CC BY-NC-SA 3.0).",
+    "download_url": "https://cwsei.ubc.ca/resources/tools/copus",
+    "answer_key_shareable": false,
+    "item_text_basis": {
+      "basis": "open_license",
+      "license": "CC BY-NC-SA 3.0",
+      "evidence": "The 2013 CBE-LSE article is released under CC BY-NC-SA 3.0 (https://www.compadre.org/portal/items/detail.cfm?ID=13381); UBC CWSEI lists its COPUS protocol summary as CC BY-NC 3.0 (https://cwsei.ubc.ca/node/1291)."
+    }
   },
   "versions": [
     {
@@ -27,13 +44,33 @@
       "year": 2013,
       "item_count": 25,
       "administration_minutes": "Length of the class session; about 1.5 hours of observer training beforehand",
-      "response_format": { "type": "interval_coding", "notes": "25 codes; observers mark every code that occurs in each 2-minute interval." },
-      "scoring": { "method": "code_frequency", "notes": "Percent of intervals in which each code occurred, usually shown as separate student and instructor charts. No composite score." }
+      "response_format": {
+        "type": "interval_coding",
+        "notes": "25 codes; observers mark every code that occurs in each 2-minute interval."
+      },
+      "scoring": {
+        "method": "code_frequency",
+        "notes": "Percent of intervals in which each code occurred, usually shown as separate student and instructor charts. No composite score."
+      }
     }
   ],
   "dimensions": [
-    { "dimension_id": "students-doing", "name": "Students are doing", "basis": "coding_category", "construct_ids": ["student_classroom_activity"] },
-    { "dimension_id": "instructor-doing", "name": "Instructor is doing", "basis": "coding_category", "construct_ids": ["teaching_practices"] }
+    {
+      "dimension_id": "students-doing",
+      "name": "Students are doing",
+      "basis": "coding_category",
+      "construct_ids": [
+        "student_classroom_activity"
+      ]
+    },
+    {
+      "dimension_id": "instructor-doing",
+      "name": "Instructor is doing",
+      "basis": "coding_category",
+      "construct_ids": [
+        "teaching_practices"
+      ]
+    }
   ],
   "related_instrument_ids": [],
   "review": {
@@ -41,12 +78,15 @@
     "needs_check": [
       "Confirm split of the 25 codes between students and instructor.",
       "Add inter-rater reliability (Cohen's kappa) values and observer groups from Smith et al. (2013).",
-      "The paper form also has an optional engagement rating; decide whether to model it as a third dimension."
+      "The paper form also has an optional engagement rating; decide whether to model it as a third dimension.",
+      "Code descriptions should be taken from the CC-licensed article or CWSEI summary, and the item file marked CC BY-NC-SA 3.0."
     ]
   },
   "info_sources": [
     "https://pubmed.ncbi.nlm.nih.gov/24297289/",
     "https://cwsei.ubc.ca/resources/tools/copus",
-    "https://www.physport.org/assessments/guides/Open.cfm?G=66"
+    "https://www.physport.org/assessments/guides/Open.cfm?G=66",
+    "https://cwsei.ubc.ca/node/1291",
+    "https://www.compadre.org/portal/items/detail.cfm?ID=13381"
   ]
 }

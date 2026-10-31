@@ -3,21 +3,42 @@
   "name": "Motivated Strategies for Learning Questionnaire",
   "acronym": "MSLQ",
   "instrument_type": "self_report_scale",
-  "respondent": ["student"],
+  "respondent": [
+    "student"
+  ],
   "description": "Course-specific self-report questionnaire with a motivation section and a learning strategies section. Modular by design: researchers commonly administer only the subscales they need, such as Self-Efficacy for Learning and Performance.",
-  "construct_ids": ["self_efficacy", "task_value", "goal_orientation", "anxiety", "learning_strategies", "self_regulated_learning"],
-  "disciplines": ["discipline_general"],
-  "education_levels": ["undergraduate"],
-  "settings": ["formal_classroom"],
+  "construct_ids": [
+    "self_efficacy",
+    "task_value",
+    "goal_orientation",
+    "anxiety",
+    "learning_strategies",
+    "self_regulated_learning"
+  ],
+  "disciplines": [
+    "discipline_general"
+  ],
+  "education_levels": [
+    "undergraduate"
+  ],
+  "settings": [
+    "formal_classroom"
+  ],
   "original_citation": {
     "text": "Pintrich, P. R., Smith, D. A. F., Garcia, T., & McKeachie, W. J. (1991). A manual for the use of the Motivated Strategies for Learning Questionnaire (MSLQ). University of Michigan, National Center for Research to Improve Postsecondary Teaching and Learning.",
     "url": "https://files.eric.ed.gov/fulltext/ED338122.pdf"
   },
   "access": {
     "access_type": "open_download",
-    "item_text_shareable": false,
-    "terms_summary": "The manual, including the questionnaire, is freely available through ERIC. Reuse terms are not stated in sources read so far, so link rather than copy.",
-    "download_url": "https://files.eric.ed.gov/fulltext/ED338122.pdf"
+    "item_text_shareable": true,
+    "terms_summary": "Reported as public domain and free to use with credit to Pintrich, Smith, Garcia & McKeachie. The manual is freely available through ERIC.",
+    "download_url": "https://files.eric.ed.gov/fulltext/ED338122.pdf",
+    "answer_key_shareable": false,
+    "item_text_basis": {
+      "basis": "public_domain",
+      "license": "Public domain (credit the authors)",
+      "evidence": "Described as public domain and free to use with acknowledgement to the authors: Kraha et al. (2018), SAGE Open, doi 10.1177/2158244018802334; https://learningscientists.org/blog/2024/7/2/digest-174"
+    }
   },
   "versions": [
     {
@@ -27,8 +48,15 @@
       "year": 1991,
       "item_count": 81,
       "administration_minutes": "20-30",
-      "response_format": { "type": "likert", "scale_points": 7, "anchors": "1 = not at all true of me, 7 = very true of me" },
-      "scoring": { "method": "sum_or_mean", "notes": "Subscale scores are the mean of their items; some items are reverse-coded." },
+      "response_format": {
+        "type": "likert",
+        "scale_points": 7,
+        "anchors": "1 = not at all true of me, 7 = very true of me"
+      },
+      "scoring": {
+        "method": "sum_or_mean",
+        "notes": "Subscale scores are the mean of their items; some items are reverse-coded."
+      },
       "citation": {
         "text": "Pintrich, P. R., Smith, D. A. F., Garcia, T., & McKeachie, W. J. (1993). Reliability and predictive validity of the Motivated Strategies for Learning Questionnaire (MSLQ). Educational and Psychological Measurement, 53(3), 801-813.",
         "doi": "10.1177/0013164493053003024"
@@ -36,21 +64,132 @@
     }
   ],
   "dimensions": [
-    { "dimension_id": "intrinsic-goal-orientation", "name": "Intrinsic Goal Orientation", "basis": "empirical_factor", "construct_ids": ["goal_orientation"], "item_count": 4 },
-    { "dimension_id": "extrinsic-goal-orientation", "name": "Extrinsic Goal Orientation", "basis": "empirical_factor", "construct_ids": ["goal_orientation"], "item_count": 4 },
-    { "dimension_id": "task-value", "name": "Task Value", "basis": "empirical_factor", "construct_ids": ["task_value"], "item_count": 6 },
-    { "dimension_id": "control-of-learning-beliefs", "name": "Control of Learning Beliefs", "basis": "empirical_factor", "construct_ids": ["perceived_behavioral_control"], "item_count": 4 },
-    { "dimension_id": "self-efficacy", "name": "Self-Efficacy for Learning and Performance", "basis": "empirical_factor", "construct_ids": ["self_efficacy"], "item_count": 8 },
-    { "dimension_id": "test-anxiety", "name": "Test Anxiety", "basis": "empirical_factor", "construct_ids": ["anxiety"], "item_count": 5 },
-    { "dimension_id": "rehearsal", "name": "Rehearsal", "basis": "empirical_factor", "construct_ids": ["learning_strategies"] },
-    { "dimension_id": "elaboration", "name": "Elaboration", "basis": "empirical_factor", "construct_ids": ["learning_strategies"] },
-    { "dimension_id": "organization", "name": "Organization", "basis": "empirical_factor", "construct_ids": ["learning_strategies"] },
-    { "dimension_id": "critical-thinking", "name": "Critical Thinking", "basis": "empirical_factor", "construct_ids": ["critical_thinking"] },
-    { "dimension_id": "metacognitive-self-regulation", "name": "Metacognitive Self-Regulation", "basis": "empirical_factor", "construct_ids": ["self_regulated_learning"] },
-    { "dimension_id": "time-study-environment", "name": "Time and Study Environment", "basis": "empirical_factor", "construct_ids": ["self_regulated_learning"] },
-    { "dimension_id": "effort-regulation", "name": "Effort Regulation", "basis": "empirical_factor", "construct_ids": ["self_regulated_learning"] },
-    { "dimension_id": "peer-learning", "name": "Peer Learning", "basis": "empirical_factor", "construct_ids": ["learning_strategies"] },
-    { "dimension_id": "help-seeking", "name": "Help Seeking", "basis": "empirical_factor", "construct_ids": ["learning_strategies"] }
+    {
+      "dimension_id": "intrinsic-goal-orientation",
+      "name": "Intrinsic Goal Orientation",
+      "basis": "empirical_factor",
+      "construct_ids": [
+        "goal_orientation"
+      ],
+      "item_count": 4
+    },
+    {
+      "dimension_id": "extrinsic-goal-orientation",
+      "name": "Extrinsic Goal Orientation",
+      "basis": "empirical_factor",
+      "construct_ids": [
+        "goal_orientation"
+      ],
+      "item_count": 4
+    },
+    {
+      "dimension_id": "task-value",
+      "name": "Task Value",
+      "basis": "empirical_factor",
+      "construct_ids": [
+        "task_value"
+      ],
+      "item_count": 6
+    },
+    {
+      "dimension_id": "control-of-learning-beliefs",
+      "name": "Control of Learning Beliefs",
+      "basis": "empirical_factor",
+      "construct_ids": [
+        "perceived_behavioral_control"
+      ],
+      "item_count": 4
+    },
+    {
+      "dimension_id": "self-efficacy",
+      "name": "Self-Efficacy for Learning and Performance",
+      "basis": "empirical_factor",
+      "construct_ids": [
+        "self_efficacy"
+      ],
+      "item_count": 8
+    },
+    {
+      "dimension_id": "test-anxiety",
+      "name": "Test Anxiety",
+      "basis": "empirical_factor",
+      "construct_ids": [
+        "anxiety"
+      ],
+      "item_count": 5
+    },
+    {
+      "dimension_id": "rehearsal",
+      "name": "Rehearsal",
+      "basis": "empirical_factor",
+      "construct_ids": [
+        "learning_strategies"
+      ]
+    },
+    {
+      "dimension_id": "elaboration",
+      "name": "Elaboration",
+      "basis": "empirical_factor",
+      "construct_ids": [
+        "learning_strategies"
+      ]
+    },
+    {
+      "dimension_id": "organization",
+      "name": "Organization",
+      "basis": "empirical_factor",
+      "construct_ids": [
+        "learning_strategies"
+      ]
+    },
+    {
+      "dimension_id": "critical-thinking",
+      "name": "Critical Thinking",
+      "basis": "empirical_factor",
+      "construct_ids": [
+        "critical_thinking"
+      ]
+    },
+    {
+      "dimension_id": "metacognitive-self-regulation",
+      "name": "Metacognitive Self-Regulation",
+      "basis": "empirical_factor",
+      "construct_ids": [
+        "self_regulated_learning"
+      ]
+    },
+    {
+      "dimension_id": "time-study-environment",
+      "name": "Time and Study Environment",
+      "basis": "empirical_factor",
+      "construct_ids": [
+        "self_regulated_learning"
+      ]
+    },
+    {
+      "dimension_id": "effort-regulation",
+      "name": "Effort Regulation",
+      "basis": "empirical_factor",
+      "construct_ids": [
+        "self_regulated_learning"
+      ]
+    },
+    {
+      "dimension_id": "peer-learning",
+      "name": "Peer Learning",
+      "basis": "empirical_factor",
+      "construct_ids": [
+        "learning_strategies"
+      ]
+    },
+    {
+      "dimension_id": "help-seeking",
+      "name": "Help Seeking",
+      "basis": "empirical_factor",
+      "construct_ids": [
+        "learning_strategies"
+      ]
+    }
   ],
   "related_instrument_ids": [],
   "review": {
@@ -58,13 +197,16 @@
     "needs_check": [
       "Add item counts for the nine learning-strategies subscales from the manual.",
       "Confirm reuse terms with the manual or the University of Michigan.",
-      "Confirm which sample (n = 380?) the 1993 alphas come from."
+      "Confirm which sample (n = 380?) the 1993 alphas come from.",
+      "Confirm public-domain status in the 1991 manual itself (secondary sources only so far)."
     ]
   },
   "info_sources": [
     "https://edinstruments.org/instruments/motivated-strategies-learning-questionnaire-mslq",
     "https://learninglab.uni-due.de/node/13539",
     "https://core.ac.uk/download/287211724.pdf",
-    "https://www.improvewithmetacognition.com/the-motivated-strategies-for-learning-questionnaire/"
+    "https://www.improvewithmetacognition.com/the-motivated-strategies-for-learning-questionnaire/",
+    "https://core.ac.uk/download/287211724.pdf",
+    "https://learningscientists.org/blog/2024/7/2/digest-174"
   ]
 }

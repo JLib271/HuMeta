@@ -27,9 +27,10 @@
     "item_text_shareable": true,
     "item_text_basis": {
       "basis": "written_permission",
-      "evidence": "Developer approved storing GCI question text in the STEMEd+ instrument library (2026-10-31). The developer's lab page also states the items may be used freely and without restriction.",
+      "evidence": "Developer approved storing GCI question text in the STEMEd+ instrument library (2026-10-31). The developer's lab page also states the items may be used freely and without restriction. Developer chose to release the item text in this library under CC BY-SA 4.0 (2026-10-31).",
       "granted_by": "Julie C. Libarkin (GCI developer)",
-      "granted_on": "2026-10-31"
+      "granted_on": "2026-10-31",
+      "license": "CC BY-SA 4.0"
     },
     "answer_key_shareable": false,
     "terms_summary": "The developer's lab posts the 2014 item set (questions and answers) and states that instructors and researchers may use the items freely and without restriction. The online testing system is no longer active. Answer key intentionally not stored in this library (developer decision, 2026-10-31).",

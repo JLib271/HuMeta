@@ -190,6 +190,17 @@ def main(library: Path) -> int:
             if ref not in item_ids_by_instrument.get(iid, set()):
                 problems.append(f"{where}: referenced item '{ref}' not found in any {iid} version file")
 
+    # Every instrument with item text must appear in the LICENSE.md table with the same license
+    license_doc = library / "LICENSE.md"
+    license_text = license_doc.read_text(encoding="utf-8") if license_doc.exists() else ""
+    for iid, inst in instruments.items():
+        basis = inst.get("access", {}).get("item_text_basis")
+        if inst.get("access", {}).get("item_text_shareable") and basis:
+            lic = basis.get("license", "")
+            short = lic.split(" (")[0]
+            if short and short not in license_text:
+                problems.append(f"instruments/{iid}.json: item text license '{lic}' is not listed in library/LICENSE.md")
+
     if problems:
         print(f"Library validation failed with {len(problems)} problem(s):")
         for p in problems:

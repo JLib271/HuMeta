@@ -34,9 +34,10 @@
     "terms_url": "https://geocognitionresearchlaboratory.com/2018/11/20/the-geoscience-concept-inventory/",
     "item_text_basis": {
       "basis": "written_permission",
-      "evidence": "Developer approved storing Climate Change Concept Inventory question text in the STEMEd+ instrument library (2026-10-31).",
+      "evidence": "Developer approved storing Climate Change Concept Inventory question text in the STEMEd+ instrument library (2026-10-31). Developer chose to release the item text in this library under CC BY-SA 4.0 (2026-10-31).",
       "granted_by": "Julie C. Libarkin (lead developer)",
-      "granted_on": "2026-10-31"
+      "granted_on": "2026-10-31",
+      "license": "CC BY-SA 4.0"
     }
   },
   "versions": [
