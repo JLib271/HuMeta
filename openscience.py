@@ -828,6 +828,13 @@ with st.sidebar:
         if st.button("Sign in with Google", use_container_width=True, type="primary"):
             st.login()
 
+    # AGPL-3.0 section 13: offer users of the hosted app its source code.
+    st.divider()
+    st.caption(
+        "Free software under the [GNU AGPL v3](https://www.gnu.org/licenses/agpl-3.0.html). "
+        "[Source code](https://github.com/JLib271/OpenEdMetadata)"
+    )
+
 st.title("🔬 Open Educational Metadata Portal")
 st.caption("Standardized Study Registries and Psychometric Instrument Architects under DCMES, IEEE LOM, and CEDS Standards.")
 

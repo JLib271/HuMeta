@@ -1,0 +1,478 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/JLib271/OpenEdMetadata/library/schema/instrument.schema.json",
+  "title": "Instrument record",
+  "description": "One measurement instrument (survey, concept inventory, observation protocol, rubric, ...). Describes the instrument; never stores item text unless access.item_text_shareable is true.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "name",
+    "instrument_type",
+    "respondent",
+    "description",
+    "construct_ids",
+    "disciplines",
+    "education_levels",
+    "settings",
+    "original_citation",
+    "access",
+    "versions",
+    "dimensions",
+    "review",
+    "info_sources"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "description": "Stable slug. Must match the file name. Never change after publishing."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 3
+    },
+    "acronym": {
+      "type": "string"
+    },
+    "instrument_type": {
+      "enum": [
+        "concept_inventory",
+        "attitude_beliefs_survey",
+        "self_report_scale",
+        "observation_protocol",
+        "interview_protocol",
+        "rubric",
+        "performance_task",
+        "other"
+      ]
+    },
+    "respondent": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "student",
+          "instructor",
+          "observer",
+          "visitor",
+          "family",
+          "community_member",
+          "other"
+        ]
+      }
+    },
+    "description": {
+      "type": "string",
+      "minLength": 20,
+      "description": "What it measures and how, in the contributor's own words. Do not paste abstracts."
+    },
+    "construct_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "Constructs from library/constructs.json measured by the instrument as a whole."
+    },
+    "disciplines": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "e.g. physics, chemistry, biology, mathematics, engineering, general_stem, discipline_general."
+    },
+    "education_levels": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "k5",
+          "middle_school",
+          "high_school",
+          "two_year_college",
+          "undergraduate",
+          "graduate",
+          "faculty",
+          "k12_teachers",
+          "general_public"
+        ]
+      }
+    },
+    "settings": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "formal_classroom",
+          "online_course",
+          "lab",
+          "informal_museum",
+          "informal_community",
+          "out_of_school_program",
+          "other"
+        ]
+      }
+    },
+    "original_citation": {
+      "$ref": "#/$defs/citation"
+    },
+    "access": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "access_type",
+        "item_text_shareable",
+        "terms_summary"
+      ],
+      "properties": {
+        "access_type": {
+          "enum": [
+            "open_download",
+            "free_registration",
+            "restricted_verified_educators",
+            "request_from_developer",
+            "publisher_permission",
+            "commercial",
+            "unclear"
+          ]
+        },
+        "item_text_shareable": {
+          "type": "boolean",
+          "description": "True only if the terms explicitly allow republishing items. Requires item_text_basis. The library still links rather than copies by default."
+        },
+        "item_text_basis": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "basis",
+            "license",
+            "evidence"
+          ],
+          "properties": {
+            "basis": {
+              "enum": [
+                "open_license",
+                "public_domain",
+                "written_permission"
+              ]
+            },
+            "license": {
+              "type": "string",
+              "description": "License the item text is released under in this library, e.g. 'CC BY 4.0', 'CC BY-NC-SA 3.0', 'Public domain'."
+            },
+            "evidence": {
+              "type": "string",
+              "description": "Where the permission is documented: license URL, developer statement URL, or a note that written permission is on file and with whom."
+            },
+            "granted_by": {
+              "type": "string"
+            },
+            "granted_on": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        },
+        "answer_key_shareable": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether correct answers may be stored with item text. Separate from item text because public keys can weaken a test."
+        },
+        "terms_summary": {
+          "type": "string"
+        },
+        "terms_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "download_url": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "if": {
+        "properties": {
+          "item_text_shareable": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "item_text_basis"
+        ]
+      }
+    },
+    "versions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/version"
+      }
+    },
+    "dimensions": {
+      "type": "array",
+      "description": "Subscales, factors, concept categories, or code groups. Empty if the instrument is scored only as a whole.",
+      "items": {
+        "$ref": "#/$defs/dimension"
+      }
+    },
+    "related_instrument_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "review": {
+      "$ref": "#/$defs/review"
+    },
+    "info_sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "format": "uri"
+      },
+      "description": "Pages the record's facts were taken from, so a reviewer can re-check them."
+    }
+  },
+  "$defs": {
+    "citation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 10
+        },
+        "doi": {
+          "type": "string",
+          "pattern": "^10\\.\\d{4,9}/\\S+$"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "version": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version_id",
+        "label",
+        "language",
+        "response_format",
+        "scoring"
+      ],
+      "properties": {
+        "version_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "label": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string",
+          "description": "BCP-47 tag, e.g. en, es, de."
+        },
+        "discipline_adaptation": {
+          "type": "string"
+        },
+        "year": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "form_type": {
+          "enum": [
+            "fixed_form",
+            "item_bank"
+          ],
+          "default": "fixed_form",
+          "description": "fixed_form = everyone takes the same items. item_bank = users assemble subtests from a pool; item_count is the pool size."
+        },
+        "subtest_length": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "description": "For item banks: recommended number of items per subtest."
+        },
+        "item_count": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "administration_minutes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "adapted_from_version_id": {
+          "type": "string"
+        },
+        "response_format": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "enum": [
+                "likert",
+                "multiple_choice",
+                "multiple_response",
+                "dichotomous",
+                "interval_coding",
+                "rating_scale",
+                "open_response",
+                "mixed"
+              ]
+            },
+            "scale_points": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "anchors": {
+              "type": "string"
+            },
+            "notes": {
+              "type": "string"
+            }
+          }
+        },
+        "scoring": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "method"
+          ],
+          "properties": {
+            "method": {
+              "enum": [
+                "sum_or_mean",
+                "percent_correct",
+                "percent_favorable_vs_expert",
+                "code_frequency",
+                "rubric_levels",
+                "irt",
+                "other"
+              ]
+            },
+            "notes": {
+              "type": "string"
+            }
+          }
+        },
+        "citation": {
+          "$ref": "#/$defs/citation"
+        }
+      }
+    },
+    "dimension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dimension_id",
+        "name",
+        "basis",
+        "construct_ids"
+      ],
+      "properties": {
+        "dimension_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "basis": {
+          "enum": [
+            "empirical_factor",
+            "design_category",
+            "coding_category"
+          ],
+          "description": "empirical_factor = supported by factor analysis; design_category = content blueprint, not a validated subscale; coding_category = group of observation codes."
+        },
+        "construct_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "item_count": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "version_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          },
+          "description": "Versions this dimension applies to. Omit if it applies to all."
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "needs_check"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "draft",
+            "community_submitted",
+            "maintainer_reviewed",
+            "source_verified"
+          ]
+        },
+        "reviewed_by": {
+          "type": "string"
+        },
+        "reviewed_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "needs_check": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Open questions a reviewer must settle. Must be empty for source_verified."
+        }
+      }
+    }
+  }
+}

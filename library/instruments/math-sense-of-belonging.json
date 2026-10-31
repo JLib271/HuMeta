@@ -1,0 +1,53 @@
+{
+  "id": "math-sense-of-belonging",
+  "name": "Sense of Belonging to Math Scale",
+  "instrument_type": "self_report_scale",
+  "respondent": ["student"],
+  "description": "Self-report scale of how much a student feels like an accepted, valued member of the math community. Developed with college students and shown to predict intent to continue in math beyond other predictors.",
+  "construct_ids": ["sense_of_belonging"],
+  "disciplines": ["mathematics"],
+  "education_levels": ["undergraduate"],
+  "settings": ["formal_classroom"],
+  "original_citation": {
+    "text": "Good, C., Rattan, A., & Dweck, C. S. (2012). Why do women opt out? Sense of belonging and women's representation in mathematics. Journal of Personality and Social Psychology, 102(4), 700-717.",
+    "doi": "10.1037/a0026659"
+  },
+  "access": {
+    "access_type": "unclear",
+    "item_text_shareable": false,
+    "terms_summary": "Items appear in the APA-published article. Reuse and adaptation terms are not stated in sources read so far. Link to the article; do not copy items."
+  },
+  "versions": [
+    {
+      "version_id": "good-2012-en",
+      "label": "Original (Good, Rattan & Dweck, 2012)",
+      "language": "en",
+      "discipline_adaptation": "mathematics",
+      "year": 2012,
+      "item_count": null,
+      "response_format": { "type": "likert", "scale_points": null },
+      "scoring": { "method": "sum_or_mean", "notes": "Some items are reverse-scored." }
+    }
+  ],
+  "dimensions": [
+    { "dimension_id": "membership", "name": "Membership", "basis": "empirical_factor", "construct_ids": ["sense_of_belonging"] },
+    { "dimension_id": "acceptance", "name": "Acceptance", "basis": "empirical_factor", "construct_ids": ["sense_of_belonging"] },
+    { "dimension_id": "affect", "name": "Affect", "basis": "empirical_factor", "construct_ids": ["sense_of_belonging", "anxiety"] },
+    { "dimension_id": "trust", "name": "Trust", "basis": "empirical_factor", "construct_ids": ["sense_of_belonging", "learning_environment"] },
+    { "dimension_id": "desire-to-fade", "name": "Desire to fade", "basis": "empirical_factor", "construct_ids": ["sense_of_belonging", "engagement"] }
+  ],
+  "related_instrument_ids": [],
+  "review": {
+    "status": "draft",
+    "needs_check": [
+      "Confirm item count, items per factor and response scale from the article.",
+      "Add reliability evidence (alphas per factor and test-retest from Study 2) from the article.",
+      "Check reuse/adaptation terms with APA or the authors.",
+      "schema_config.json in this repo contains item wording attributed to this article; reconcile with the no-item-text rule."
+    ]
+  },
+  "info_sources": [
+    "https://pubmed.ncbi.nlm.nih.gov/22288527/",
+    "https://www.compadre.org/portal/items/detail.cfm?ID=16119"
+  ]
+}

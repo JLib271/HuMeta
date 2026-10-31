@@ -1,0 +1,80 @@
+{
+  "id": "gci",
+  "name": "Geoscience Concept Inventory",
+  "acronym": "GCI",
+  "instrument_type": "concept_inventory",
+  "respondent": [
+    "student"
+  ],
+  "description": "Bank of multiple-choice questions on core Earth science concepts for entry-level college geoscience courses. Wrong answers come from alternative conceptions found in student interviews and open-ended questionnaires. Rather than one fixed test, instructors assemble a subtest matched to their course; Rasch scaling places scores from different subtests on a common scale. The bank was expanded by a community of contributing authors.",
+  "construct_ids": [
+    "conceptual_understanding"
+  ],
+  "disciplines": [
+    "geoscience"
+  ],
+  "education_levels": [
+    "undergraduate"
+  ],
+  "settings": [
+    "formal_classroom"
+  ],
+  "original_citation": {
+    "text": "Libarkin, J. C., & Anderson, S. W. (2005). Assessment of learning in entry-level geoscience courses: Results from the Geoscience Concept Inventory. Journal of Geoscience Education, 53(4), 394-401."
+  },
+  "access": {
+    "access_type": "open_download",
+    "item_text_shareable": true,
+    "item_text_basis": {
+      "basis": "written_permission",
+      "evidence": "Developer approved storing GCI question text in the STEMEd+ instrument library (2026-10-31). The developer's lab page also states the items may be used freely and without restriction. Developer chose to release the item text in this library under CC BY-SA 4.0 (2026-10-31).",
+      "granted_by": "Julie C. Libarkin (GCI developer)",
+      "granted_on": "2026-10-31",
+      "license": "CC BY-SA 4.0"
+    },
+    "answer_key_shareable": false,
+    "terms_summary": "The developer's lab posts the 2014 item set (questions and answers) and states that instructors and researchers may use the items freely and without restriction. The online testing system is no longer active. Answer key intentionally not stored in this library (developer decision, 2026-10-31).",
+    "terms_url": "https://geocognitionresearchlaboratory.com/2018/11/20/the-geoscience-concept-inventory/",
+    "download_url": "https://geocognitionresearchlaboratory.com/wp-content/uploads/2022/11/gciv.4_2014_questionsanswers.doc"
+  },
+  "versions": [
+    {
+      "version_id": "gci-v4-2014",
+      "label": "GCI v.4 (2014 item set)",
+      "language": "en",
+      "year": 2014,
+      "form_type": "item_bank",
+      "item_count": 71,
+      "subtest_length": null,
+      "response_format": {
+        "type": "mixed",
+        "notes": "57 single-response and 14 multiple-response ('choose all that apply') items; 9 items use image answer choices."
+      },
+      "scoring": {
+        "method": "irt",
+        "notes": "Rasch-scaled. Item numbers correspond to the numbering in Libarkin & Anderson (2006)."
+      },
+      "citation": {
+        "text": "Libarkin, J. C., & Anderson, S. W. (2006). The Geoscience Concept Inventory: Application of Rasch analysis to concept inventory development in higher education. In X. Liu & W. J. Boone (Eds.), Applications of Rasch Measurement in Science Education (pp. 45-73). JAM Press.",
+        "url": "https://geocognitionresearchlaboratory.com/wp-content/uploads/2014/06/libarkinanderson2006.pdf",
+        "doi": "10.17613/wnm5z-00x75"
+      }
+    }
+  ],
+  "dimensions": [],
+  "related_instrument_ids": [
+    "climate-change-concept-inventory"
+  ],
+  "review": {
+    "status": "draft",
+    "needs_check": []
+  },
+  "info_sources": [
+    "https://geocognitionresearchlaboratory.com/2018/11/20/the-geoscience-concept-inventory/",
+    "https://geocognitionresearchlaboratory.com/research-in-the-grl/research-related-to-understanding/",
+    "https://serc.carleton.edu/resources/40718.html",
+    "https://rock.geosociety.org/gsatoday/archive/21/8/article/i1052-5173-21-8-26.htm",
+    "https://www.asc.ohio-state.edu/physics/physedu/seminar/previous/2005-06/libarkin.txt",
+    "https://files.eric.ed.gov/fulltext/EJ1091129.pdf"
+  ]
+}

@@ -1,0 +1,1917 @@
+{
+  "instrument_id": "gci",
+  "version_id": "gci-v4-2014",
+  "source": "GCI v.4 (2014) question file provided by the developer 2026-10-31. Question numbers follow the original GCI v.1.0 numbering; 12, 59 and 72 were removed and 39 was split into 39A and 39B. Answer key deliberately omitted.",
+  "items": [
+    {
+      "item_id": "q01",
+      "number": "1",
+      "response_type": "multiple_response",
+      "stem": "Scientists claim that they can determine when the Earth first formed as a planet. Which technique(s) do scientists use today to determine when the Earth first formed? Choose all that apply.",
+      "options": [
+        {
+          "label": "A",
+          "text": "Comparison of fossils found in rocks"
+        },
+        {
+          "label": "B",
+          "text": "Comparison of layers found in rocks"
+        },
+        {
+          "label": "C",
+          "text": "Analysis of uranium found in rocks"
+        },
+        {
+          "label": "D",
+          "text": "Analysis of carbon found in rocks"
+        },
+        {
+          "label": "E",
+          "text": "Scientists cannot calculate the age of the Earth"
+        }
+      ]
+    },
+    {
+      "item_id": "q02",
+      "number": "2",
+      "response_type": "multiple_response",
+      "stem": "Which of the following can directly affect erosion rates? Choose all that apply.",
+      "options": [
+        {
+          "label": "A",
+          "text": "Rock type"
+        },
+        {
+          "label": "B",
+          "text": "Earthquakes"
+        },
+        {
+          "label": "C",
+          "text": "Time"
+        },
+        {
+          "label": "D",
+          "text": "Climate"
+        }
+      ]
+    },
+    {
+      "item_id": "q03",
+      "number": "3",
+      "response_type": "single_response",
+      "stem": "Some people believe there was once a single continent on Earth. If this single continent did exist, how could scientists estimate the time needed for the single continent to break apart and form the arrangement of continents we see today?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Scientists cannot estimate the time needed to break continents apart."
+        },
+        {
+          "label": "B",
+          "text": "Through comparison of fossils found in rocks"
+        },
+        {
+          "label": "C",
+          "text": "Through analysis of uranium found in rocks"
+        },
+        {
+          "label": "D",
+          "text": "Through analysis of carbon found in rocks"
+        },
+        {
+          "label": "E",
+          "text": "Through comparison of layers found in rocks"
+        }
+      ],
+      "notes": "We are deliberately not encompassing all forms of radioactive isotopes. We are leaving the first part of the stem so as not to provide test-takers with new information about supercontinents."
+    },
+    {
+      "item_id": "q04",
+      "number": "4",
+      "response_type": "single_response",
+      "stem": "Which technique for determining when the Earth first formed as a planet is most accurate?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Comparison of fossils found in rocks"
+        },
+        {
+          "label": "B",
+          "text": "Comparison of layers found in rocks"
+        },
+        {
+          "label": "C",
+          "text": "Analysis of uranium found in rocks"
+        },
+        {
+          "label": "D",
+          "text": "Analysis of carbon found in rocks"
+        },
+        {
+          "label": "E",
+          "text": "Scientists cannot calculate the age of the Earth"
+        }
+      ]
+    },
+    {
+      "item_id": "q05",
+      "number": "5",
+      "response_type": "single_response",
+      "stem": "Why is the equator hotter than the poles?",
+      "options": [
+        {
+          "label": "A",
+          "text": "The Earth has a spherical shape"
+        },
+        {
+          "label": "B",
+          "text": "The equator is closer to the Sun"
+        },
+        {
+          "label": "C",
+          "text": "The Earth produces heat at the equator"
+        },
+        {
+          "label": "D",
+          "text": "The equator has more volcanoes"
+        }
+      ]
+    },
+    {
+      "item_id": "q06",
+      "number": "6",
+      "response_type": "single_response",
+      "stem": "Which is the best definition of a tectonic plate?",
+      "options": [
+        {
+          "label": "A",
+          "text": "All solid, rigid rock beneath the continents and above deeper, bendable rock"
+        },
+        {
+          "label": "B",
+          "text": "All solid, rigid rock beneath the continents and oceans and above deeper, bendable rock"
+        },
+        {
+          "label": "C",
+          "text": "All solid, rigid rock that lies beneath the layer of loose dirt at the Earth’s surface and above deeper, bendable rock"
+        },
+        {
+          "label": "D",
+          "text": "All solid, rigid rock and loose dirt beneath the Earth's surface and above deeper, bendable rock"
+        },
+        {
+          "label": "E",
+          "text": "All solid, rigid rock beneath both the Earth's surface and deeper, bendable rock"
+        }
+      ]
+    },
+    {
+      "item_id": "q07",
+      "number": "7",
+      "response_type": "single_response",
+      "stem": "What did the Earth's surface look like when it first formed?",
+      "options": [
+        {
+          "label": "A",
+          "image": "figures/q07-A.png"
+        },
+        {
+          "label": "B",
+          "image": "figures/q07-B.png"
+        },
+        {
+          "label": "C",
+          "image": "figures/q07-C.png"
+        },
+        {
+          "label": "D",
+          "image": "figures/q07-D.png"
+        },
+        {
+          "label": "E",
+          "image": "figures/q07-E.png"
+        }
+      ]
+    },
+    {
+      "item_id": "q08",
+      "number": "8",
+      "response_type": "single_response",
+      "stem": "A metallic aluminum ball is traveling very quickly between two planets of equal size and made up of identical materials. One planet has a magnetic field, and the other does not. What path will the ball take as it passes between the two planets?",
+      "options": [
+        {
+          "label": "A",
+          "image": "figures/q08-A.png"
+        },
+        {
+          "label": "B",
+          "image": "figures/q08-B.png"
+        },
+        {
+          "label": "C",
+          "image": "figures/q08-C.png"
+        },
+        {
+          "label": "D",
+          "image": "figures/q08-D.png"
+        },
+        {
+          "label": "E",
+          "image": "figures/q08-E.png"
+        }
+      ]
+    },
+    {
+      "item_id": "q09",
+      "number": "9",
+      "response_type": "multiple_response",
+      "stem": "Where do you think glaciers can be found today? Choose all that apply.",
+      "options": [
+        {
+          "label": "A",
+          "text": "In the mountains"
+        },
+        {
+          "label": "B",
+          "text": "At sea level"
+        },
+        {
+          "label": "C",
+          "text": "At the South pole"
+        },
+        {
+          "label": "D",
+          "text": "Along the equator only"
+        },
+        {
+          "label": "E",
+          "text": "Anywhere except along the equator"
+        }
+      ]
+    },
+    {
+      "item_id": "q10",
+      "number": "10",
+      "response_type": "single_response",
+      "stem": "Which of the following is the best explanation for why you chose your response to #8?",
+      "options": [
+        {
+          "label": "A",
+          "text": "The magnetic field affects the path of the ball in a large way"
+        },
+        {
+          "label": "B",
+          "text": "The magnetic field affects the path of the ball in a small way"
+        },
+        {
+          "label": "C",
+          "text": "The magnetic field does not affect the path of the ball"
+        },
+        {
+          "label": "D",
+          "text": "The magnetic field makes the planet heavier"
+        }
+      ],
+      "requires_item_ids": [
+        "q08"
+      ]
+    },
+    {
+      "item_id": "q11",
+      "number": "11",
+      "response_type": "single_response",
+      "stem": "A student finds a dull black rock. She puts a magnet next to it, and the magnet is not attracted to the rock. Which of the following statements best describes the rock?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Iron could be present in the rock because some black rocks contain iron"
+        },
+        {
+          "label": "B",
+          "text": "Iron is definitely present in the rock because black rocks contain iron"
+        },
+        {
+          "label": "C",
+          "text": "No metals are present in the rock because metals are magnetic"
+        },
+        {
+          "label": "D",
+          "text": "Iron is not present in the rock because red rocks contain iron"
+        },
+        {
+          "label": "E",
+          "text": "No metals are present in the rock because shiny rocks contain metal"
+        }
+      ]
+    },
+    {
+      "item_id": "q13",
+      "number": "13",
+      "response_type": "single_response",
+      "stem": "The following maps show the position of the Earth’s continents and oceans. The ‘s on each map mark the locations where volcanic eruptions occur on land. Which map do you think most closely represents the places where these volcanoes are typically observed?",
+      "options": [
+        {
+          "label": "A",
+          "image": "figures/q13-A.png"
+        },
+        {
+          "label": "B",
+          "image": "figures/q13-B.png"
+        },
+        {
+          "label": "C",
+          "image": "figures/q13-C.png"
+        },
+        {
+          "label": "D",
+          "image": "figures/q13-D.png"
+        },
+        {
+          "label": "E",
+          "image": "figures/q13-E.png"
+        }
+      ]
+    },
+    {
+      "item_id": "q14",
+      "number": "14",
+      "response_type": "single_response",
+      "stem": "Which of the following is an accurate statement about the very center of the Earth?",
+      "options": [
+        {
+          "label": "A",
+          "text": "The very center of the Earth is mostly made up of gases"
+        },
+        {
+          "label": "B",
+          "text": "The very center of the Earth is mostly made up of liquids"
+        },
+        {
+          "label": "C",
+          "text": "The very center of the Earth is mostly made up of solids"
+        },
+        {
+          "label": "D",
+          "text": "We do not know the state of the very center of the Earth"
+        }
+      ]
+    },
+    {
+      "item_id": "q15",
+      "number": "15",
+      "response_type": "multiple_response",
+      "stem": "Which of the following are associated with events that cause large earthquakes? Choose all that apply.",
+      "options": [
+        {
+          "label": "A",
+          "text": "Buildings falling"
+        },
+        {
+          "label": "B",
+          "text": "Weather changing"
+        },
+        {
+          "label": "C",
+          "text": "Bombs dropping"
+        },
+        {
+          "label": "D",
+          "text": "Continents moving"
+        },
+        {
+          "label": "E",
+          "text": "Earth’s core changing"
+        }
+      ]
+    },
+    {
+      "item_id": "q16",
+      "number": "16",
+      "response_type": "single_response",
+      "stem": "Which of the following statements about the age of rocks is most likely true?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Rocks found in the ocean are about the same age as rocks found on continents"
+        },
+        {
+          "label": "B",
+          "text": "Rocks found on continents are generally older than rocks found in the ocean"
+        },
+        {
+          "label": "C",
+          "text": "Rocks found in the ocean are generally older than rocks found on continents"
+        },
+        {
+          "label": "D",
+          "text": "Ages of rocks are not precise enough to determine which rock type is older"
+        }
+      ]
+    },
+    {
+      "item_id": "q17",
+      "number": "17",
+      "response_type": "multiple_response",
+      "stem": "How can rocks found in oceans be formed? Choose all that apply.",
+      "options": [
+        {
+          "label": "A",
+          "text": "By animals"
+        },
+        {
+          "label": "B",
+          "text": "From continental rocks"
+        },
+        {
+          "label": "C",
+          "text": "By volcanic activity"
+        }
+      ]
+    },
+    {
+      "item_id": "q18",
+      "number": "18",
+      "response_type": "single_response",
+      "stem": "A large, ashy volcanic eruption occurs in Europe. Which effect could this eruption have on the air temperature near the Earth's surface one year later?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Volcanic eruptions do not affect air temperature"
+        },
+        {
+          "label": "B",
+          "text": "Only the air in Europe would be warmer"
+        },
+        {
+          "label": "C",
+          "text": "Most of the Earth's air would be warmer"
+        },
+        {
+          "label": "D",
+          "text": "Only the air in Europe would be colder"
+        },
+        {
+          "label": "E",
+          "text": "Most of the Earth's air would be colder"
+        }
+      ]
+    },
+    {
+      "item_id": "q19",
+      "number": "19",
+      "response_type": "single_response",
+      "stem": "Why does the Earth have a magnetic field?",
+      "options": [
+        {
+          "label": "A",
+          "text": "The Earth contains crust of different composition"
+        },
+        {
+          "label": "B",
+          "text": "The Earth has a gravitational force of attraction"
+        },
+        {
+          "label": "C",
+          "text": "The Earth contains moving liquid metal"
+        },
+        {
+          "label": "D",
+          "text": "The Earth has an orbit around the Sun"
+        },
+        {
+          "label": "E",
+          "text": "The Earth does not have a magnetic field"
+        }
+      ]
+    },
+    {
+      "item_id": "q20",
+      "number": "20",
+      "response_type": "single_response",
+      "stem": "Which of the following figures do you believe is most closely related to what you might see if you could cut the Earth in half?",
+      "options": [
+        {
+          "label": "A",
+          "image": "figures/q20-A.png"
+        },
+        {
+          "label": "B",
+          "image": "figures/q20-B.png"
+        },
+        {
+          "label": "C",
+          "image": "figures/q20-C.png"
+        },
+        {
+          "label": "D",
+          "image": "figures/q20-D.png"
+        },
+        {
+          "label": "E",
+          "image": "figures/q20-E.png"
+        }
+      ]
+    },
+    {
+      "item_id": "q21",
+      "number": "21",
+      "response_type": "multiple_response",
+      "stem": "Which of the following statements about radioactivity and half-life do you think are true? Choose all that apply.",
+      "options": [
+        {
+          "label": "A",
+          "text": "Radioactivity only occurs if carbon is present in an object"
+        },
+        {
+          "label": "B",
+          "text": "Radioactivity can occur in the atmosphere, but not at the Earth’s surface"
+        },
+        {
+          "label": "C",
+          "text": "Radioactivity only occurs when created by people"
+        },
+        {
+          "label": "D",
+          "text": "Half-life is a measure of how quickly radioactivity decreases"
+        },
+        {
+          "label": "E",
+          "text": "Half-life and radioactivity decrease and eventually disappear"
+        }
+      ]
+    },
+    {
+      "item_id": "q22",
+      "number": "22",
+      "response_type": "single_response",
+      "stem": "On continents, where does most volcanic material come from?",
+      "options": [
+        {
+          "label": "A",
+          "image": "figures/q22-A.png"
+        },
+        {
+          "label": "B",
+          "image": "figures/q22-B.png"
+        },
+        {
+          "label": "C",
+          "image": "figures/q22-C.png"
+        },
+        {
+          "label": "D",
+          "image": "figures/q22-D.png"
+        }
+      ],
+      "notes": "In the source file the option C picture was mislabeled 'E'; relabeled to C on the developer's instruction."
+    },
+    {
+      "item_id": "q23",
+      "number": "23",
+      "response_type": "single_response",
+      "stem": "If you could travel back in time to when the Earth first formed as a planet, what would the Earth look like?",
+      "options": [
+        {
+          "label": "A",
+          "text": "The Earth would be mostly covered with water"
+        },
+        {
+          "label": "B",
+          "text": "The Earth would be mostly covered with molten rock"
+        },
+        {
+          "label": "C",
+          "text": "The Earth would be mostly covered with ice"
+        },
+        {
+          "label": "D",
+          "text": "The Earth would be mostly covered with solid rock"
+        }
+      ]
+    },
+    {
+      "item_id": "q24",
+      "number": "24",
+      "response_type": "single_response",
+      "stem": "The figure below is a view of one-half of the Earth’s surface as seen from space today. The gray areas represent land, and the white represents water. Which of the other figures do you think most closely represents this half of the Earth’s surface when humans first appeared on Earth?",
+      "figures": [
+        {
+          "path": "figures/q24-figure1.png",
+          "caption": "Reference figure: Earth today"
+        }
+      ],
+      "options": [
+        {
+          "label": "A",
+          "image": "figures/q24-A.png"
+        },
+        {
+          "label": "B",
+          "image": "figures/q24-B.png"
+        },
+        {
+          "label": "C",
+          "image": "figures/q24-C.png"
+        },
+        {
+          "label": "D",
+          "image": "figures/q24-D.png"
+        }
+      ]
+    },
+    {
+      "item_id": "q25",
+      "number": "25",
+      "response_type": "multiple_response",
+      "stem": "Which of the following techniques do you think scientists can use to gather evidence about whether the very center of the Earth is mostly a solid, a liquid, or a gas? Choose all that apply.",
+      "options": [
+        {
+          "label": "A",
+          "text": "Drilling through the center of the Earth"
+        },
+        {
+          "label": "B",
+          "text": "Studying motion caused by earthquakes"
+        },
+        {
+          "label": "C",
+          "text": "Analyzing pictures taken by satellites"
+        },
+        {
+          "label": "D",
+          "text": "Scientists cannot study the center of the Earth."
+        }
+      ]
+    },
+    {
+      "item_id": "q26",
+      "number": "26",
+      "response_type": "single_response",
+      "stem": "If you could travel back in time to when the Earth first formed as a planet, what type(s) of life do you think you might encounter?",
+      "options": [
+        {
+          "label": "A",
+          "text": "No life would exist in water or on land"
+        },
+        {
+          "label": "B",
+          "text": "One-celled organisms in water"
+        },
+        {
+          "label": "C",
+          "text": "Animal and plant life in water"
+        },
+        {
+          "label": "D",
+          "text": "All types of life in water and on land, except people"
+        },
+        {
+          "label": "E",
+          "text": "All types of life in water and on land, including people"
+        }
+      ]
+    },
+    {
+      "item_id": "q27",
+      "number": "27",
+      "response_type": "multiple_response",
+      "stem": "Which of the following are sources of heat inside the Earth? Choose all that apply.",
+      "options": [
+        {
+          "label": "A",
+          "text": "Gravitational energy from the Sun"
+        },
+        {
+          "label": "B",
+          "text": "Energy from the Earth’s formation"
+        },
+        {
+          "label": "C",
+          "text": "Heat energy from the Sun"
+        },
+        {
+          "label": "D",
+          "text": "Energy from radioactivity"
+        }
+      ]
+    },
+    {
+      "item_id": "q28",
+      "number": "28",
+      "response_type": "single_response",
+      "stem": "Which of the figures below do you think most closely represents changes in life on Earth over time?",
+      "options": [
+        {
+          "label": "A",
+          "image": "figures/q28-A.png"
+        },
+        {
+          "label": "B",
+          "image": "figures/q28-B.png"
+        },
+        {
+          "label": "C",
+          "image": "figures/q28-C.png"
+        },
+        {
+          "label": "D",
+          "image": "figures/q28-D.png"
+        },
+        {
+          "label": "E",
+          "image": "figures/q28-E.png"
+        }
+      ]
+    },
+    {
+      "item_id": "q29",
+      "number": "29",
+      "response_type": "single_response",
+      "stem": "A student has a black rock that does not reflect light. The student cuts it open and the inside is the same as the outside. Can the student determine if this rock contains iron simply by looking at it?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Yes. The student would know that black rocks do not contain iron."
+        },
+        {
+          "label": "B",
+          "text": "Yes. The student would be able to see silver specks if the rock contains iron"
+        },
+        {
+          "label": "C",
+          "text": "Yes. The student can use a microscope to see if the rock contains very small pieces of iron"
+        },
+        {
+          "label": "D",
+          "text": "No. The student would not be able to see if the rock contains iron, even with a microscope"
+        },
+        {
+          "label": "E",
+          "text": "No. The student cannot look at the rock since it does not reflect light and is therefore invisible"
+        }
+      ],
+      "notes": "This question is NOT appropriate for students who are familiar with optical mineralogy techniques."
+    },
+    {
+      "item_id": "q30",
+      "number": "30",
+      "response_type": "multiple_response",
+      "stem": "Which of the following best describes mountains? Choose all that apply.",
+      "options": [
+        {
+          "label": "A",
+          "text": "The oldest mountains are taller than the youngest mountains because the oldest mountains have been growing longer"
+        },
+        {
+          "label": "B",
+          "text": "The oldest mountains have gentler slopes than the youngest mountains because the oldest mountains have been wearing down longer"
+        },
+        {
+          "label": "C",
+          "text": "The oldest mountains have more vegetation than the youngest mountains because the oldest mountains have had plants growing on them longer"
+        },
+        {
+          "label": "D",
+          "text": "The oldest mountains have more jagged surfaces than the youngest mountains because the oldest mountains have been around longer"
+        },
+        {
+          "label": "E",
+          "text": "All mountains are roughly the same age regardless of shape, size, vegetation or jaggedness"
+        }
+      ]
+    },
+    {
+      "item_id": "q31",
+      "number": "31",
+      "response_type": "single_response",
+      "stem": "What would happen if the astronauts put a completely wooden satellite in orbit around the Earth? The wooden satellite would…",
+      "options": [
+        {
+          "label": "A",
+          "text": "…continue to orbit the Earth because the Earth's magnetic field would have an effect on it"
+        },
+        {
+          "label": "B",
+          "text": "…continue to orbit the Earth because the Earth's gravity would have an effect on it"
+        },
+        {
+          "label": "C",
+          "text": "…float off into space because the Earth's magnetic field would have no effect on it"
+        },
+        {
+          "label": "D",
+          "text": "…fall towards the Earth because the Earth's magnetic field would have no effect on it"
+        },
+        {
+          "label": "E",
+          "text": "…fall towards the Earth because the Earth's gravity would have no effect on it"
+        }
+      ]
+    },
+    {
+      "item_id": "q32",
+      "number": "32",
+      "response_type": "single_response",
+      "stem": "What is the connection between clouds and rain?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Clouds are empty, and fill up with water. When the clouds are full, it rains"
+        },
+        {
+          "label": "B",
+          "text": "Clouds are empty, and fill up with water and other things. When the clouds are full, it rains"
+        },
+        {
+          "label": "C",
+          "text": "Clouds are empty, and fill up with water. When the clouds get too heavy, it rains"
+        },
+        {
+          "label": "D",
+          "text": "Clouds are made up of water. When the temperature gets high enough in the cloud, it rains"
+        },
+        {
+          "label": "E",
+          "text": "Clouds are made up of water. When the temperature gets low enough in the cloud it rains"
+        }
+      ]
+    },
+    {
+      "item_id": "q33",
+      "number": "33",
+      "response_type": "single_response",
+      "stem": "What is the relationship between rock formation and Earth’s surface?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Most rocks form underground and reach the Earth’s surface as molten rock moves."
+        },
+        {
+          "label": "B",
+          "text": "Most rocks form underground and reach the Earth’s surface as other rocks are destroyed."
+        },
+        {
+          "label": "C",
+          "text": "Most rocks form underground and never reach the Earth’s surface."
+        },
+        {
+          "label": "D",
+          "text": "Most rocks form at the Earth's surface and stay there for a long time."
+        }
+      ]
+    },
+    {
+      "item_id": "q34",
+      "number": "34",
+      "response_type": "single_response",
+      "stem": "What causes most of the waves in the ocean?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Tides"
+        },
+        {
+          "label": "B",
+          "text": "Earthquakes"
+        },
+        {
+          "label": "C",
+          "text": "Wind"
+        },
+        {
+          "label": "D",
+          "text": "Tsunamis"
+        }
+      ]
+    },
+    {
+      "item_id": "q35",
+      "number": "35",
+      "response_type": "single_response",
+      "stem": "Scientists often talk about the Earth’s tectonic plates and their role in mountain formation, volcanism, and earthquake occurrence. Which of the following figures most closely represents the location of the Earth’s tectonic plates?",
+      "options": [
+        {
+          "label": "A",
+          "image": "figures/q35-A.png"
+        },
+        {
+          "label": "B",
+          "image": "figures/q35-B.png"
+        },
+        {
+          "label": "C",
+          "image": "figures/q35-C.png"
+        },
+        {
+          "label": "D",
+          "image": "figures/q35-D.png"
+        }
+      ]
+    },
+    {
+      "item_id": "q36",
+      "number": "36",
+      "response_type": "single_response",
+      "stem": "Which of the following statements do you think best describes the relationship between people and four-legged dinosaurs?",
+      "options": [
+        {
+          "label": "A",
+          "text": "People and four-legged dinosaurs co-existed for about five thousand years"
+        },
+        {
+          "label": "B",
+          "text": "People and four-legged dinosaurs co-existed for about five hundred thousand years"
+        },
+        {
+          "label": "C",
+          "text": "Four-legged dinosaurs died out about five thousand years before people appeared on Earth"
+        },
+        {
+          "label": "D",
+          "text": "Four-legged dinosaurs died out about five hundred thousand years before people appeared on Earth"
+        },
+        {
+          "label": "E",
+          "text": "Four-legged dinosaurs died out about fifty million years before people appeared on Earth"
+        }
+      ]
+    },
+    {
+      "item_id": "q37",
+      "number": "37",
+      "response_type": "single_response",
+      "stem": "The continents we see today were once a single continent. How long did it take for the single continent to break apart and form the arrangement of continents we see today?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Hundreds of years"
+        },
+        {
+          "label": "B",
+          "text": "Thousands of years"
+        },
+        {
+          "label": "C",
+          "text": "Millions of years"
+        },
+        {
+          "label": "D",
+          "text": "Billions of years"
+        },
+        {
+          "label": "E",
+          "text": "It is impossible to tell how long the breakup would have taken"
+        }
+      ]
+    },
+    {
+      "item_id": "q38",
+      "number": "38",
+      "response_type": "single_response",
+      "stem": "A scientist collects all of the fossils ever discovered into one room. This room now contains:",
+      "options": [
+        {
+          "label": "A",
+          "text": "Fossils of a few of the plants and animals that ever lived"
+        },
+        {
+          "label": "B",
+          "text": "Fossils of most of the plants and animals that ever lived"
+        },
+        {
+          "label": "C",
+          "text": "Fossils of most of the types of plants and animals that ever lived"
+        },
+        {
+          "label": "D",
+          "text": "Fossils of all of the plants and animals that ever lived"
+        },
+        {
+          "label": "E",
+          "text": "Fossils of all of the types of plants and animals that ever lived"
+        }
+      ]
+    },
+    {
+      "item_id": "q39a",
+      "number": "39A",
+      "response_type": "single_response",
+      "stem": "Which answer best describes what the surface of the Earth would be like if you could travel back to the time when the Earth first formed as a planet?",
+      "options": [
+        {
+          "label": "A",
+          "text": "The Earth’s surface was about the same temperature as it is today"
+        },
+        {
+          "label": "B",
+          "text": "The Earth’s surface was much colder than it is today"
+        },
+        {
+          "label": "C",
+          "text": "The Earth’s surface was much hotter than it is today"
+        }
+      ],
+      "notes": "Split from GCI v.1.0 question 39."
+    },
+    {
+      "item_id": "q39b",
+      "number": "39B",
+      "response_type": "single_response",
+      "stem": "Which answer best describes what the surface of the Earth would be like if you could travel back to the time when the Earth first formed as a planet?",
+      "options": [
+        {
+          "label": "A",
+          "text": "The Earth’s surface was covered with jungles"
+        },
+        {
+          "label": "B",
+          "text": "The Earth ‘s surface was covered with water"
+        },
+        {
+          "label": "C",
+          "text": "The Earth’s surface was covered with undeveloped land"
+        },
+        {
+          "label": "D",
+          "text": "The Earth’s surface was covered with melted rock"
+        },
+        {
+          "label": "E",
+          "text": "The Earth’s surface was covered with ice"
+        }
+      ],
+      "notes": "Split from GCI v.1.0 question 39."
+    },
+    {
+      "item_id": "q40",
+      "number": "40",
+      "response_type": "multiple_response",
+      "stem": "Fossils are studied by scientists interested in learning about the past. Which of the following can become fossils? Circle all that apply.",
+      "options": [
+        {
+          "label": "A",
+          "text": "Bones"
+        },
+        {
+          "label": "B",
+          "text": "Plant material"
+        },
+        {
+          "label": "C",
+          "text": "Marks left by plants"
+        },
+        {
+          "label": "D",
+          "text": "Marks left by animals"
+        },
+        {
+          "label": "E",
+          "text": "Animal material"
+        }
+      ]
+    },
+    {
+      "item_id": "q41",
+      "number": "41",
+      "response_type": "single_response",
+      "stem": "The sketches below represent the outlines of two mountains made up of the same type of rock. The mountains have finished growing. Which of the following reasons best explains the differences in the two sketches?",
+      "figures": [
+        {
+          "path": "figures/q41-figure1.png",
+          "caption": "Mountains I and II"
+        }
+      ],
+      "options": [
+        {
+          "label": "A",
+          "text": "Mountain I is older than Mountain II"
+        },
+        {
+          "label": "B",
+          "text": "Mountain II is older than Mountain I"
+        },
+        {
+          "label": "C",
+          "text": "Mountain I is on a continent that is moving faster than the continent Mountain II is on"
+        },
+        {
+          "label": "D",
+          "text": "Mountain I is on a continent that is moving slower than the continent Mountain II is on"
+        },
+        {
+          "label": "E",
+          "text": "Mountain I has experienced more erosion than Mountain II"
+        }
+      ]
+    },
+    {
+      "item_id": "q42",
+      "number": "42",
+      "response_type": "single_response",
+      "stem": "Some people think the Earth has a magnetic field. Which of the following statements do you think provides the strongest evidence for this belief?",
+      "options": [
+        {
+          "label": "A",
+          "text": "People would float off into space without a magnetic field"
+        },
+        {
+          "label": "B",
+          "text": "People can use the magnetic field to help them navigate"
+        },
+        {
+          "label": "C",
+          "text": "The Earth revolves around the Sun because of its magnetic field"
+        },
+        {
+          "label": "D",
+          "text": "The Earth rotates about its axis because of its magnetic field"
+        },
+        {
+          "label": "E",
+          "text": "The Earth does not have a magnetic field"
+        }
+      ]
+    },
+    {
+      "item_id": "q43",
+      "number": "43",
+      "response_type": "single_response",
+      "stem": "Why is this rock hard?",
+      "figures": [
+        {
+          "path": "figures/q43-figure1.png",
+          "caption": "Photograph of a rock"
+        }
+      ],
+      "options": [
+        {
+          "label": "A",
+          "text": "The Sun baked the material in the rock, causing the material to harden"
+        },
+        {
+          "label": "B",
+          "text": "Water exerted pressure on the material in the rock, causing the material to harden"
+        },
+        {
+          "label": "C",
+          "text": "The material in the rock was buried, causing the material to harden"
+        },
+        {
+          "label": "D",
+          "text": "Water mixed with the material in the rock, causing the material to harden"
+        }
+      ]
+    },
+    {
+      "item_id": "q44",
+      "number": "44",
+      "response_type": "single_response",
+      "stem": "If you could travel millions of years into the future, how big would the planet Earth be?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Much smaller than today"
+        },
+        {
+          "label": "B",
+          "text": "Much larger than today"
+        },
+        {
+          "label": "C",
+          "text": "Roughly the same size as today"
+        },
+        {
+          "label": "D",
+          "text": "We have no way of knowing"
+        }
+      ]
+    },
+    {
+      "item_id": "q45",
+      "number": "45",
+      "response_type": "multiple_response",
+      "stem": "Which of the following can be caused by wind? Choose all that apply.",
+      "options": [
+        {
+          "label": "A",
+          "text": "Tectonic plate motion"
+        },
+        {
+          "label": "B",
+          "text": "Waves"
+        },
+        {
+          "label": "C",
+          "text": "Earthquakes"
+        },
+        {
+          "label": "D",
+          "text": "Mountain-building"
+        },
+        {
+          "label": "E",
+          "text": "Erosion"
+        }
+      ]
+    },
+    {
+      "item_id": "q46",
+      "number": "46",
+      "response_type": "multiple_response",
+      "stem": "Which of the following describes what scientists mean when they use the word “earthquake”. Choose all that apply.",
+      "options": [
+        {
+          "label": "A",
+          "text": "When an earthquake occurs, visible cracks appear on the Earth's surface"
+        },
+        {
+          "label": "B",
+          "text": "When an earthquake occurs, people can feel the Earth shake"
+        },
+        {
+          "label": "C",
+          "text": "When an earthquake occurs, man-made structures are damaged"
+        },
+        {
+          "label": "D",
+          "text": "When an earthquake occurs, energy is released from inside the Earth"
+        },
+        {
+          "label": "E",
+          "text": "When an earthquake occurs, the gravitational pull of the Earth increases"
+        }
+      ]
+    },
+    {
+      "item_id": "q47",
+      "number": "47",
+      "response_type": "single_response",
+      "stem": "A strong wind blows sand out across the deepest part of the ocean. What will the ocean surface look like after many years?",
+      "options": [
+        {
+          "label": "A",
+          "text": "If enough time passes, a flat island built of sand will form at the ocean's surface"
+        },
+        {
+          "label": "B",
+          "text": "If enough time passes, a small mountain built of sand will appear at the ocean's surface"
+        },
+        {
+          "label": "C",
+          "text": "The sand and ocean water will combine to form rock. If enough time passes, a flat island built of this rock will form at the ocean's surface"
+        },
+        {
+          "label": "D",
+          "text": "The sand and ocean water will combine to form rock. If enough time passes, a small mountain built of this rock will appear at the ocean's surface"
+        },
+        {
+          "label": "E",
+          "text": "The ocean's surface will probably not change even if enough time passes"
+        }
+      ]
+    },
+    {
+      "item_id": "q48",
+      "number": "48",
+      "response_type": "multiple_response",
+      "stem": "Which of the following are considered common mechanisms for weathering and erosion? Choose all that apply.",
+      "options": [
+        {
+          "label": "A",
+          "text": "Wind"
+        },
+        {
+          "label": "B",
+          "text": "Rain"
+        },
+        {
+          "label": "C",
+          "text": "Earthquakes"
+        },
+        {
+          "label": "D",
+          "text": "Volcanoes"
+        },
+        {
+          "label": "E",
+          "text": "Rivers"
+        }
+      ]
+    },
+    {
+      "item_id": "q49",
+      "number": "49",
+      "response_type": "single_response",
+      "stem": "Over which of the following areas would the most clouds form?",
+      "options": [
+        {
+          "label": "A",
+          "text": "One square-mile of land"
+        },
+        {
+          "label": "B",
+          "text": "One square-mile of ocean"
+        },
+        {
+          "label": "C",
+          "text": "One square mile of a region covered with plant life"
+        },
+        {
+          "label": "D",
+          "text": "One square-mile of a humid region along the equator"
+        }
+      ]
+    },
+    {
+      "item_id": "q50",
+      "number": "50",
+      "response_type": "single_response",
+      "stem": "Since the initial formation of the Earth:",
+      "options": [
+        {
+          "label": "A",
+          "text": "The rocks at the Earth's surface have generally decreased in temperature"
+        },
+        {
+          "label": "B",
+          "text": "The rocks at the Earth's surface have generally increased in temperature"
+        },
+        {
+          "label": "C",
+          "text": "The rocks at the Earth's surface have generally stayed the same temperature"
+        }
+      ]
+    },
+    {
+      "item_id": "q51",
+      "number": "51",
+      "response_type": "single_response",
+      "stem": "Which of the following responses best summarizes the relationship between volcanoes, large earthquakes, and tectonic plates?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Volcanoes typically occur on islands, earthquakes typically occur on continents, and both occur near tectonic plates"
+        },
+        {
+          "label": "B",
+          "text": "Volcanoes and large earthquakes both typically occur along the edges of tectonic plates"
+        },
+        {
+          "label": "C",
+          "text": "Volcanoes typically occur in the center of tectonic plates and large earthquakes typically occur along the edges of tectonic plates"
+        },
+        {
+          "label": "D",
+          "text": "Volcanoes and large earthquakes both typically occur in warm climates"
+        },
+        {
+          "label": "E",
+          "text": "Volcanoes, large earthquakes, and tectonic plates are not related, and each can occur in different places"
+        }
+      ]
+    },
+    {
+      "item_id": "q52",
+      "number": "52",
+      "response_type": "single_response",
+      "stem": "Imagine that a tunnel has been cut all of the way through the Earth's center, as shown in the pictures below. Which of the following is the best explanation of what would happen if you stood over the hole and dropped a rock? The dashed line shows the rock's path.",
+      "options": [
+        {
+          "label": "A",
+          "image": "figures/q52-A.png"
+        },
+        {
+          "label": "B",
+          "image": "figures/q52-B.png"
+        },
+        {
+          "label": "C",
+          "image": "figures/q52-C.png"
+        },
+        {
+          "label": "D",
+          "image": "figures/q52-D.png"
+        },
+        {
+          "label": "E",
+          "image": "figures/q52-E.png"
+        }
+      ]
+    },
+    {
+      "item_id": "q53",
+      "number": "53",
+      "response_type": "single_response",
+      "stem": "Scientists have discovered fossils of four-legged creatures called dinosaurs. How much time passed between the appearance and extinction of these creatures?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Hundreds of years"
+        },
+        {
+          "label": "B",
+          "text": "Thousands of years"
+        },
+        {
+          "label": "C",
+          "text": "Millions of years"
+        },
+        {
+          "label": "D",
+          "text": "Billions of years"
+        },
+        {
+          "label": "E",
+          "text": "Some of these creatures still exist"
+        }
+      ]
+    },
+    {
+      "item_id": "q54",
+      "number": "54",
+      "response_type": "single_response",
+      "stem": "Which of the following best describes what would happen if you dropped a small steel ball while standing somewhere in North America? The small steel ball would fall to the ground and then:",
+      "options": [
+        {
+          "label": "A",
+          "text": "Roll towards the equator"
+        },
+        {
+          "label": "B",
+          "text": "Roll towards the north"
+        },
+        {
+          "label": "C",
+          "text": "Roll towards the nearest ocean"
+        },
+        {
+          "label": "D",
+          "text": "Roll towards the lowest elevation"
+        },
+        {
+          "label": "E",
+          "text": "Roll towards the nearest magnet"
+        }
+      ]
+    },
+    {
+      "item_id": "q55",
+      "number": "55",
+      "response_type": "single_response",
+      "stem": "Below the outermost rocky shell of the Earth, it becomes:",
+      "options": [
+        {
+          "label": "A",
+          "text": "Hotter, molten, and gravity increases"
+        },
+        {
+          "label": "B",
+          "text": "Hotter, gaseous, and magnetism increases"
+        },
+        {
+          "label": "C",
+          "text": "Colder, solid, and pressure increases"
+        },
+        {
+          "label": "D",
+          "text": "Hotter, denser, and pressure increases"
+        },
+        {
+          "label": "E",
+          "text": "Colder, denser, and pressure increases"
+        }
+      ]
+    },
+    {
+      "item_id": "q56",
+      "number": "56",
+      "response_type": "single_response",
+      "stem": "Where are volcanic rocks found?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Mostly on islands or in the ocean"
+        },
+        {
+          "label": "B",
+          "text": "Mostly near the equator"
+        },
+        {
+          "label": "C",
+          "text": "Mostly on the edges of continents"
+        },
+        {
+          "label": "D",
+          "text": "Almost anywhere"
+        }
+      ]
+    },
+    {
+      "item_id": "q57",
+      "number": "57",
+      "response_type": "single_response",
+      "stem": "Why does the rock in #52 behave this way?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Because gravity is acting on the rock"
+        },
+        {
+          "label": "B",
+          "text": "Because magnetism is acting on the rock"
+        },
+        {
+          "label": "C",
+          "text": "Because gravity and magnetism are acting on the rock, although they are different"
+        },
+        {
+          "label": "D",
+          "text": "Because gravity and magnetism are acting on the rock, since they are essentially the same"
+        }
+      ],
+      "requires_item_ids": [
+        "q52"
+      ]
+    },
+    {
+      "item_id": "q58",
+      "number": "58",
+      "response_type": "single_response",
+      "stem": "What is the best explanation for the movement of tectonic plates?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Lava moves the tectonic plates"
+        },
+        {
+          "label": "B",
+          "text": "Currents in the ocean move the tectonic plates"
+        },
+        {
+          "label": "C",
+          "text": "Earthquakes move the tectonic plates"
+        },
+        {
+          "label": "D",
+          "text": "Gravity moves the tectonic plates"
+        },
+        {
+          "label": "E",
+          "text": "Magnetism moves the tectonic plates"
+        }
+      ]
+    },
+    {
+      "item_id": "q60",
+      "number": "60",
+      "response_type": "single_response",
+      "stem": "If you could travel back in time to when the Earth first formed as a planet, how big would the Earth be?",
+      "options": [
+        {
+          "label": "A",
+          "text": "The Earth would be much smaller than it is today"
+        },
+        {
+          "label": "B",
+          "text": "The Earth would be much larger than it is today"
+        },
+        {
+          "label": "C",
+          "text": "The Earth would be roughly the same size as it is today"
+        }
+      ]
+    },
+    {
+      "item_id": "q61",
+      "number": "61",
+      "response_type": "single_response",
+      "stem": "What does \"density\" refer to?",
+      "options": [
+        {
+          "label": "A",
+          "text": "How thick something is"
+        },
+        {
+          "label": "B",
+          "text": "How quickly particles move"
+        },
+        {
+          "label": "C",
+          "text": "How much material exists in a space"
+        },
+        {
+          "label": "D",
+          "text": "How much air is contained in an object"
+        },
+        {
+          "label": "E",
+          "text": "How slowly liquids move"
+        }
+      ]
+    },
+    {
+      "item_id": "q62",
+      "number": "62",
+      "response_type": "single_response",
+      "stem": "Which one of the following is most closely related to events that cause large earthquakes?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Buildings falling"
+        },
+        {
+          "label": "B",
+          "text": "Weather changing"
+        },
+        {
+          "label": "C",
+          "text": "Bombs dropping"
+        },
+        {
+          "label": "D",
+          "text": "Continents moving"
+        },
+        {
+          "label": "E",
+          "text": "Earth’s core changing"
+        }
+      ]
+    },
+    {
+      "item_id": "q63",
+      "number": "63",
+      "response_type": "single_response",
+      "stem": "How big was the planet Earth when dinosaurs first appeared?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Much smaller than today"
+        },
+        {
+          "label": "B",
+          "text": "Much larger than today"
+        },
+        {
+          "label": "C",
+          "text": "Roughly the same size as today"
+        },
+        {
+          "label": "D",
+          "text": "We have no way of knowing"
+        }
+      ]
+    },
+    {
+      "item_id": "q64",
+      "number": "64",
+      "response_type": "single_response",
+      "stem": "A geologist is standing at the North Pole and drops his metal rock hammer. It falls straight down and hits the ground. The same geologist travels to the Earth’s equator and again drops his metal hammer. Which of the following statements best describes what will happen?",
+      "options": [
+        {
+          "label": "A",
+          "text": "The hammer falls at roughly the same rate as it fell at the North Pole, but not straight down"
+        },
+        {
+          "label": "B",
+          "text": "The hammer falls straight down at roughly the same rate as it fell at the North Pole"
+        },
+        {
+          "label": "C",
+          "text": "The hammer falls straight down, but much slower since there is less magnetism at the equator"
+        },
+        {
+          "label": "D",
+          "text": "The hammer falls straight down, but much faster since there is more gravity at the equator"
+        },
+        {
+          "label": "E",
+          "text": "The hammer falls straight down, but much faster since there is more magnetism at the equator"
+        }
+      ]
+    },
+    {
+      "item_id": "q65",
+      "number": "65",
+      "response_type": "single_response",
+      "stem": "The map below shows the position of the Earth’s continents and oceans today. The gray areas represent land, and the white represents water. Which of the following best explains why the ocean basins look the way they do?",
+      "figures": [
+        {
+          "path": "figures/q65-figure1.png",
+          "caption": "Map of continents and oceans today"
+        }
+      ],
+      "options": [
+        {
+          "label": "A",
+          "text": "Meteor impacts caused the ocean basins to form this way"
+        },
+        {
+          "label": "B",
+          "text": "Continents moving caused the ocean basins to form this way"
+        },
+        {
+          "label": "C",
+          "text": "The Earth cooling caused the ocean basins to form this way"
+        },
+        {
+          "label": "D",
+          "text": "The Earth warming caused the ocean basins to form this way"
+        }
+      ]
+    },
+    {
+      "item_id": "q66",
+      "number": "66",
+      "response_type": "single_response",
+      "stem": "Are rocks and minerals alive?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Yes, rocks and minerals grow"
+        },
+        {
+          "label": "B",
+          "text": "Yes, rocks are made up of minerals"
+        },
+        {
+          "label": "C",
+          "text": "Yes, rocks and minerals are always changing"
+        },
+        {
+          "label": "D",
+          "text": "No, rocks and minerals do not reproduce"
+        },
+        {
+          "label": "E",
+          "text": "No, rocks and minerals are not made up of atoms"
+        }
+      ]
+    },
+    {
+      "item_id": "q67",
+      "number": "67",
+      "response_type": "single_response",
+      "stem": "If you put a fist-sized rock in a room and left it alone for millions of years, what would happen to the rock?",
+      "options": [
+        {
+          "label": "A",
+          "text": "The rock would almost completely turn into dirt"
+        },
+        {
+          "label": "B",
+          "text": "About half of the rock would turn into dirt"
+        },
+        {
+          "label": "C",
+          "text": "The top few inches of the rock would turn into dirt"
+        },
+        {
+          "label": "D",
+          "text": "The rock would be essentially unchanged"
+        }
+      ]
+    },
+    {
+      "item_id": "q68",
+      "number": "68",
+      "response_type": "single_response",
+      "stem": "If you could travel back in time to when the Earth first formed as a planet, approximately how many years back in time would you have to travel?",
+      "options": [
+        {
+          "label": "A",
+          "text": "4 hundred years"
+        },
+        {
+          "label": "B",
+          "text": "4 hundred-thousand years"
+        },
+        {
+          "label": "C",
+          "text": "4 million years"
+        },
+        {
+          "label": "D",
+          "text": "4 billion years"
+        },
+        {
+          "label": "E",
+          "text": "4 trillion years"
+        }
+      ]
+    },
+    {
+      "item_id": "q69",
+      "number": "69",
+      "response_type": "multiple_response",
+      "stem": "Why did you choose your response to #18? Choose all that apply.",
+      "options": [
+        {
+          "label": "A",
+          "text": "Volcanoes put heat into the air"
+        },
+        {
+          "label": "B",
+          "text": "Volcanoes occur in warm climates."
+        },
+        {
+          "label": "C",
+          "text": "Volcanoes take heat out of the air."
+        },
+        {
+          "label": "D",
+          "text": "Volcanoes put material into the air."
+        },
+        {
+          "label": "E",
+          "text": "Volcanic do not occur in Europe."
+        }
+      ],
+      "requires_item_ids": [
+        "q18"
+      ]
+    },
+    {
+      "item_id": "q70",
+      "number": "70",
+      "response_type": "single_response",
+      "stem": "Which of the following best describes what scientists mean when they use the word “earthquake”?",
+      "options": [
+        {
+          "label": "A",
+          "text": "When an earthquake occurs, visible cracks appear on the Earth's surface"
+        },
+        {
+          "label": "B",
+          "text": "When an earthquake occurs, people can feel the Earth shake"
+        },
+        {
+          "label": "C",
+          "text": "When an earthquake occurs, man-made structures are damaged"
+        },
+        {
+          "label": "D",
+          "text": "When an earthquake occurs, energy is released from inside the Earth"
+        },
+        {
+          "label": "E",
+          "text": "When an earthquake occurs, the gravitational pull of the Earth increases"
+        }
+      ]
+    },
+    {
+      "item_id": "q71",
+      "number": "71",
+      "response_type": "single_response",
+      "stem": "How far do you think continents move in a single year?",
+      "options": [
+        {
+          "label": "A",
+          "text": "A few inches"
+        },
+        {
+          "label": "B",
+          "text": "A few hundred feet"
+        },
+        {
+          "label": "C",
+          "text": "A few miles"
+        },
+        {
+          "label": "D",
+          "text": "We have no way of knowing"
+        },
+        {
+          "label": "E",
+          "text": "Continents do not move"
+        }
+      ]
+    },
+    {
+      "item_id": "q73",
+      "number": "73",
+      "response_type": "single_response",
+      "stem": "Some people believe there was once a single continent on Earth. Which of the following statements best describes what happened to this continent?",
+      "options": [
+        {
+          "label": "A",
+          "text": "Meteors hit the Earth, causing the continent to break into smaller pieces"
+        },
+        {
+          "label": "B",
+          "text": "The Earth lost heat over time, causing the continent to break into smaller pieces"
+        },
+        {
+          "label": "C",
+          "text": "Material beneath the continent moved, causing the continent to break into smaller pieces"
+        },
+        {
+          "label": "D",
+          "text": "The Earth gained heat over time, causing the continent to break into smaller pieces"
+        },
+        {
+          "label": "E",
+          "text": "The continents have always been in roughly the same place as they are today"
+        }
+      ]
+    }
+  ]
+}

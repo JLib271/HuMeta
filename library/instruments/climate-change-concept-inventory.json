@@ -1,0 +1,87 @@
+{
+  "id": "climate-change-concept-inventory",
+  "name": "Climate Change Concept Inventory (Libarkin et al.)",
+  "instrument_type": "concept_inventory",
+  "respondent": [
+    "student",
+    "community_member"
+  ],
+  "description": "Test of understanding of basic climate change processes, built from published items, conceptions research and instructor experience and refined with Rasch analysis. Validated with both undergraduates and members of the general public, and used alongside measures of risk perception, worldview and values. Not to be confused with the high school climate change concept inventory developed in Australia by Jarrett and colleagues (2012).",
+  "construct_ids": [
+    "conceptual_understanding"
+  ],
+  "disciplines": [
+    "geoscience",
+    "climate_science"
+  ],
+  "education_levels": [
+    "undergraduate",
+    "general_public"
+  ],
+  "settings": [
+    "formal_classroom",
+    "other"
+  ],
+  "original_citation": {
+    "text": "Libarkin, J. C., Gold, A. U., Harris, S. E., McNeal, K. S., & Bowles, R. P. (2018). A new, valid measure of climate change understanding: Associations with risk perception. Climatic Change, 150(3-4), 403-416.",
+    "doi": "10.1007/s10584-018-2279-y"
+  },
+  "access": {
+    "access_type": "unclear",
+    "item_text_shareable": true,
+    "answer_key_shareable": false,
+    "terms_summary": "Lead developer has approved storing question text in this library. The answer key is not stored unless separately approved.",
+    "terms_url": "https://geocognitionresearchlaboratory.com/2018/11/20/the-geoscience-concept-inventory/",
+    "item_text_basis": {
+      "basis": "written_permission",
+      "evidence": "Developer approved storing Climate Change Concept Inventory question text in the STEMEd+ instrument library (2026-10-31). Developer chose to release the item text in this library under CC BY-SA 4.0 (2026-10-31).",
+      "granted_by": "Julie C. Libarkin (lead developer)",
+      "granted_on": "2026-10-31",
+      "license": "CC BY-SA 4.0"
+    }
+  },
+  "versions": [
+    {
+      "version_id": "ccci-2018",
+      "label": "21-item version (2018)",
+      "language": "en",
+      "year": 2018,
+      "form_type": "fixed_form",
+      "item_count": 21,
+      "response_format": {
+        "type": "mixed",
+        "notes": "17 single-response and 4 multiple-response ('choose all that apply') items; every item includes an 'I do not know' option."
+      },
+      "scoring": {
+        "method": "irt",
+        "notes": "Raw scores are converted to Rasch logit measures; the paper's Table 1 gives the raw-score-to-measure conversion."
+      },
+      "citation": {
+        "text": "Libarkin, J. C., Gold, A. U., Harris, S. E., McNeal, K. S., & Bowles, R. P. (2018). Climatic Change, 150(3-4), 403-416.",
+        "doi": "10.1007/s10584-018-2279-y"
+      }
+    }
+  ],
+  "dimensions": [],
+  "related_instrument_ids": [
+    "gci"
+  ],
+  "review": {
+    "status": "draft",
+    "needs_check": [
+      "Developer decision: store the answer key? (currently off)",
+      "Mark any items adapted from other published instruments and check their terms.",
+      "Confirm co-developers (Gold, Harris, McNeal, Bowles) agree with republishing.",
+      "Add Rasch person and item reliability from Libarkin et al. (2018).",
+      "Add evidence from Aksit et al. (2018), undergraduates in an introductory Earth science course.",
+      "A 2015 AGU abstract describes a 24-item draft reduced to 18; confirm how that relates to the published 21-item version."
+    ]
+  },
+  "info_sources": [
+    "https://geocognitionresearchlaboratory.com/2018/11/20/the-geoscience-concept-inventory/",
+    "https://bvbvf1.bib-bvb.de/vufind/PrimoRecord/cdi_proquest_journals_2100105248",
+    "https://agu.confex.com/agu/fm15/webprogram/Paper85366.html",
+    "https://zendy.io/title/10.1002/tea.21430",
+    "https://doi.org/10.1007/s10584-018-2279-y"
+  ]
+}

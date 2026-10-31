@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/JLib271/OpenEdMetadata/library/schema/evidence.schema.json",
+  "title": "Evidence record",
+  "description": "One piece of reliability or validity evidence for one instrument version (and optionally one dimension) in one sample. Published and platform-derived evidence use the same format.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "instrument_id", "version_id", "evidence_type", "statistic", "sample", "source", "review"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$", "description": "Must match the file name." },
+    "instrument_id": { "type": "string" },
+    "version_id": { "type": "string" },
+    "dimension_id": {
+      "type": ["string", "null"],
+      "description": "null = whole instrument."
+    },
+    "evidence_type": {
+      "enum": [
+        "internal_consistency", "test_retest", "inter_rater", "factor_structure",
+        "measurement_invariance", "item_bias", "response_process", "test_content",
+        "relations_to_other_variables", "item_analysis", "irt_scaling"
+      ]
+    },
+    "statistic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "value"],
+      "properties": {
+        "name": {
+          "enum": [
+            "cronbach_alpha", "kr20", "mcdonald_omega", "cohen_kappa", "icc", "pearson_r", "cfa_fit",
+            "rasch_person_reliability", "rasch_item_reliability", "rasch_separation", "mantel_haenszel_dif", "other"
+          ]
+        },
+        "value": { "type": ["number", "null"] },
+        "occasion": { "type": "string", "description": "e.g. pretest, posttest, single administration." },
+        "notes": { "type": "string" }
+      }
+    },
+    "sample": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["n", "education_level", "description"],
+      "properties": {
+        "n": { "type": ["integer", "null"], "minimum": 1 },
+        "education_level": { "type": "string" },
+        "discipline": { "type": "string" },
+        "setting": { "type": "string" },
+        "country": { "type": "string" },
+        "institution_type": { "type": "string" },
+        "description": { "type": "string" }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": {
+          "enum": ["published", "platform_derived", "developer_reported"],
+          "description": "developer_reported = provided directly by the instrument's developer; replace with a published citation when one exists."
+        },
+        "citation": { "type": "string" },
+        "doi": { "type": "string", "pattern": "^10\\.\\d{4,9}/\\S+$" },
+        "url": { "type": "string", "format": "uri" },
+        "study_discovery_id": {
+          "type": "string",
+          "description": "For platform_derived evidence: the study's id in study_discovery, only if the owner chose to be named."
+        },
+        "contributed_by": { "type": "string" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "kind": { "const": "published" } } },
+          "then": { "required": ["citation"] }
+        }
+      ]
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "needs_check"],
+      "properties": {
+        "status": { "enum": ["draft", "community_submitted", "maintainer_reviewed", "source_verified"] },
+        "reviewed_by": { "type": "string" },
+        "reviewed_on": { "type": "string", "format": "date" },
+        "needs_check": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}
