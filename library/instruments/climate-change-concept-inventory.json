@@ -1,6 +1,7 @@
 {
   "id": "climate-change-concept-inventory",
   "name": "Climate Change Concept Inventory (Libarkin et al.)",
+  "variable_prefix": "ccci",
   "instrument_type": "concept_inventory",
   "respondent": [
     "student",

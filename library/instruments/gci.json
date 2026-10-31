@@ -2,6 +2,7 @@
   "id": "gci",
   "name": "Geoscience Concept Inventory",
   "acronym": "GCI",
+  "variable_prefix": "gci",
   "instrument_type": "concept_inventory",
   "respondent": [
     "student"

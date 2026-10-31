@@ -20,7 +20,8 @@
     "versions",
     "dimensions",
     "review",
-    "info_sources"
+    "info_sources",
+    "variable_prefix"
   ],
   "properties": {
     "id": {
@@ -242,6 +243,11 @@
         "format": "uri"
       },
       "description": "Pages the record's facts were taken from, so a reviewer can re-check them."
+    },
+    "variable_prefix": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]{1,9}$",
+      "description": "Short prefix for generated variable names (e.g. 'gci' -> gci_q05). Must be unique across the library and never change once data exist."
     }
   },
   "$defs": {

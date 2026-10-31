@@ -180,6 +180,10 @@
                 }
               }
             }
+          },
+          "scale_id": {
+            "type": "string",
+            "description": "Shared response scale from library/scales.json (for Likert-type items)."
           }
         }
       }

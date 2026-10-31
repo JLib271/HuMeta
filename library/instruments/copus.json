@@ -2,6 +2,7 @@
   "id": "copus",
   "name": "Classroom Observation Protocol for Undergraduate STEM",
   "acronym": "COPUS",
+  "variable_prefix": "copus",
   "instrument_type": "observation_protocol",
   "respondent": [
     "observer"

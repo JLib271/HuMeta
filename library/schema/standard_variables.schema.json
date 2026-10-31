@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/JLib271/OpenEdMetadata/library/schema/standard_variables.schema.json",
+  "title": "Standard variables",
+  "description": "Demographic and context variables with fixed names, wording and codes, so every study that collects them does so the same way.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["vocabulary_version", "variables"],
+  "properties": {
+    "vocabulary_version": { "type": "integer", "minimum": 1 },
+    "variables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "label", "data_type", "sensitivity", "source"],
+        "properties": {
+          "name": {
+            "type": "string", "pattern": "^[a-z][a-z0-9_]{0,31}$",
+            "description": "Fixed variable name (or prefix for select-all-that-apply questions)."
+          },
+          "label": { "type": "string" },
+          "question": { "type": "string", "description": "Recommended question wording." },
+          "instruction": { "type": "string" },
+          "data_type": { "enum": ["integer", "decimal", "categorical", "select_all", "text", "date", "identifier"] },
+          "scale_id": { "type": "string", "description": "Response scale for categorical variables." },
+          "options": {
+            "type": "array",
+            "description": "For categorical/select_all variables defined here rather than by a shared scale. For select_all, each option becomes its own 0/1 variable named <name>_<suffix>.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["code", "label"],
+              "properties": {
+                "code": { "type": "integer" },
+                "label": { "type": "string" },
+                "suffix": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+                "write_in": { "type": "boolean" }
+              }
+            }
+          },
+          "unit": { "type": "string" },
+          "valid_range": {
+            "type": "object", "additionalProperties": false,
+            "properties": { "min": { "type": "number" }, "max": { "type": "number" } }
+          },
+          "sensitivity": {
+            "enum": ["direct_identifier", "quasi_identifier", "sensitive", "none"],
+            "description": "Disclosure risk if shared: direct identifiers must be removed before sharing; quasi-identifiers and sensitive variables need review (e.g., coarsening, small-cell checks)."
+          },
+          "source": { "type": "string", "description": "Standard or reference the variable follows." },
+          "source_url": { "type": "string", "format": "uri" },
+          "notes": { "type": "string" }
+        }
+      }
+    }
+  }
+}

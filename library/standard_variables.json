@@ -1,0 +1,82 @@
+{
+  "vocabulary_version": 1,
+  "variables": [
+    {
+      "name": "participant_id",
+      "label": "Study participant ID",
+      "data_type": "identifier",
+      "sensitivity": "quasi_identifier",
+      "source": "OpenEdMetadata convention",
+      "notes": "A random study code assigned by the research team. Never use a student ID number, email, or name. Keep the linking key separately from the data, and replace these codes with new random codes before sharing."
+    },
+    {
+      "name": "timepoint",
+      "label": "Data collection timepoint",
+      "data_type": "categorical",
+      "sensitivity": "none",
+      "source": "OpenEdMetadata convention",
+      "options": [
+        { "code": 1, "label": "Pre / time 1" },
+        { "code": 2, "label": "Post / time 2" },
+        { "code": 3, "label": "Follow-up / time 3" }
+      ],
+      "notes": "For long-format data. In wide-format data, use the _pre / _post / _t1 ... suffixes on variable names instead."
+    },
+    {
+      "name": "age_years",
+      "label": "Age in years",
+      "question": "What is your age in years?",
+      "data_type": "integer",
+      "unit": "years",
+      "valid_range": { "min": 0, "max": 120 },
+      "sensitivity": "quasi_identifier",
+      "source": "OpenEdMetadata convention",
+      "notes": "Consider collecting or sharing age in ranges, and top-coding older ages, to reduce re-identification risk."
+    },
+    {
+      "name": "race_eth",
+      "label": "Race and/or ethnicity (combined question)",
+      "question": "What is your race and/or ethnicity?",
+      "instruction": "Select all that apply.",
+      "data_type": "select_all",
+      "sensitivity": "sensitive",
+      "source": "OMB Statistical Policy Directive No. 15 (2024), minimum reporting categories",
+      "source_url": "https://www.federalregister.gov/documents/2024/03/29/2024-06469/revisions-to-ombs-statistical-policy-directive-no-15-standards-for-maintaining-collecting-and",
+      "options": [
+        { "code": 1, "label": "American Indian or Alaska Native", "suffix": "aian" },
+        { "code": 2, "label": "Asian", "suffix": "asian" },
+        { "code": 3, "label": "Black or African American", "suffix": "black" },
+        { "code": 4, "label": "Hispanic or Latino", "suffix": "hisp" },
+        { "code": 5, "label": "Middle Eastern or North African", "suffix": "mena" },
+        { "code": 6, "label": "Native Hawaiian or Pacific Islander", "suffix": "nhpi" },
+        { "code": 7, "label": "White", "suffix": "white" },
+        { "code": 8, "label": "Prefer not to answer", "suffix": "pna" }
+      ],
+      "notes": "Each option is stored as its own 0/1 variable (race_eth_aian, race_eth_asian, ...). SPD 15 also calls for detailed categories and write-in fields under each minimum category; add those as study-specific variables when collected. 'Prefer not to answer' is an OpenEdMetadata addition, not an SPD 15 category. Small groups can identify individuals: check cell sizes before sharing."
+    },
+    {
+      "name": "course_level",
+      "label": "Course level",
+      "data_type": "categorical",
+      "sensitivity": "none",
+      "source": "OpenEdMetadata convention",
+      "options": [
+        { "code": 1, "label": "Introductory / lower-division undergraduate" },
+        { "code": 2, "label": "Upper-division undergraduate" },
+        { "code": 3, "label": "Graduate" },
+        { "code": 4, "label": "K-12" },
+        { "code": 5, "label": "Informal / non-credit" }
+      ]
+    },
+    {
+      "name": "consent_share",
+      "label": "Consented to data sharing",
+      "question": "Do you agree that your de-identified responses may be shared with other researchers?",
+      "data_type": "categorical",
+      "scale_id": "yes_no",
+      "sensitivity": "none",
+      "source": "OpenEdMetadata convention",
+      "notes": "Only participants coded 1 may be included in any shared dataset. Wording must match the IRB-approved consent form."
+    }
+  ]
+}

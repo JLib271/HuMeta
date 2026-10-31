@@ -2,13 +2,32 @@
   "id": "class",
   "name": "Colorado Learning Attitudes about Science Survey",
   "acronym": "CLASS",
+  "variable_prefix": "class",
   "instrument_type": "attitude_beliefs_survey",
-  "respondent": ["student"],
+  "respondent": [
+    "student"
+  ],
   "description": "Agree/disagree statements about a science discipline and about learning it. Responses are compared with answers from experts in the field, so scores show how expert-like a student's beliefs are. Often given pre/post to see how a course shifts beliefs. Has discipline-specific versions.",
-  "construct_ids": ["epistemological_beliefs", "interest", "real_world_relevance", "problem_solving"],
-  "disciplines": ["physics", "chemistry", "biology", "astronomy", "mathematics"],
-  "education_levels": ["undergraduate", "high_school"],
-  "settings": ["formal_classroom"],
+  "construct_ids": [
+    "epistemological_beliefs",
+    "interest",
+    "real_world_relevance",
+    "problem_solving"
+  ],
+  "disciplines": [
+    "physics",
+    "chemistry",
+    "biology",
+    "astronomy",
+    "mathematics"
+  ],
+  "education_levels": [
+    "undergraduate",
+    "high_school"
+  ],
+  "settings": [
+    "formal_classroom"
+  ],
   "original_citation": {
     "text": "Adams, W. K., Perkins, K. K., Podolefsky, N. S., Dubson, M., Finkelstein, N. D., & Wieman, C. E. (2006). New instrument for measuring student beliefs about physics and learning physics: The Colorado Learning Attitudes about Science Survey. Physical Review Special Topics - Physics Education Research, 2(1), 010101.",
     "doi": "10.1103/PhysRevSTPER.2.010101"
@@ -28,8 +47,15 @@
       "year": 2004,
       "item_count": null,
       "administration_minutes": "8-10",
-      "response_format": { "type": "likert", "scale_points": 5, "anchors": "Strongly disagree (1) to strongly agree (5)" },
-      "scoring": { "method": "percent_favorable_vs_expert", "notes": "Each item has an expert-consensus answer. Scores are percent of items answered in the expert-like (favorable) direction, overall and by category. PhysPort provides an answer key and scoring tool." },
+      "response_format": {
+        "type": "likert",
+        "scale_points": 5,
+        "anchors": "Strongly disagree (1) to strongly agree (5)"
+      },
+      "scoring": {
+        "method": "percent_favorable_vs_expert",
+        "notes": "Each item has an expert-consensus answer. Scores are percent of items answered in the expert-like (favorable) direction, overall and by category. PhysPort provides an answer key and scoring tool."
+      },
       "citation": {
         "text": "Adams, W. K., Perkins, K. K., Podolefsky, N. S., Dubson, M., Finkelstein, N. D., & Wieman, C. E. (2006). Physical Review Special Topics - Physics Education Research, 2(1), 010101.",
         "doi": "10.1103/PhysRevSTPER.2.010101"
@@ -43,23 +69,109 @@
       "year": 2008,
       "item_count": null,
       "adapted_from_version_id": "class-phys-v3",
-      "response_format": { "type": "likert", "scale_points": 5 },
-      "scoring": { "method": "percent_favorable_vs_expert" },
+      "response_format": {
+        "type": "likert",
+        "scale_points": 5
+      },
+      "scoring": {
+        "method": "percent_favorable_vs_expert"
+      },
       "citation": {
         "text": "Adams, W. K., Wieman, C. E., Perkins, K. K., & Barbera, J. (2008). Modifying and validating the Colorado Learning Attitudes about Science Survey for use in chemistry. Journal of Chemical Education, 85(10), 1435."
       }
     }
   ],
   "dimensions": [
-    { "dimension_id": "personal-interest", "name": "Personal Interest", "basis": "empirical_factor", "construct_ids": ["interest"], "version_ids": ["class-phys-v3"] },
-    { "dimension_id": "real-world-connection", "name": "Real World Connection", "basis": "empirical_factor", "construct_ids": ["real_world_relevance"], "version_ids": ["class-phys-v3"] },
-    { "dimension_id": "sense-making-effort", "name": "Sense Making/Effort", "basis": "empirical_factor", "construct_ids": ["epistemological_beliefs"], "version_ids": ["class-phys-v3"] },
-    { "dimension_id": "conceptual-connections", "name": "Conceptual Connections", "basis": "empirical_factor", "construct_ids": ["epistemological_beliefs"], "version_ids": ["class-phys-v3"] },
-    { "dimension_id": "applied-conceptual-understanding", "name": "Applied Conceptual Understanding", "basis": "empirical_factor", "construct_ids": ["epistemological_beliefs"], "version_ids": ["class-phys-v3"] },
-    { "dimension_id": "ps-general", "name": "Problem Solving General", "basis": "empirical_factor", "construct_ids": ["problem_solving"], "version_ids": ["class-phys-v3"] },
-    { "dimension_id": "ps-confidence", "name": "Problem Solving Confidence", "basis": "empirical_factor", "construct_ids": ["problem_solving", "self_efficacy"], "version_ids": ["class-phys-v3"] },
-    { "dimension_id": "ps-sophistication", "name": "Problem Solving Sophistication", "basis": "empirical_factor", "construct_ids": ["problem_solving"], "version_ids": ["class-phys-v3"],
-      "notes": "Categories were derived with the developers' reduced-basis factor analysis; items can load on more than one category. Some items belong to no category." }
+    {
+      "dimension_id": "personal-interest",
+      "name": "Personal Interest",
+      "basis": "empirical_factor",
+      "construct_ids": [
+        "interest"
+      ],
+      "version_ids": [
+        "class-phys-v3"
+      ]
+    },
+    {
+      "dimension_id": "real-world-connection",
+      "name": "Real World Connection",
+      "basis": "empirical_factor",
+      "construct_ids": [
+        "real_world_relevance"
+      ],
+      "version_ids": [
+        "class-phys-v3"
+      ]
+    },
+    {
+      "dimension_id": "sense-making-effort",
+      "name": "Sense Making/Effort",
+      "basis": "empirical_factor",
+      "construct_ids": [
+        "epistemological_beliefs"
+      ],
+      "version_ids": [
+        "class-phys-v3"
+      ]
+    },
+    {
+      "dimension_id": "conceptual-connections",
+      "name": "Conceptual Connections",
+      "basis": "empirical_factor",
+      "construct_ids": [
+        "epistemological_beliefs"
+      ],
+      "version_ids": [
+        "class-phys-v3"
+      ]
+    },
+    {
+      "dimension_id": "applied-conceptual-understanding",
+      "name": "Applied Conceptual Understanding",
+      "basis": "empirical_factor",
+      "construct_ids": [
+        "epistemological_beliefs"
+      ],
+      "version_ids": [
+        "class-phys-v3"
+      ]
+    },
+    {
+      "dimension_id": "ps-general",
+      "name": "Problem Solving General",
+      "basis": "empirical_factor",
+      "construct_ids": [
+        "problem_solving"
+      ],
+      "version_ids": [
+        "class-phys-v3"
+      ]
+    },
+    {
+      "dimension_id": "ps-confidence",
+      "name": "Problem Solving Confidence",
+      "basis": "empirical_factor",
+      "construct_ids": [
+        "problem_solving",
+        "self_efficacy"
+      ],
+      "version_ids": [
+        "class-phys-v3"
+      ]
+    },
+    {
+      "dimension_id": "ps-sophistication",
+      "name": "Problem Solving Sophistication",
+      "basis": "empirical_factor",
+      "construct_ids": [
+        "problem_solving"
+      ],
+      "version_ids": [
+        "class-phys-v3"
+      ],
+      "notes": "Categories were derived with the developers' reduced-basis factor analysis; items can load on more than one category. Some items belong to no category."
+    }
   ],
   "related_instrument_ids": [],
   "review": {
