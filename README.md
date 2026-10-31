@@ -211,6 +211,8 @@ statsmodels>=0.14.0
 ---
 
 ## 📄 License & Terms
-Distributed under the **MIT License**. Other research institutions and education task forces are explicitly granted legal permission to copy, alter, scale, and redistribute this platform, provided proper attribution credit is maintained.
+The application code is licensed under the **GNU Affero General Public License, version 3 or (at your option) any later version** (AGPL-3.0-or-later); see [`LICENSE`](LICENSE). Other research institutions and education task forces are welcome to copy, modify, run, and redistribute this platform. If you distribute a modified version, or run a modified version as a service that others use over a network, you must make your modified source code available to its users under the same license.
+
+Copyright (C) 2026 Julie C. Libarkin. Versions released before this change remain available under the MIT License.
 
 The instrument library in `library/` is licensed separately: records are CC BY-SA 4.0, and each instrument's item text carries its own license. See [`library/LICENSE.md`](library/LICENSE.md).

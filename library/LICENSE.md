@@ -1,6 +1,6 @@
 # Instrument Library content license
 
-The OpenEdMetadata application code is under the MIT License (see `/LICENSE`).
+The OpenEdMetadata application code is under the GNU AGPL v3.0 (see `/LICENSE`).
 The contents of this `library/` folder are licensed separately, as follows.
 
 ## 1. Library records: CC BY-SA 4.0
@@ -15,8 +15,9 @@ library and release adapted material under the same license.
 Suggested attribution: *STEMEd+ Instrument Library, OpenEdMetadata
 (https://github.com/JLib271/OpenEdMetadata).*
 
-The JSON Schemas in `library/schema/` and the validator in `scripts/` are
-code and fall under the repository's MIT License.
+The JSON Schemas in `library/schema/` are part of the library content and
+are also CC BY-SA 4.0, so others can adopt the record format. The validator in
+`scripts/` is code and falls under the repository's AGPL v3.0.
 
 ## 2. Item text: each instrument's own license
 

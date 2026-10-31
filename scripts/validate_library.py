@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Copyright (C) 2026 Julie C. Libarkin
+# SPDX-License-Identifier: AGPL-3.0-or-later
 """Validate the instrument library in library/.
 
 Checks every file against its JSON Schema, then checks cross-references:

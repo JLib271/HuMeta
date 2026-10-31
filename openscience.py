@@ -744,6 +744,13 @@ with st.sidebar:
             except Exception as auth_error:
                 st.error(f"Could not send the sign-in link: {auth_error}")
 
+    # AGPL-3.0 section 13: offer users of the hosted app its source code.
+    st.divider()
+    st.caption(
+        "Free software under the [GNU AGPL v3](https://www.gnu.org/licenses/agpl-3.0.html). "
+        "[Source code](https://github.com/JLib271/OpenEdMetadata)"
+    )
+
 st.title("🔬 Open Educational Metadata Portal")
 st.caption("Standardized Study Registries and Psychometric Instrument Architects under DCMES, IEEE LOM, and CEDS Standards.")
 
