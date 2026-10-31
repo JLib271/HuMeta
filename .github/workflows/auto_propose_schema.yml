@@ -6,7 +6,11 @@ on:
 
 jobs:
   create-pr:
-    if: contains(github.event.issue.title, '[Schema Proposal]')
+    # Only maintainers' issues create branches/PRs; anyone can open issues on a
+    # public repo, and this job runs with a write-scoped token.
+    if: >-
+      contains(github.event.issue.title, '[Schema Proposal]') &&
+      contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.issue.author_association)
     runs-on: ubuntu-latest
     
     permissions:

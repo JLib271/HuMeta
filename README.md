@@ -1,10 +1,10 @@
 # Open Educational Metadata Platform 🔬🌐
 
-An advanced, open-source, community-driven web interface and psychometric validation engine designed to standardize, align, and process educational survey data. This ecosystem is fully integrated with a live Postgres database and programmatic GitOps deployment pipelines, turning research tracking into a seamless cloud experience.
+An open-source, community-driven web app that helps STEM education researchers standardize, align, and share study and survey metadata. It runs on Streamlit Community Cloud with **no database**: private work stays with the researcher, and public records live in this GitHub repository after maintainer review.
 
 ## 🔗 Live Application Access
-The platform is fully compiled and deployed in a live cloud container:
-👉 **[Open Educational Metadata Portal](https://streamlit.app)**
+The platform is deployed on Streamlit Community Cloud.
+👉 **Open Educational Metadata Portal:** _link to be added — replace this line with the app's `*.streamlit.app` URL._
 
 ---
 
@@ -12,11 +12,11 @@ The platform is fully compiled and deployed in a live cloud container:
 
 The system is split into five core functional layers managed by interactive sidebar navigation:
 
-1. **Study Metadata Schema Registry (Module 1):** Capture study identity, team, research questions, design, population, one open-text content domain or topic, ethics-review context, permissions, and data-sharing plans. Population and setting options include schools and learners as well as the general public, community members, museum and science-center visitors, families, and public events. Governance fields are researcher-reported and are not approval or sharing determinations.
-2. **Variable Instrument Architect (Module 2):** Starts with **Find previously shared studies with related context**. The query is automatically populated from the Module 1 content domain when available; signed-in researchers can edit it, search opted-in study summaries, and review shared study-design and variable/measurement metadata (not item text or participant data). Researchers explicitly opt in when saving a Module 2 plan to publish a limited summary for discovery. Step 1 uses the Module 1 content domain and captures broad study context; a target behavior and timeframe are optional, and the app does not presume behavior is the study outcome. Step 2 uses a multi-select (not a table) to choose framework variables, followed by the **Included theory-derived, demographic, and contextual variables** metadata editor. It includes a context-personalized TPB questionnaire example with three prompts per construct, response scales, language, scoring, source, and adaptation metadata. These app-generated items are examples, not a validated measure. Step 3 adds or imports custom variables and captures item text/source type, response scale, language, scoring, citation/URL, adaptation notes, and available validity/reliability evidence. Existing CSVs and saved plans remain usable. Step 4 builds a conceptual diagram; Step 5 reviews variables and downloads the matrices and draft survey.
-3. **Community Data Repository Sync (Module 3):** Review permissions, identifiers, and disclosure risks; upload datasets to private or public storage with explicit confirmation; and review datasets available to your account.
-4. **Descriptive & Scale Analytics (Module 4):** Select a dataset, map columns to Module 2 variables, inspect distributions and descriptive statistics, review composite scores, reliability, correlations, and download a report. Numeric mappings support composite scores and Cronbach's alpha for multi-item mappings; categorical mappings show response counts.
-5. **Live Central Database Viewer (Module 5):** Select a repository table available to your account, browse authorized records, and download the displayed table as CSV.
+1. **Study Metadata Schema Registry (Module 1):** Capture study identity, team, research questions, design, population, one open-text content domain or topic, ethics-review context, permissions, and data-sharing plans. Population and setting options include schools and learners as well as the general public, community members, museum and science-center visitors, families, and public events. Governance fields are researcher-reported and are not approval or sharing determinations. Saving puts the study into a **project file** the researcher downloads and keeps.
+2. **Variable Instrument Architect (Module 2):** Starts with **Find previously shared studies with related context**, which searches study summaries other researchers have published (study-design and variable/measurement metadata, never item text or participant data). The query is populated from the Module 1 content domain when available. Step 1 captures broad study context; a target behavior and timeframe are optional, and the app does not presume behavior is the study outcome. Step 2 uses a multi-select to choose framework variables, followed by the **Included theory-derived, demographic, and contextual variables** metadata editor, including a context-personalized TPB questionnaire example (app-generated examples, not a validated measure). Step 3 adds or imports custom variables with item text/source type, response scale, language, scoring, citation/URL, adaptation notes, and validity/reliability evidence. Step 4 builds a conceptual diagram; Step 5 reviews variables and downloads the matrices and draft survey. The plan is saved into the project file. Researchers can opt in to **submit a limited study summary for public listing**, which opens a pull request for maintainer review.
+3. **Community Data Repository Sync (Module 3):** Browse and download published public datasets, or submit a de-identified dataset for public release after permission, identifier, and disclosure-risk confirmations. Submissions open a pull request and are listed only after a maintainer merges them. **Private datasets are never stored.**
+4. **Descriptive & Scale Analytics (Module 4):** Upload a private dataset (held in memory for the browser session only and never saved), pick a published dataset, or use synthetic sample data; map columns to Module 2 variables; inspect distributions and descriptive statistics; review composite scores, reliability, and correlations; and download a PDF report. Numeric mappings support composite scores and Cronbach's alpha for multi-item mappings; categorical mappings show response counts.
+5. **Published Repository Viewer (Module 5):** Browse the published study summaries, the public dataset catalog, and the research measure catalog, and download any of them as CSV.
 
 ### Research measure catalog
 
@@ -31,13 +31,13 @@ does not establish instrument validity or permissions.
 
 To add or revise catalog entries, edit the JSON file, validate it locally by
 opening Module 2, then commit and push the catalog change with the app code.
-No database or secrets setup is needed; deployments read the catalog file from
-the same repository revision as `openscience.py`.
+No secrets setup is needed; deployments read the catalog file from the same
+repository revision as `openscience.py`.
 
 ---
 
 ## 🤖 Community Theory and Variable Suggestions
-Module 2 can submit a researcher's theory and variable map, literature rationale,
+Signed-in researchers can submit, from Module 2, a theory and variable map, literature rationale,
 and conceptual relationships as a JSON file in `suggestions/`, on a new branch
 with a pull request to `main`. Maintainers review and merge accepted suggestions;
 submissions do not update the app's built-in catalog automatically. Contributors
@@ -48,145 +48,110 @@ private study details, unpublished results, or other sensitive content.
 Configure `GITHUB_PAT` as a fine-grained token limited to this repository, with
 Contents: Read and write and Pull requests: Read and write permissions. The token
 is stored only in the Streamlit app's secrets and is not shown to researchers.
+The app can only write to `suggestions/`, `published/study_summaries/`, and
+`published/datasets/`, and only on new branches. Because the token itself could
+push to `main`, also turn on a branch protection rule (or ruleset) for `main`
+that requires a pull request before merging, so nothing reaches `main` without a
+maintainer's approval.
 GitHub organization policies may require an administrator to approve the token.
 
 ---
 
-## 📊 Core Cloud Architecture (Supabase Schema)
+## 🗂️ Where data lives (no database)
 
-Data persistence is managed via an active cloud **Supabase** instance. The database utilizes a strictly connected relational cascade pattern (`ON DELETE CASCADE`) to bind survey parameters to core studies in the `public` schema layer:
+| Data | Where it lives | Who can see it |
+| --- | --- | --- |
+| Study record (Module 1) and Module 2 plan | A project file (`*.oem-project.json`) the researcher downloads and re-opens from the sidebar | Only the researcher — the app keeps no copy |
+| Private datasets | In memory for the current browser session (Module 4) | Only the researcher; discarded on reload or when the session ends |
+| Published study summaries | `published/study_summaries/` in this repo | Everyone, after a maintainer merges the pull request |
+| Published datasets | `published/datasets/` in this repo (CSV + JSON metadata, up to 25 MB) | Everyone, after a maintainer merges the pull request |
+| Theory / variable / analytics suggestions | `suggestions/` in this repo | Everyone, after a maintainer merges the pull request |
+| Research measure catalog | `catalogs/measure_catalog.json` | Everyone |
 
-```sql
--- 1. Parent Studies Ingestion Table
-create table public.studies (
-    id uuid primary key default gen_random_uuid(),
-    study_title text not null,
-    principal_investigator text,
-    institution text,
-    funding_source text,
-    study_description text,
-    created_at timestamp with time zone default timezone('utc'::text, now()) not null
-);
+Researchers should keep project files in storage approved for their study
+(for example, their institution's managed drive), since the file can contain
+unpublished study details. See [`published/README.md`](published/README.md) for
+the maintainer review checklist. Anything merged into `published/` is public and
+remains in git history even if it is later removed.
 
--- 2. Child Variables Dictionary Table
-create table public.variables (
-    id uuid primary key default gen_random_uuid(),
-    study_id uuid references public.studies(id) on delete cascade,
-    variable_name text not null,
-    variable_label text,
-    data_type text,
-    measurement_unit text,
-    description text,
-    created_at timestamp with time zone default timezone('utc'::text, now()) not null
-);
-```
+---
 
-### Researcher sign-in and dataset ownership
+## 🔐 Researcher sign-in (Google)
 
-Visitors can navigate and read the module previews without signing in. Entering
-study information, submitting proposals, uploading datasets, or accessing
-account data requires a Supabase passwordless email link. Authenticated requests
-are scoped by Supabase Row Level Security (RLS), and the app uses the Supabase
-publishable/anon key rather than a service-role key.
+Every module works without signing in. Signing in is required only to submit
+items for review (study summaries, public datasets, suggestions), so that each
+pull request is tied to a real account. The app uses Streamlit's built-in
+OpenID Connect sign-in with Google, so any Google account works, including
+university Google Workspace accounts. Pull requests show the submitter's display
+name and a short hashed account reference, never their email address.
 
-Before enabling dataset uploads:
+To set it up (about 10 minutes, free):
 
-1. In Supabase Auth, enable email sign-in and set the Site URL and allowed
-   redirect URL to the exact HTTPS URL where this Streamlit app is deployed.
-2. In the Supabase email sign-in template, use a link that returns the token
-   hash to Streamlit, for example:
+1. In [Google Cloud Console](https://console.cloud.google.com/), create a
+   project, then open **APIs & Services → OAuth consent screen**. Choose
+   **External**, fill in the app name and support email, and keep only the
+   basic `openid`, `email`, and `profile` scopes.
+2. Under **Audience**, click **Publish app** so it is "In production".
+   (In "Testing" mode only the test users you list can sign in.) Apps that use
+   only the basic scopes don't need Google's verification review.
+3. Open **Credentials → Create credentials → OAuth client ID**, choose
+   **Web application**, and add the authorized redirect URI
+   `https://<your-app>.streamlit.app/oauth2callback`
+   (add `http://localhost:8501/oauth2callback` too for local testing).
+4. Copy the client ID and secret into the app's secrets (below). Without an
+   `[auth]` section the app still runs; only submissions are disabled.
 
-   ```html
-   <a href="{{ .RedirectTo }}/?token_hash={{ .TokenHash }}&type=email">Sign in</a>
-   ```
-
-   Confirm the redirect URL is allowlisted in Supabase Auth.
-3. Run [`supabase/setup_auth_storage.sql`](supabase/setup_auth_storage.sql)
-   in the Supabase SQL Editor. Review existing policies first; remove any older
-   broad policies that grant anonymous or cross-user access to `studies`,
-   `variables`, `study_datasets`, `study_discovery`, or `storage.objects`. PostgreSQL RLS policies
-   are permissive by default when combined, so an old permissive policy can
-   widen access. If Supabase was configured before Module 2 plan persistence
-   was added, run the updated SQL script again to create the
-   `study_module2_plans` table and its owner-scoped policies. The script also
-   creates `study_discovery`: only summaries explicitly published by their
-   owners are visible to signed-in researchers. The summary includes the study
-   title, selected design/context metadata, and variable/measurement metadata;
-   item text and participant data are excluded. Owners can remove a summary by
-   turning off discovery sharing and saving their Module 2 plan.
-4. Add the app secrets:
-
-   ```toml
-   SUPABASE_URL = "https://your-project.supabase.co"
-   SUPABASE_KEY = "your-publishable-or-anon-key"
-   APP_URL = "https://your-deployed-streamlit-app.example"
-   ```
-
-The SQL creates a private `study-datasets` bucket and a separate public
-`public-study-datasets` bucket. Private objects are restricted to their owner
-through RLS. Public objects are downloadable by anyone with the file URL.
-Module 3 requires extra confirmation before public release and displays the
-public URL. Public release should only be used when the owner, consent,
-agreements, and privacy review permit it; it may not be possible to retract
-copies or links after release.
-
-Module 4 lists datasets the signed-in user owns plus datasets marked public,
-then downloads through Supabase Storage policies. Module 1 study records include
-the authenticated owner's user ID. Existing rows without an owner remain
-unavailable to signed-in users until an administrator reviews and assigns them.
-Module 2 plans can be loaded and saved for a selected saved Module 1 study;
-the plan JSON and conceptual diagram are stored in `study_module2_plans` and
-are protected by owner-scoped RLS. Unsaved drafts remain downloadable but are
-not stored in Supabase.
-The app's permission/privacy prompts are attestations, not access controls,
-IRB approval, or a determination that data are safe to share.
+The code uses whichever OpenID Connect provider is in `[auth]`, so switching
+later (for example to CILogon or Microsoft) only needs new secrets and a new
+button label.
 
 ---
 
 ## ⚙️ Secrets Deployment Configuration
 
-To host this application or configure an independent Streamlit Community Cloud mirror instance, populate your **App Secrets (`.toml`)** file inside your workspace management panel using this format:
+In Streamlit Community Cloud, open the app's **Settings → Secrets** and add:
 
 ```toml
-# Cloud Data Warehouse Connection Tokens
-# Use the Supabase publishable/anon key; do not use a service-role key.
-SUPABASE_URL = "https://your-project.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." # Extended anon/public client API key
-
-APP_URL = "https://your-deployed-streamlit-app.example"
-
-# Fine-grained GitHub token, limited to this repository:
+# Fine-grained GitHub token limited to this repository:
 # Contents: Read and write; Pull requests: Read and write
 GITHUB_PAT = "your-fine-grained-token"
+# Optional; defaults to JLib271/OpenEdMetadata
+GITHUB_REPO = "JLib271/OpenEdMetadata"
+
+[auth]
+redirect_uri = "https://<your-app>.streamlit.app/oauth2callback"
+cookie_secret = "a-long-random-string"   # e.g. python -c "import secrets; print(secrets.token_urlsafe(32))"
+client_id = "xxxxxxxx.apps.googleusercontent.com"
+client_secret = "..."
+server_metadata_url = "https://accounts.google.com/.well-known/openid-configuration"
 ```
+
+For local development, put the same content in `.streamlit/secrets.toml`
+(already git-ignored) and use `http://localhost:8501/oauth2callback` as the
+redirect URI (it must also be listed in the Google OAuth client).
+
+Supabase is no longer used: remove `SUPABASE_URL`, `SUPABASE_KEY`, and
+`APP_URL` from existing deployments' secrets.
 
 ---
 
 ## 🚀 Local Installation & Setup
 
-To run this application locally on your workstation for development or extension testing:
-
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com
-   cd openedmetadata
+   git clone https://github.com/JLib271/OpenEdMetadata.git
+   cd OpenEdMetadata
    ```
 
-2. **Configure Environment Secrets:**
-   Create a local directory configuration folder `.streamlit/` and place a `secrets.toml` file inside it containing your active keys:
-   ```bash
-   mkdir .streamlit
-   touch .streamlit/secrets.toml
-   ```
-
-3. **Install Dependencies:**
-   Ensure your Python environment is completely up to date and load the required library stack:
+2. **Install Dependencies:**
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Launch the Engine:**
-   Run the boot sequence via your local Streamlit compiler:
+3. **Optional — configure secrets** in `.streamlit/secrets.toml` (see above) if
+   you want to test sign-in and pull-request submissions.
+
+4. **Launch the app:**
    ```bash
    streamlit run openscience.py
    ```
@@ -194,19 +159,20 @@ To run this application locally on your workstation for development or extension
 ---
 
 ## 📜 Dependencies Checklist (`requirements.txt`)
-The minimal library environment grid required for this portal consists of:
 ```text
-streamlit>=1.30.0
-streamlit-flow-component>=1.6.1
+streamlit>=1.42.0
+Authlib>=1.3.2
+streamlit-flow-component>=1.6.1,<2.0.0
 pandas>=2.0.0
 numpy>=1.24.0
-supabase>=2.3.0
 PyGithub>=2.1.0
 matplotlib>=3.7.0
 reportlab>=4.0.0
-scipy>=1.10.0
-statsmodels>=0.14.0
 ```
+
+Module 4 shows example analysis code that uses `scipy` and `statsmodels`;
+researchers install those in their own analysis environment. The portal itself
+does not need them.
 
 ---
 
