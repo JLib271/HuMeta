@@ -2,6 +2,13 @@
 
 An open-source, community-driven web app that helps STEM education researchers standardize, align, and share study and survey metadata. It runs on Streamlit Community Cloud with **no database**: private work stays with the researcher, and public records live in this GitHub repository after maintainer review.
 
+## 🤝 Community
+
+OpenEdMetadata is open source and welcomes contributors, from researchers adding instruments to developers.
+Start with [CONTRIBUTING.md](CONTRIBUTING.md) and the [ROADMAP.md](ROADMAP.md). We follow a [Code of Conduct](CODE_OF_CONDUCT.md);
+see [GOVERNANCE.md](GOVERNANCE.md) for how decisions are made and [SECURITY.md](SECURITY.md) to report security or privacy problems.
+To cite the project, use [CITATION.cff](CITATION.cff).
+
 ## 🔗 Live Application Access
 The platform is deployed on Streamlit Community Cloud.
 👉 **Open Educational Metadata Portal:** _link to be added — replace this line with the app's `*.streamlit.app` URL._
