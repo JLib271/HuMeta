@@ -1,0 +1,106 @@
+{
+  "vocabulary_version": 1,
+  "missing_codes": [
+    { "code": -99, "label": "No response (skipped)" },
+    { "code": -98, "label": "Not administered / not applicable" }
+  ],
+  "scales": [
+    {
+      "id": "agree5",
+      "label": "5-point agreement",
+      "level": "ordinal",
+      "points": [
+        { "code": 1, "label": "Strongly disagree" },
+        { "code": 2, "label": "Disagree" },
+        { "code": 3, "label": "Neither agree nor disagree" },
+        { "code": 4, "label": "Agree" },
+        { "code": 5, "label": "Strongly agree" }
+      ],
+      "reverse_scoring": "new = 6 - old"
+    },
+    {
+      "id": "agree7",
+      "label": "7-point agreement",
+      "level": "ordinal",
+      "points": [
+        { "code": 1, "label": "Strongly disagree" },
+        { "code": 2, "label": "Disagree" },
+        { "code": 3, "label": "Somewhat disagree" },
+        { "code": 4, "label": "Neither agree nor disagree" },
+        { "code": 5, "label": "Somewhat agree" },
+        { "code": 6, "label": "Agree" },
+        { "code": 7, "label": "Strongly agree" }
+      ],
+      "reverse_scoring": "new = 8 - old"
+    },
+    {
+      "id": "true_of_me7",
+      "label": "7-point 'true of me' (anchors only)",
+      "level": "ordinal",
+      "description": "Used by the MSLQ: only the endpoints are labeled on the form.",
+      "anchors_only": true,
+      "points": [
+        { "code": 1, "label": "Not at all true of me" },
+        { "code": 2, "label": null },
+        { "code": 3, "label": null },
+        { "code": 4, "label": null },
+        { "code": 5, "label": null },
+        { "code": 6, "label": null },
+        { "code": 7, "label": "Very true of me" }
+      ],
+      "reverse_scoring": "new = 8 - old"
+    },
+    {
+      "id": "frequency5",
+      "label": "5-point frequency",
+      "level": "ordinal",
+      "points": [
+        { "code": 1, "label": "Never" },
+        { "code": 2, "label": "Rarely" },
+        { "code": 3, "label": "Sometimes" },
+        { "code": 4, "label": "Often" },
+        { "code": 5, "label": "Always" }
+      ],
+      "reverse_scoring": "new = 6 - old"
+    },
+    {
+      "id": "yes_no",
+      "label": "Yes / no",
+      "level": "binary",
+      "points": [
+        { "code": 0, "label": "No" },
+        { "code": 1, "label": "Yes" }
+      ]
+    },
+    {
+      "id": "yes_no_unsure",
+      "label": "Yes / no / not sure",
+      "level": "nominal",
+      "points": [
+        { "code": 0, "label": "No" },
+        { "code": 1, "label": "Yes" },
+        { "code": 2, "label": "Not sure" }
+      ]
+    },
+    {
+      "id": "selected",
+      "label": "Checkbox selected",
+      "level": "binary",
+      "description": "One variable per option of a 'select all that apply' question.",
+      "points": [
+        { "code": 0, "label": "Not selected" },
+        { "code": 1, "label": "Selected" }
+      ]
+    },
+    {
+      "id": "scored01",
+      "label": "Scored correct / incorrect",
+      "level": "binary",
+      "description": "Scored version of a knowledge item. Only produced by a scoring step; answer keys are not stored in the library unless an instrument permits it.",
+      "points": [
+        { "code": 0, "label": "Incorrect" },
+        { "code": 1, "label": "Correct" }
+      ]
+    }
+  ]
+}

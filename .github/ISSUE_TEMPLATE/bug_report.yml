@@ -1,0 +1,37 @@
+name: Bug report
+description: Something in the app or library doesn't work as expected
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! **Do not include participant data, identifiable information, or unpublished study details.** For security or privacy problems, use the Security tab instead (see SECURITY.md).
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where did it happen?
+      options:
+        - "Module 1: Study Metadata"
+        - "Module 2: Variable Instrument Architect"
+        - "Module 3: Data Repository"
+        - "Module 4: Analytics"
+        - "Module 5: Published Viewer"
+        - Instrument library (library/)
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: "1. Open Module 2\n2. Select ...\n3. ..."
+  - type: input
+    id: env
+    attributes:
+      label: Browser / OS (or Python version if running locally)

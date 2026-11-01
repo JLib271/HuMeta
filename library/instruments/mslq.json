@@ -2,6 +2,7 @@
   "id": "mslq",
   "name": "Motivated Strategies for Learning Questionnaire",
   "acronym": "MSLQ",
+  "variable_prefix": "mslq",
   "instrument_type": "self_report_scale",
   "respondent": [
     "student"

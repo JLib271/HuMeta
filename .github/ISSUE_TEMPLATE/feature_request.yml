@@ -1,0 +1,26 @@
+name: Feature or improvement
+description: Suggest something that would help your research workflow
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do, and what gets in the way?
+      description: Describe the research task, not just the solution.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help?
+  - type: dropdown
+    id: role
+    attributes:
+      label: Your role
+      options:
+        - Researcher
+        - Graduate student
+        - Developer
+        - Methodologist / data manager
+        - IRB or research-compliance staff
+        - Other

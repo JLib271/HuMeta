@@ -1,0 +1,705 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/schema/stemed-ap-record.schema.json",
+  "title": "STEMEd+ Metadata Application Profile record (1.0.0-draft.1)",
+  "description": "Generated from standard/stemed-ap/profile.json and vocabularies.json by scripts/build_profile_artifacts.py. Do not edit by hand.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "profile",
+    "profile_version",
+    "resource",
+    "stemed"
+  ],
+  "properties": {
+    "profile": {
+      "const": "stemed-ap"
+    },
+    "profile_version": {
+      "type": "string"
+    },
+    "resource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "creators",
+        "publisher",
+        "publication_year",
+        "resource_type"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "creators": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "orcid": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "pattern": "^(\\d{4}-){3}\\d{3}[\\dX]$"
+              },
+              "affiliation": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "publisher": {
+          "type": "string",
+          "minLength": 1
+        },
+        "publication_year": {
+          "type": "integer",
+          "minimum": 1900,
+          "maximum": 2100
+        },
+        "resource_type": {
+          "enum": [
+            "Dataset",
+            "Instrument",
+            "StudyRegistration",
+            "Text",
+            "Software",
+            "Collection",
+            "Other"
+          ]
+        },
+        "identifier": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "value": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            }
+          }
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "language": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]+)*$"
+        },
+        "license": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "spdx": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "name": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "url": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "funding": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "funder_name"
+            ],
+            "properties": {
+              "funder_name": {
+                "type": "string"
+              },
+              "award_number": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "collection_dates": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "start": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "end": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            }
+          }
+        },
+        "geography": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "countries": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Z]{2}$"
+              }
+            },
+            "us_states": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Z]{2}$"
+              }
+            }
+          }
+        },
+        "related": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "identifier",
+              "identifier_type",
+              "relation"
+            ],
+            "properties": {
+              "identifier": {
+                "type": "string"
+              },
+              "identifier_type": {
+                "enum": [
+                  "DOI",
+                  "URL",
+                  "Handle",
+                  "ISBN",
+                  "ISSN",
+                  "ARK"
+                ]
+              },
+              "relation": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "stemed": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "discipline": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "biology",
+              "chemistry",
+              "physics",
+              "geoscience",
+              "climate_science",
+              "astronomy",
+              "mathematics",
+              "computer_science",
+              "engineering",
+              "general_stem",
+              "other_discipline"
+            ]
+          }
+        },
+        "population": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "participant_roles": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "students",
+                  "educators",
+                  "professionals",
+                  "children_youth",
+                  "adults",
+                  "families",
+                  "visitors",
+                  "community_members",
+                  "specific_community",
+                  "other_participants"
+                ]
+              }
+            },
+            "education_levels": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "early_childhood",
+                  "elementary",
+                  "middle_school",
+                  "high_school",
+                  "undergraduate",
+                  "graduate",
+                  "adult_education",
+                  "informal_learning"
+                ]
+              }
+            },
+            "undergraduate_levels": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "introductory",
+                  "intermediate",
+                  "advanced",
+                  "capstone"
+                ]
+              }
+            },
+            "description": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "sample_size": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            }
+          }
+        },
+        "context": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "institution_types": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "k12_public",
+                  "k12_private",
+                  "two_year_college",
+                  "four_year_college",
+                  "research_university",
+                  "minority_serving",
+                  "hbcu",
+                  "tribal_college",
+                  "museum_science_center",
+                  "community_organization",
+                  "online_provider",
+                  "other_institution"
+                ]
+              }
+            },
+            "locale": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "city",
+                  "suburban",
+                  "town",
+                  "rural",
+                  "online",
+                  "multiple_locales"
+                ]
+              }
+            }
+          }
+        },
+        "setting": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "modality": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "in_person",
+                  "online_synchronous",
+                  "online_asynchronous",
+                  "hybrid",
+                  "not_instructional"
+                ]
+              }
+            },
+            "learning_environments": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "large_lecture",
+                  "small_class",
+                  "laboratory",
+                  "field",
+                  "online_course",
+                  "museum_exhibit",
+                  "out_of_school_program",
+                  "community_or_public_space",
+                  "home_family",
+                  "workplace",
+                  "k12_classroom",
+                  "postsecondary_classroom",
+                  "other_environment"
+                ]
+              }
+            },
+            "pedagogy": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "lecture_based",
+                  "active_learning",
+                  "inquiry_based",
+                  "problem_project_based",
+                  "flipped",
+                  "student_centered",
+                  "research_experience",
+                  "other_pedagogy"
+                ]
+              }
+            }
+          }
+        },
+        "evidence": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "study_designs": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "cross_sectional",
+                  "descriptive",
+                  "correlational",
+                  "quasi_experimental",
+                  "randomized_experiment",
+                  "longitudinal",
+                  "pre_post",
+                  "time_series",
+                  "qualitative",
+                  "mixed_methods",
+                  "case_study",
+                  "design_based",
+                  "program_evaluation",
+                  "instrument_development",
+                  "secondary_analysis",
+                  "meta_analysis",
+                  "replication"
+                ]
+              }
+            },
+            "measurement_evidence": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "test_content",
+                  "response_processes",
+                  "internal_structure",
+                  "relations_to_other_variables",
+                  "consequences",
+                  "reliability",
+                  "fairness",
+                  "irt_scaling"
+                ]
+              }
+            },
+            "data_collection_methods": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "survey",
+                  "assessment",
+                  "observation",
+                  "interview",
+                  "focus_group",
+                  "artifacts",
+                  "learning_analytics",
+                  "institutional_records",
+                  "other_method"
+                ]
+              }
+            }
+          }
+        },
+        "design": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "unit_of_analysis": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "individual",
+                  "group",
+                  "organization",
+                  "place",
+                  "event",
+                  "artifact",
+                  "multilevel"
+                ]
+              }
+            },
+            "sampling_procedure": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "census",
+                  "convenience",
+                  "volunteer",
+                  "purposive",
+                  "stratified",
+                  "cluster",
+                  "random",
+                  "systematic",
+                  "time_location",
+                  "snowball",
+                  "mixed_sampling",
+                  "other_sampling"
+                ]
+              }
+            },
+            "topic": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "research_questions": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "ethics": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sensitivity_flags": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "direct_identifiers",
+                  "indirect_identifiers",
+                  "sensitive_information",
+                  "education_records"
+                ]
+              }
+            },
+            "human_subjects_review": {
+              "enum": [
+                "approved",
+                "exempt",
+                "not_human_subjects",
+                "pending",
+                "not_assessed",
+                "other_review",
+                null
+              ]
+            },
+            "consent": {
+              "enum": [
+                "informed_consent",
+                "permission_and_assent",
+                "waiver",
+                "not_applicable",
+                "not_assessed",
+                "other_consent",
+                null
+              ]
+            },
+            "consent_for_sharing": {
+              "enum": [
+                "broad_sharing",
+                "restricted_sharing",
+                "no_sharing",
+                "not_addressed",
+                "not_applicable",
+                null
+              ]
+            },
+            "identifiability": {
+              "enum": [
+                "identifiable",
+                "coded",
+                "deidentified",
+                "anonymous",
+                "aggregate_only",
+                "synthetic",
+                "not_applicable",
+                null
+              ]
+            },
+            "access_level": {
+              "enum": [
+                "open",
+                "registered",
+                "controlled",
+                "closed",
+                "metadata_only",
+                null
+              ]
+            },
+            "governance_notes": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "care": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "indigenous_data": {
+              "enum": [
+                "yes",
+                "no",
+                "unknown",
+                null
+              ]
+            },
+            "governance": {
+              "enum": [
+                "community_agreement",
+                "tribal_review",
+                "consultation_ongoing",
+                "none",
+                "not_applicable",
+                null
+              ]
+            },
+            "statement": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "local_contexts_project": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "uri"
+            },
+            "local_contexts_labels": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "constructs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "construct_id"
+            ],
+            "properties": {
+              "construct_id": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              "instrument_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "version_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "dimension_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

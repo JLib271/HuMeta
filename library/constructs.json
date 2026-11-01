@@ -1,110 +1,508 @@
 {
   "vocabulary_version": 1,
   "constructs": [
-    { "id": "conceptual_understanding", "label": "Conceptual understanding", "domain": "cognitive",
+    {
+      "id": "conceptual_understanding",
+      "label": "Conceptual understanding",
+      "domain": "cognitive",
       "definition": "Grasp of core disciplinary ideas and the ability to apply them to new situations, as distinct from recall or procedural skill.",
-      "synonyms": ["concept knowledge", "conceptual knowledge", "misconceptions", "alternative conceptions"] },
-    { "id": "content_knowledge", "label": "Content knowledge", "domain": "cognitive",
+      "synonyms": [
+        "concept knowledge",
+        "conceptual knowledge",
+        "misconceptions",
+        "alternative conceptions"
+      ],
+      "eric": [
+        "Scientific Concepts",
+        "Misconceptions",
+        "Concept Formation"
+      ]
+    },
+    {
+      "id": "content_knowledge",
+      "label": "Content knowledge",
+      "domain": "cognitive",
       "definition": "Factual and procedural knowledge of a subject area, as typically measured by course exams or knowledge tests.",
-      "synonyms": ["knowledge", "achievement", "subject knowledge"] },
-    { "id": "problem_solving", "label": "Problem solving", "domain": "cognitive",
+      "synonyms": [
+        "knowledge",
+        "achievement",
+        "subject knowledge"
+      ],
+      "eric": [
+        "Knowledge Level",
+        "Academic Achievement"
+      ]
+    },
+    {
+      "id": "problem_solving",
+      "label": "Problem solving",
+      "domain": "cognitive",
       "definition": "Approaches and skill in working through unfamiliar disciplinary problems, including planning, representation and checking.",
-      "synonyms": ["problem-solving skill", "problem-solving approach"] },
-    { "id": "scientific_reasoning", "label": "Scientific reasoning", "domain": "cognitive",
+      "synonyms": [
+        "problem-solving skill",
+        "problem-solving approach"
+      ],
+      "eric": [
+        "Problem Solving"
+      ]
+    },
+    {
+      "id": "scientific_reasoning",
+      "label": "Scientific reasoning",
+      "domain": "cognitive",
       "definition": "Reasoning about evidence, variables, models and experiments, including control of variables and proportional reasoning.",
-      "synonyms": ["scientific thinking", "inquiry skills", "lab reasoning"] },
-    { "id": "quantitative_reasoning", "label": "Quantitative reasoning", "domain": "cognitive",
+      "synonyms": [
+        "scientific thinking",
+        "inquiry skills",
+        "lab reasoning"
+      ],
+      "eric": [
+        "Science Process Skills",
+        "Scientific Literacy"
+      ]
+    },
+    {
+      "id": "quantitative_reasoning",
+      "label": "Quantitative reasoning",
+      "domain": "cognitive",
       "definition": "Using numbers, graphs and mathematical relationships to make sense of disciplinary situations.",
-      "synonyms": ["quantitative literacy", "numeracy", "graph interpretation"] },
-
-    { "id": "self_efficacy", "label": "Self-efficacy", "domain": "affective_motivational",
+      "synonyms": [
+        "quantitative literacy",
+        "numeracy",
+        "graph interpretation"
+      ],
+      "eric": [
+        "Numeracy",
+        "Mathematical Logic"
+      ]
+    },
+    {
+      "id": "self_efficacy",
+      "label": "Self-efficacy",
+      "domain": "affective_motivational",
       "definition": "A person's belief in their capability to succeed at specific tasks or in a specific domain.",
-      "synonyms": ["confidence", "academic self-efficacy", "perceived competence", "competence beliefs"] },
-    { "id": "perceived_behavioral_control", "label": "Perceived behavioral control", "domain": "affective_motivational",
+      "synonyms": [
+        "confidence",
+        "academic self-efficacy",
+        "perceived competence",
+        "competence beliefs"
+      ],
+      "eric": [
+        "Self Efficacy"
+      ]
+    },
+    {
+      "id": "perceived_behavioral_control",
+      "label": "Perceived behavioral control",
+      "domain": "affective_motivational",
       "definition": "Perceived ease or difficulty of performing a behavior, including access to needed resources (Theory of Planned Behavior).",
-      "synonyms": ["perceived control", "control beliefs", "control of learning beliefs"],
-      "app_variable_keys": ["TPB_Perceived_Control"] },
-    { "id": "interest", "label": "Interest", "domain": "affective_motivational",
+      "synonyms": [
+        "perceived control",
+        "control beliefs",
+        "control of learning beliefs"
+      ],
+      "app_variable_keys": [
+        "TPB_Perceived_Control"
+      ],
+      "eric": [
+        "Locus of Control"
+      ]
+    },
+    {
+      "id": "interest",
+      "label": "Interest",
+      "domain": "affective_motivational",
       "definition": "Enjoyment of and desire to engage with a subject, either in the moment (situational) or as an enduring disposition (individual).",
-      "synonyms": ["personal interest", "situational interest", "enjoyment", "curiosity"] },
-    { "id": "task_value", "label": "Task value", "domain": "affective_motivational",
+      "synonyms": [
+        "personal interest",
+        "situational interest",
+        "enjoyment",
+        "curiosity"
+      ],
+      "eric": [
+        "Student Interests"
+      ]
+    },
+    {
+      "id": "task_value",
+      "label": "Task value",
+      "domain": "affective_motivational",
       "definition": "How interesting, important and useful a person judges a subject or task to be, and what it costs them to engage.",
-      "synonyms": ["utility value", "attainment value", "intrinsic value", "perceived cost", "expectancy-value"] },
-    { "id": "goal_orientation", "label": "Goal orientation", "domain": "affective_motivational",
+      "synonyms": [
+        "utility value",
+        "attainment value",
+        "intrinsic value",
+        "perceived cost",
+        "expectancy-value"
+      ],
+      "eric": [
+        "Values",
+        "Expectation"
+      ]
+    },
+    {
+      "id": "goal_orientation",
+      "label": "Goal orientation",
+      "domain": "affective_motivational",
       "definition": "The reasons a learner pursues academic tasks, such as mastering material versus demonstrating ability or earning grades.",
-      "synonyms": ["achievement goals", "mastery orientation", "performance orientation", "intrinsic goal orientation", "extrinsic goal orientation"] },
-    { "id": "anxiety", "label": "Academic anxiety", "domain": "affective_motivational",
+      "synonyms": [
+        "achievement goals",
+        "mastery orientation",
+        "performance orientation",
+        "intrinsic goal orientation",
+        "extrinsic goal orientation"
+      ],
+      "eric": [
+        "Goal Orientation"
+      ]
+    },
+    {
+      "id": "anxiety",
+      "label": "Academic anxiety",
+      "domain": "affective_motivational",
       "definition": "Worry and emotional arousal related to a subject or to evaluation within it.",
-      "synonyms": ["test anxiety", "math anxiety", "science anxiety"] },
-    { "id": "attitude_toward_subject", "label": "Attitude toward the subject or behavior", "domain": "affective_motivational",
+      "synonyms": [
+        "test anxiety",
+        "math anxiety",
+        "science anxiety"
+      ],
+      "eric": [
+        "Anxiety",
+        "Test Anxiety",
+        "Mathematics Anxiety"
+      ]
+    },
+    {
+      "id": "attitude_toward_subject",
+      "label": "Attitude toward the subject or behavior",
+      "domain": "affective_motivational",
       "definition": "Overall positive or negative evaluation of a subject, activity or behavior.",
-      "synonyms": ["attitudes", "attitude toward science", "attitude toward the behavior"],
-      "app_variable_keys": ["TPB_Attitude_Direct"] },
-    { "id": "behavioral_intention", "label": "Behavioral intention", "domain": "affective_motivational",
+      "synonyms": [
+        "attitudes",
+        "attitude toward science",
+        "attitude toward the behavior"
+      ],
+      "app_variable_keys": [
+        "TPB_Attitude_Direct"
+      ],
+      "eric": [
+        "Scientific Attitudes",
+        "Student Attitudes"
+      ]
+    },
+    {
+      "id": "behavioral_intention",
+      "label": "Behavioral intention",
+      "domain": "affective_motivational",
       "definition": "Stated readiness or plan to perform a behavior, such as taking further courses or pursuing a major or career.",
-      "synonyms": ["intention", "persistence intention", "career intention", "intent to pursue"],
-      "app_variable_keys": ["TPB_Behavioral_Intention"] },
-    { "id": "mindset", "label": "Mindset / beliefs about ability", "domain": "affective_motivational",
+      "synonyms": [
+        "intention",
+        "persistence intention",
+        "career intention",
+        "intent to pursue"
+      ],
+      "app_variable_keys": [
+        "TPB_Behavioral_Intention"
+      ],
+      "eric": [
+        "Intention",
+        "Academic Persistence"
+      ]
+    },
+    {
+      "id": "mindset",
+      "label": "Mindset / beliefs about ability",
+      "domain": "affective_motivational",
       "definition": "Beliefs about whether ability in a domain is fixed or can be developed, and about who can succeed.",
-      "synonyms": ["growth mindset", "fixed mindset", "implicit theories of intelligence", "lay theories", "brilliance beliefs"] },
-
-    { "id": "sense_of_belonging", "label": "Sense of belonging", "domain": "identity_social",
+      "synonyms": [
+        "growth mindset",
+        "fixed mindset",
+        "implicit theories of intelligence",
+        "lay theories",
+        "brilliance beliefs"
+      ],
+      "eric": [
+        "Beliefs",
+        "Self Concept"
+      ]
+    },
+    {
+      "id": "sense_of_belonging",
+      "label": "Sense of belonging",
+      "domain": "identity_social",
       "definition": "Feeling accepted, valued and included as a member of a course, discipline, institution or community.",
-      "synonyms": ["belonging", "social fit", "membership", "acceptance", "belonging uncertainty"],
-      "app_variable_keys": ["Math_Membership", "Math_Acceptance", "Math_Affect", "Math_Trust", "Math_Desire_To_Fade"] },
-    { "id": "disciplinary_identity", "label": "Disciplinary identity", "domain": "identity_social",
+      "synonyms": [
+        "belonging",
+        "social fit",
+        "membership",
+        "acceptance",
+        "belonging uncertainty"
+      ],
+      "app_variable_keys": [
+        "Math_Membership",
+        "Math_Acceptance",
+        "Math_Affect",
+        "Math_Trust",
+        "Math_Desire_To_Fade"
+      ],
+      "eric": [
+        "Sense of Belonging"
+      ]
+    },
+    {
+      "id": "disciplinary_identity",
+      "label": "Disciplinary identity",
+      "domain": "identity_social",
       "definition": "Seeing oneself, and being recognized by others, as the kind of person who does a discipline (e.g. a physics person, a scientist).",
-      "synonyms": ["science identity", "STEM identity", "physics identity", "math identity", "engineering identity", "recognition"] },
-    { "id": "subjective_norm", "label": "Subjective norm", "domain": "identity_social",
+      "synonyms": [
+        "science identity",
+        "STEM identity",
+        "physics identity",
+        "math identity",
+        "engineering identity",
+        "recognition"
+      ],
+      "eric": [
+        "Professional Identity",
+        "Identification (Psychology)"
+      ]
+    },
+    {
+      "id": "subjective_norm",
+      "label": "Subjective norm",
+      "domain": "identity_social",
       "definition": "Perceived expectations from important others about whether one should perform a behavior.",
-      "synonyms": ["social norms", "social support", "encouragement from others"],
-      "app_variable_keys": ["TPB_Subjective_Norm"] },
-    { "id": "stereotype_perception", "label": "Perceived stereotypes and climate", "domain": "identity_social",
+      "synonyms": [
+        "social norms",
+        "social support",
+        "encouragement from others"
+      ],
+      "app_variable_keys": [
+        "TPB_Subjective_Norm"
+      ],
+      "eric": [
+        "Social Influences",
+        "Peer Influence"
+      ]
+    },
+    {
+      "id": "stereotype_perception",
+      "label": "Perceived stereotypes and climate",
+      "domain": "identity_social",
       "definition": "Awareness of stereotypes about who belongs or succeeds in a field, and perception of bias in the learning environment.",
-      "synonyms": ["stereotype threat", "perceived bias", "inclusive climate", "chilly climate"] },
-    { "id": "community_connectedness", "label": "Classroom community", "domain": "identity_social",
+      "synonyms": [
+        "stereotype threat",
+        "perceived bias",
+        "inclusive climate",
+        "chilly climate"
+      ],
+      "eric": [
+        "Stereotypes",
+        "Educational Environment"
+      ]
+    },
+    {
+      "id": "community_connectedness",
+      "label": "Classroom community",
+      "domain": "identity_social",
       "definition": "Perceived cohesion, trust and mutual support among learners and instructors in a learning setting.",
-      "synonyms": ["classroom community", "connectedness", "peer support"] },
-
-    { "id": "epistemological_beliefs", "label": "Beliefs about the discipline and learning it", "domain": "epistemological",
+      "synonyms": [
+        "classroom community",
+        "connectedness",
+        "peer support"
+      ],
+      "eric": [
+        "Sense of Community"
+      ]
+    },
+    {
+      "id": "epistemological_beliefs",
+      "label": "Beliefs about the discipline and learning it",
+      "domain": "epistemological",
       "definition": "Beliefs about the nature of disciplinary knowledge and about what learning the discipline involves, often compared with expert views.",
-      "synonyms": ["epistemology", "expert-like beliefs", "attitudes about science", "views about science", "learning attitudes"] },
-    { "id": "nature_of_science", "label": "Understanding of the nature of science", "domain": "epistemological",
+      "synonyms": [
+        "epistemology",
+        "expert-like beliefs",
+        "attitudes about science",
+        "views about science",
+        "learning attitudes"
+      ],
+      "eric": [
+        "Epistemology",
+        "Beliefs"
+      ]
+    },
+    {
+      "id": "nature_of_science",
+      "label": "Understanding of the nature of science",
+      "domain": "epistemological",
       "definition": "Understanding of how scientific knowledge is generated, justified and revised.",
-      "synonyms": ["NOS", "views of the nature of science", "nature of scientific inquiry"] },
-    { "id": "real_world_relevance", "label": "Perceived real-world relevance", "domain": "epistemological",
+      "synonyms": [
+        "NOS",
+        "views of the nature of science",
+        "nature of scientific inquiry"
+      ],
+      "eric": [
+        "Scientific Literacy",
+        "Epistemology"
+      ]
+    },
+    {
+      "id": "real_world_relevance",
+      "label": "Perceived real-world relevance",
+      "domain": "epistemological",
       "definition": "Seeing connections between disciplinary content and everyday life or societal issues.",
-      "synonyms": ["real world connection", "relevance", "everyday connection"],
-      "broader": "epistemological_beliefs" },
-
-    { "id": "self_regulated_learning", "label": "Self-regulated learning", "domain": "behavioral_strategy",
+      "synonyms": [
+        "real world connection",
+        "relevance",
+        "everyday connection"
+      ],
+      "broader": "epistemological_beliefs",
+      "eric": [
+        "Relevance (Education)"
+      ]
+    },
+    {
+      "id": "self_regulated_learning",
+      "label": "Self-regulated learning",
+      "domain": "behavioral_strategy",
       "definition": "Planning, monitoring and adjusting one's own learning, including metacognition and management of time and effort.",
-      "synonyms": ["metacognition", "self-regulation", "metacognitive self-regulation", "effort regulation", "time management"] },
-    { "id": "learning_strategies", "label": "Study and learning strategies", "domain": "behavioral_strategy",
+      "synonyms": [
+        "metacognition",
+        "self-regulation",
+        "metacognitive self-regulation",
+        "effort regulation",
+        "time management"
+      ],
+      "eric": [
+        "Metacognition",
+        "Self Management"
+      ]
+    },
+    {
+      "id": "learning_strategies",
+      "label": "Study and learning strategies",
+      "domain": "behavioral_strategy",
       "definition": "Specific cognitive and resource-management strategies used when studying, such as rehearsal, elaboration, organization and help seeking.",
-      "synonyms": ["study strategies", "study habits", "rehearsal", "elaboration", "organization", "help seeking", "peer learning"] },
-    { "id": "engagement", "label": "Engagement", "domain": "behavioral_strategy",
+      "synonyms": [
+        "study strategies",
+        "study habits",
+        "rehearsal",
+        "elaboration",
+        "organization",
+        "help seeking",
+        "peer learning"
+      ],
+      "eric": [
+        "Learning Strategies",
+        "Study Habits"
+      ]
+    },
+    {
+      "id": "engagement",
+      "label": "Engagement",
+      "domain": "behavioral_strategy",
       "definition": "Behavioral, cognitive and emotional involvement in learning activities.",
-      "synonyms": ["student engagement", "behavioral engagement", "participation", "on-task behavior"] },
-    { "id": "critical_thinking", "label": "Critical thinking", "domain": "behavioral_strategy",
+      "synonyms": [
+        "student engagement",
+        "behavioral engagement",
+        "participation",
+        "on-task behavior"
+      ],
+      "eric": [
+        "Learner Engagement"
+      ]
+    },
+    {
+      "id": "critical_thinking",
+      "label": "Critical thinking",
+      "domain": "behavioral_strategy",
       "definition": "Evaluating claims, evidence and arguments and applying prior knowledge to new problems.",
-      "synonyms": ["critical thinking strategies", "evaluation of evidence"] },
-
-    { "id": "teaching_practices", "label": "Teaching practices", "domain": "instructional_practice",
+      "synonyms": [
+        "critical thinking strategies",
+        "evaluation of evidence"
+      ],
+      "eric": [
+        "Critical Thinking"
+      ]
+    },
+    {
+      "id": "teaching_practices",
+      "label": "Teaching practices",
+      "domain": "instructional_practice",
       "definition": "What instructors do during instruction, such as lecturing, posing questions, facilitating group work or giving feedback.",
-      "synonyms": ["instructional practices", "teaching behaviors", "pedagogy", "active learning implementation"] },
-    { "id": "student_classroom_activity", "label": "Student classroom activity", "domain": "instructional_practice",
+      "synonyms": [
+        "instructional practices",
+        "teaching behaviors",
+        "pedagogy",
+        "active learning implementation"
+      ],
+      "eric": [
+        "Teaching Methods"
+      ]
+    },
+    {
+      "id": "student_classroom_activity",
+      "label": "Student classroom activity",
+      "domain": "instructional_practice",
       "definition": "What students are observed doing during instruction, such as listening, discussing, working in groups or answering questions.",
-      "synonyms": ["student behaviors", "student activities", "classroom activity"] },
-    { "id": "reformed_teaching", "label": "Reformed / student-centered teaching", "domain": "instructional_practice",
+      "synonyms": [
+        "student behaviors",
+        "student activities",
+        "classroom activity"
+      ],
+      "eric": [
+        "Classroom Observation Techniques",
+        "Student Behavior"
+      ]
+    },
+    {
+      "id": "reformed_teaching",
+      "label": "Reformed / student-centered teaching",
+      "domain": "instructional_practice",
       "definition": "Degree to which instruction is inquiry-oriented and student-centered rather than transmission-oriented.",
-      "synonyms": ["student-centered instruction", "inquiry-based instruction", "evidence-based instructional practices", "EBIPs"] },
-    { "id": "teaching_beliefs", "label": "Instructor beliefs about teaching", "domain": "instructional_practice",
+      "synonyms": [
+        "student-centered instruction",
+        "inquiry-based instruction",
+        "evidence-based instructional practices",
+        "EBIPs"
+      ],
+      "eric": [
+        "Active Learning",
+        "Inquiry",
+        "Student Centered Learning"
+      ]
+    },
+    {
+      "id": "teaching_beliefs",
+      "label": "Instructor beliefs about teaching",
+      "domain": "instructional_practice",
       "definition": "Instructors' beliefs about how students learn and what effective teaching looks like.",
-      "synonyms": ["teaching philosophy", "pedagogical beliefs", "approaches to teaching"] },
-
-    { "id": "learning_environment", "label": "Learning environment perceptions", "domain": "environment",
+      "synonyms": [
+        "teaching philosophy",
+        "pedagogical beliefs",
+        "approaches to teaching"
+      ],
+      "eric": [
+        "Teacher Attitudes",
+        "Beliefs"
+      ]
+    },
+    {
+      "id": "learning_environment",
+      "label": "Learning environment perceptions",
+      "domain": "environment",
       "definition": "Learners' perceptions of course structure, support, fairness and climate.",
-      "synonyms": ["classroom climate", "course climate", "perceived support", "trust in instructors"] }
+      "synonyms": [
+        "classroom climate",
+        "course climate",
+        "perceived support",
+        "trust in instructors"
+      ],
+      "eric": [
+        "Classroom Environment",
+        "Educational Environment"
+      ]
+    }
   ]
 }

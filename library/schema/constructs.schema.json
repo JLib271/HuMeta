@@ -4,25 +4,76 @@
   "title": "Construct vocabulary",
   "type": "object",
   "additionalProperties": false,
-  "required": ["vocabulary_version", "constructs"],
+  "required": [
+    "vocabulary_version",
+    "constructs"
+  ],
   "properties": {
-    "vocabulary_version": { "type": "integer", "minimum": 1 },
+    "vocabulary_version": {
+      "type": "integer",
+      "minimum": 1
+    },
     "constructs": {
       "type": "array",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "label", "domain", "definition", "synonyms"],
+        "required": [
+          "id",
+          "label",
+          "domain",
+          "definition",
+          "synonyms"
+        ],
         "properties": {
-          "id": { "type": "string", "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$" },
-          "label": { "type": "string" },
-          "domain": { "enum": ["cognitive", "affective_motivational", "identity_social", "epistemological", "behavioral_strategy", "instructional_practice", "environment"] },
-          "definition": { "type": "string", "minLength": 15 },
-          "synonyms": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
-          "broader": { "type": "string", "description": "id of a broader construct, if any." },
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(_[a-z0-9]+)*$"
+          },
+          "label": {
+            "type": "string"
+          },
+          "domain": {
+            "enum": [
+              "cognitive",
+              "affective_motivational",
+              "identity_social",
+              "epistemological",
+              "behavioral_strategy",
+              "instructional_practice",
+              "environment"
+            ]
+          },
+          "definition": {
+            "type": "string",
+            "minLength": 15
+          },
+          "synonyms": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "broader": {
+            "type": "string",
+            "description": "id of a broader construct, if any."
+          },
           "app_variable_keys": {
-            "type": "array", "uniqueItems": true, "items": { "type": "string" },
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            },
             "description": "Existing Module 2 variable keys (schema_config.json) that map to this construct."
+          },
+          "eric": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            },
+            "description": "ERIC Thesaurus descriptors for the construct (see standard/stemed-ap/crosswalks/eric_descriptor_status.json)."
           }
         }
       }

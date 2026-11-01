@@ -192,6 +192,44 @@ def main(library: Path) -> int:
             if ref not in item_ids_by_instrument.get(iid, set()):
                 problems.append(f"{where}: referenced item '{ref}' not found in any {iid} version file")
 
+    # Response scales and standard variables
+    scale_ids: set[str] = set()
+    scales_path = library / "scales.json"
+    if scales_path.exists():
+        scales_doc = load(scales_path)
+        problems += schema_errors(Draft202012Validator(load(schemas / "scales.schema.json"), format_checker=fmt), scales_doc, "scales.json")
+        for scale in scales_doc.get("scales", []):
+            if scale["id"] in scale_ids:
+                problems.append(f"scales.json: duplicate scale id {scale['id']}")
+            scale_ids.add(scale["id"])
+            codes = [p["code"] for p in scale.get("points", [])]
+            if len(codes) != len(set(codes)):
+                problems.append(f"scales.json: scale {scale['id']} has duplicate codes")
+    std_path = library / "standard_variables.json"
+    if std_path.exists():
+        std_doc = load(std_path)
+        problems += schema_errors(Draft202012Validator(load(schemas / "standard_variables.schema.json"), format_checker=fmt), std_doc, "standard_variables.json")
+        seen_std: set[str] = set()
+        for var in std_doc.get("variables", []):
+            label = f"standard_variables.json: {var.get('name')}"
+            if var.get("name") in seen_std:
+                problems.append(f"{label}: duplicate name")
+            seen_std.add(var.get("name"))
+            if var.get("scale_id") and var["scale_id"] not in scale_ids:
+                problems.append(f"{label}: unknown scale_id {var['scale_id']}")
+            if var.get("data_type") == "select_all":
+                suffixes = [o.get("suffix") for o in var.get("options", [])]
+                if not suffixes or None in suffixes or len(suffixes) != len(set(suffixes)):
+                    problems.append(f"{label}: select_all options need unique suffixes")
+    if (library / "items").exists():
+        for path in sorted((library / "items").glob("*/*.json")):
+            for item in load(path).get("items", []):
+                if item.get("scale_id") and item["scale_id"] not in scale_ids:
+                    problems.append(f"items/{path.parent.name}/{path.name}: item {item.get('item_id')}: unknown scale_id {item['scale_id']}")
+    prefixes = [inst.get("variable_prefix") for inst in instruments.values()]
+    for prefix in sorted({p for p in prefixes if prefixes.count(p) > 1}):
+        problems.append(f"variable_prefix '{prefix}' is used by more than one instrument")
+
     # Every instrument with item text must appear in the LICENSE.md table with the same license
     license_doc = library / "LICENSE.md"
     license_text = license_doc.read_text(encoding="utf-8") if license_doc.exists() else ""

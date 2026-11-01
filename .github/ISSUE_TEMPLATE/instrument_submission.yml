@@ -1,0 +1,47 @@
+name: Instrument for the library
+description: Propose adding (or correcting) an instrument in the library
+labels: [library]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        You can also open a pull request directly; see CONTRIBUTING.md. **Do not paste item text here** unless the instrument's license allows it.
+  - type: input
+    id: name
+    attributes:
+      label: Instrument name
+    validations:
+      required: true
+  - type: input
+    id: citation
+    attributes:
+      label: Primary citation (with DOI if available)
+    validations:
+      required: true
+  - type: textarea
+    id: measures
+    attributes:
+      label: What does it measure, and with whom?
+      description: Constructs, populations/settings it was developed and validated with.
+  - type: dropdown
+    id: access
+    attributes:
+      label: How can researchers get it?
+      options:
+        - Open download
+        - Open license (e.g., Creative Commons)
+        - Request from developer
+        - Restricted / permission needed
+        - Commercial
+        - Not sure
+  - type: checkboxes
+    id: developer
+    attributes:
+      label: Developer involvement
+      options:
+        - label: I am a developer of this instrument
+        - label: The developers have agreed to item text being included (please describe the license below)
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else (versions, adaptations, reliability evidence)?

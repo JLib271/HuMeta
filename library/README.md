@@ -65,6 +65,26 @@ translated, ...). Item text (`stem`, option `text`) is accepted only when the
 instrument permits it, and correct answers (`is_correct`) only when
 `access.answer_key_shareable` is true. The validator enforces both.
 
+**Response scales** (`scales.json`) are shared code lists such as `agree5`
+(1 = Strongly disagree … 5 = Strongly agree), plus library-wide missing-value
+codes (-99 = no response, -98 = not administered). Items and variables point
+to a `scale_id` instead of restating labels, so every study codes the same
+scale the same way.
+
+**Standard variables** (`standard_variables.json`) are demographic and context
+variables with fixed names, wording and codes, for example `participant_id`,
+`age_years`, `race_eth` (the 2024 federal combined race/ethnicity question)
+and `consent_share`. Each has a `sensitivity` rating (`direct_identifier`,
+`quasi_identifier`, `sensitive`, `none`) used to flag variables that need
+review before data are shared.
+
+**Variable names** are generated, not typed, using the rules in
+`oem/naming.py`: `<instrument prefix>_<item_id>` (e.g. `gci_q05`), one 0/1
+variable per option for select-all items (`gci_q01_c`), fixed names for
+standard variables, and `_pre` / `_post` / `_t1` … suffixes for repeated
+measures. Each instrument's `variable_prefix` must be unique and never change
+once data exist.
+
 ## Review status
 
 | Status | Meaning |
