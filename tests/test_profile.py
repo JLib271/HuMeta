@@ -1,6 +1,7 @@
 import copy
 import json
 import os
+import re
 import urllib.request
 from pathlib import Path
 
@@ -121,20 +122,40 @@ def test_xml_requires_doi(lib):
         profile.to_datacite_xml(record, lib)
 
 
-def _datacite_xsd():
+def _datacite_xsd(tmp_path: Path):
+    """Path to a local copy of the DataCite 4.7 XML Schema (with its includes), or None.
+
+    lxml cannot fetch https URLs itself, so the schema files are downloaded first.
+    """
     local = os.environ.get("DATACITE_XSD")
     if local and Path(local).exists():
         return local
+    url = os.environ.get("DATACITE_XSD_URL") or profile.DATACITE_XSD.replace("http:", "https:")
+    base = url.rsplit("/", 1)[0] + "/"
     try:
-        urllib.request.urlopen(profile.DATACITE_XSD.replace("http:", "https:"), timeout=10).close()
-        return profile.DATACITE_XSD.replace("http:", "https:")
+        pending, seen = ["metadata.xsd"], set()
+        while pending:
+            name = pending.pop()
+            if name in seen:
+                continue
+            seen.add(name)
+            with urllib.request.urlopen(base + name, timeout=20) as response:
+                text = response.read().decode("utf-8")
+            target = tmp_path / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(text, encoding="utf-8")
+            folder = name.rsplit("/", 1)[0] + "/" if "/" in name else ""
+            for ref in re.findall(r'schemaLocation="([^"]+)"', text):
+                if "://" not in ref:
+                    pending.append(folder + ref)
+        return str(tmp_path / "metadata.xsd")
     except Exception:
         return None
 
 
-def test_datacite_xml_validates_against_official_schema(lib):
+def test_datacite_xml_validates_against_official_schema(lib, tmp_path):
     etree = pytest.importorskip("lxml.etree")
-    xsd = _datacite_xsd()
+    xsd = _datacite_xsd(tmp_path)
     if not xsd:
         pytest.skip("DataCite 4.7 schema not reachable; set DATACITE_XSD to a local metadata.xsd")
     schema = etree.XMLSchema(etree.parse(xsd))
