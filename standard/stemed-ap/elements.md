@@ -22,6 +22,10 @@ Obligations: **M** = Mandatory: every record must have it.; **MA** = Mandatory i
 | <a id="resource.collection_dates"></a>`resource.collection_dates` | R | 0..1 | Start and end of data collection (ISO 8601 dates). | dates (dateType Collected, as start/end) |
 | <a id="resource.geography"></a>`resource.geography` | R | 0..1 | Countries (ISO 3166-1 alpha-2) and, for the US, states (USPS codes) where data were collected. | geoLocations (geoLocationPlace) |
 | <a id="resource.related"></a>`resource.related` | O | 0..n | Related publications, datasets, preregistrations, or instruments, with a DataCite relationType. | relatedIdentifiers |
+| <a id="stemed.design.topic"></a>`stemed.design.topic` | R | 0..1 | The main subject or topic of the study, in the researcher's words (e.g., 'introductory geology lab learning'). | subjects (no scheme) |
+| <a id="stemed.design.research_questions"></a>`stemed.design.research_questions` | R | 0..1 | Primary research questions, objectives, or hypotheses. | descriptions (descriptionType Methods) |
+| <a id="stemed.design.unit_of_analysis"></a>`stemed.design.unit_of_analysis` | O | 0..n | The unit(s) the analysis is about. Vocabulary: [unit_of_analysis](#unit_of_analysis). | subjects (subjectScheme 'STEMEd+ Units of Analysis') |
+| <a id="stemed.design.sampling_procedure"></a>`stemed.design.sampling_procedure` | O | 0..n | How participants or units were selected. Vocabulary: [sampling_procedure](#sampling_procedure). | subjects (subjectScheme 'STEMEd+ Sampling Procedures'); descriptions (Methods) |
 | <a id="stemed.constructs"></a>`stemed.constructs` | MA | 0..n | Constructs measured, from the STEMEd+ construct vocabulary (library/constructs.json), optionally with the instrument, version and subscale used. *Mandatory when resource_type is Dataset or Instrument.* | subjects (subjectScheme 'STEMEd+ Constructs', valueURI per construct); for datasets, relatedIdentifiers to the instrument's library record (URL, relationType IsCollectedBy) and its publication (DOI, relationType References); ERIC descriptors as additional subjects |
 | <a id="stemed.discipline"></a>`stemed.discipline` | R | 0..n | STEM discipline(s) of the learning or research. Vocabulary: [discipline](#discipline). | subjects (subjectScheme 'STEMEd+ Disciplines') |
 | <a id="stemed.population.participant_roles"></a>`stemed.population.participant_roles` | M | 1..n | Who the participants are. Vocabulary: [participant_role](#participant_role). | subjects (subjectScheme 'STEMEd+ Participant Roles') |
@@ -43,6 +47,7 @@ Obligations: **M** = Mandatory: every record must have it.; **MA** = Mandatory i
 | <a id="stemed.ethics.identifiability"></a>`stemed.ethics.identifiability` | M | 1 | Identifiability of the data. Vocabulary: [identifiability](#identifiability). | descriptions (Other, 'Ethics and access') |
 | <a id="stemed.ethics.sensitivity_flags"></a>`stemed.ethics.sensitivity_flags` | R | 0..n | Kinds of sensitive information in the underlying data. Vocabulary: [sensitivity_flag](#sensitivity_flag). | descriptions (Other, 'Ethics and access') |
 | <a id="stemed.ethics.access_level"></a>`stemed.ethics.access_level` | M | 1 | How the data can be accessed. Vocabulary: [access_level](#access_level). | rightsList (access statement) |
+| <a id="stemed.ethics.governance_notes"></a>`stemed.ethics.governance_notes` | O | 0..1 | Approval references, data-use restrictions, retention or de-identification requirements (no confidential details). | descriptions (Other, 'Ethics and access') |
 | <a id="stemed.care.indigenous_data"></a>`stemed.care.indigenous_data` | M | 1 | Whether the resource contains or derives from data about Indigenous Peoples, nations, communities, lands, territories, or knowledges. Vocabulary: [indigenous_data](#indigenous_data). | descriptions (Other, 'CARE statement') |
 | <a id="stemed.care.governance"></a>`stemed.care.governance` | MA | 0..1 | How Indigenous authority to control the data is exercised (CARE: Authority to control). *Mandatory when indigenous_data is yes.* Vocabulary: [indigenous_governance](#indigenous_governance). | descriptions (Other, 'CARE statement'); rightsList |
 | <a id="stemed.care.statement"></a>`stemed.care.statement` | MA | 0..1 | How the work provides collective benefit, respects authority to control, and meets responsibility and ethics obligations to the communities involved. *Mandatory when indigenous_data is yes.* | descriptions (Other, 'CARE statement') |
@@ -214,11 +219,14 @@ The design that produced the evidence in the resource.
 
 | Code | Label | ERIC descriptors |
 |---|---|---|
+| `cross_sectional` | Cross-sectional (single time point) |  |
 | `descriptive` | Descriptive | Educational Research |
 | `correlational` | Correlational | Correlation (unverified) |
 | `quasi_experimental` | Quasi-experimental | Quasiexperimental Design |
 | `randomized_experiment` | Randomized experiment | Randomized Controlled Trials |
 | `longitudinal` | Longitudinal | Longitudinal Studies |
+| `pre_post` | Pre/post measurement around an intervention |  |
+| `time_series` | Time series |  |
 | `qualitative` | Qualitative | Qualitative Research |
 | `mixed_methods` | Mixed methods | Mixed Methods Research |
 | `case_study` | Case study | Case Studies |
@@ -228,6 +236,39 @@ The design that produced the evidence in the resource.
 | `secondary_analysis` | Secondary analysis of existing data | Data Analysis |
 | `meta_analysis` | Meta-analysis or systematic review | Meta Analysis |
 | `replication` | Replication | Replication (Evaluation) |
+
+### <a id="unit_of_analysis"></a>Unit of analysis (`unit_of_analysis`)
+
+The unit the analysis is about.
+
+| Code | Label | ERIC descriptors |
+|---|---|---|
+| `individual` | Individual (person / participant) |  |
+| `group` | Group, household, or community |  |
+| `organization` | Organization or institution |  |
+| `place` | Place, site, or geographic area |  |
+| `event` | Event, activity, or interaction |  |
+| `artifact` | Document, artifact, or media object |  |
+| `multilevel` | Other or multi-level |  |
+
+### <a id="sampling_procedure"></a>Sampling procedure (`sampling_procedure`)
+
+How participants or units were selected.
+
+| Code | Label | ERIC descriptors |
+|---|---|---|
+| `census` | Census of all eligible units |  |
+| `convenience` | Convenience sample |  |
+| `volunteer` | Volunteer / self-selected |  |
+| `purposive` | Purposive / criterion-based |  |
+| `stratified` | Stratified sample |  |
+| `cluster` | Cluster or multistage sample |  |
+| `random` | Random sample within sites |  |
+| `systematic` | Systematic sample from a list |  |
+| `time_location` | Time-location or venue-based sample |  |
+| `snowball` | Snowball / peer referral |  |
+| `mixed_sampling` | Multiple or mixed procedures |  |
+| `other_sampling` | Other |  |
 
 ### <a id="measurement_evidence"></a>Measurement evidence (`measurement_evidence`)
 

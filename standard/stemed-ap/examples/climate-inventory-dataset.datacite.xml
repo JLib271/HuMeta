@@ -16,6 +16,7 @@
   <subjects>
     <subject>climate change</subject>
     <subject>concept inventory</subject>
+    <subject>Climate change understanding in introductory Earth science</subject>
     <subject subjectScheme="STEMEd+ Constructs" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/library/constructs.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/library/constructs.json#conceptual_understanding">Conceptual understanding</subject>
     <subject subjectScheme="STEMEd+ Disciplines" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json#discipline.climate_science">Climate and environmental science</subject>
     <subject subjectScheme="STEMEd+ Disciplines" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json#discipline.geoscience">Geoscience / Earth science</subject>
@@ -28,7 +29,9 @@
     <subject subjectScheme="STEMEd+ Learning Environments" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json#learning_environment.large_lecture">Large lecture class</subject>
     <subject subjectScheme="STEMEd+ Instructional Approaches" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json#pedagogy.active_learning">Active learning</subject>
     <subject subjectScheme="STEMEd+ Study Designs" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json#study_design.quasi_experimental">Quasi-experimental</subject>
-    <subject subjectScheme="STEMEd+ Study Designs" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json#study_design.longitudinal">Longitudinal</subject>
+    <subject subjectScheme="STEMEd+ Study Designs" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json#study_design.pre_post">Pre/post measurement around an intervention</subject>
+    <subject subjectScheme="STEMEd+ Units of Analysis" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json#unit_of_analysis.individual">Individual (person / participant)</subject>
+    <subject subjectScheme="STEMEd+ Sampling Procedures" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json#sampling_procedure.convenience">Convenience sample</subject>
     <subject subjectScheme="STEMEd+ Measurement Evidence" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json#measurement_evidence.reliability">Reliability / precision</subject>
     <subject subjectScheme="STEMEd+ Data Collection Methods" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json#data_collection_method.assessment">Test or assessment</subject>
     <subject subjectScheme="STEMEd+ Data Collection Methods" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json#data_collection_method.survey">Survey or questionnaire</subject>
@@ -47,7 +50,6 @@
     <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Lecture Method</subject>
     <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Active Learning</subject>
     <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Quasiexperimental Design</subject>
-    <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Longitudinal Studies</subject>
     <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Test Reliability</subject>
     <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Tests</subject>
     <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Questionnaires</subject>
@@ -70,7 +72,7 @@
   </rightsList>
   <descriptions>
     <description descriptionType="Abstract">Illustrative record (fictional study) showing how a dataset collected with the Climate Change Concept Inventory is described with the STEMEd+ Application Profile.</description>
-    <description descriptionType="Methods">Study design: Quasi-experimental; Longitudinal. Data collection: Test or assessment; Survey or questionnaire. Participants: Students enrolled in two sections of an introductory Earth science course.</description>
+    <description descriptionType="Methods">Study design: Quasi-experimental; Pre/post measurement around an intervention. Research questions: How does students' understanding of basic climate change processes change over a semester of active-learning instruction? Sampling: Convenience sample. Data collection: Test or assessment; Survey or questionnaire. Participants: Students enrolled in two sections of an introductory Earth science course.</description>
     <description descriptionType="Other">Ethics and access (STEMEd+ AP). Human-subjects review: Exempt determination. Participation consent: Informed consent. Consent for data sharing: Broad sharing of de-identified data consented. Identifiability: De-identified. Access level: Open (public).</description>
     <description descriptionType="Other">CARE statement (STEMEd+ AP). Indigenous data: No. Governance: Not applicable.</description>
   </descriptions>

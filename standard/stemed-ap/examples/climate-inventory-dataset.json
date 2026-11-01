@@ -4,43 +4,121 @@
   "resource": {
     "title": "Example: Pre/post climate change understanding in an introductory Earth science course",
     "creators": [
-      {"name": "Example Researcher", "orcid": null, "affiliation": "Example State University"}
+      {
+        "name": "Example Researcher",
+        "orcid": null,
+        "affiliation": "Example State University"
+      }
     ],
     "publisher": "Example State University",
     "publication_year": 2027,
     "resource_type": "Dataset",
-    "identifier": {"value": "10.5072/example-stemed-ap-1", "type": "DOI"},
+    "identifier": {
+      "value": "10.5072/example-stemed-ap-1",
+      "type": "DOI"
+    },
     "description": "Illustrative record (fictional study) showing how a dataset collected with the Climate Change Concept Inventory is described with the STEMEd+ Application Profile.",
-    "keywords": ["climate change", "concept inventory"],
+    "keywords": [
+      "climate change",
+      "concept inventory"
+    ],
     "language": "en",
-    "license": {"spdx": "CC-BY-4.0", "name": "Creative Commons Attribution 4.0 International", "url": "https://creativecommons.org/licenses/by/4.0/"},
+    "license": {
+      "spdx": "CC-BY-4.0",
+      "name": "Creative Commons Attribution 4.0 International",
+      "url": "https://creativecommons.org/licenses/by/4.0/"
+    },
     "funding": [],
-    "collection_dates": {"start": "2026-08-25", "end": "2026-12-12"},
-    "geography": {"countries": ["US"], "us_states": ["MI"]},
+    "collection_dates": {
+      "start": "2026-08-25",
+      "end": "2026-12-12"
+    },
+    "geography": {
+      "countries": [
+        "US"
+      ],
+      "us_states": [
+        "MI"
+      ]
+    },
     "related": []
   },
   "stemed": {
+    "design": {
+      "topic": "Climate change understanding in introductory Earth science",
+      "research_questions": "How does students' understanding of basic climate change processes change over a semester of active-learning instruction?",
+      "unit_of_analysis": [
+        "individual"
+      ],
+      "sampling_procedure": [
+        "convenience"
+      ]
+    },
     "constructs": [
-      {"construct_id": "conceptual_understanding", "instrument_id": "climate-change-concept-inventory", "version_id": "ccci-2018", "dimension_id": null}
+      {
+        "construct_id": "conceptual_understanding",
+        "instrument_id": "climate-change-concept-inventory",
+        "version_id": "ccci-2018",
+        "dimension_id": null
+      }
     ],
-    "discipline": ["climate_science", "geoscience"],
+    "discipline": [
+      "climate_science",
+      "geoscience"
+    ],
     "population": {
-      "participant_roles": ["students"],
-      "education_levels": ["undergraduate"],
-      "undergraduate_levels": ["introductory"],
+      "participant_roles": [
+        "students"
+      ],
+      "education_levels": [
+        "undergraduate"
+      ],
+      "undergraduate_levels": [
+        "introductory"
+      ],
       "description": "Students enrolled in two sections of an introductory Earth science course.",
       "sample_size": 212
     },
-    "context": {"institution_types": ["research_university"], "locale": ["city"]},
-    "setting": {"modality": ["in_person"], "learning_environments": ["large_lecture"], "pedagogy": ["active_learning"]},
-    "evidence": {"study_designs": ["quasi_experimental", "longitudinal"], "measurement_evidence": ["reliability"], "data_collection_methods": ["assessment", "survey"]},
+    "context": {
+      "institution_types": [
+        "research_university"
+      ],
+      "locale": [
+        "city"
+      ]
+    },
+    "setting": {
+      "modality": [
+        "in_person"
+      ],
+      "learning_environments": [
+        "large_lecture"
+      ],
+      "pedagogy": [
+        "active_learning"
+      ]
+    },
+    "evidence": {
+      "study_designs": [
+        "quasi_experimental",
+        "pre_post"
+      ],
+      "measurement_evidence": [
+        "reliability"
+      ],
+      "data_collection_methods": [
+        "assessment",
+        "survey"
+      ]
+    },
     "ethics": {
       "human_subjects_review": "exempt",
       "consent": "informed_consent",
       "consent_for_sharing": "broad_sharing",
       "identifiability": "deidentified",
       "sensitivity_flags": [],
-      "access_level": "open"
+      "access_level": "open",
+      "governance_notes": null
     },
     "care": {
       "indigenous_data": "no",

@@ -1,6 +1,6 @@
 # Copyright (C) 2026 Julie C. Libarkin
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Module 3: Community Data Repository Sync."""
+"""Module 4: Community Data Repository Sync."""
 
 from __future__ import annotations
 import streamlit as st
@@ -23,7 +23,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     )
     st.info(
         "🔒 **Private datasets are never stored.** To analyze data you can't make public, use "
-        "Module 4 and upload the file there: it is held in memory for your session only and "
+        "Module 5 and upload the file there: it is held in memory for your session only and "
         "is discarded when you leave or reload the page."
     )
     st.markdown("---")

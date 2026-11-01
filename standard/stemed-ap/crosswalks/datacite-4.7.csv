@@ -13,6 +13,10 @@ resource.funding,Funding,O,0..n,,fundingReferences
 resource.collection_dates,Data collection dates,R,0..1,,"dates (dateType Collected, as start/end)"
 resource.geography,Geographic coverage,R,0..1,,geoLocations (geoLocationPlace)
 resource.related,Related resources,O,0..n,,relatedIdentifiers
+stemed.design.topic,Topic / content domain,R,0..1,,subjects (no scheme)
+stemed.design.research_questions,Research questions and aims,R,0..1,,descriptions (descriptionType Methods)
+stemed.design.unit_of_analysis,Unit of analysis,O,0..n,unit_of_analysis,subjects (subjectScheme 'STEMEd+ Units of Analysis')
+stemed.design.sampling_procedure,Sampling procedure,O,0..n,sampling_procedure,subjects (subjectScheme 'STEMEd+ Sampling Procedures'); descriptions (Methods)
 stemed.constructs,Constructs measured,MA,0..n,,"subjects (subjectScheme 'STEMEd+ Constructs', valueURI per construct); for datasets, relatedIdentifiers to the instrument's library record (URL, relationType IsCollectedBy) and its publication (DOI, relationType References); ERIC descriptors as additional subjects"
 stemed.discipline,Discipline,R,0..n,discipline,subjects (subjectScheme 'STEMEd+ Disciplines')
 stemed.population.participant_roles,Participant population,M,1..n,participant_role,subjects (subjectScheme 'STEMEd+ Participant Roles')
@@ -34,6 +38,7 @@ stemed.ethics.consent_for_sharing,Consent for data sharing,M,1,consent_for_shari
 stemed.ethics.identifiability,Identifiability,M,1,identifiability,"descriptions (Other, 'Ethics and access')"
 stemed.ethics.sensitivity_flags,Sensitivity flags,R,0..n,sensitivity_flag,"descriptions (Other, 'Ethics and access')"
 stemed.ethics.access_level,Access level,M,1,access_level,rightsList (access statement)
+stemed.ethics.governance_notes,Governance notes,O,0..1,,"descriptions (Other, 'Ethics and access')"
 stemed.care.indigenous_data,Indigenous data,M,1,indigenous_data,"descriptions (Other, 'CARE statement')"
 stemed.care.governance,Indigenous data governance,MA,0..1,indigenous_governance,"descriptions (Other, 'CARE statement'); rightsList"
 stemed.care.statement,CARE statement,MA,0..1,,"descriptions (Other, 'CARE statement')"

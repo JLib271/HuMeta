@@ -148,8 +148,6 @@ Vocabularies are in `vocabularies.json` and the construct vocabulary is in
 * Term codes are **permanent**. A code is never renamed or reused; a term that
   is no longer needed is marked deprecated in a later version.
 * Each term has a label and, where applicable, ERIC descriptors.
-* `module1` lists the OpenEdMetadata answers that map to a term, so records can
-  be pre-filled without asking researchers twice.
 * Vocabularies follow established standards where they exist; for example,
   measurement evidence uses the sources of validity evidence in the
   *Standards for Educational and Psychological Testing*.
@@ -189,8 +187,9 @@ data, adding a crosswalk does not change the profile.
 
 ## 7. Implementations
 
-* **OpenEdMetadata app, Module 6** fills in, checks, and exports records,
-  pre-filled from Modules 1 and 2.
+* **OpenEdMetadata app**: Module 1 is the profile form for a study; Module 3
+  adds the constructs measured (suggested from the Module 2 variable plan),
+  checks the rules, and exports DataCite and ERIC metadata.
 * **`oem/profile.py`**: reference Python implementation (validation, DataCite
   JSON/XML, ERIC descriptors), with tests in `tests/test_profile.py`.
 * **JSON Schema** for use in any language.

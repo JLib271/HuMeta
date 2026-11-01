@@ -266,15 +266,15 @@ def find_measure_suggestions(
 
 value_propositions = [
     (
-        "1. Study Metadata Schema Registry",
-        "📐 Enforcing Metadata Standards",
-        "Standardizes metadata norms systematically across independent studies to ensure deep "
-        "searchability and cross-institutional compatibility.",
-        "1. Study Metadata Schema Registry",
+        "1. Study Metadata Profile",
+        "📐 One Shared Metadata Standard",
+        "Describes every study with the STEMEd+ Metadata Application Profile, so studies across "
+        "institutions use the same fields and vocabularies and stay searchable and comparable.",
+        "1. Study Metadata Profile",
         [
-            "Describe the study, research team, population, and design.",
-            "Record its content domain or topic and study context.",
-            "Document ethics, permissions, and data-stewardship metadata.",
+            "Describe the study, team, design, population, and instructional setting.",
+            "Record ethics review, consent for participation and for data sharing, and access plans.",
+            "Address Indigenous data governance (CARE) where it applies.",
             "Save it to a project file you keep — the app stores nothing private.",
         ],
     ),
@@ -291,11 +291,23 @@ value_propositions = [
         ],
     ),
     (
-        "3. Community Data Repository Sync",
+        "3. Check & Export Metadata",
+        "🏷️ Standards-Ready Metadata",
+        "Completes the STEMEd+ record with the constructs you measure, checks it against the profile's "
+        "responsible-sharing rules, and exports metadata that DOI registration and education indexes use.",
+        "3. Check & Export Metadata",
+        [
+            "Add constructs measured, suggested from your Module 2 plan.",
+            "See what to fix before sharing: consent, de-identification, review, CARE.",
+            "Export STEMEd+ JSON, DataCite 4.7 (JSON/XML), and ERIC descriptors.",
+        ],
+    ),
+    (
+        "4. Community Data Repository Sync",
         "🌍 Global Open-Data Ingestion",
         "Bridges individual datasets directly onto a unified global sharing infrastructure "
         "for frictionless, public-facing discovery.",
-        "3. Community Data Repository Sync",
+        "4. Community Data Repository Sync",
         [
             "Browse and download datasets researchers have published.",
             "Review permissions, identifiers, and disclosure risks before public release.",
@@ -303,12 +315,12 @@ value_propositions = [
         ],
     ),
     (
-        "4. Descriptive & Scale Analytics",
+        "5. Descriptive & Scale Analytics",
         "📊 Comparative Meta-Analytics",
         "Maps observed dataset columns to the theory-derived, demographic/contextual, and custom "
         "variables defined in Module 2, then supports descriptive, composite-score, reliability, "
         "and relationship analyses.",
-        "4. Descriptive & Scale Analytics",
+        "5. Descriptive & Scale Analytics",
         [
             "Upload a private dataset (kept in memory only) or pick a published one, then map its columns to Module 2 variables.",
             "Inspect distributions, descriptive statistics, and categorical responses.",
@@ -316,28 +328,15 @@ value_propositions = [
         ],
     ),
     (
-        "5. Published Repository Viewer",
+        "6. Published Repository Viewer",
         "🧪 Open Published Registry",
         "Shows the reviewed, publicly shared study summaries, dataset catalog, and research "
         "measure catalog maintained in the project's GitHub repository.",
-        "5. Published Repository Viewer",
+        "6. Published Repository Viewer",
         [
             "Choose published study summaries, datasets, or measures.",
             "Browse the reviewed public records.",
             "Download the displayed table as CSV.",
-        ],
-    ),
-    (
-        "6. STEMEd+ Metadata Profile",
-        "🏷️ Shared Metadata Standard",
-        "Describes the study or dataset with the STEMEd+ Metadata Application Profile: constructs "
-        "measured, population and context, instructional setting, evidence type, consent, and CARE "
-        "(Indigenous data governance), with exports that existing repositories and indexes understand.",
-        "6. STEMEd+ Metadata Profile",
-        [
-            "Start from your Module 1 and 2 answers; nothing is asked twice.",
-            "Complete the profile and check it against the responsible-sharing rules.",
-            "Export STEMEd+ JSON, DataCite 4.7 (JSON/XML), and ERIC descriptors.",
         ],
     ),
 ]

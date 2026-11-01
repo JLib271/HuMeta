@@ -15,16 +15,16 @@ The platform is deployed on Streamlit Community Cloud.
 
 ---
 
-## 🛠️ Key Architectural Layout (Modules 1–5)
+## 🛠️ Key Architectural Layout (Modules 1–6)
 
-The system is split into five core functional layers managed by interactive sidebar navigation:
+The modules follow a study from design to sharing. Study metadata uses one standard throughout: the [STEMEd+ Metadata Application Profile](standard/stemed-ap/README.md).
 
-1. **Study Metadata Schema Registry (Module 1):** Capture study identity, team, research questions, design, population, one open-text content domain or topic, ethics-review context, permissions, and data-sharing plans. Population and setting options include schools and learners as well as the general public, community members, museum and science-center visitors, families, and public events. Governance fields are researcher-reported and are not approval or sharing determinations. Saving puts the study into a **project file** the researcher downloads and keeps.
+1. **Study Metadata Profile (Module 1):** Describe the study with the STEMEd+ profile: title and team (with ORCID iDs), design (topic, research questions, study design, unit of analysis, sampling, data collection), population and context, instructional setting, ethics review, consent for participation and for data sharing, identifiability and access, and Indigenous data governance (CARE). Answers use the profile's controlled vocabularies. Saving puts the record into a **project file** the researcher downloads and keeps; governance fields are researcher-reported and are not approval or sharing determinations.
 2. **Variable Instrument Architect (Module 2):** Starts with **Find previously shared studies with related context**, which searches study summaries other researchers have published (study-design and variable/measurement metadata, never item text or participant data). The query is populated from the Module 1 content domain when available. Step 1 captures broad study context; a target behavior and timeframe are optional, and the app does not presume behavior is the study outcome. Step 2 uses a multi-select to choose framework variables, followed by the **Included theory-derived, demographic, and contextual variables** metadata editor, including a context-personalized TPB questionnaire example (app-generated examples, not a validated measure). Step 3 adds or imports custom variables with item text/source type, response scale, language, scoring, citation/URL, adaptation notes, and validity/reliability evidence. Step 4 builds a conceptual diagram; Step 5 reviews variables and downloads the matrices and draft survey. The plan is saved into the project file. Researchers can opt in to **submit a limited study summary for public listing**, which opens a pull request for maintainer review.
-3. **Community Data Repository Sync (Module 3):** Browse and download published public datasets, or submit a de-identified dataset for public release after permission, identifier, and disclosure-risk confirmations. Submissions open a pull request and are listed only after a maintainer merges them. **Private datasets are never stored.**
-4. **Descriptive & Scale Analytics (Module 4):** Upload a private dataset (held in memory for the browser session only and never saved), pick a published dataset, or use synthetic sample data; map columns to Module 2 variables; inspect distributions and descriptive statistics; review composite scores, reliability, and correlations; and download a PDF report. Numeric mappings support composite scores and Cronbach's alpha for multi-item mappings; categorical mappings show response counts.
-5. **Published Repository Viewer (Module 5):** Browse the published study summaries, the public dataset catalog, and the research measure catalog, and download any of them as CSV.
-6. **STEMEd+ Metadata Profile (Module 6):** Describe a study, dataset, or instrument with the [STEMEd+ Metadata Application Profile](standard/stemed-ap/README.md): constructs measured, population and context, instructional setting, evidence type, consent and access, and Indigenous data governance (CARE). The record is pre-filled from Modules 1 and 2, checked against the profile's responsible-sharing rules, saved in the project file, and exported as STEMEd+ JSON, DataCite 4.7 JSON/XML, and ERIC Thesaurus descriptors.
+3. **Check & Export Metadata (Module 3):** Add the constructs measured (suggested from the Module 2 plan, linked to library instruments), check the record against the profile's responsible-sharing rules (consent, de-identification, review status, CARE), and export STEMEd+ JSON, DataCite 4.7 JSON/XML, and ERIC Thesaurus descriptors.
+4. **Community Data Repository Sync (Module 4):** Browse and download published public datasets, or submit a de-identified dataset for public release after permission, identifier, and disclosure-risk confirmations. Submissions open a pull request and are listed only after a maintainer merges them. **Private datasets are never stored.**
+5. **Descriptive & Scale Analytics (Module 5):** Upload a private dataset (held in memory for the browser session only and never saved), pick a published dataset, or use synthetic sample data; map columns to Module 2 variables; inspect distributions and descriptive statistics; review composite scores, reliability, and correlations; and download a PDF report. Numeric mappings support composite scores and Cronbach's alpha for multi-item mappings; categorical mappings show response counts.
+6. **Published Repository Viewer (Module 6):** Browse the published study summaries, the public dataset catalog, and the research measure catalog, and download any of them as CSV.
 
 ### Research measure catalog
 
@@ -70,7 +70,7 @@ GitHub organization policies may require an administrator to approve the token.
 | Data | Where it lives | Who can see it |
 | --- | --- | --- |
 | Study record (Module 1) and Module 2 plan | A project file (`*.oem-project.json`) the researcher downloads and re-opens from the sidebar | Only the researcher — the app keeps no copy |
-| Private datasets | In memory for the current browser session (Module 4) | Only the researcher; discarded on reload or when the session ends |
+| Private datasets | In memory for the current browser session (Module 5) | Only the researcher; discarded on reload or when the session ends |
 | Published study summaries | `published/study_summaries/` in this repo | Everyone, after a maintainer merges the pull request |
 | Published datasets | `published/datasets/` in this repo (CSV + JSON metadata, up to 25 MB) | Everyone, after a maintainer merges the pull request |
 | Theory / variable / analytics suggestions | `suggestions/` in this repo | Everyone, after a maintainer merges the pull request |
@@ -210,7 +210,7 @@ matplotlib>=3.7.0
 reportlab>=4.0.0
 ```
 
-Module 4 shows example analysis code that uses `scipy` and `statsmodels`;
+Module 5 shows example analysis code that uses `scipy` and `statsmodels`;
 researchers install those in their own analysis environment. The portal itself
 does not need them.
 

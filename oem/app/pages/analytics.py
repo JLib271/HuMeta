@@ -1,6 +1,6 @@
 # Copyright (C) 2026 Julie C. Libarkin
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Module 4: Descriptive & Scale Analytics."""
+"""Module 5: Descriptive & Scale Analytics."""
 
 from __future__ import annotations
 import streamlit as st

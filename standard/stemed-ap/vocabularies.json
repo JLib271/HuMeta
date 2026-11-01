@@ -1,286 +1,1195 @@
 {
   "profile": "stemed-ap",
   "profile_version": "1.0.0-draft.1",
-  "note": "Controlled vocabularies of the STEMEd+ Application Profile. 'eric' lists ERIC Thesaurus descriptors for the term (see crosswalks/eric_descriptor_status.json for verification). 'module1' lists the exact OpenEdMetadata Module 1 answers that map to the term, used to pre-fill records. Term codes are permanent: never change or reuse a code; deprecate it instead.",
+  "note": "Controlled vocabularies of the STEMEd+ Application Profile. 'eric' lists ERIC Thesaurus descriptors for the term (see crosswalks/eric_descriptor_status.json for verification). Term codes are permanent: never change or reuse a code; deprecate it instead.",
   "vocabularies": {
     "discipline": {
       "label": "STEM discipline",
       "definition": "Disciplinary content area of the learning or research studied.",
       "terms": [
-        {"id": "biology", "label": "Biology and life sciences", "eric": ["Biology"]},
-        {"id": "chemistry", "label": "Chemistry", "eric": ["Chemistry"]},
-        {"id": "physics", "label": "Physics", "eric": ["Physics"]},
-        {"id": "geoscience", "label": "Geoscience / Earth science", "eric": ["Earth Science", "Geology"]},
-        {"id": "climate_science", "label": "Climate and environmental science", "eric": ["Climate", "Earth Science"]},
-        {"id": "astronomy", "label": "Astronomy and space science", "eric": ["Astronomy"]},
-        {"id": "mathematics", "label": "Mathematics and statistics", "eric": ["Mathematics Education"]},
-        {"id": "computer_science", "label": "Computer science and computing", "eric": ["Computer Science Education"]},
-        {"id": "engineering", "label": "Engineering", "eric": ["Engineering Education"]},
-        {"id": "general_stem", "label": "General or interdisciplinary STEM", "eric": ["Science Education", "STEM Education"]},
-        {"id": "other_discipline", "label": "Other discipline", "eric": []}
+        {
+          "id": "biology",
+          "label": "Biology and life sciences",
+          "eric": [
+            "Biology"
+          ]
+        },
+        {
+          "id": "chemistry",
+          "label": "Chemistry",
+          "eric": [
+            "Chemistry"
+          ]
+        },
+        {
+          "id": "physics",
+          "label": "Physics",
+          "eric": [
+            "Physics"
+          ]
+        },
+        {
+          "id": "geoscience",
+          "label": "Geoscience / Earth science",
+          "eric": [
+            "Earth Science",
+            "Geology"
+          ]
+        },
+        {
+          "id": "climate_science",
+          "label": "Climate and environmental science",
+          "eric": [
+            "Climate",
+            "Earth Science"
+          ]
+        },
+        {
+          "id": "astronomy",
+          "label": "Astronomy and space science",
+          "eric": [
+            "Astronomy"
+          ]
+        },
+        {
+          "id": "mathematics",
+          "label": "Mathematics and statistics",
+          "eric": [
+            "Mathematics Education"
+          ]
+        },
+        {
+          "id": "computer_science",
+          "label": "Computer science and computing",
+          "eric": [
+            "Computer Science Education"
+          ]
+        },
+        {
+          "id": "engineering",
+          "label": "Engineering",
+          "eric": [
+            "Engineering Education"
+          ]
+        },
+        {
+          "id": "general_stem",
+          "label": "General or interdisciplinary STEM",
+          "eric": [
+            "Science Education",
+            "STEM Education"
+          ]
+        },
+        {
+          "id": "other_discipline",
+          "label": "Other discipline",
+          "eric": []
+        }
       ]
     },
     "education_level": {
       "label": "Education level",
       "definition": "Education level(s) of the learners or participants.",
       "terms": [
-        {"id": "early_childhood", "label": "Early childhood / pre-K", "eric": ["Early Childhood Education"],
-         "module1": ["Early childhood / Pre-K", "Kindergarten"]},
-        {"id": "elementary", "label": "Elementary / primary", "eric": ["Elementary Education"],
-         "module1": ["Elementary / primary grades (1-5 or local equivalent)"]},
-        {"id": "middle_school", "label": "Middle grades / lower secondary", "eric": ["Middle Schools", "Secondary Education"],
-         "module1": ["Middle grades / lower secondary (6-8 or local equivalent)"]},
-        {"id": "high_school", "label": "High school / upper secondary", "eric": ["High Schools", "Secondary Education"],
-         "module1": ["High school / upper secondary (9-12 or local equivalent)"]},
-        {"id": "undergraduate", "label": "Undergraduate", "eric": ["Higher Education", "Postsecondary Education", "Undergraduate Students"],
-         "module1": ["Postsecondary undergraduate"]},
-        {"id": "graduate", "label": "Graduate / professional", "eric": ["Higher Education", "Graduate Students"],
-         "module1": ["Postsecondary graduate / professional"]},
-        {"id": "adult_education", "label": "Adult, continuing, or workforce education", "eric": ["Adult Education", "Adults"],
-         "module1": ["Adult basic or secondary education", "Adult continuing, workforce, or professional education", "Non-formal workforce or apprenticeship learning"]},
-        {"id": "informal_learning", "label": "Informal or out-of-school learning (any age)", "eric": ["Informal Education"],
-         "module1": ["Informal / out-of-school learning", "Afterschool or expanded-learning program", "Community-based or youth organization", "Museum, library, science center, or cultural institution", "Home-based or family learning", "Online or open learning outside a formal institution", "General public / community participants", "Museum, library, or science-center visitors", "Visitors to public events, exhibitions, or cultural sites", "Adult participants outside a formal learning program"]}
+        {
+          "id": "early_childhood",
+          "label": "Early childhood / pre-K",
+          "eric": [
+            "Early Childhood Education"
+          ]
+        },
+        {
+          "id": "elementary",
+          "label": "Elementary / primary",
+          "eric": [
+            "Elementary Education"
+          ]
+        },
+        {
+          "id": "middle_school",
+          "label": "Middle grades / lower secondary",
+          "eric": [
+            "Middle Schools",
+            "Secondary Education"
+          ]
+        },
+        {
+          "id": "high_school",
+          "label": "High school / upper secondary",
+          "eric": [
+            "High Schools",
+            "Secondary Education"
+          ]
+        },
+        {
+          "id": "undergraduate",
+          "label": "Undergraduate",
+          "eric": [
+            "Higher Education",
+            "Postsecondary Education",
+            "Undergraduate Students"
+          ]
+        },
+        {
+          "id": "graduate",
+          "label": "Graduate / professional",
+          "eric": [
+            "Higher Education",
+            "Graduate Students"
+          ]
+        },
+        {
+          "id": "adult_education",
+          "label": "Adult, continuing, or workforce education",
+          "eric": [
+            "Adult Education",
+            "Adults"
+          ]
+        },
+        {
+          "id": "informal_learning",
+          "label": "Informal or out-of-school learning (any age)",
+          "eric": [
+            "Informal Education"
+          ]
+        }
       ]
     },
     "undergraduate_level": {
       "label": "Undergraduate course level",
       "definition": "For undergraduate studies, the course level(s) involved.",
       "terms": [
-        {"id": "introductory", "label": "Introductory / first-year", "eric": [], "module1": ["Entry-level / introductory (typically first-year)"]},
-        {"id": "intermediate", "label": "Intermediate / second-year", "eric": [], "module1": ["Intermediate (typically second-year)"]},
-        {"id": "advanced", "label": "Advanced / third- or fourth-year", "eric": [], "module1": ["Advanced undergraduate (typically third- or fourth-year)"]},
-        {"id": "capstone", "label": "Upper-division / capstone", "eric": [], "module1": ["Upper-division / capstone"]}
+        {
+          "id": "introductory",
+          "label": "Introductory / first-year",
+          "eric": []
+        },
+        {
+          "id": "intermediate",
+          "label": "Intermediate / second-year",
+          "eric": []
+        },
+        {
+          "id": "advanced",
+          "label": "Advanced / third- or fourth-year",
+          "eric": []
+        },
+        {
+          "id": "capstone",
+          "label": "Upper-division / capstone",
+          "eric": []
+        }
       ]
     },
     "participant_role": {
       "label": "Participant population",
       "definition": "Who the participants are.",
       "terms": [
-        {"id": "students", "label": "Students / learners", "eric": [], "module1": ["Students / learners"]},
-        {"id": "educators", "label": "Teachers, instructors, or teaching assistants", "eric": [], "module1": ["Teachers / educators"]},
-        {"id": "professionals", "label": "Researchers or other professionals", "eric": [], "module1": ["Researchers / professionals"]},
-        {"id": "children_youth", "label": "Children or youth", "eric": [], "module1": ["Children or youth"]},
-        {"id": "adults", "label": "Adults", "eric": ["Adults"], "module1": ["Adults", "Older adults"]},
-        {"id": "families", "label": "Families or household groups", "eric": [], "module1": ["Families or household groups"]},
-        {"id": "visitors", "label": "Museum, science-center, or event visitors", "eric": ["Museums"], "module1": ["Museum, gallery, library, or science-center visitors", "Event, exhibition, or festival visitors"]},
-        {"id": "community_members", "label": "Community members / general public", "eric": [], "module1": ["General public / community members"]},
-        {"id": "specific_community", "label": "A specific community or cultural group", "eric": [], "module1": ["Specific community or cultural group"],
-         "note": "Selecting this prompts the CARE questions."},
-        {"id": "other_participants", "label": "Other participants", "eric": [], "module1": ["Other / not listed"]}
+        {
+          "id": "students",
+          "label": "Students / learners",
+          "eric": []
+        },
+        {
+          "id": "educators",
+          "label": "Teachers, instructors, or teaching assistants",
+          "eric": []
+        },
+        {
+          "id": "professionals",
+          "label": "Researchers or other professionals",
+          "eric": []
+        },
+        {
+          "id": "children_youth",
+          "label": "Children or youth",
+          "eric": []
+        },
+        {
+          "id": "adults",
+          "label": "Adults",
+          "eric": [
+            "Adults"
+          ]
+        },
+        {
+          "id": "families",
+          "label": "Families or household groups",
+          "eric": []
+        },
+        {
+          "id": "visitors",
+          "label": "Museum, science-center, or event visitors",
+          "eric": [
+            "Museums"
+          ]
+        },
+        {
+          "id": "community_members",
+          "label": "Community members / general public",
+          "eric": []
+        },
+        {
+          "id": "specific_community",
+          "label": "A specific community or cultural group",
+          "eric": [],
+          "note": "Selecting this prompts the CARE questions."
+        },
+        {
+          "id": "other_participants",
+          "label": "Other participants",
+          "eric": []
+        }
       ]
     },
     "institution_type": {
       "label": "Institution or organization type",
       "definition": "Type(s) of institution or organization where the study took place.",
       "terms": [
-        {"id": "k12_public", "label": "Public K-12 school", "eric": ["Public Schools"]},
-        {"id": "k12_private", "label": "Private K-12 school", "eric": ["Private Schools"]},
-        {"id": "two_year_college", "label": "Two-year / community college", "eric": ["Two Year Colleges"], "module1": ["Community college or open-access program"]},
-        {"id": "four_year_college", "label": "Four-year college or primarily undergraduate institution", "eric": ["Higher Education"]},
-        {"id": "research_university", "label": "Research university", "eric": ["Research Universities"]},
-        {"id": "minority_serving", "label": "Minority-serving institution", "eric": ["Minority Serving Institutions"]},
-        {"id": "hbcu", "label": "Historically Black college or university", "eric": ["Black Colleges", "Minority Serving Institutions"]},
-        {"id": "tribal_college", "label": "Tribal college or university", "eric": ["Tribally Controlled Education", "Minority Serving Institutions"],
-         "note": "Selecting this prompts the CARE questions."},
-        {"id": "museum_science_center", "label": "Museum, science center, or library", "eric": ["Museums"]},
-        {"id": "community_organization", "label": "Community organization", "eric": ["Community Organizations"]},
-        {"id": "online_provider", "label": "Online learning provider", "eric": ["Distance Education"]},
-        {"id": "other_institution", "label": "Other", "eric": []}
+        {
+          "id": "k12_public",
+          "label": "Public K-12 school",
+          "eric": [
+            "Public Schools"
+          ]
+        },
+        {
+          "id": "k12_private",
+          "label": "Private K-12 school",
+          "eric": [
+            "Private Schools"
+          ]
+        },
+        {
+          "id": "two_year_college",
+          "label": "Two-year / community college",
+          "eric": [
+            "Two Year Colleges"
+          ]
+        },
+        {
+          "id": "four_year_college",
+          "label": "Four-year college or primarily undergraduate institution",
+          "eric": [
+            "Higher Education"
+          ]
+        },
+        {
+          "id": "research_university",
+          "label": "Research university",
+          "eric": [
+            "Research Universities"
+          ]
+        },
+        {
+          "id": "minority_serving",
+          "label": "Minority-serving institution",
+          "eric": [
+            "Minority Serving Institutions"
+          ]
+        },
+        {
+          "id": "hbcu",
+          "label": "Historically Black college or university",
+          "eric": [
+            "Black Colleges",
+            "Minority Serving Institutions"
+          ]
+        },
+        {
+          "id": "tribal_college",
+          "label": "Tribal college or university",
+          "eric": [
+            "Tribally Controlled Education",
+            "Minority Serving Institutions"
+          ],
+          "note": "Selecting this prompts the CARE questions."
+        },
+        {
+          "id": "museum_science_center",
+          "label": "Museum, science center, or library",
+          "eric": [
+            "Museums"
+          ]
+        },
+        {
+          "id": "community_organization",
+          "label": "Community organization",
+          "eric": [
+            "Community Organizations"
+          ]
+        },
+        {
+          "id": "online_provider",
+          "label": "Online learning provider",
+          "eric": [
+            "Distance Education"
+          ]
+        },
+        {
+          "id": "other_institution",
+          "label": "Other",
+          "eric": []
+        }
       ]
     },
     "locale": {
       "label": "Locale",
       "definition": "Community type where the study took place (NCES-style locale categories).",
       "terms": [
-        {"id": "city", "label": "City", "eric": ["Urban Areas"], "module1": ["City"]},
-        {"id": "suburban", "label": "Suburban", "eric": [], "module1": ["Suburban"]},
-        {"id": "town", "label": "Town", "eric": [], "module1": ["Town"]},
-        {"id": "rural", "label": "Rural", "eric": ["Rural Areas"], "module1": ["Rural"]},
-        {"id": "online", "label": "Online / virtual", "eric": ["Distance Education"], "module1": ["Virtual / Online Environment"]},
-        {"id": "multiple_locales", "label": "Multiple locales", "eric": [], "module1": ["Multiple / mixed locations"]}
+        {
+          "id": "city",
+          "label": "City",
+          "eric": [
+            "Urban Areas"
+          ]
+        },
+        {
+          "id": "suburban",
+          "label": "Suburban",
+          "eric": []
+        },
+        {
+          "id": "town",
+          "label": "Town",
+          "eric": []
+        },
+        {
+          "id": "rural",
+          "label": "Rural",
+          "eric": [
+            "Rural Areas"
+          ]
+        },
+        {
+          "id": "online",
+          "label": "Online / virtual",
+          "eric": [
+            "Distance Education"
+          ]
+        },
+        {
+          "id": "multiple_locales",
+          "label": "Multiple locales",
+          "eric": []
+        }
       ]
     },
     "modality": {
       "label": "Instructional modality",
       "definition": "How instruction or participation was delivered.",
       "terms": [
-        {"id": "in_person", "label": "In person", "eric": []},
-        {"id": "online_synchronous", "label": "Online, synchronous", "eric": ["Online Courses", "Synchronous Communication"]},
-        {"id": "online_asynchronous", "label": "Online, asynchronous", "eric": ["Online Courses", "Asynchronous Communication"]},
-        {"id": "hybrid", "label": "Hybrid / blended", "eric": ["Blended Learning"]},
-        {"id": "not_instructional", "label": "Not an instructional setting", "eric": []}
+        {
+          "id": "in_person",
+          "label": "In person",
+          "eric": []
+        },
+        {
+          "id": "online_synchronous",
+          "label": "Online, synchronous",
+          "eric": [
+            "Online Courses",
+            "Synchronous Communication"
+          ]
+        },
+        {
+          "id": "online_asynchronous",
+          "label": "Online, asynchronous",
+          "eric": [
+            "Online Courses",
+            "Asynchronous Communication"
+          ]
+        },
+        {
+          "id": "hybrid",
+          "label": "Hybrid / blended",
+          "eric": [
+            "Blended Learning"
+          ]
+        },
+        {
+          "id": "not_instructional",
+          "label": "Not an instructional setting",
+          "eric": []
+        }
       ]
     },
     "learning_environment": {
       "label": "Learning environment",
       "definition": "The instructional setting in which learning or data collection took place.",
       "terms": [
-        {"id": "large_lecture", "label": "Large lecture class", "eric": ["Large Group Instruction", "Lecture Method"]},
-        {"id": "small_class", "label": "Small class, seminar, recitation, or discussion section", "eric": ["Small Group Instruction"]},
-        {"id": "laboratory", "label": "Laboratory", "eric": ["Laboratories", "Science Laboratories"]},
-        {"id": "field", "label": "Field course, field trip, or field site", "eric": ["Field Trips"]},
-        {"id": "online_course", "label": "Online course environment", "eric": ["Online Courses"], "module1": ["Online or virtual environment"]},
-        {"id": "museum_exhibit", "label": "Museum, exhibit, or science center", "eric": ["Museums", "Informal Education"], "module1": ["Museum, gallery, or cultural institution", "Library or science center"]},
-        {"id": "out_of_school_program", "label": "Afterschool, summer, or out-of-school program", "eric": ["After School Programs", "Summer Programs"]},
-        {"id": "community_or_public_space", "label": "Community setting, public space, or event", "eric": [], "module1": ["Community organization or public space", "Public event, exhibition, or festival"]},
-        {"id": "home_family", "label": "Home or family setting", "eric": [], "module1": ["Home or family setting"]},
-        {"id": "workplace", "label": "Workplace or professional setting", "eric": [], "module1": ["Workplace or professional setting"]},
-        {"id": "k12_classroom", "label": "K-12 classroom", "eric": [], "module1": ["K-12 school or classroom"]},
-        {"id": "postsecondary_classroom", "label": "College or university classroom", "eric": [], "module1": ["College, university, or other postsecondary institution"]},
-        {"id": "other_environment", "label": "Other", "eric": [], "module1": ["Other / not listed"]}
+        {
+          "id": "large_lecture",
+          "label": "Large lecture class",
+          "eric": [
+            "Large Group Instruction",
+            "Lecture Method"
+          ]
+        },
+        {
+          "id": "small_class",
+          "label": "Small class, seminar, recitation, or discussion section",
+          "eric": [
+            "Small Group Instruction"
+          ]
+        },
+        {
+          "id": "laboratory",
+          "label": "Laboratory",
+          "eric": [
+            "Laboratories",
+            "Science Laboratories"
+          ]
+        },
+        {
+          "id": "field",
+          "label": "Field course, field trip, or field site",
+          "eric": [
+            "Field Trips"
+          ]
+        },
+        {
+          "id": "online_course",
+          "label": "Online course environment",
+          "eric": [
+            "Online Courses"
+          ]
+        },
+        {
+          "id": "museum_exhibit",
+          "label": "Museum, exhibit, or science center",
+          "eric": [
+            "Museums",
+            "Informal Education"
+          ]
+        },
+        {
+          "id": "out_of_school_program",
+          "label": "Afterschool, summer, or out-of-school program",
+          "eric": [
+            "After School Programs",
+            "Summer Programs"
+          ]
+        },
+        {
+          "id": "community_or_public_space",
+          "label": "Community setting, public space, or event",
+          "eric": []
+        },
+        {
+          "id": "home_family",
+          "label": "Home or family setting",
+          "eric": []
+        },
+        {
+          "id": "workplace",
+          "label": "Workplace or professional setting",
+          "eric": []
+        },
+        {
+          "id": "k12_classroom",
+          "label": "K-12 classroom",
+          "eric": []
+        },
+        {
+          "id": "postsecondary_classroom",
+          "label": "College or university classroom",
+          "eric": []
+        },
+        {
+          "id": "other_environment",
+          "label": "Other",
+          "eric": []
+        }
       ]
     },
     "pedagogy": {
       "label": "Instructional approach",
       "definition": "Main instructional approach(es) used or studied (optional).",
       "terms": [
-        {"id": "lecture_based", "label": "Lecture-based", "eric": ["Lecture Method"]},
-        {"id": "active_learning", "label": "Active learning", "eric": ["Active Learning"]},
-        {"id": "inquiry_based", "label": "Inquiry-based", "eric": ["Inquiry"]},
-        {"id": "problem_project_based", "label": "Problem- or project-based", "eric": ["Problem Based Learning"]},
-        {"id": "flipped", "label": "Flipped classroom", "eric": ["Flipped Classroom"]},
-        {"id": "student_centered", "label": "Student-centered", "eric": ["Student Centered Learning"]},
-        {"id": "research_experience", "label": "Course-based or apprenticed research experience", "eric": ["Undergraduate Study"]},
-        {"id": "other_pedagogy", "label": "Other", "eric": []}
+        {
+          "id": "lecture_based",
+          "label": "Lecture-based",
+          "eric": [
+            "Lecture Method"
+          ]
+        },
+        {
+          "id": "active_learning",
+          "label": "Active learning",
+          "eric": [
+            "Active Learning"
+          ]
+        },
+        {
+          "id": "inquiry_based",
+          "label": "Inquiry-based",
+          "eric": [
+            "Inquiry"
+          ]
+        },
+        {
+          "id": "problem_project_based",
+          "label": "Problem- or project-based",
+          "eric": [
+            "Problem Based Learning"
+          ]
+        },
+        {
+          "id": "flipped",
+          "label": "Flipped classroom",
+          "eric": [
+            "Flipped Classroom"
+          ]
+        },
+        {
+          "id": "student_centered",
+          "label": "Student-centered",
+          "eric": [
+            "Student Centered Learning"
+          ]
+        },
+        {
+          "id": "research_experience",
+          "label": "Course-based or apprenticed research experience",
+          "eric": [
+            "Undergraduate Study"
+          ]
+        },
+        {
+          "id": "other_pedagogy",
+          "label": "Other",
+          "eric": []
+        }
       ]
     },
     "study_design": {
       "label": "Study design (evidence type)",
       "definition": "The design that produced the evidence in the resource.",
       "terms": [
-        {"id": "descriptive", "label": "Descriptive", "eric": ["Educational Research"]},
-        {"id": "correlational", "label": "Correlational", "eric": ["Correlation"]},
-        {"id": "quasi_experimental", "label": "Quasi-experimental", "eric": ["Quasiexperimental Design"]},
-        {"id": "randomized_experiment", "label": "Randomized experiment", "eric": ["Randomized Controlled Trials"]},
-        {"id": "longitudinal", "label": "Longitudinal", "eric": ["Longitudinal Studies"],
-         "module1": ["Longitudinal: Cohort Study / Repeated Measures", "Longitudinal: Trend / Multiple Intervals"]},
-        {"id": "qualitative", "label": "Qualitative", "eric": ["Qualitative Research"]},
-        {"id": "mixed_methods", "label": "Mixed methods", "eric": ["Mixed Methods Research"]},
-        {"id": "case_study", "label": "Case study", "eric": ["Case Studies"]},
-        {"id": "design_based", "label": "Design-based research", "eric": ["Research Design"]},
-        {"id": "program_evaluation", "label": "Program evaluation", "eric": ["Program Evaluation"]},
-        {"id": "instrument_development", "label": "Instrument development or validation", "eric": ["Test Construction", "Psychometrics"]},
-        {"id": "secondary_analysis", "label": "Secondary analysis of existing data", "eric": ["Data Analysis"]},
-        {"id": "meta_analysis", "label": "Meta-analysis or systematic review", "eric": ["Meta Analysis"]},
-        {"id": "replication", "label": "Replication", "eric": ["Replication (Evaluation)"]}
+        {
+          "id": "cross_sectional",
+          "label": "Cross-sectional (single time point)",
+          "eric": []
+        },
+        {
+          "id": "descriptive",
+          "label": "Descriptive",
+          "eric": [
+            "Educational Research"
+          ]
+        },
+        {
+          "id": "correlational",
+          "label": "Correlational",
+          "eric": [
+            "Correlation"
+          ]
+        },
+        {
+          "id": "quasi_experimental",
+          "label": "Quasi-experimental",
+          "eric": [
+            "Quasiexperimental Design"
+          ]
+        },
+        {
+          "id": "randomized_experiment",
+          "label": "Randomized experiment",
+          "eric": [
+            "Randomized Controlled Trials"
+          ]
+        },
+        {
+          "id": "longitudinal",
+          "label": "Longitudinal",
+          "eric": [
+            "Longitudinal Studies"
+          ]
+        },
+        {
+          "id": "pre_post",
+          "label": "Pre/post measurement around an intervention",
+          "eric": []
+        },
+        {
+          "id": "time_series",
+          "label": "Time series",
+          "eric": []
+        },
+        {
+          "id": "qualitative",
+          "label": "Qualitative",
+          "eric": [
+            "Qualitative Research"
+          ]
+        },
+        {
+          "id": "mixed_methods",
+          "label": "Mixed methods",
+          "eric": [
+            "Mixed Methods Research"
+          ]
+        },
+        {
+          "id": "case_study",
+          "label": "Case study",
+          "eric": [
+            "Case Studies"
+          ]
+        },
+        {
+          "id": "design_based",
+          "label": "Design-based research",
+          "eric": [
+            "Research Design"
+          ]
+        },
+        {
+          "id": "program_evaluation",
+          "label": "Program evaluation",
+          "eric": [
+            "Program Evaluation"
+          ]
+        },
+        {
+          "id": "instrument_development",
+          "label": "Instrument development or validation",
+          "eric": [
+            "Test Construction",
+            "Psychometrics"
+          ]
+        },
+        {
+          "id": "secondary_analysis",
+          "label": "Secondary analysis of existing data",
+          "eric": [
+            "Data Analysis"
+          ]
+        },
+        {
+          "id": "meta_analysis",
+          "label": "Meta-analysis or systematic review",
+          "eric": [
+            "Meta Analysis"
+          ]
+        },
+        {
+          "id": "replication",
+          "label": "Replication",
+          "eric": [
+            "Replication (Evaluation)"
+          ]
+        }
+      ]
+    },
+    "unit_of_analysis": {
+      "label": "Unit of analysis",
+      "definition": "The unit the analysis is about.",
+      "terms": [
+        {
+          "id": "individual",
+          "label": "Individual (person / participant)",
+          "eric": []
+        },
+        {
+          "id": "group",
+          "label": "Group, household, or community",
+          "eric": []
+        },
+        {
+          "id": "organization",
+          "label": "Organization or institution",
+          "eric": []
+        },
+        {
+          "id": "place",
+          "label": "Place, site, or geographic area",
+          "eric": []
+        },
+        {
+          "id": "event",
+          "label": "Event, activity, or interaction",
+          "eric": []
+        },
+        {
+          "id": "artifact",
+          "label": "Document, artifact, or media object",
+          "eric": []
+        },
+        {
+          "id": "multilevel",
+          "label": "Other or multi-level",
+          "eric": []
+        }
+      ]
+    },
+    "sampling_procedure": {
+      "label": "Sampling procedure",
+      "definition": "How participants or units were selected.",
+      "terms": [
+        {
+          "id": "census",
+          "label": "Census of all eligible units",
+          "eric": []
+        },
+        {
+          "id": "convenience",
+          "label": "Convenience sample",
+          "eric": []
+        },
+        {
+          "id": "volunteer",
+          "label": "Volunteer / self-selected",
+          "eric": []
+        },
+        {
+          "id": "purposive",
+          "label": "Purposive / criterion-based",
+          "eric": []
+        },
+        {
+          "id": "stratified",
+          "label": "Stratified sample",
+          "eric": []
+        },
+        {
+          "id": "cluster",
+          "label": "Cluster or multistage sample",
+          "eric": []
+        },
+        {
+          "id": "random",
+          "label": "Random sample within sites",
+          "eric": []
+        },
+        {
+          "id": "systematic",
+          "label": "Systematic sample from a list",
+          "eric": []
+        },
+        {
+          "id": "time_location",
+          "label": "Time-location or venue-based sample",
+          "eric": []
+        },
+        {
+          "id": "snowball",
+          "label": "Snowball / peer referral",
+          "eric": []
+        },
+        {
+          "id": "mixed_sampling",
+          "label": "Multiple or mixed procedures",
+          "eric": []
+        },
+        {
+          "id": "other_sampling",
+          "label": "Other",
+          "eric": []
+        }
       ]
     },
     "measurement_evidence": {
       "label": "Measurement evidence",
       "definition": "Kinds of reliability or validity evidence the resource provides, following the sources of validity evidence in the Standards for Educational and Psychological Testing (AERA, APA, NCME, 2014).",
       "terms": [
-        {"id": "test_content", "label": "Evidence based on test content", "eric": ["Content Validity", "Test Validity"]},
-        {"id": "response_processes", "label": "Evidence based on response processes", "eric": ["Test Validity"]},
-        {"id": "internal_structure", "label": "Evidence based on internal structure", "eric": ["Construct Validity", "Factor Analysis"]},
-        {"id": "relations_to_other_variables", "label": "Evidence based on relations to other variables", "eric": ["Predictive Validity", "Test Validity"]},
-        {"id": "consequences", "label": "Evidence based on consequences of testing", "eric": ["Test Validity"]},
-        {"id": "reliability", "label": "Reliability / precision", "eric": ["Test Reliability"]},
-        {"id": "fairness", "label": "Fairness / differential item functioning", "eric": ["Test Bias"]},
-        {"id": "irt_scaling", "label": "Item response theory scaling", "eric": ["Item Response Theory"]}
+        {
+          "id": "test_content",
+          "label": "Evidence based on test content",
+          "eric": [
+            "Content Validity",
+            "Test Validity"
+          ]
+        },
+        {
+          "id": "response_processes",
+          "label": "Evidence based on response processes",
+          "eric": [
+            "Test Validity"
+          ]
+        },
+        {
+          "id": "internal_structure",
+          "label": "Evidence based on internal structure",
+          "eric": [
+            "Construct Validity",
+            "Factor Analysis"
+          ]
+        },
+        {
+          "id": "relations_to_other_variables",
+          "label": "Evidence based on relations to other variables",
+          "eric": [
+            "Predictive Validity",
+            "Test Validity"
+          ]
+        },
+        {
+          "id": "consequences",
+          "label": "Evidence based on consequences of testing",
+          "eric": [
+            "Test Validity"
+          ]
+        },
+        {
+          "id": "reliability",
+          "label": "Reliability / precision",
+          "eric": [
+            "Test Reliability"
+          ]
+        },
+        {
+          "id": "fairness",
+          "label": "Fairness / differential item functioning",
+          "eric": [
+            "Test Bias"
+          ]
+        },
+        {
+          "id": "irt_scaling",
+          "label": "Item response theory scaling",
+          "eric": [
+            "Item Response Theory"
+          ]
+        }
       ]
     },
     "data_collection_method": {
       "label": "Data collection method",
       "definition": "How data were collected.",
       "terms": [
-        {"id": "survey", "label": "Survey or questionnaire", "eric": ["Questionnaires", "Surveys"]},
-        {"id": "assessment", "label": "Test or assessment", "eric": ["Tests"]},
-        {"id": "observation", "label": "Observation", "eric": ["Observation", "Classroom Observation Techniques"]},
-        {"id": "interview", "label": "Interview", "eric": ["Interviews"]},
-        {"id": "focus_group", "label": "Focus group", "eric": ["Focus Groups"]},
-        {"id": "artifacts", "label": "Student work, documents, or artifacts", "eric": ["Content Analysis"]},
-        {"id": "learning_analytics", "label": "Learning analytics or log data", "eric": ["Learning Analytics"]},
-        {"id": "institutional_records", "label": "Institutional or administrative records", "eric": ["Student Records"]},
-        {"id": "other_method", "label": "Other", "eric": []}
+        {
+          "id": "survey",
+          "label": "Survey or questionnaire",
+          "eric": [
+            "Questionnaires",
+            "Surveys"
+          ]
+        },
+        {
+          "id": "assessment",
+          "label": "Test or assessment",
+          "eric": [
+            "Tests"
+          ]
+        },
+        {
+          "id": "observation",
+          "label": "Observation",
+          "eric": [
+            "Observation",
+            "Classroom Observation Techniques"
+          ]
+        },
+        {
+          "id": "interview",
+          "label": "Interview",
+          "eric": [
+            "Interviews"
+          ]
+        },
+        {
+          "id": "focus_group",
+          "label": "Focus group",
+          "eric": [
+            "Focus Groups"
+          ]
+        },
+        {
+          "id": "artifacts",
+          "label": "Student work, documents, or artifacts",
+          "eric": [
+            "Content Analysis"
+          ]
+        },
+        {
+          "id": "learning_analytics",
+          "label": "Learning analytics or log data",
+          "eric": [
+            "Learning Analytics"
+          ]
+        },
+        {
+          "id": "institutional_records",
+          "label": "Institutional or administrative records",
+          "eric": [
+            "Student Records"
+          ]
+        },
+        {
+          "id": "other_method",
+          "label": "Other",
+          "eric": []
+        }
       ]
     },
     "human_subjects_review": {
       "label": "Human-subjects review",
       "definition": "Status of ethics / IRB review, as reported by the researcher.",
       "terms": [
-        {"id": "approved", "label": "Approved", "eric": [], "module1": ["Approved"]},
-        {"id": "exempt", "label": "Exempt determination", "eric": [], "module1": ["Exempt determination received"]},
-        {"id": "not_human_subjects", "label": "Determined not to be human-subjects research", "eric": [], "module1": ["Not required — determination received"]},
-        {"id": "pending", "label": "Submitted / pending", "eric": [], "module1": ["Submitted / pending"]},
-        {"id": "not_assessed", "label": "Not yet assessed", "eric": [], "module1": ["Not yet assessed"]},
-        {"id": "other_review", "label": "Other", "eric": [], "module1": ["Other / not listed"]}
+        {
+          "id": "approved",
+          "label": "Approved",
+          "eric": []
+        },
+        {
+          "id": "exempt",
+          "label": "Exempt determination",
+          "eric": []
+        },
+        {
+          "id": "not_human_subjects",
+          "label": "Determined not to be human-subjects research",
+          "eric": []
+        },
+        {
+          "id": "pending",
+          "label": "Submitted / pending",
+          "eric": []
+        },
+        {
+          "id": "not_assessed",
+          "label": "Not yet assessed",
+          "eric": []
+        },
+        {
+          "id": "other_review",
+          "label": "Other",
+          "eric": []
+        }
       ]
     },
     "consent": {
       "label": "Participation consent",
       "definition": "How participants agreed to take part.",
       "terms": [
-        {"id": "informed_consent", "label": "Informed consent", "eric": ["Informed Consent"], "module1": ["Informed consent obtained"]},
-        {"id": "permission_and_assent", "label": "Parent/guardian permission and participant assent", "eric": ["Informed Consent"], "module1": ["Parent/guardian permission and participant assent"]},
-        {"id": "waiver", "label": "Waiver or alteration of consent", "eric": [], "module1": ["Waiver or alteration approved"]},
-        {"id": "not_applicable", "label": "Not applicable", "eric": [], "module1": ["Not applicable — determination received"]},
-        {"id": "not_assessed", "label": "Not yet assessed", "eric": [], "module1": ["Not yet assessed"]},
-        {"id": "other_consent", "label": "Other", "eric": [], "module1": ["Other / not listed"]}
+        {
+          "id": "informed_consent",
+          "label": "Informed consent",
+          "eric": [
+            "Informed Consent"
+          ]
+        },
+        {
+          "id": "permission_and_assent",
+          "label": "Parent/guardian permission and participant assent",
+          "eric": [
+            "Informed Consent"
+          ]
+        },
+        {
+          "id": "waiver",
+          "label": "Waiver or alteration of consent",
+          "eric": []
+        },
+        {
+          "id": "not_applicable",
+          "label": "Not applicable",
+          "eric": []
+        },
+        {
+          "id": "not_assessed",
+          "label": "Not yet assessed",
+          "eric": []
+        },
+        {
+          "id": "other_consent",
+          "label": "Other",
+          "eric": []
+        }
       ]
     },
     "consent_for_sharing": {
       "label": "Consent for data sharing",
       "definition": "What participants (or the approved waiver) allow regarding sharing data beyond the research team.",
       "terms": [
-        {"id": "broad_sharing", "label": "Broad sharing of de-identified data consented", "eric": []},
-        {"id": "restricted_sharing", "label": "Sharing only under restrictions (e.g., approved researchers, data-use agreement)", "eric": []},
-        {"id": "no_sharing", "label": "No sharing beyond the research team", "eric": []},
-        {"id": "not_addressed", "label": "Consent did not address sharing", "eric": []},
-        {"id": "not_applicable", "label": "Not applicable (no human-subjects data)", "eric": []}
+        {
+          "id": "broad_sharing",
+          "label": "Broad sharing of de-identified data consented",
+          "eric": []
+        },
+        {
+          "id": "restricted_sharing",
+          "label": "Sharing only under restrictions (e.g., approved researchers, data-use agreement)",
+          "eric": []
+        },
+        {
+          "id": "no_sharing",
+          "label": "No sharing beyond the research team",
+          "eric": []
+        },
+        {
+          "id": "not_addressed",
+          "label": "Consent did not address sharing",
+          "eric": []
+        },
+        {
+          "id": "not_applicable",
+          "label": "Not applicable (no human-subjects data)",
+          "eric": []
+        }
       ]
     },
     "identifiability": {
       "label": "Identifiability",
       "definition": "Identifiability of the data in this resource.",
       "terms": [
-        {"id": "identifiable", "label": "Identifiable", "eric": []},
-        {"id": "coded", "label": "Coded / pseudonymous (a linking key exists)", "eric": []},
-        {"id": "deidentified", "label": "De-identified", "eric": []},
-        {"id": "anonymous", "label": "Anonymous (never linked to identity)", "eric": []},
-        {"id": "aggregate_only", "label": "Aggregate statistics only", "eric": []},
-        {"id": "synthetic", "label": "Synthetic", "eric": []},
-        {"id": "not_applicable", "label": "Not applicable (no participant data)", "eric": []}
+        {
+          "id": "identifiable",
+          "label": "Identifiable",
+          "eric": []
+        },
+        {
+          "id": "coded",
+          "label": "Coded / pseudonymous (a linking key exists)",
+          "eric": []
+        },
+        {
+          "id": "deidentified",
+          "label": "De-identified",
+          "eric": []
+        },
+        {
+          "id": "anonymous",
+          "label": "Anonymous (never linked to identity)",
+          "eric": []
+        },
+        {
+          "id": "aggregate_only",
+          "label": "Aggregate statistics only",
+          "eric": []
+        },
+        {
+          "id": "synthetic",
+          "label": "Synthetic",
+          "eric": []
+        },
+        {
+          "id": "not_applicable",
+          "label": "Not applicable (no participant data)",
+          "eric": []
+        }
       ]
     },
     "sensitivity_flag": {
       "label": "Sensitivity flags",
       "definition": "Kinds of sensitive information present in the underlying data.",
       "terms": [
-        {"id": "direct_identifiers", "label": "Direct identifiers", "eric": ["Privacy"], "module1": ["Direct identifiers"]},
-        {"id": "indirect_identifiers", "label": "Indirect identifiers or small groups", "eric": ["Privacy"], "module1": ["Indirect identifiers / small groups"]},
-        {"id": "sensitive_information", "label": "Sensitive personal information", "eric": ["Confidentiality"], "module1": ["Sensitive personal information"]},
-        {"id": "education_records", "label": "Education records (FERPA)", "eric": ["Student Records", "Privacy"], "module1": ["Education records"]}
+        {
+          "id": "direct_identifiers",
+          "label": "Direct identifiers",
+          "eric": [
+            "Privacy"
+          ]
+        },
+        {
+          "id": "indirect_identifiers",
+          "label": "Indirect identifiers or small groups",
+          "eric": [
+            "Privacy"
+          ]
+        },
+        {
+          "id": "sensitive_information",
+          "label": "Sensitive personal information",
+          "eric": [
+            "Confidentiality"
+          ]
+        },
+        {
+          "id": "education_records",
+          "label": "Education records (FERPA)",
+          "eric": [
+            "Student Records",
+            "Privacy"
+          ]
+        }
       ]
     },
     "access_level": {
       "label": "Access level",
       "definition": "How the data in or described by this resource can be accessed.",
       "terms": [
-        {"id": "open", "label": "Open (public)", "eric": [], "module1": ["Public release planned, pending review"]},
-        {"id": "registered", "label": "Registered users", "eric": []},
-        {"id": "controlled", "label": "Controlled access (application and/or data-use agreement)", "eric": [], "module1": ["Controlled access through an external repository"]},
-        {"id": "closed", "label": "Closed (research team only)", "eric": [], "module1": ["Private — owner only"]},
-        {"id": "metadata_only", "label": "Metadata only (data not shared)", "eric": [], "module1": ["No data sharing planned"]}
+        {
+          "id": "open",
+          "label": "Open (public)",
+          "eric": []
+        },
+        {
+          "id": "registered",
+          "label": "Registered users",
+          "eric": []
+        },
+        {
+          "id": "controlled",
+          "label": "Controlled access (application and/or data-use agreement)",
+          "eric": []
+        },
+        {
+          "id": "closed",
+          "label": "Closed (research team only)",
+          "eric": []
+        },
+        {
+          "id": "metadata_only",
+          "label": "Metadata only (data not shared)",
+          "eric": []
+        }
       ]
     },
     "indigenous_data": {
       "label": "Indigenous data",
       "definition": "Whether the resource contains or derives from data about Indigenous Peoples, nations, communities, lands, territories, or knowledges.",
       "terms": [
-        {"id": "yes", "label": "Yes", "eric": ["Indigenous Populations"]},
-        {"id": "no", "label": "No", "eric": []},
-        {"id": "unknown", "label": "Unknown / not yet assessed", "eric": []}
+        {
+          "id": "yes",
+          "label": "Yes",
+          "eric": [
+            "Indigenous Populations"
+          ]
+        },
+        {
+          "id": "no",
+          "label": "No",
+          "eric": []
+        },
+        {
+          "id": "unknown",
+          "label": "Unknown / not yet assessed",
+          "eric": []
+        }
       ]
     },
     "indigenous_governance": {
       "label": "Indigenous data governance",
       "definition": "How Indigenous authority to control the data (CARE: Authority to control) is exercised.",
       "terms": [
-        {"id": "community_agreement", "label": "Data governance agreement with the community or nation", "eric": []},
-        {"id": "tribal_review", "label": "Tribal or Indigenous research review approval", "eric": []},
-        {"id": "consultation_ongoing", "label": "Consultation in progress", "eric": []},
-        {"id": "none", "label": "No governance arrangement", "eric": []},
-        {"id": "not_applicable", "label": "Not applicable", "eric": []}
+        {
+          "id": "community_agreement",
+          "label": "Data governance agreement with the community or nation",
+          "eric": []
+        },
+        {
+          "id": "tribal_review",
+          "label": "Tribal or Indigenous research review approval",
+          "eric": []
+        },
+        {
+          "id": "consultation_ongoing",
+          "label": "Consultation in progress",
+          "eric": []
+        },
+        {
+          "id": "none",
+          "label": "No governance arrangement",
+          "eric": []
+        },
+        {
+          "id": "not_applicable",
+          "label": "Not applicable",
+          "eric": []
+        }
       ]
     }
   }

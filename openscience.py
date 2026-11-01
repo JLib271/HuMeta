@@ -13,9 +13,9 @@ from oem.app.common import (auth_is_configured, current_project, empty_project, 
 from oem.app.pages import (
     analytics,
     data_repository,
-    metadata_profile,
+    metadata_check,
     published_viewer,
-    study_registry,
+    study_profile,
     variable_architect,
 )
 
@@ -39,12 +39,12 @@ app_mode = st.sidebar.radio(
     "Navigate Workspace Module:",
     [
         "About this app",
-        "1. Study Metadata Schema Registry",
+        "1. Study Metadata Profile",
         "2. Variable Instrument Architect",
-        "3. Community Data Repository Sync",
-        "4. Descriptive & Scale Analytics",
-        "5. Published Repository Viewer",
-        "6. STEMEd+ Metadata Profile",
+        "3. Check & Export Metadata",
+        "4. Community Data Repository Sync",
+        "5. Descriptive & Scale Analytics",
+        "6. Published Repository Viewer",
     ],
     key="app_mode"
 )
@@ -144,12 +144,12 @@ publish_hint = (
 )
 
 PAGES = {
-    "1. Study Metadata Schema Registry": study_registry.render,
+    "1. Study Metadata Profile": study_profile.render,
     "2. Variable Instrument Architect": variable_architect.render,
-    "3. Community Data Repository Sync": data_repository.render,
-    "4. Descriptive & Scale Analytics": analytics.render,
-    "5. Published Repository Viewer": published_viewer.render,
-    "6. STEMEd+ Metadata Profile": metadata_profile.render,
+    "3. Check & Export Metadata": metadata_check.render,
+    "4. Community Data Repository Sync": data_repository.render,
+    "5. Descriptive & Scale Analytics": analytics.render,
+    "6. Published Repository Viewer": published_viewer.render,
 }
 
 if app_mode in PAGES:

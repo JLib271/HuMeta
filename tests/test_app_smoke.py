@@ -15,12 +15,12 @@ from streamlit.testing.v1 import AppTest  # noqa: E402
 APP = str(Path(__file__).resolve().parent.parent / "openscience.py")
 PAGES = [
     "About this app",
-    "1. Study Metadata Schema Registry",
+    "1. Study Metadata Profile",
     "2. Variable Instrument Architect",
-    "3. Community Data Repository Sync",
-    "4. Descriptive & Scale Analytics",
-    "5. Published Repository Viewer",
-    "6. STEMEd+ Metadata Profile",
+    "3. Check & Export Metadata",
+    "4. Community Data Repository Sync",
+    "5. Descriptive & Scale Analytics",
+    "6. Published Repository Viewer",
 ]
 
 

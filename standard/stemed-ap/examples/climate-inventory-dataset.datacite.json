@@ -31,6 +31,9 @@
       "subject": "concept inventory"
     },
     {
+      "subject": "Climate change understanding in introductory Earth science"
+    },
+    {
       "subject": "Conceptual understanding",
       "subjectScheme": "STEMEd+ Constructs",
       "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/library/constructs.json",
@@ -103,10 +106,22 @@
       "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json#study_design.quasi_experimental"
     },
     {
-      "subject": "Longitudinal",
+      "subject": "Pre/post measurement around an intervention",
       "subjectScheme": "STEMEd+ Study Designs",
       "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json#study_design.longitudinal"
+      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json#study_design.pre_post"
+    },
+    {
+      "subject": "Individual (person / participant)",
+      "subjectScheme": "STEMEd+ Units of Analysis",
+      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json#unit_of_analysis.individual"
+    },
+    {
+      "subject": "Convenience sample",
+      "subjectScheme": "STEMEd+ Sampling Procedures",
+      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json#sampling_procedure.convenience"
     },
     {
       "subject": "Reliability / precision",
@@ -202,11 +217,6 @@
       "schemeUri": "https://eric.ed.gov/?ti=all"
     },
     {
-      "subject": "Longitudinal Studies",
-      "subjectScheme": "ERIC Thesaurus",
-      "schemeUri": "https://eric.ed.gov/?ti=all"
-    },
-    {
       "subject": "Test Reliability",
       "subjectScheme": "ERIC Thesaurus",
       "schemeUri": "https://eric.ed.gov/?ti=all"
@@ -233,7 +243,7 @@
       "descriptionType": "Abstract"
     },
     {
-      "description": "Study design: Quasi-experimental; Longitudinal. Data collection: Test or assessment; Survey or questionnaire. Participants: Students enrolled in two sections of an introductory Earth science course.",
+      "description": "Study design: Quasi-experimental; Pre/post measurement around an intervention. Research questions: How does students' understanding of basic climate change processes change over a semester of active-learning instruction? Sampling: Convenience sample. Data collection: Test or assessment; Survey or questionnaire. Participants: Students enrolled in two sections of an introductory Earth science course.",
       "descriptionType": "Methods"
     },
     {

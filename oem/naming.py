@@ -5,7 +5,7 @@
 Researchers do not type variable names; the app generates them from the
 library so every study that uses the same item, scale, or standard variable
 ends up with the same column name. That is what lets datasets from different
-studies be combined and lets Module 4 match columns automatically.
+studies be combined and lets Module 5 match columns automatically.
 
 Rules
 -----

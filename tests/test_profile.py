@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from oem import profile, vocab
+from oem import profile
 from oem.library import Library
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -35,16 +35,6 @@ def test_example_is_valid(lib):
 def test_generated_schema_is_in_sync(p):
     on_disk = json.loads((BASE / "schema" / "stemed-ap-record.schema.json").read_text())
     assert on_disk == profile.json_schema(p), "run python scripts/build_profile_artifacts.py"
-
-
-def test_module1_labels_exist_in_app(p):
-    """Every Module 1 answer used for pre-filling must be a real option in the app."""
-    source = (ROOT / "oem" / "app" / "pages" / "study_registry.py").read_text()
-    known = set(vocab.EDUCATION_LEVEL_OPTIONS + vocab.UNDERGRADUATE_LEVEL_OPTIONS + vocab.PROGRAM_TYPE_OPTIONS)
-    for vocab_id, v in p.vocabularies.items():
-        for term in v["terms"]:
-            for label in term.get("module1", []):
-                assert label in known or f'"{label}"' in source, f"{vocab_id}.{term['id']}: {label!r} not in Module 1"
 
 
 def test_term_ids_unique(p):
@@ -115,45 +105,6 @@ def test_education_records_warning_is_not_an_error(lib):
     assert [i.rule for i in issues] == ["R9"] and issues[0].severity == "warning"
 
 
-def test_from_project_prefills_module1_and_module2(lib):
-    project = {
-        "study": {
-            "study_title": "Belonging in intro chemistry",
-            "study_description": json.dumps({"description": "A study.", "metadata": {
-                "authors": [{"name": "A. Researcher", "orcid": "https://orcid.org/0000-0002-1825-0097"}],
-                "institution": "Example University", "language": "English (en)",
-                "subject_keywords": "chemistry, belonging", "content_domain": "General chemistry",
-                "participant_populations": ["Students / learners"],
-                "grade_level": ["Postsecondary undergraduate"],
-                "undergraduate_level": ["Entry-level / introductory (typically first-year)"],
-                "study_settings": ["College, university, or other postsecondary institution"],
-                "locale_setting": "Rural", "state_origin": "MI",
-                "time_method": "Longitudinal: Cohort Study / Repeated Measures",
-                "ethics_review_status": "Approved", "consent_or_authorization": "Informed consent obtained",
-                "data_sensitivity_and_identifiers": ["Education records"],
-                "planned_data_access": "Controlled access through an external repository",
-                "study_start_date": "2026-01-10", "study_end_date": "2026-05-01",
-            }}),
-        },
-        "module2_plan": {"variables": [{"Variable_ID": "Math_Membership", "Concept_Construct": "Membership"},
-                                       {"Concept_Construct": "Self-efficacy"}]},
-    }
-    record = profile.from_project(project, lib)
-    s = record["stemed"]
-    assert record["resource"]["creators"][0]["orcid"] == "0000-0002-1825-0097"
-    assert record["resource"]["language"] == "en"
-    assert s["discipline"] == ["chemistry"]
-    assert s["population"]["education_levels"] == ["undergraduate"]
-    assert s["population"]["undergraduate_levels"] == ["introductory"]
-    assert s["context"]["locale"] == ["rural"]
-    assert s["evidence"]["study_designs"] == ["longitudinal"]
-    assert s["ethics"]["human_subjects_review"] == "approved"
-    assert s["ethics"]["access_level"] == "controlled"
-    assert s["ethics"]["sensitivity_flags"] == ["education_records"]
-    assert {c["construct_id"] for c in s["constructs"]} >= {"sense_of_belonging", "self_efficacy"}
-    assert record["resource"]["geography"] == {"countries": ["US"], "us_states": ["MI"]}
-
-
 def test_datacite_json_has_mandatory_properties(lib):
     data = profile.to_datacite_json(EXAMPLE, lib)
     for key in ("doi", "types", "titles", "creators", "publisher", "publicationYear"):
@@ -200,3 +151,22 @@ def test_migrate_keeps_complete_records_and_fills_partial_ones(p):
     assert filled["stemed"]["ethics"]["access_level"] == "closed"
     assert filled["stemed"]["population"]["education_levels"] == []
     assert filled["stemed"]["care"]["local_contexts_labels"] == []
+
+
+def test_suggest_constructs_from_module2_plan(lib):
+    plan = {"variables": [{"Variable_ID": "Math_Membership", "Concept_Construct": "Membership"},
+                          {"Concept_Construct": "Self-efficacy"}, {"Concept_Construct": "Unrelated thing"}]}
+    assert set(profile.suggest_constructs(lib, plan)) >= {"sense_of_belonging", "self_efficacy"}
+
+
+def test_study_record_view_for_later_modules(p):
+    study = profile.to_study_record(EXAMPLE, profile=p)
+    meta = json.loads(study["study_description"])["metadata"]
+    assert study["study_title"] == EXAMPLE["resource"]["title"]
+    assert meta["content_domain"] == EXAMPLE["stemed"]["design"]["topic"]
+    assert meta["unit_of_analysis"] == "Individual (person / participant)"
+    assert meta["sampling_procedure"] == "Convenience sample"
+    assert meta["participant_populations"] == ["Students / learners"]
+    assert meta["state_origin"] == "MI"
+    again = profile.to_study_record(EXAMPLE, existing=study, profile=p)
+    assert again["id"] == study["id"] and again["created_at"] == study["created_at"]

@@ -436,11 +436,14 @@
               "uniqueItems": true,
               "items": {
                 "enum": [
+                  "cross_sectional",
                   "descriptive",
                   "correlational",
                   "quasi_experimental",
                   "randomized_experiment",
                   "longitudinal",
+                  "pre_post",
+                  "time_series",
                   "qualitative",
                   "mixed_methods",
                   "case_study",
@@ -485,6 +488,59 @@
                   "other_method"
                 ]
               }
+            }
+          }
+        },
+        "design": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "unit_of_analysis": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "individual",
+                  "group",
+                  "organization",
+                  "place",
+                  "event",
+                  "artifact",
+                  "multilevel"
+                ]
+              }
+            },
+            "sampling_procedure": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "census",
+                  "convenience",
+                  "volunteer",
+                  "purposive",
+                  "stratified",
+                  "cluster",
+                  "random",
+                  "systematic",
+                  "time_location",
+                  "snowball",
+                  "mixed_sampling",
+                  "other_sampling"
+                ]
+              }
+            },
+            "topic": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "research_questions": {
+              "type": [
+                "string",
+                "null"
+              ]
             }
           }
         },
@@ -556,6 +612,12 @@
                 "closed",
                 "metadata_only",
                 null
+              ]
+            },
+            "governance_notes": {
+              "type": [
+                "string",
+                "null"
               ]
             }
           }

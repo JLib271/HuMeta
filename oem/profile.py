@@ -5,8 +5,9 @@
 The profile itself is data in ``standard/stemed-ap/`` (``profile.json`` and
 ``vocabularies.json``); this module loads it and works with records:
 
-* :func:`empty_record` / :func:`from_project` create a record, pre-filled from
-  an OpenEdMetadata project file (Modules 1 and 2) where possible.
+* :func:`empty_record` creates a record; :func:`suggest_constructs` proposes
+  constructs from a Module 2 plan; :func:`to_study_record` gives the study view
+  that Module 2 and later modules read.
 * :func:`validate` checks a record against the JSON Schema and the profile's
   obligations and responsible-sharing rules.
 * :func:`to_datacite_json` / :func:`to_datacite_xml` export DataCite 4.7.
@@ -50,6 +51,8 @@ VOCAB_FIELDS: dict[tuple[str, ...], tuple[str, str]] = {
     ("setting", "learning_environments"): ("learning_environment", "STEMEd+ Learning Environments"),
     ("setting", "pedagogy"): ("pedagogy", "STEMEd+ Instructional Approaches"),
     ("evidence", "study_designs"): ("study_design", "STEMEd+ Study Designs"),
+    ("design", "unit_of_analysis"): ("unit_of_analysis", "STEMEd+ Units of Analysis"),
+    ("design", "sampling_procedure"): ("sampling_procedure", "STEMEd+ Sampling Procedures"),
     ("evidence", "measurement_evidence"): ("measurement_evidence", "STEMEd+ Measurement Evidence"),
     ("evidence", "data_collection_methods"): ("data_collection_method", "STEMEd+ Data Collection Methods"),
     ("ethics", "sensitivity_flags"): ("sensitivity_flag", None),
@@ -131,6 +134,11 @@ def json_schema(profile: Profile | None = None) -> dict:
         "description": {"type": ["string", "null"]},
         "sample_size": {"type": ["integer", "null"], "minimum": 0},
     })
+    stemed_sections["design"]["properties"].update({
+        "topic": {"type": ["string", "null"]},
+        "research_questions": {"type": ["string", "null"]},
+    })
+    stemed_sections["ethics"]["properties"]["governance_notes"] = {"type": ["string", "null"]}
     stemed_sections["care"]["properties"].update({
         "statement": {"type": ["string", "null"]},
         "local_contexts_project": {"type": ["string", "null"], "format": "uri"},
@@ -212,6 +220,8 @@ def empty_record(profile: Profile | None = None) -> dict:
     for path in VOCAB_SINGLE:
         stemed.setdefault(path[0], {})[path[1]] = None
     stemed["population"].update({"description": None, "sample_size": None})
+    stemed["design"].update({"topic": None, "research_questions": None})
+    stemed["ethics"]["governance_notes"] = None
     stemed["care"].update({"statement": None, "local_contexts_project": None, "local_contexts_labels": []})
     return {
         "profile": "stemed-ap",
@@ -236,46 +246,6 @@ def _set(record: dict, path: tuple[str, ...], value: Any) -> None:
     node[path[-1]] = value
 
 
-def _map_module1(p: Profile, vocab_id: str, answers: list[str] | str | None) -> list[str]:
-    """Translate Module 1 answer labels into profile term ids (order kept, no duplicates)."""
-    if not answers:
-        return []
-    if isinstance(answers, str):
-        answers = [answers]
-    found: list[str] = []
-    for term in p.vocab(vocab_id):
-        if any(a in term.get("module1", []) for a in answers) and term["id"] not in found:
-            found.append(term["id"])
-    return found
-
-
-def _study_metadata(project: dict) -> tuple[dict, dict]:
-    study = project.get("study") or {}
-    try:
-        description = json.loads(study.get("study_description") or "{}")
-    except (TypeError, json.JSONDecodeError):
-        description = {}
-    return study, description if isinstance(description, dict) else {}
-
-
-DISCIPLINE_KEYWORDS = {
-    "biology": ["biology", "life science", "ecology", "genetics", "microbiology"],
-    "chemistry": ["chemistry", "chemical"],
-    "physics": ["physics"],
-    "geoscience": ["geoscience", "geology", "earth science", "geography", "ocean"],
-    "climate_science": ["climate", "environmental science", "atmospheric"],
-    "astronomy": ["astronomy", "astrophysics", "space science"],
-    "mathematics": ["mathematics", "math", "statistics", "calculus"],
-    "computer_science": ["computer science", "computing", "programming", "computer and information"],
-    "engineering": ["engineering"],
-}
-
-
-def suggest_disciplines(text: str) -> list[str]:
-    lowered = f" {text.lower()} "
-    return [d for d, words in DISCIPLINE_KEYWORDS.items() if any(w in lowered for w in words)]
-
-
 def suggest_constructs(lib: Library, plan: dict) -> list[str]:
     """Match Module 2 variables to library constructs (variable keys, labels, synonyms)."""
     texts: list[str] = []
@@ -292,60 +262,6 @@ def suggest_constructs(lib: Library, plan: dict) -> list[str]:
         ):
             found.append(construct["id"])
     return found
-
-
-def from_project(project: dict, lib: Library | None = None, profile: Profile | None = None) -> dict:
-    """Build a record pre-filled from a project file (Module 1 study + Module 2 plan)."""
-    p = profile or load()
-    lib = lib or Library.load()
-    record = empty_record(p)
-    study, desc = _study_metadata(project)
-    meta = desc.get("metadata") or {}
-    res = record["resource"]
-    res["title"] = str(study.get("study_title") or "")
-    creators = []
-    for author in meta.get("authors") or []:
-        if isinstance(author, dict) and str(author.get("name") or "").strip():
-            orcid = re.search(r"(\d{4}-){3}\d{3}[\dX]", str(author.get("orcid") or ""))
-            creators.append({"name": author["name"].strip(), "orcid": orcid.group(0) if orcid else None,
-                             "affiliation": meta.get("institution") or None})
-    res["creators"] = creators
-    res["publisher"] = str(meta.get("institution") or "")
-    description = str(desc.get("description") or "").strip()
-    res["description"] = None if description in ("", "No description provided.") else description
-    res["keywords"] = [k.strip() for k in str(meta.get("subject_keywords") or "").split(",") if k.strip()]
-    lang = re.search(r"\(([a-z]{2,3})\)", str(meta.get("language") or ""))
-    res["language"] = lang.group(1) if lang else None
-    if str(meta.get("funding_source") or "").strip() and meta["funding_source"].strip().lower() != "not funded":
-        res["funding"] = [{"funder_name": meta["funding_source"].strip(), "award_number": None}]
-    if meta.get("study_start_date") or meta.get("study_end_date"):
-        res["collection_dates"] = {"start": meta.get("study_start_date") or None, "end": meta.get("study_end_date") or None}
-    state = str(meta.get("state_origin") or "")
-    res["geography"] = {"countries": ["US"], "us_states": [state] if re.fullmatch(r"[A-Z]{2}", state) else []} if state else None
-    pid = str(meta.get("study_doi_or_persistent_identifier") or "").strip()
-    doi = re.search(r"10\.\d{4,9}/\S+", pid)
-    if doi:
-        res["identifier"] = {"value": doi.group(0), "type": "DOI"}
-
-    s = record["stemed"]
-    s["discipline"] = suggest_disciplines(" ".join([str(meta.get("content_domain") or ""), str(meta.get("subject_keywords") or "")]))
-    s["population"]["participant_roles"] = _map_module1(p, "participant_role", meta.get("participant_populations"))
-    s["population"]["education_levels"] = _map_module1(p, "education_level", meta.get("grade_level"))
-    s["population"]["undergraduate_levels"] = _map_module1(p, "undergraduate_level", meta.get("undergraduate_level"))
-    s["context"]["institution_types"] = _map_module1(p, "institution_type", meta.get("program_type"))
-    s["context"]["locale"] = _map_module1(p, "locale", meta.get("locale_setting"))
-    s["setting"]["learning_environments"] = _map_module1(p, "learning_environment", meta.get("study_settings"))
-    s["evidence"]["study_designs"] = _map_module1(p, "study_design", meta.get("time_method"))
-    s["ethics"]["sensitivity_flags"] = _map_module1(p, "sensitivity_flag", meta.get("data_sensitivity_and_identifiers"))
-    for path, vocab_id, key in [
-        (("ethics", "human_subjects_review"), "human_subjects_review", "ethics_review_status"),
-        (("ethics", "consent"), "consent", "consent_or_authorization"),
-        (("ethics", "access_level"), "access_level", "planned_data_access"),
-    ]:
-        mapped = _map_module1(p, vocab_id, meta.get(key))
-        _set(record, path, mapped[0] if mapped else None)
-    s["constructs"] = [{"construct_id": c} for c in suggest_constructs(lib, project.get("module2_plan") or {})]
-    return record
 
 
 def migrate(record: dict, profile: Profile | None = None) -> dict:
@@ -382,6 +298,7 @@ def validate(record: dict, lib: Library | None = None, profile: Profile | None =
         issues.append(Issue("error", where, err.message))
     if any(i.severity == "error" for i in issues):
         return issues
+    record = migrate(record, p)
 
     res, s = record["resource"], record["stemed"]
     rtype = res["resource_type"]
@@ -448,6 +365,7 @@ def eric_descriptors(record: dict, lib: Library | None = None, profile: Profile 
     """ERIC Thesaurus descriptors implied by the record (verified terms only by default)."""
     p = profile or load()
     lib = lib or Library.load()
+    record = migrate(record, p)
     terms: list[str] = []
     for c in record["stemed"].get("constructs", []):
         terms += lib.constructs.get(c["construct_id"], {}).get("eric", [])
@@ -479,6 +397,8 @@ def _ethics_text(record: dict, p: Profile) -> str:
     flags = [p.label("sensitivity_flag", f) for f in e.get("sensitivity_flags") or []]
     if flags:
         parts.append("Sensitivity: " + "; ".join(flags) + ".")
+    if (e.get("governance_notes") or "").strip():
+        parts.append(e["governance_notes"].strip())
     return "Ethics and access (STEMEd+ AP). " + " ".join(parts)
 
 
@@ -502,6 +422,11 @@ def _methods_text(record: dict, p: Profile) -> str | None:
     designs = [p.label("study_design", d) for d in s["evidence"].get("study_designs") or []]
     if designs:
         parts.append("Study design: " + "; ".join(designs) + ".")
+    if (s["design"].get("research_questions") or "").strip():
+        parts.append("Research questions: " + s["design"]["research_questions"].strip())
+    sampling = [p.label("sampling_procedure", m) for m in s["design"].get("sampling_procedure") or []]
+    if sampling:
+        parts.append("Sampling: " + "; ".join(sampling) + ".")
     methods = [p.label("data_collection_method", m) for m in s["evidence"].get("data_collection_methods") or []]
     if methods:
         parts.append("Data collection: " + "; ".join(methods) + ".")
@@ -514,6 +439,7 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
     """DataCite 4.7 metadata in the JSON 'attributes' form used by the DataCite REST API."""
     p = profile or load()
     lib = lib or Library.load()
+    record = migrate(record, p)
     res, s = record["resource"], record["stemed"]
     out: dict[str, Any] = {
         "types": {"resourceTypeGeneral": res["resource_type"], "resourceType": f"STEMEd+ {res['resource_type']}"},
@@ -538,6 +464,8 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
     subjects = out["subjects"]
     for kw in res.get("keywords") or []:
         subjects.append({"subject": kw})
+    if (s.get("design", {}).get("topic") or "").strip():
+        subjects.append({"subject": s["design"]["topic"].strip()})
     for c in s.get("constructs", []):
         construct = lib.constructs.get(c["construct_id"])
         if construct:
@@ -682,3 +610,71 @@ def to_datacite_xml(record: dict, lib: Library | None = None, profile: Profile |
                 sub(ref, "awardNumber", f["awardNumber"])
     ET.indent(root)
     return '<?xml version="1.0" encoding="UTF-8"?>\n' + ET.tostring(root, encoding="unicode")
+
+
+# ------------------------------------------------- legacy Module 1 study record
+def _labels(p: Profile, vocab_id: str, ids: list[str] | None) -> list[str]:
+    return [p.label(vocab_id, term_id) for term_id in ids or []]
+
+
+def to_study_record(record: dict, existing: dict | None = None, profile: Profile | None = None) -> dict:
+    """Derive the study record that Module 2 and later modules read.
+
+    The STEMEd+ record is the source of truth; this is a read-only view of it in
+    the shape those modules expect. (A follow-up can switch them to read the
+    STEMEd+ record directly and remove this.)
+    """
+    import time
+    import uuid
+
+    p = profile or load()
+    existing = existing or {}
+    res, s = record["resource"], record["stemed"]
+
+    def first(vocab_id: str, value: str | list[str] | None) -> str:
+        values = value if isinstance(value, list) else ([value] if value else [])
+        labels = _labels(p, vocab_id, values)
+        return labels[0] if labels else ""
+
+    authors = [{"name": c["name"], "orcid": c.get("orcid") or ""} for c in res.get("creators") or []]
+    dates = res.get("collection_dates") or {}
+    geo = res.get("geography") or {}
+    states = geo.get("us_states") or []
+    lang = res.get("language") or ""
+    metadata = {
+        "authors": authors,
+        "study_doi_or_persistent_identifier": (res.get("identifier") or {}).get("value") or "",
+        "institution": res.get("publisher") or "",
+        "funding_source": "; ".join(f["funder_name"] for f in res.get("funding") or []),
+        "research_questions_and_aims": s["design"].get("research_questions") or "",
+        "subject_keywords": ", ".join(res.get("keywords") or []),
+        "language": lang,
+        "unit_of_analysis": first("unit_of_analysis", s["design"].get("unit_of_analysis")),
+        "sampling_procedure": first("sampling_procedure", s["design"].get("sampling_procedure")),
+        "time_method": first("study_design", s["evidence"].get("study_designs")),
+        "study_start_date": dates.get("start") or "",
+        "study_end_date": dates.get("end") or "",
+        "state_origin": states[0] if len(states) == 1 else ("National/Multi-State" if states else ""),
+        "locale_setting": first("locale", s["context"].get("locale")),
+        "participant_populations": _labels(p, "participant_role", s["population"].get("participant_roles")),
+        "study_settings": _labels(p, "learning_environment", s["setting"].get("learning_environments")),
+        "grade_level": _labels(p, "education_level", s["population"].get("education_levels")),
+        "undergraduate_level": _labels(p, "undergraduate_level", s["population"].get("undergraduate_levels")),
+        "program_type": _labels(p, "institution_type", s["context"].get("institution_types")),
+        "content_domain": s["design"].get("topic") or "",
+        "ethics_review_status": first("human_subjects_review", s["ethics"].get("human_subjects_review")),
+        "consent_or_authorization": first("consent", s["ethics"].get("consent")),
+        "data_sensitivity_and_identifiers": _labels(p, "sensitivity_flag", s["ethics"].get("sensitivity_flags")),
+        "planned_data_access": first("access_level", s["ethics"].get("access_level")),
+        "governance_notes": s["ethics"].get("governance_notes") or "",
+    }
+    description = {"description": res.get("description") or "No description provided.", "metadata": metadata}
+    return {
+        "id": existing.get("id") or str(uuid.uuid4()),
+        "study_title": res.get("title") or "",
+        "principal_investigator": ", ".join(a["name"] for a in authors),
+        "institution": res.get("publisher") or "",
+        "funding_source": metadata["funding_source"],
+        "study_description": json.dumps(description, ensure_ascii=False),
+        "created_at": existing.get("created_at") or time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+    }

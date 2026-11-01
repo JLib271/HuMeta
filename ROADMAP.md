@@ -13,7 +13,7 @@ their data with common names and metadata, and sharing data responsibly.
 - Codebook builder with CSV/JSON export (`oem/codebook.py`)
 - App split into testable modules; CI with unit tests and page smoke tests
 - STEMEd+ Metadata Application Profile 1.0.0-draft.1 (`standard/stemed-ap/`) with DataCite 4.7 and ERIC
-  crosswalks, implemented in Module 6
+  crosswalks; Module 1 is now the profile form and Module 3 checks and exports
 
 ## Next
 
@@ -36,7 +36,7 @@ their data with common names and metadata, and sharing data responsibly.
    sensitivity (direct identifiers, small cells, free text, dates), deposit
    packages (codebook + README) for repositories with access controls, and
    storing repository DOIs instead of hosting datasets in this repository.
-5. **Automatic column matching** in Module 4 using the shared variable names.
+5. **Automatic column matching** in Module 5 using the shared variable names.
 
 ## Good first issues
 
