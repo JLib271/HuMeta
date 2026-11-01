@@ -10,7 +10,14 @@ from __future__ import annotations
 import streamlit as st
 import json
 from oem.app.common import (auth_is_configured, current_project, empty_project, navigate_to_module, parse_project_file, render_project_download, render_value_card, researcher_display_name, researcher_is_signed_in, value_propositions)
-from oem.app.pages import analytics, data_repository, published_viewer, study_registry, variable_architect
+from oem.app.pages import (
+    analytics,
+    data_repository,
+    metadata_profile,
+    published_viewer,
+    study_registry,
+    variable_architect,
+)
 
 
 # Storage model (no database):
@@ -36,7 +43,8 @@ app_mode = st.sidebar.radio(
         "2. Variable Instrument Architect",
         "3. Community Data Repository Sync",
         "4. Descriptive & Scale Analytics",
-        "5. Published Repository Viewer"
+        "5. Published Repository Viewer",
+        "6. STEMEd+ Metadata Profile",
     ],
     key="app_mode"
 )
@@ -141,6 +149,7 @@ PAGES = {
     "3. Community Data Repository Sync": data_repository.render,
     "4. Descriptive & Scale Analytics": analytics.render,
     "5. Published Repository Viewer": published_viewer.render,
+    "6. STEMEd+ Metadata Profile": metadata_profile.render,
 }
 
 if app_mode in PAGES:

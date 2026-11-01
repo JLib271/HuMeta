@@ -1,0 +1,167 @@
+vocabulary,term_id,term_label,eric_descriptor,eric_status
+construct,conceptual_understanding,Conceptual understanding,Scientific Concepts,verified
+construct,conceptual_understanding,Conceptual understanding,Misconceptions,verified
+construct,conceptual_understanding,Conceptual understanding,Concept Formation,verified
+construct,content_knowledge,Content knowledge,Knowledge Level,verified
+construct,content_knowledge,Content knowledge,Academic Achievement,verified
+construct,problem_solving,Problem solving,Problem Solving,verified
+construct,scientific_reasoning,Scientific reasoning,Science Process Skills,verified
+construct,scientific_reasoning,Scientific reasoning,Scientific Literacy,verified
+construct,quantitative_reasoning,Quantitative reasoning,Numeracy,verified
+construct,quantitative_reasoning,Quantitative reasoning,Mathematical Logic,verified
+construct,self_efficacy,Self-efficacy,Self Efficacy,verified
+construct,perceived_behavioral_control,Perceived behavioral control,Locus of Control,verified
+construct,interest,Interest,Student Interests,unverified
+construct,task_value,Task value,Values,verified
+construct,task_value,Task value,Expectation,verified
+construct,goal_orientation,Goal orientation,Goal Orientation,verified
+construct,anxiety,Academic anxiety,Anxiety,verified
+construct,anxiety,Academic anxiety,Test Anxiety,verified
+construct,anxiety,Academic anxiety,Mathematics Anxiety,verified
+construct,attitude_toward_subject,Attitude toward the subject or behavior,Scientific Attitudes,verified
+construct,attitude_toward_subject,Attitude toward the subject or behavior,Student Attitudes,unverified
+construct,behavioral_intention,Behavioral intention,Intention,verified
+construct,behavioral_intention,Behavioral intention,Academic Persistence,verified
+construct,mindset,Mindset / beliefs about ability,Beliefs,verified
+construct,mindset,Mindset / beliefs about ability,Self Concept,verified
+construct,sense_of_belonging,Sense of belonging,Sense of Belonging,verified
+construct,disciplinary_identity,Disciplinary identity,Professional Identity,verified
+construct,disciplinary_identity,Disciplinary identity,Identification (Psychology),verified
+construct,subjective_norm,Subjective norm,Social Influences,verified
+construct,subjective_norm,Subjective norm,Peer Influence,verified
+construct,stereotype_perception,Perceived stereotypes and climate,Stereotypes,unverified
+construct,stereotype_perception,Perceived stereotypes and climate,Educational Environment,verified
+construct,community_connectedness,Classroom community,Sense of Community,verified
+construct,epistemological_beliefs,Beliefs about the discipline and learning it,Epistemology,verified
+construct,epistemological_beliefs,Beliefs about the discipline and learning it,Beliefs,verified
+construct,nature_of_science,Understanding of the nature of science,Scientific Literacy,verified
+construct,nature_of_science,Understanding of the nature of science,Epistemology,verified
+construct,real_world_relevance,Perceived real-world relevance,Relevance (Education),verified
+construct,self_regulated_learning,Self-regulated learning,Metacognition,verified
+construct,self_regulated_learning,Self-regulated learning,Self Management,verified
+construct,learning_strategies,Study and learning strategies,Learning Strategies,verified
+construct,learning_strategies,Study and learning strategies,Study Habits,unverified
+construct,engagement,Engagement,Learner Engagement,verified
+construct,critical_thinking,Critical thinking,Critical Thinking,unverified
+construct,teaching_practices,Teaching practices,Teaching Methods,verified
+construct,student_classroom_activity,Student classroom activity,Classroom Observation Techniques,verified
+construct,student_classroom_activity,Student classroom activity,Student Behavior,unverified
+construct,reformed_teaching,Reformed / student-centered teaching,Active Learning,verified
+construct,reformed_teaching,Reformed / student-centered teaching,Inquiry,verified
+construct,reformed_teaching,Reformed / student-centered teaching,Student Centered Learning,unverified
+construct,teaching_beliefs,Instructor beliefs about teaching,Teacher Attitudes,verified
+construct,teaching_beliefs,Instructor beliefs about teaching,Beliefs,verified
+construct,learning_environment,Learning environment perceptions,Classroom Environment,verified
+construct,learning_environment,Learning environment perceptions,Educational Environment,verified
+discipline,biology,Biology and life sciences,Biology,verified
+discipline,chemistry,Chemistry,Chemistry,verified
+discipline,physics,Physics,Physics,verified
+discipline,geoscience,Geoscience / Earth science,Earth Science,verified
+discipline,geoscience,Geoscience / Earth science,Geology,verified
+discipline,climate_science,Climate and environmental science,Climate,verified
+discipline,climate_science,Climate and environmental science,Earth Science,verified
+discipline,astronomy,Astronomy and space science,Astronomy,verified
+discipline,mathematics,Mathematics and statistics,Mathematics Education,verified
+discipline,computer_science,Computer science and computing,Computer Science Education,verified
+discipline,engineering,Engineering,Engineering Education,verified
+discipline,general_stem,General or interdisciplinary STEM,Science Education,verified
+discipline,general_stem,General or interdisciplinary STEM,STEM Education,unverified
+education_level,early_childhood,Early childhood / pre-K,Early Childhood Education,verified
+education_level,elementary,Elementary / primary,Elementary Education,verified
+education_level,middle_school,Middle grades / lower secondary,Middle Schools,verified
+education_level,middle_school,Middle grades / lower secondary,Secondary Education,verified
+education_level,high_school,High school / upper secondary,High Schools,verified
+education_level,high_school,High school / upper secondary,Secondary Education,verified
+education_level,undergraduate,Undergraduate,Higher Education,verified
+education_level,undergraduate,Undergraduate,Postsecondary Education,verified
+education_level,undergraduate,Undergraduate,Undergraduate Students,verified
+education_level,graduate,Graduate / professional,Higher Education,verified
+education_level,graduate,Graduate / professional,Graduate Students,verified
+education_level,adult_education,"Adult, continuing, or workforce education",Adult Education,verified
+education_level,adult_education,"Adult, continuing, or workforce education",Adults,verified
+education_level,informal_learning,Informal or out-of-school learning (any age),Informal Education,verified
+participant_role,adults,Adults,Adults,verified
+participant_role,visitors,"Museum, science-center, or event visitors",Museums,verified
+institution_type,k12_public,Public K-12 school,Public Schools,verified
+institution_type,k12_private,Private K-12 school,Private Schools,verified
+institution_type,two_year_college,Two-year / community college,Two Year Colleges,verified
+institution_type,four_year_college,Four-year college or primarily undergraduate institution,Higher Education,verified
+institution_type,research_university,Research university,Research Universities,verified
+institution_type,minority_serving,Minority-serving institution,Minority Serving Institutions,verified
+institution_type,hbcu,Historically Black college or university,Black Colleges,verified
+institution_type,hbcu,Historically Black college or university,Minority Serving Institutions,verified
+institution_type,tribal_college,Tribal college or university,Tribally Controlled Education,verified
+institution_type,tribal_college,Tribal college or university,Minority Serving Institutions,verified
+institution_type,museum_science_center,"Museum, science center, or library",Museums,verified
+institution_type,community_organization,Community organization,Community Organizations,verified
+institution_type,online_provider,Online learning provider,Distance Education,verified
+locale,city,City,Urban Areas,verified
+locale,rural,Rural,Rural Areas,verified
+locale,online,Online / virtual,Distance Education,verified
+modality,online_synchronous,"Online, synchronous",Online Courses,verified
+modality,online_synchronous,"Online, synchronous",Synchronous Communication,unverified
+modality,online_asynchronous,"Online, asynchronous",Online Courses,verified
+modality,online_asynchronous,"Online, asynchronous",Asynchronous Communication,verified
+modality,hybrid,Hybrid / blended,Blended Learning,verified
+learning_environment,large_lecture,Large lecture class,Large Group Instruction,verified
+learning_environment,large_lecture,Large lecture class,Lecture Method,verified
+learning_environment,small_class,"Small class, seminar, recitation, or discussion section",Small Group Instruction,verified
+learning_environment,laboratory,Laboratory,Laboratories,verified
+learning_environment,laboratory,Laboratory,Science Laboratories,verified
+learning_environment,field,"Field course, field trip, or field site",Field Trips,verified
+learning_environment,online_course,Online course environment,Online Courses,verified
+learning_environment,museum_exhibit,"Museum, exhibit, or science center",Museums,verified
+learning_environment,museum_exhibit,"Museum, exhibit, or science center",Informal Education,verified
+learning_environment,out_of_school_program,"Afterschool, summer, or out-of-school program",After School Programs,verified
+learning_environment,out_of_school_program,"Afterschool, summer, or out-of-school program",Summer Programs,unverified
+pedagogy,lecture_based,Lecture-based,Lecture Method,verified
+pedagogy,active_learning,Active learning,Active Learning,verified
+pedagogy,inquiry_based,Inquiry-based,Inquiry,verified
+pedagogy,problem_project_based,Problem- or project-based,Problem Based Learning,verified
+pedagogy,flipped,Flipped classroom,Flipped Classroom,verified
+pedagogy,student_centered,Student-centered,Student Centered Learning,unverified
+pedagogy,research_experience,Course-based or apprenticed research experience,Undergraduate Study,verified
+study_design,descriptive,Descriptive,Educational Research,verified
+study_design,correlational,Correlational,Correlation,unverified
+study_design,quasi_experimental,Quasi-experimental,Quasiexperimental Design,verified
+study_design,randomized_experiment,Randomized experiment,Randomized Controlled Trials,verified
+study_design,longitudinal,Longitudinal,Longitudinal Studies,verified
+study_design,qualitative,Qualitative,Qualitative Research,verified
+study_design,mixed_methods,Mixed methods,Mixed Methods Research,verified
+study_design,case_study,Case study,Case Studies,verified
+study_design,design_based,Design-based research,Research Design,verified
+study_design,program_evaluation,Program evaluation,Program Evaluation,verified
+study_design,instrument_development,Instrument development or validation,Test Construction,verified
+study_design,instrument_development,Instrument development or validation,Psychometrics,verified
+study_design,secondary_analysis,Secondary analysis of existing data,Data Analysis,verified
+study_design,meta_analysis,Meta-analysis or systematic review,Meta Analysis,verified
+study_design,replication,Replication,Replication (Evaluation),verified
+measurement_evidence,test_content,Evidence based on test content,Content Validity,unverified
+measurement_evidence,test_content,Evidence based on test content,Test Validity,verified
+measurement_evidence,response_processes,Evidence based on response processes,Test Validity,verified
+measurement_evidence,internal_structure,Evidence based on internal structure,Construct Validity,verified
+measurement_evidence,internal_structure,Evidence based on internal structure,Factor Analysis,verified
+measurement_evidence,relations_to_other_variables,Evidence based on relations to other variables,Predictive Validity,verified
+measurement_evidence,relations_to_other_variables,Evidence based on relations to other variables,Test Validity,verified
+measurement_evidence,consequences,Evidence based on consequences of testing,Test Validity,verified
+measurement_evidence,reliability,Reliability / precision,Test Reliability,verified
+measurement_evidence,fairness,Fairness / differential item functioning,Test Bias,verified
+measurement_evidence,irt_scaling,Item response theory scaling,Item Response Theory,verified
+data_collection_method,survey,Survey or questionnaire,Questionnaires,verified
+data_collection_method,survey,Survey or questionnaire,Surveys,unverified
+data_collection_method,assessment,Test or assessment,Tests,verified
+data_collection_method,observation,Observation,Observation,verified
+data_collection_method,observation,Observation,Classroom Observation Techniques,verified
+data_collection_method,interview,Interview,Interviews,verified
+data_collection_method,focus_group,Focus group,Focus Groups,verified
+data_collection_method,artifacts,"Student work, documents, or artifacts",Content Analysis,verified
+data_collection_method,learning_analytics,Learning analytics or log data,Learning Analytics,verified
+data_collection_method,institutional_records,Institutional or administrative records,Student Records,unverified
+consent,informed_consent,Informed consent,Informed Consent,verified
+consent,permission_and_assent,Parent/guardian permission and participant assent,Informed Consent,verified
+sensitivity_flag,direct_identifiers,Direct identifiers,Privacy,verified
+sensitivity_flag,indirect_identifiers,Indirect identifiers or small groups,Privacy,verified
+sensitivity_flag,sensitive_information,Sensitive personal information,Confidentiality,verified
+sensitivity_flag,education_records,Education records (FERPA),Student Records,unverified
+sensitivity_flag,education_records,Education records (FERPA),Privacy,verified
+indigenous_data,yes,Yes,Indigenous Populations,verified

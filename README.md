@@ -24,6 +24,7 @@ The system is split into five core functional layers managed by interactive side
 3. **Community Data Repository Sync (Module 3):** Browse and download published public datasets, or submit a de-identified dataset for public release after permission, identifier, and disclosure-risk confirmations. Submissions open a pull request and are listed only after a maintainer merges them. **Private datasets are never stored.**
 4. **Descriptive & Scale Analytics (Module 4):** Upload a private dataset (held in memory for the browser session only and never saved), pick a published dataset, or use synthetic sample data; map columns to Module 2 variables; inspect distributions and descriptive statistics; review composite scores, reliability, and correlations; and download a PDF report. Numeric mappings support composite scores and Cronbach's alpha for multi-item mappings; categorical mappings show response counts.
 5. **Published Repository Viewer (Module 5):** Browse the published study summaries, the public dataset catalog, and the research measure catalog, and download any of them as CSV.
+6. **STEMEd+ Metadata Profile (Module 6):** Describe a study, dataset, or instrument with the [STEMEd+ Metadata Application Profile](standard/stemed-ap/README.md): constructs measured, population and context, instructional setting, evidence type, consent and access, and Indigenous data governance (CARE). The record is pre-filled from Modules 1 and 2, checked against the profile's responsible-sharing rules, saved in the project file, and exported as STEMEd+ JSON, DataCite 4.7 JSON/XML, and ERIC Thesaurus descriptors.
 
 ### Research measure catalog
 
@@ -181,10 +182,12 @@ oem/                      Core logic with no Streamlit dependency
   library.py              Load instruments, items, constructs, scales, standard variables
   naming.py               Shared variable-naming rules
   codebook.py             Build and export codebooks (CSV / JSON)
+  profile.py              STEMEd+ profile: records, validation, DataCite and ERIC exports
   vocab.py                Controlled vocabularies used by the forms
   app/common.py           Streamlit helpers shared by all pages
   app/pages/              One file per module, each with render()
 library/                  Instrument library (CC BY-SA 4.0 content; see library/README.md)
+standard/stemed-ap/       STEMEd+ Metadata Application Profile: spec, vocabularies, crosswalks
 tests/                    pytest suite, including an app smoke test
 scripts/validate_library.py   Library validator (also runs in CI)
 published/, suggestions/  Reviewed public records submitted through the app

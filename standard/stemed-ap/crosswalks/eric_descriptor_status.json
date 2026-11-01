@@ -1,0 +1,49 @@
+{
+  "source": "ERIC Thesaurus alphabetical browse pages, https://eric.ed.gov/?ti=<letter>",
+  "checked_on": "2026-11-01",
+  "method": "Each term was checked for an exact, current (non-italic) entry. Italic entries with a year, e.g. 'Climate Change (2004)', are retired descriptors and are not used. Terms marked 'unverified' could not be checked because the C and S browse pages were truncated when retrieved; scripts/verify_eric_descriptors.py checks every term against the official thesaurus download (https://eric.ed.gov/?download). Exports include only 'verified' descriptors.",
+  "verified": [
+    "Academic Achievement", "Academic Persistence", "Active Learning", "Adult Education", "Adults",
+    "After School Programs", "Alaska Natives", "American Indians", "Anxiety", "Astronomy",
+    "Asynchronous Communication", "Beliefs", "Biology", "Black Colleges", "Blended Learning",
+    "Case Studies", "Chemistry", "Classroom Environment", "Classroom Observation Techniques", "Climate",
+    "College Faculty", "College Science", "Community Organizations", "Computer Science Education",
+    "Concept Formation", "Confidentiality", "Construct Validity", "Content Analysis", "Data",
+    "Data Analysis", "Distance Education", "Early Childhood Education", "Earth Science",
+    "Educational Environment", "Educational Research", "Elementary Education", "Engineering Education",
+    "Epistemology", "Ethics", "Expectation", "Factor Analysis", "Field Trips", "Flipped Classroom",
+    "Focus Groups", "Geology", "Goal Orientation", "Graduate Students", "High Schools", "Higher Education",
+    "Hispanic American Students", "Identification (Psychology)", "Indigenous Populations",
+    "Informal Education", "Informed Consent", "Inquiry", "Instructional Effectiveness", "Intention",
+    "Interviews", "Item Response Theory", "Knowledge Level", "Laboratories", "Large Group Instruction",
+    "Learner Engagement", "Learning Analytics", "Learning Strategies", "Lecture Method", "Locus of Control",
+    "Longitudinal Studies", "Mathematical Logic", "Mathematics Anxiety", "Mathematics Education",
+    "Meta Analysis", "Metacognition", "Middle Schools", "Minority Serving Institutions", "Misconceptions",
+    "Mixed Methods Research", "Museums", "Numeracy", "Observation", "Online Courses", "Peer Influence",
+    "Physics", "Postsecondary Education", "Predictive Validity", "Privacy", "Private Schools",
+    "Problem Based Learning", "Problem Solving", "Professional Identity", "Program Evaluation",
+    "Psychometrics", "Public Schools", "Qualitative Research", "Quasiexperimental Design",
+    "Questionnaires", "Randomized Controlled Trials", "Relevance (Education)", "Replication (Evaluation)",
+    "Research Design", "Research Universities", "Rural Areas", "Rural Schools", "Science Education",
+    "Science Instruction", "Science Laboratories", "Science Process Skills", "Scientific Attitudes",
+    "Scientific Concepts", "Scientific Literacy", "Secondary Education", "Self Concept", "Self Efficacy",
+    "Self Management", "Sense of Belonging", "Sense of Community", "Small Group Instruction",
+    "Social Influences", "Teacher Attitudes", "Teaching Methods", "Test Anxiety", "Test Bias",
+    "Test Construction", "Test Reliability", "Test Validity", "Tests", "Tribally Controlled Education",
+    "Two Year Colleges", "Undergraduate Students", "Undergraduate Study", "Urban Areas", "Urban Schools",
+    "Values"
+  ],
+  "unverified": [
+    "Content Validity", "Correlation", "Critical Thinking", "STEM Education", "Stereotypes",
+    "Student Attitudes", "Student Behavior", "Student Centered Learning", "Student Interests",
+    "Student Motivation", "Student Records", "Study Habits", "Study Skills", "Summer Programs", "Surveys",
+    "Synchronous Communication"
+  ],
+  "rejected": {
+    "Climate Change": "Retired descriptor (2004); use Climate.",
+    "Primary Education": "Retired descriptor; use Elementary Education.",
+    "Hispanic Serving Institutions": "Retired descriptor; use Minority Serving Institutions.",
+    "Secondary Analysis": "Not an ERIC descriptor.",
+    "Tribally Controlled Colleges": "Not an ERIC descriptor; use Tribally Controlled Education."
+  }
+}

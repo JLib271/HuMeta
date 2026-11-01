@@ -20,6 +20,7 @@ PAGES = [
     "3. Community Data Repository Sync",
     "4. Descriptive & Scale Analytics",
     "5. Published Repository Viewer",
+    "6. STEMEd+ Metadata Profile",
 ]
 
 

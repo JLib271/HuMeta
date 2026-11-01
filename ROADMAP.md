@@ -12,8 +12,14 @@ their data with common names and metadata, and sharing data responsibly.
   race/ethnicity standard), and variable-naming rules (`oem/naming.py`)
 - Codebook builder with CSV/JSON export (`oem/codebook.py`)
 - App split into testable modules; CI with unit tests and page smoke tests
+- STEMEd+ Metadata Application Profile 1.0.0-draft.1 (`standard/stemed-ap/`) with DataCite 4.7 and ERIC
+  crosswalks, implemented in Module 6
 
 ## Next
+
+0. **STEMEd+ profile 1.0.** Public comment (including CARE review by Indigenous data governance experts),
+   confirm remaining ERIC descriptors, persistent term URIs, DOI, and society endorsements
+   (see `standard/stemed-ap/endorsement/`).
 
 1. **Connect Module 2 to the library.** Suggest instruments by construct, let
    researchers add library items as variables with generated names, export the

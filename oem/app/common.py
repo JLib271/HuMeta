@@ -61,6 +61,7 @@ def empty_project() -> dict:
         "schema_version": 1,
         "study": None,
         "module2_plan": {},
+        "stemed_record": None,
     }
 
 
@@ -80,8 +81,11 @@ def parse_project_file(raw_bytes: bytes) -> dict:
     plan = project.get("module2_plan") or {}
     if not isinstance(plan, dict):
         raise ValueError("The project file's Module 2 plan is malformed.")
+    stemed_record = project.get("stemed_record")
+    if stemed_record is not None and not isinstance(stemed_record, dict):
+        raise ValueError("The project file's STEMEd+ metadata record is malformed.")
     loaded = empty_project()
-    loaded.update({"study": study, "module2_plan": plan})
+    loaded.update({"study": study, "module2_plan": plan, "stemed_record": stemed_record})
     return loaded
 
 
@@ -321,6 +325,19 @@ value_propositions = [
             "Choose published study summaries, datasets, or measures.",
             "Browse the reviewed public records.",
             "Download the displayed table as CSV.",
+        ],
+    ),
+    (
+        "6. STEMEd+ Metadata Profile",
+        "🏷️ Shared Metadata Standard",
+        "Describes the study or dataset with the STEMEd+ Metadata Application Profile: constructs "
+        "measured, population and context, instructional setting, evidence type, consent, and CARE "
+        "(Indigenous data governance), with exports that existing repositories and indexes understand.",
+        "6. STEMEd+ Metadata Profile",
+        [
+            "Start from your Module 1 and 2 answers; nothing is asked twice.",
+            "Complete the profile and check it against the responsible-sharing rules.",
+            "Export STEMEd+ JSON, DataCite 4.7 (JSON/XML), and ERIC descriptors.",
         ],
     ),
 ]
