@@ -1,6 +1,6 @@
 # HuMeta: elements and vocabularies
 
-*Social Science, Humanities, and Education Study Metadata Profile*
+*HuMeta: The Social Science, Humanities, and Education Study Metadata Profile*
 
 Version 1.0.0-draft.1 (draft). Generated from `profile.json` and `vocabularies.json` by `scripts/build_profile_artifacts.py`; do not edit by hand.
 

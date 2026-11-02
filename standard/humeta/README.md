@@ -1,6 +1,4 @@
-# HuMeta
-
-**Social Science, Humanities, and Education Study Metadata Profile**
+# HuMeta: The Social Science, Humanities, and Education Study Metadata Profile
 
 **Version:** 1.0.0-draft.1 · **Status:** Draft for community comment · **Namespace prefix:** `humeta`
 
@@ -323,7 +321,7 @@ The profile (this folder and the construct vocabulary) is licensed under
 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), like the rest
 of the library. Code implementing it is AGPL-3.0-or-later. Cite as:
 
-> Libarkin, J. C., & HuMeta contributors. (2026). *HuMeta:
+> Libarkin, J. C., & HuMeta contributors. (2026). *HuMeta: The
 > Social Science, Humanities, and Education Study Metadata Profile* (Version
 > 1.0.0-draft.1). https://github.com/JLib271/HuMeta/tree/main/standard/humeta
 

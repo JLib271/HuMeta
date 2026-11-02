@@ -112,15 +112,15 @@ with st.sidebar:
     )
 
 st.title("🔬 HuMeta Portal")
-st.caption("Built on HuMeta: the Social Science, Humanities, and Education Study Metadata Profile")
+st.caption("Built on HuMeta: The Social Science, Humanities, and Education Study Metadata Profile")
 st.caption("Standardized Study Registries and Psychometric Instrument Architects under DCMES, IEEE LOM, and CEDS Standards.")
 
 if app_mode == "About this app":
-    st.header("🔬 Accelerating Human Science & Educational Research")
+    st.header("🔬 Accelerating Research in Education, the Social Sciences, and the Humanities")
     st.markdown(
         "This platform is specifically engineered to resolve the most critical bottlenecks in "
-        "human science research—particularly within educational ecosystems—by enforcing data "
-        "structural integrity and empowering open-science collaboration."
+        "research across education, the social sciences, the humanities, and related fields by "
+        "enforcing data structural integrity and empowering open-science collaboration."
     )
     for value_card in value_propositions:
         render_value_card(value_card, show_open_button=True)

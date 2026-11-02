@@ -23,7 +23,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     st.header("1. Study Metadata Profile")
     p = profile.load()
     st.caption(
-        f"Describe your study with the [HuMeta]({SPEC_URL}), the Social Science, Humanities, and Education Study Metadata Profile (version {p.version}): "
+        f"Describe your study with [HuMeta: The Social Science, Humanities, and Education Study Metadata Profile]({SPEC_URL}) (version {p.version}): "
         "the study and team, design, population and context, instructional setting, ethics and consent, and "
         "Indigenous data governance (CARE). Everything is saved to your project file; the app keeps no copy."
     )

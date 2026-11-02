@@ -1,6 +1,6 @@
 # HuMeta Portal 🔬🌐
 
-An open-source, community-driven web app that helps researchers in the **social sciences, humanities, and education** describe, align, and share study metadata using one open standard, **HuMeta**, the Social Science, Humanities, and Education Study Metadata Profile. It runs on Streamlit Community Cloud with **no database**: private work stays with the researcher, and public records live in this GitHub repository after maintainer review.
+An open-source, community-driven web app that helps researchers in the **social sciences, humanities, and education** describe, align, and share study metadata using one open standard, **HuMeta: The Social Science, Humanities, and Education Study Metadata Profile**. It runs on Streamlit Community Cloud with **no database**: private work stays with the researcher, and public records live in this GitHub repository after maintainer review.
 
 ## 🤝 Community
 

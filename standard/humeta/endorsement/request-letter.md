@@ -11,7 +11,7 @@ own email, with the specification's link and a one-page summary attached.*
 Dear [Name],
 
 I am writing to ask whether [Society] would consider endorsing version 1.0 of
-**HuMeta: the Social Science, Humanities, and Education Study Metadata
+**HuMeta: The Social Science, Humanities, and Education Study Metadata
 Profile**, an open metadata standard for describing research
 studies and their data and instruments. It has a shared core and field
 modules; [Society] is asked to endorse the core and the [Education / Social

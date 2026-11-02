@@ -1,6 +1,6 @@
 # Copyright (C) 2026 Julie C. Libarkin
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""HuMeta: the Social Science, Humanities, and Education Study Metadata Profile.
+"""HuMeta: The Social Science, Humanities, and Education Study Metadata Profile.
 
 A core for any study, plus optional field modules (currently: Education).
 The profile itself is data in ``standard/humeta/`` (``profile.json`` and

@@ -2,8 +2,7 @@
 
 ## Unreleased
 
-* **Renamed** from the STEMEd+ Metadata Application Profile to **HuMeta**, the
-  Social Science, Humanities, and Education Study Metadata Profile, to serve the social sciences and humanities as well as education.
+* **Renamed** from the STEMEd+ Metadata Application Profile to **HuMeta: The Social Science, Humanities, and Education Study Metadata Profile**, to serve the social sciences and humanities as well as education.
   Folder `standard/stemed-ap/` is now `standard/humeta/`; the record's `profile`
   value is `humeta`; DataCite subject schemes are named "HuMeta …".
 * **Core and modules.** The record's `stemed` section is now `study` (the

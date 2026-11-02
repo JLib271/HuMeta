@@ -268,7 +268,7 @@ value_propositions = [
     (
         "1. Study Metadata Profile",
         "📐 One Shared Metadata Standard",
-        "Describes every study with HuMeta, the Social Science, Humanities, and Education Study Metadata Profile, so studies across "
+        "Describes every study with HuMeta: The Social Science, Humanities, and Education Study Metadata Profile, so studies across "
         "institutions use the same fields and vocabularies and stay searchable and comparable.",
         "1. Study Metadata Profile",
         [
