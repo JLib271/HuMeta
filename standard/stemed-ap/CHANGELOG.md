@@ -9,6 +9,14 @@
   an exact match to NCES. `suburban` is renamed `suburb`. `online` and
   `multiple_locales` are removed: use Modality for online studies, and choose
   several locales for multi-site studies.
+* Education level now uses the nine UNESCO ISCED 2011 levels (0–8), plus
+  adult/workforce education and informal learning. `elementary`,
+  `middle_school`, `high_school`, `undergraduate` and `graduate` are replaced
+  by `primary`, `lower_secondary`, `upper_secondary`, `bachelors`, `masters`
+  and `doctoral`. `postsecondary_non_tertiary` and `short_cycle_tertiary` are
+  new. DataCite exports include the ISCED level as a subject.
+* The Dublin Core and schema.org alignments for education level, and the Dublin
+  Core alignment for instructional approach, are marked as seeking expert input.
 
 ## 1.0.0-draft.1 (2026-11-01)
 

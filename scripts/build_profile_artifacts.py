@@ -51,11 +51,12 @@ def build() -> dict[Path, str]:
     files[BASE / "crosswalks" / "datacite-4.7.csv"] = csv_text(rows)
 
     standards = p.definition["standards"]
-    rows = [["element", "label", "standard", "standard_name", "term", "match", "standard_url"]]
+    rows = [["element", "label", "standard", "standard_name", "term", "match", "status", "note", "standard_url"]]
     for e in p.definition["elements"]:
         for a in e.get("alignments", []):
             std = standards[a["standard"]]
-            rows.append([e["id"], e["label"], std["short"], std["name"], a["term"], a["match"], std["url"]])
+            rows.append([e["id"], e["label"], std["short"], std["name"], a["term"], a["match"],
+                         a.get("status", ""), a.get("note", ""), std["url"]])
     files[BASE / "crosswalks" / "alignments.csv"] = csv_text(rows)
 
     rows = [["vocabulary", "term_id", "term_label", "eric_descriptor", "eric_status"]]
@@ -78,7 +79,9 @@ def build() -> dict[Path, str]:
         "",
         "Alignments: each element lists the standards it corresponds to. No mark = exact match; "
         "**≈** = close match; **~** = related. `STEMEd+` = defined by this profile, with no equivalent in a "
-        "general-purpose standard. Full list in [`crosswalks/alignments.csv`](crosswalks/alignments.csv).",
+        "general-purpose standard. "
+        f"*{profile.SEEKING_INPUT_BADGE}* = {p.definition['alignment_status']['seeking_input'].lower()} "
+        "Full list, with notes, in [`crosswalks/alignments.csv`](crosswalks/alignments.csv).",
         "",
         "Standards: " + "; ".join(f"[{s['short']}]({s['url']}) = {s['name']}" for s in p.definition["standards"].values()),
         "",

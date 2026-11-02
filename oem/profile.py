@@ -38,6 +38,14 @@ DATACITE_NS = "http://datacite.org/schema/kernel-4"
 DATACITE_XSD = "http://schema.datacite.org/meta/kernel-4.7/metadata.xsd"
 ERIC_SCHEME = "ERIC Thesaurus"
 ERIC_SCHEME_URI = "https://eric.ed.gov/?ti=all"
+ISCED_SCHEME = "ISCED 2011"
+ISCED_SCHEME_URI = ("https://uis.unesco.org/sites/default/files/documents/"
+                    "international-standard-classification-of-education-isced-2011-en.pdf")
+ISCED_LEVELS = {"0": "Early childhood education", "1": "Primary education", "2": "Lower secondary education",
+                "3": "Upper secondary education", "4": "Post-secondary non-tertiary education",
+                "5": "Short-cycle tertiary education", "6": "Bachelor's or equivalent level",
+                "7": "Master's or equivalent level", "8": "Doctoral or equivalent level"}
+SEEKING_INPUT_BADGE = "(expert input wanted)"
 
 #: record path -> (vocabulary id, DataCite subjectScheme label)
 VOCAB_FIELDS: dict[tuple[str, ...], tuple[str, str]] = {
@@ -477,6 +485,10 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
         for term_id in get(record, path) or []:
             subjects.append({"subject": p.label(vocab_id, term_id), "subjectScheme": scheme,
                              "schemeUri": VOCAB_URI.rstrip("#"), "valueUri": f"{VOCAB_URI}{vocab_id}.{term_id}"})
+            isced = p.term(vocab_id, term_id).get("isced")
+            if isced is not None:
+                subjects.append({"subject": f"ISCED level {isced}: {ISCED_LEVELS[isced]}",
+                                 "subjectScheme": ISCED_SCHEME, "schemeUri": ISCED_SCHEME_URI})
     for term in eric_descriptors(record, lib, p):
         subjects.append({"subject": term, "subjectScheme": ERIC_SCHEME, "schemeUri": ERIC_SCHEME_URI})
     if (res.get("description") or "").strip():
@@ -703,7 +715,10 @@ def alignment_badges(element_id: str, profile: Profile | None = None) -> str:
         if a["standard"] == "stemed":
             parts.append("`STEMEd+`")
         else:
-            parts.append(f"`{MATCH_MARK[a['match']]}{short}: {a['term']}`")
+            badge = f"`{MATCH_MARK[a['match']]}{short}: {a['term']}`"
+            if a.get("status") == "seeking_input":
+                badge += f" {SEEKING_INPUT_BADGE}"
+            parts.append(badge)
     return " ".join(parts)
 
 
@@ -717,5 +732,10 @@ def alignment_help(element_id: str, profile: Profile | None = None) -> str:
         if a["standard"] == "stemed":
             lines.append(f"STEMEd+ extension: {a['term']} (no equivalent in general-purpose metadata standards).")
         else:
-            lines.append(f"{a['match'].capitalize()} match: {std['name']} — {a['term']}.")
+            line = f"{a['match'].capitalize()} match: {std['name']} — {a['term']}."
+            if a.get("status") == "seeking_input":
+                line += f" {p.definition['alignment_status']['seeking_input']}"
+            if a.get("note"):
+                line += f" {a['note']}"
+            lines.append(line)
     return "\n\n".join(lines)

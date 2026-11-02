@@ -4,9 +4,9 @@ Version 1.0.0-draft.1 (draft). Generated from `profile.json` and `vocabularies.j
 
 Obligations: **M** = Mandatory: every record must have it.; **MA** = Mandatory if applicable: required when the stated condition holds.; **R** = Recommended.; **O** = Optional.
 
-Alignments: each element lists the standards it corresponds to. No mark = exact match; **≈** = close match; **~** = related. `STEMEd+` = defined by this profile, with no equivalent in a general-purpose standard. Full list in [`crosswalks/alignments.csv`](crosswalks/alignments.csv).
+Alignments: each element lists the standards it corresponds to. No mark = exact match; **≈** = close match; **~** = related. `STEMEd+` = defined by this profile, with no equivalent in a general-purpose standard. *(expert input wanted)* = we are seeking expert input on this alignment. Full list, with notes, in [`crosswalks/alignments.csv`](crosswalks/alignments.csv).
 
-Standards: [STEMEd+](https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md) = STEMEd+ Metadata Application Profile (extension element or vocabulary); [DataCite](https://schema.datacite.org/) = DataCite Metadata Schema 4.7; [DC](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) = Dublin Core (DCMI Metadata Terms); [schema.org](https://schema.org/Dataset) = schema.org Dataset; [ERIC](https://eric.ed.gov/?ti=all) = ERIC Thesaurus; [ORCID](https://orcid.org/) = ORCID iD; [SPDX](https://spdx.org/licenses/) = SPDX License List; [BCP 47](https://www.rfc-editor.org/info/bcp47) = IETF BCP 47 language tags; [ISO 3166](https://www.iso.org/iso-3166-country-codes.html) = ISO 3166-1 alpha-2 country codes; [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) = ISO 8601 dates; [NCES](https://nces.ed.gov/programs/edge/Geographic/LocaleBoundaries) = NCES locale classification (locale types City, Suburb, Town, Rural); [AERA/APA/NCME](https://www.testingstandards.net/) = Standards for Educational and Psychological Testing (2014); [Common Rule](https://www.hhs.gov/ohrp/regulations-and-policy/regulations/45-cfr-46/) = US Common Rule for human-subjects research (45 CFR 46); [FERPA](https://studentprivacy.ed.gov/) = Family Educational Rights and Privacy Act (34 CFR Part 99); [CARE](https://www.gida-global.org/care) = CARE Principles for Indigenous Data Governance; [Local Contexts](https://localcontexts.org/) = Local Contexts Traditional Knowledge and Biocultural Labels and Notices
+Standards: [STEMEd+](https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md) = STEMEd+ Metadata Application Profile (extension element or vocabulary); [DataCite](https://schema.datacite.org/) = DataCite Metadata Schema 4.7; [DC](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) = Dublin Core (DCMI Metadata Terms); [schema.org](https://schema.org/Dataset) = schema.org Dataset; [ERIC](https://eric.ed.gov/?ti=all) = ERIC Thesaurus; [ORCID](https://orcid.org/) = ORCID iD; [SPDX](https://spdx.org/licenses/) = SPDX License List; [BCP 47](https://www.rfc-editor.org/info/bcp47) = IETF BCP 47 language tags; [ISO 3166](https://www.iso.org/iso-3166-country-codes.html) = ISO 3166-1 alpha-2 country codes; [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) = ISO 8601 dates; [NCES](https://nces.ed.gov/programs/edge/Geographic/LocaleBoundaries) = NCES locale classification (locale types City, Suburb, Town, Rural); [ISCED](https://uis.unesco.org/sites/default/files/documents/international-standard-classification-of-education-isced-2011-en.pdf) = UNESCO International Standard Classification of Education (ISCED 2011); [AERA/APA/NCME](https://www.testingstandards.net/) = Standards for Educational and Psychological Testing (2014); [Common Rule](https://www.hhs.gov/ohrp/regulations-and-policy/regulations/45-cfr-46/) = US Common Rule for human-subjects research (45 CFR 46); [FERPA](https://studentprivacy.ed.gov/) = Family Educational Rights and Privacy Act (34 CFR Part 99); [CARE](https://www.gida-global.org/care) = CARE Principles for Indigenous Data Governance; [Local Contexts](https://localcontexts.org/) = Local Contexts Traditional Knowledge and Biocultural Labels and Notices
 
 ## Elements
 
@@ -33,7 +33,7 @@ Standards: [STEMEd+](https://github.com/JLib271/OpenEdMetadata/blob/main/standar
 | <a id="stemed.constructs"></a>`stemed.constructs` | MA | 0..n | Constructs measured, from the STEMEd+ construct vocabulary (library/constructs.json), optionally with the instrument, version and subscale used. *Mandatory when resource_type is Dataset or Instrument.* | `STEMEd+`, `≈ERIC: descriptors`, `≈schema.org: variableMeasured`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'STEMEd+ Constructs', valueURI per construct); for datasets, relatedIdentifiers to the instrument's library record (URL, relationType IsCollectedBy) and its publication (DOI, relationType References); ERIC descriptors as additional subjects |
 | <a id="stemed.discipline"></a>`stemed.discipline` | R | 0..n | STEM discipline(s) of the learning or research. Vocabulary: [discipline](#discipline). | `STEMEd+`, `≈ERIC: descriptors`, `≈DC: subject`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'STEMEd+ Disciplines') |
 | <a id="stemed.population.participant_roles"></a>`stemed.population.participant_roles` | M | 1..n | Who the participants are. Vocabulary: [participant_role](#participant_role). | `STEMEd+`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'STEMEd+ Participant Roles') |
-| <a id="stemed.population.education_levels"></a>`stemed.population.education_levels` | M | 1..n | Education level(s) of the participants. Vocabulary: [education_level](#education_level). | `STEMEd+`, `≈ERIC: education level descriptors`, `≈DC: educationLevel`, `≈schema.org: educationalLevel` | subjects (subjectScheme 'STEMEd+ Education Levels') |
+| <a id="stemed.population.education_levels"></a>`stemed.population.education_levels` | M | 1..n | Education level(s) of the participants. Vocabulary: [education_level](#education_level). | `STEMEd+`, `ISCED: levels of education 0–8`, `≈ERIC: education level descriptors`, `≈DC: educationLevel` (expert input wanted) `≈schema.org: educationalLevel` (expert input wanted) | subjects (subjectScheme 'STEMEd+ Education Levels'); ISCED 2011 level as an additional subject (subjectScheme 'ISCED 2011') |
 | <a id="stemed.population.undergraduate_levels"></a>`stemed.population.undergraduate_levels` | O | 0..n | Course level(s) for undergraduate studies. Vocabulary: [undergraduate_level](#undergraduate_level). | `STEMEd+`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'STEMEd+ Undergraduate Levels') |
 | <a id="stemed.population.description"></a>`stemed.population.description` | R | 0..1 | Narrative description of the participants and sampling, without identifying information. | `STEMEd+`, `≈DataCite: description (Methods)` | descriptions (descriptionType Methods) |
 | <a id="stemed.population.sample_size"></a>`stemed.population.sample_size` | R | 0..1 | Number of participants (or units) in the data. | `STEMEd+`, `≈DataCite: sizes` | sizes ('N = <n> participants') |
@@ -41,7 +41,7 @@ Standards: [STEMEd+](https://github.com/JLib271/OpenEdMetadata/blob/main/standar
 | <a id="stemed.context.locale"></a>`stemed.context.locale` | R | 0..n | Community type(s) where the study took place. Vocabulary: [locale](#locale). | `STEMEd+`, `NCES: locale type`, `≈ERIC: descriptors` | subjects (subjectScheme 'STEMEd+ Locales') |
 | <a id="stemed.setting.modality"></a>`stemed.setting.modality` | R | 0..n | How instruction or participation was delivered. Vocabulary: [modality](#modality). | `STEMEd+`, `≈ERIC: descriptors` | subjects (subjectScheme 'STEMEd+ Modalities') |
 | <a id="stemed.setting.learning_environments"></a>`stemed.setting.learning_environments` | R | 0..n | Instructional setting(s). Vocabulary: [learning_environment](#learning_environment). | `STEMEd+`, `≈ERIC: descriptors` | subjects (subjectScheme 'STEMEd+ Learning Environments') |
-| <a id="stemed.setting.pedagogy"></a>`stemed.setting.pedagogy` | O | 0..n | Instructional approach(es) used or studied. Vocabulary: [pedagogy](#pedagogy). | `STEMEd+`, `≈ERIC: descriptors`, `≈DC: instructionalMethod` | subjects (subjectScheme 'STEMEd+ Instructional Approaches') |
+| <a id="stemed.setting.pedagogy"></a>`stemed.setting.pedagogy` | O | 0..n | Instructional approach(es) used or studied. Vocabulary: [pedagogy](#pedagogy). | `STEMEd+`, `≈ERIC: descriptors`, `≈DC: instructionalMethod` (expert input wanted) | subjects (subjectScheme 'STEMEd+ Instructional Approaches') |
 | <a id="stemed.evidence.study_designs"></a>`stemed.evidence.study_designs` | MA | 0..n | Design(s) that produced the evidence. *Mandatory when resource_type is Dataset or StudyRegistration.* Vocabulary: [study_design](#study_design). | `STEMEd+`, `≈ERIC: descriptors`, `≈DataCite: description (Methods)` | subjects (subjectScheme 'STEMEd+ Study Designs'); descriptions (Methods) |
 | <a id="stemed.evidence.measurement_evidence"></a>`stemed.evidence.measurement_evidence` | MA | 0..n | Kinds of reliability and validity evidence the resource provides. *Mandatory when resource_type is Instrument.* Vocabulary: [measurement_evidence](#measurement_evidence). | `STEMEd+`, `≈AERA/APA/NCME: sources of validity evidence`, `≈ERIC: descriptors` | subjects (subjectScheme 'STEMEd+ Measurement Evidence') |
 | <a id="stemed.evidence.data_collection_methods"></a>`stemed.evidence.data_collection_methods` | R | 0..n | How data were collected. Vocabulary: [data_collection_method](#data_collection_method). | `STEMEd+`, `≈ERIC: descriptors`, `≈schema.org: measurementTechnique` | subjects (subjectScheme 'STEMEd+ Data Collection Methods') |
@@ -97,18 +97,21 @@ Disciplinary content area of the learning or research studied.
 
 ### <a id="education_level"></a>Education level (`education_level`)
 
-Education level(s) of the learners or participants.
+Education level(s) of the participants. Levels 0–8 are the UNESCO ISCED 2011 levels of education; the last two options are STEMEd+ additions outside ISCED.
 
 | Code | Label | ERIC descriptors |
 |---|---|---|
-| `early_childhood` | Early childhood / pre-K | Early Childhood Education |
-| `elementary` | Elementary / primary | Elementary Education |
-| `middle_school` | Middle grades / lower secondary | Middle Schools, Secondary Education |
-| `high_school` | High school / upper secondary | High Schools, Secondary Education |
-| `undergraduate` | Undergraduate | Higher Education, Postsecondary Education, Undergraduate Students |
-| `graduate` | Graduate / professional | Higher Education, Graduate Students |
-| `adult_education` | Adult, continuing, or workforce education | Adult Education, Adults |
-| `informal_learning` | Informal or out-of-school learning (any age) | Informal Education |
+| `early_childhood` | Early childhood / pre-K (ISCED 0) | Early Childhood Education |
+| `primary` | Primary / elementary (ISCED 1) | Elementary Education |
+| `lower_secondary` | Lower secondary / middle grades (ISCED 2) | Middle Schools, Secondary Education |
+| `upper_secondary` | Upper secondary / high school (ISCED 3) | High Schools, Secondary Education |
+| `postsecondary_non_tertiary` | Post-secondary non-tertiary, e.g. certificate programs (ISCED 4) | Postsecondary Education |
+| `short_cycle_tertiary` | Short-cycle tertiary, e.g. associate degree (ISCED 5) | Two Year Colleges, Postsecondary Education |
+| `bachelors` | Bachelor's or equivalent (ISCED 6) | Higher Education, Postsecondary Education, Undergraduate Students |
+| `masters` | Master's or equivalent (ISCED 7) | Higher Education, Graduate Students |
+| `doctoral` | Doctoral or equivalent (ISCED 8) | Higher Education, Graduate Students |
+| `adult_education` | Adult, continuing, or workforce education (not an ISCED level) | Adult Education, Adults |
+| `informal_learning` | Informal or out-of-school learning (not an ISCED level) | Informal Education |
 
 ### <a id="undergraduate_level"></a>Undergraduate course level (`undergraduate_level`)
 

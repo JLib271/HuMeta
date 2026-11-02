@@ -294,11 +294,14 @@
               "items": {
                 "enum": [
                   "early_childhood",
-                  "elementary",
-                  "middle_school",
-                  "high_school",
-                  "undergraduate",
-                  "graduate",
+                  "primary",
+                  "lower_secondary",
+                  "upper_secondary",
+                  "postsecondary_non_tertiary",
+                  "short_cycle_tertiary",
+                  "bachelors",
+                  "masters",
+                  "doctoral",
                   "adult_education",
                   "informal_learning"
                 ]

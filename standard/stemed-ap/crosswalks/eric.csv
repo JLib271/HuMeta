@@ -66,20 +66,25 @@ discipline,computer_science,Computer science and computing,Computer Science Educ
 discipline,engineering,Engineering,Engineering Education,verified
 discipline,general_stem,General or interdisciplinary STEM,Science Education,verified
 discipline,general_stem,General or interdisciplinary STEM,STEM Education,unverified
-education_level,early_childhood,Early childhood / pre-K,Early Childhood Education,verified
-education_level,elementary,Elementary / primary,Elementary Education,verified
-education_level,middle_school,Middle grades / lower secondary,Middle Schools,verified
-education_level,middle_school,Middle grades / lower secondary,Secondary Education,verified
-education_level,high_school,High school / upper secondary,High Schools,verified
-education_level,high_school,High school / upper secondary,Secondary Education,verified
-education_level,undergraduate,Undergraduate,Higher Education,verified
-education_level,undergraduate,Undergraduate,Postsecondary Education,verified
-education_level,undergraduate,Undergraduate,Undergraduate Students,verified
-education_level,graduate,Graduate / professional,Higher Education,verified
-education_level,graduate,Graduate / professional,Graduate Students,verified
-education_level,adult_education,"Adult, continuing, or workforce education",Adult Education,verified
-education_level,adult_education,"Adult, continuing, or workforce education",Adults,verified
-education_level,informal_learning,Informal or out-of-school learning (any age),Informal Education,verified
+education_level,early_childhood,Early childhood / pre-K (ISCED 0),Early Childhood Education,verified
+education_level,primary,Primary / elementary (ISCED 1),Elementary Education,verified
+education_level,lower_secondary,Lower secondary / middle grades (ISCED 2),Middle Schools,verified
+education_level,lower_secondary,Lower secondary / middle grades (ISCED 2),Secondary Education,verified
+education_level,upper_secondary,Upper secondary / high school (ISCED 3),High Schools,verified
+education_level,upper_secondary,Upper secondary / high school (ISCED 3),Secondary Education,verified
+education_level,postsecondary_non_tertiary,"Post-secondary non-tertiary, e.g. certificate programs (ISCED 4)",Postsecondary Education,verified
+education_level,short_cycle_tertiary,"Short-cycle tertiary, e.g. associate degree (ISCED 5)",Two Year Colleges,verified
+education_level,short_cycle_tertiary,"Short-cycle tertiary, e.g. associate degree (ISCED 5)",Postsecondary Education,verified
+education_level,bachelors,Bachelor's or equivalent (ISCED 6),Higher Education,verified
+education_level,bachelors,Bachelor's or equivalent (ISCED 6),Postsecondary Education,verified
+education_level,bachelors,Bachelor's or equivalent (ISCED 6),Undergraduate Students,verified
+education_level,masters,Master's or equivalent (ISCED 7),Higher Education,verified
+education_level,masters,Master's or equivalent (ISCED 7),Graduate Students,verified
+education_level,doctoral,Doctoral or equivalent (ISCED 8),Higher Education,verified
+education_level,doctoral,Doctoral or equivalent (ISCED 8),Graduate Students,verified
+education_level,adult_education,"Adult, continuing, or workforce education (not an ISCED level)",Adult Education,verified
+education_level,adult_education,"Adult, continuing, or workforce education (not an ISCED level)",Adults,verified
+education_level,informal_learning,Informal or out-of-school learning (not an ISCED level),Informal Education,verified
 participant_role,adults,Adults,Adults,verified
 participant_role,visitors,"Museum, science-center, or event visitors",Museums,verified
 institution_type,k12_public,Public K-12 school,Public Schools,verified

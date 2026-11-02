@@ -212,3 +212,26 @@ def test_alignment_badges(p):
     assert profile.alignment_badges("resource.publication_year", p).count("≈") == 2
     assert profile.alignment_badges("stemed.constructs", p).startswith("`STEMEd+`")
     assert "Close match: Dublin Core" in profile.alignment_help("resource.publication_year", p)
+
+
+def test_alignment_status_and_notes():
+    p = profile.load()
+    for e in p.definition["elements"]:
+        for a in e["alignments"]:
+            assert a.get("status", "seeking_input") in p.definition["alignment_status"], (e["id"], a)
+    badges = profile.alignment_badges("stemed.population.education_levels")
+    assert "`ISCED: levels of education 0–8`" in badges
+    assert f"`≈DC: educationLevel` {profile.SEEKING_INPUT_BADGE}" in badges
+    assert profile.SEEKING_INPUT_BADGE in profile.alignment_badges("stemed.setting.pedagogy")
+    assert "seeking expert input" in profile.alignment_help("stemed.setting.pedagogy")
+
+
+def test_education_levels_follow_isced_and_export_as_subjects():
+    p = profile.load()
+    codes = [t.get("isced") for t in p.vocab("education_level")]
+    assert [c for c in codes if c is not None] == [str(i) for i in range(9)]
+    record = profile.empty_record()
+    record["stemed"]["population"]["education_levels"] = ["short_cycle_tertiary", "informal_learning"]
+    subjects = profile.to_datacite_json(record, Library.load(), p)["subjects"]
+    isced = [s for s in subjects if s.get("subjectScheme") == profile.ISCED_SCHEME]
+    assert [s["subject"] for s in isced] == ["ISCED level 5: Short-cycle tertiary education"]

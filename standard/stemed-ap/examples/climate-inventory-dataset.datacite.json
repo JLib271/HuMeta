@@ -58,10 +58,15 @@
       "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json#participant_role.students"
     },
     {
-      "subject": "Undergraduate",
+      "subject": "Bachelor's or equivalent (ISCED 6)",
       "subjectScheme": "STEMEd+ Education Levels",
       "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json#education_level.undergraduate"
+      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json#education_level.bachelors"
+    },
+    {
+      "subject": "ISCED level 6: Bachelor's or equivalent level",
+      "subjectScheme": "ISCED 2011",
+      "schemeUri": "https://uis.unesco.org/sites/default/files/documents/international-standard-classification-of-education-isced-2011-en.pdf"
     },
     {
       "subject": "Introductory / first-year",

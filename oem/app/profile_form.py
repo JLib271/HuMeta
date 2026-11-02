@@ -19,6 +19,7 @@ from oem.app.common import current_project
 from oem.library import Library
 
 SPEC_URL = "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md"
+ISSUES_URL = "https://github.com/JLib271/OpenEdMetadata/issues"
 CARE_URL = "https://www.gida-global.org/care"
 LOCAL_CONTEXTS_URL = "https://localcontexts.org/"
 LICENSES = {
@@ -99,7 +100,9 @@ def record_form(record: dict) -> dict | None:
         st.markdown(
             "Each field shows the standards it corresponds to, so records stay compatible with tools "
             "that already use them. `STEMEd+` marks fields that are specific to this profile; no "
-            "general-purpose standard covers them. **≈** = close match, **~** = related; no mark = exact match."
+            "general-purpose standard covers them. **≈** = close match, **~** = related; no mark = exact match. "
+            f"**{profile.SEEKING_INPUT_BADGE}** marks alignments we are not yet sure of. If you know the standard, "
+            f"please comment on [GitHub]({ISSUES_URL})."
         )
         st.markdown("\n".join(f"- **{std['short']}**: [{std['name']}]({std['url']})"
                                  for std in p.definition["standards"].values()))

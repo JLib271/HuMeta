@@ -166,6 +166,18 @@ the `standards` block of `profile.json`. The OpenEdMetadata app shows these
 alignments beside each field, `elements.md` shows them per element, and
 `crosswalks/alignments.csv` lists them all.
 
+Alignments marked `seeking_input` are ones we are not yet sure of, and we
+would welcome comment from people who know those standards. At present these
+are the Dublin Core and schema.org alignments for education level, and the
+Dublin Core alignment for instructional approach. In those standards the
+terms describe the audience or method a resource is *designed for*. In this
+profile they describe the participants or approach *studied*. Please comment
+through a GitHub issue.
+
+Education level uses the UNESCO ISCED 2011 levels of education (0–8), plus
+two STEMEd+ additions: adult, continuing or workforce education, and informal
+learning. Exports add the ISCED level as a DataCite subject.
+
 ### DataCite Metadata Schema 4.7
 
 Resource elements map directly to DataCite properties. Profile vocabularies

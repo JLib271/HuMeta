@@ -20,7 +20,7 @@ stemed.design.sampling_procedure,Sampling procedure,O,0..n,sampling_procedure,su
 stemed.constructs,Constructs measured,MA,0..n,,"subjects (subjectScheme 'STEMEd+ Constructs', valueURI per construct); for datasets, relatedIdentifiers to the instrument's library record (URL, relationType IsCollectedBy) and its publication (DOI, relationType References); ERIC descriptors as additional subjects"
 stemed.discipline,Discipline,R,0..n,discipline,subjects (subjectScheme 'STEMEd+ Disciplines')
 stemed.population.participant_roles,Participant population,M,1..n,participant_role,subjects (subjectScheme 'STEMEd+ Participant Roles')
-stemed.population.education_levels,Education level,M,1..n,education_level,subjects (subjectScheme 'STEMEd+ Education Levels')
+stemed.population.education_levels,Education level,M,1..n,education_level,subjects (subjectScheme 'STEMEd+ Education Levels'); ISCED 2011 level as an additional subject (subjectScheme 'ISCED 2011')
 stemed.population.undergraduate_levels,Undergraduate course level,O,0..n,undergraduate_level,subjects (subjectScheme 'STEMEd+ Undergraduate Levels')
 stemed.population.description,Population description,R,0..1,,descriptions (descriptionType Methods)
 stemed.population.sample_size,Sample size,R,0..1,,sizes ('N = <n> participants')

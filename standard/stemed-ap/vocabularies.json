@@ -89,41 +89,63 @@
     },
     "education_level": {
       "label": "Education level",
-      "definition": "Education level(s) of the learners or participants.",
+      "definition": "Education level(s) of the participants. Levels 0–8 are the UNESCO ISCED 2011 levels of education; the last two options are STEMEd+ additions outside ISCED.",
       "terms": [
         {
           "id": "early_childhood",
-          "label": "Early childhood / pre-K",
+          "label": "Early childhood / pre-K (ISCED 0)",
+          "isced": "0",
           "eric": [
             "Early Childhood Education"
           ]
         },
         {
-          "id": "elementary",
-          "label": "Elementary / primary",
+          "id": "primary",
+          "label": "Primary / elementary (ISCED 1)",
+          "isced": "1",
           "eric": [
             "Elementary Education"
           ]
         },
         {
-          "id": "middle_school",
-          "label": "Middle grades / lower secondary",
+          "id": "lower_secondary",
+          "label": "Lower secondary / middle grades (ISCED 2)",
+          "isced": "2",
           "eric": [
             "Middle Schools",
             "Secondary Education"
           ]
         },
         {
-          "id": "high_school",
-          "label": "High school / upper secondary",
+          "id": "upper_secondary",
+          "label": "Upper secondary / high school (ISCED 3)",
+          "isced": "3",
           "eric": [
             "High Schools",
             "Secondary Education"
           ]
         },
         {
-          "id": "undergraduate",
-          "label": "Undergraduate",
+          "id": "postsecondary_non_tertiary",
+          "label": "Post-secondary non-tertiary, e.g. certificate programs (ISCED 4)",
+          "isced": "4",
+          "eric": [
+            "Postsecondary Education"
+          ]
+        },
+        {
+          "id": "short_cycle_tertiary",
+          "label": "Short-cycle tertiary, e.g. associate degree (ISCED 5)",
+          "isced": "5",
+          "eric": [
+            "Two Year Colleges",
+            "Postsecondary Education"
+          ]
+        },
+        {
+          "id": "bachelors",
+          "label": "Bachelor's or equivalent (ISCED 6)",
+          "isced": "6",
           "eric": [
             "Higher Education",
             "Postsecondary Education",
@@ -131,8 +153,18 @@
           ]
         },
         {
-          "id": "graduate",
-          "label": "Graduate / professional",
+          "id": "masters",
+          "label": "Master's or equivalent (ISCED 7)",
+          "isced": "7",
+          "eric": [
+            "Higher Education",
+            "Graduate Students"
+          ]
+        },
+        {
+          "id": "doctoral",
+          "label": "Doctoral or equivalent (ISCED 8)",
+          "isced": "8",
           "eric": [
             "Higher Education",
             "Graduate Students"
@@ -140,7 +172,7 @@
         },
         {
           "id": "adult_education",
-          "label": "Adult, continuing, or workforce education",
+          "label": "Adult, continuing, or workforce education (not an ISCED level)",
           "eric": [
             "Adult Education",
             "Adults"
@@ -148,7 +180,7 @@
         },
         {
           "id": "informal_learning",
-          "label": "Informal or out-of-school learning (any age)",
+          "label": "Informal or out-of-school learning (not an ISCED level)",
           "eric": [
             "Informal Education"
           ]

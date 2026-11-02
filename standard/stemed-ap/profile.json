@@ -68,6 +68,11 @@
       "name": "NCES locale classification (locale types City, Suburb, Town, Rural)",
       "url": "https://nces.ed.gov/programs/edge/Geographic/LocaleBoundaries"
     },
+    "isced": {
+      "short": "ISCED",
+      "name": "UNESCO International Standard Classification of Education (ISCED 2011)",
+      "url": "https://uis.unesco.org/sites/default/files/documents/international-standard-classification-of-education-isced-2011-en.pdf"
+    },
     "testing_standards": {
       "short": "AERA/APA/NCME",
       "name": "Standards for Educational and Psychological Testing (2014)",
@@ -684,12 +689,18 @@
       "type": "vocab",
       "vocabulary": "education_level",
       "definition": "Education level(s) of the participants.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Education Levels')",
+      "datacite": "subjects (subjectScheme 'STEMEd+ Education Levels'); ISCED 2011 level as an additional subject (subjectScheme 'ISCED 2011')",
       "alignments": [
         {
           "standard": "stemed",
           "term": "education_level vocabulary",
           "match": "exact"
+        },
+        {
+          "standard": "isced",
+          "term": "levels of education 0–8",
+          "match": "exact",
+          "note": "Options 0–8 are the ISCED 2011 levels; adult and informal learning are STEMEd+ additions outside ISCED."
         },
         {
           "standard": "eric",
@@ -699,12 +710,16 @@
         {
           "standard": "dcterms",
           "term": "educationLevel",
-          "match": "close"
+          "match": "close",
+          "status": "seeking_input",
+          "note": "Dublin Core's educationLevel describes the audience a resource is intended for; this element describes the participants studied."
         },
         {
           "standard": "schemaorg",
           "term": "educationalLevel",
-          "match": "close"
+          "match": "close",
+          "status": "seeking_input",
+          "note": "schema.org's educationalLevel describes the level a resource is designed for; this element describes the participants studied."
         }
       ]
     },
@@ -888,7 +903,9 @@
         {
           "standard": "dcterms",
           "term": "instructionalMethod",
-          "match": "close"
+          "match": "close",
+          "status": "seeking_input",
+          "note": "Dublin Core's instructionalMethod describes the teaching method a resource is designed to support; this element describes the approach used or studied in the research."
         }
       ]
     },
@@ -1336,5 +1353,8 @@
     "exact": "Same meaning; values can be copied directly.",
     "close": "Near-equivalent; usable interchangeably in most cases.",
     "related": "Overlapping meaning; not a substitute."
+  },
+  "alignment_status": {
+    "seeking_input": "We are seeking expert input on this alignment."
   }
 }
