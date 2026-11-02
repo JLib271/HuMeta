@@ -1,0 +1,175 @@
+{
+  "types": {
+    "resourceTypeGeneral": "Collection",
+    "resourceType": "HuMeta Collection"
+  },
+  "titles": [
+    {
+      "title": "Letters and drawings from a 1920s rural school (illustrative)"
+    }
+  ],
+  "creators": [
+    {
+      "name": "Example, Historian",
+      "nameType": "Personal",
+      "affiliation": [
+        {
+          "name": "Example University"
+        }
+      ]
+    }
+  ],
+  "publisher": {
+    "name": "Example University"
+  },
+  "publicationYear": "2026",
+  "subjects": [
+    {
+      "subject": "history of education"
+    },
+    {
+      "subject": "rural schools"
+    },
+    {
+      "subject": "children's drawings"
+    },
+    {
+      "subject": "Rural schooling in the 1920s"
+    },
+    {
+      "subject": "History",
+      "subjectScheme": "HuMeta Disciplines",
+      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#discipline.history"
+    },
+    {
+      "subject": "Education (as a subject: policy, foundations, teaching and learning)",
+      "subjectScheme": "HuMeta Disciplines",
+      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#discipline.education_studies"
+    },
+    {
+      "subject": "Historical study",
+      "subjectScheme": "HuMeta Study Designs",
+      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#study_design.historical"
+    },
+    {
+      "subject": "Text (e.g., document, book, post, transcript)",
+      "subjectScheme": "HuMeta Units of Analysis",
+      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#unit_of_analysis.text"
+    },
+    {
+      "subject": "Still image (e.g., photograph, artwork)",
+      "subjectScheme": "HuMeta Units of Analysis",
+      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#unit_of_analysis.still_image"
+    },
+    {
+      "subject": "Archival research (finding and selecting records in archives or collections)",
+      "subjectScheme": "HuMeta Data Collection Methods",
+      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#data_collection_method.archival_research"
+    },
+    {
+      "subject": "Historical analysis or source criticism",
+      "subjectScheme": "HuMeta Analysis Methods",
+      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#analysis_method.historical_analysis"
+    },
+    {
+      "subject": "Close reading or textual analysis",
+      "subjectScheme": "HuMeta Analysis Methods",
+      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#analysis_method.close_reading"
+    },
+    {
+      "subject": "Visual or image analysis (e.g., photographs, artworks, film)",
+      "subjectScheme": "HuMeta Analysis Methods",
+      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#analysis_method.visual_analysis"
+    },
+    {
+      "subject": "Archival or historical records",
+      "subjectScheme": "HuMeta Source Types",
+      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#source_type.archival_records"
+    },
+    {
+      "subject": "Private correspondence and personal papers",
+      "subjectScheme": "HuMeta Source Types",
+      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#source_type.correspondence"
+    },
+    {
+      "subject": "Artworks (including participant or student artwork)",
+      "subjectScheme": "HuMeta Source Types",
+      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#source_type.artworks"
+    },
+    {
+      "subject": "FOS: Humanities",
+      "subjectScheme": "Fields of Science and Technology (FOS)",
+      "schemeUri": "http://www.oecd.org/science/inno/38235147.pdf",
+      "classificationCode": "6"
+    },
+    {
+      "subject": "FOS: Educational sciences",
+      "subjectScheme": "Fields of Science and Technology (FOS)",
+      "schemeUri": "http://www.oecd.org/science/inno/38235147.pdf",
+      "classificationCode": "5.3"
+    },
+    {
+      "subject": "FOS: History and archaeology",
+      "subjectScheme": "Fields of Science and Technology (FOS)",
+      "schemeUri": "http://www.oecd.org/science/inno/38235147.pdf",
+      "classificationCode": "6.1"
+    },
+    {
+      "subject": "Educational Research",
+      "subjectScheme": "ERIC Thesaurus",
+      "schemeUri": "https://eric.ed.gov/?ti=all"
+    }
+  ],
+  "descriptions": [
+    {
+      "description": "Illustrative record (fictional project) showing how an archival humanities and education history project with images is described with HuMeta: no participants, archival and image sources, and source rights.",
+      "descriptionType": "Abstract"
+    },
+    {
+      "description": "Study design: Historical study. Research questions: What did rural students and teachers write and draw about school life? Data collection: Archival research (finding and selecting records in archives or collections). Analysis: Historical analysis or source criticism; Close reading or textual analysis; Visual or image analysis (e.g., photographs, artworks, film). Sources: Archival or historical records; Private correspondence and personal papers; Artworks (including participant or student artwork). Sources: Letters between a teacher and families, school reports, and students' drawings in one county archive. Held at: A county historical society archive (fictional) Period covered: 1921-1929",
+      "descriptionType": "Methods"
+    },
+    {
+      "description": "Ethics and access (HuMeta profile). Human participants: No: the study uses only texts, artworks, objects, or other non-human sources. Human-subjects review: Determined not to be human-subjects research. Participation consent: Not applicable. Consent for data sharing: Not applicable (no human-subjects data). Identifiability: Not applicable (no participant data). Access level: Open (public).",
+      "descriptionType": "Other"
+    },
+    {
+      "description": "CARE statement (HuMeta profile). Indigenous data: No.",
+      "descriptionType": "Other"
+    }
+  ],
+  "schemaVersion": "http://datacite.org/schema/kernel-4",
+  "rightsList": [
+    {
+      "rights": "Sources studied: Public domain or no known copyright",
+      "rightsUri": "http://rightsstatements.org/vocab/NoC-US/1.0/"
+    },
+    {
+      "rights": "Access: Open (public)"
+    }
+  ],
+  "language": "en",
+  "dates": [
+    {
+      "date": "1921/1929",
+      "dateType": "Coverage"
+    }
+  ],
+  "geoLocations": [
+    {
+      "geoLocationPlace": "MI, United States"
+    }
+  ]
+}

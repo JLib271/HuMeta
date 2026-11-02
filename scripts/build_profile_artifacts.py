@@ -7,7 +7,7 @@ Sources (edit these):   standard/humeta/profile.json, vocabularies.json,
                         library/constructs.json
 Generated (don't edit): schema/humeta-record.schema.json, elements.md,
                         crosswalks/datacite-4.7.csv, crosswalks/eric.csv,
-                        crosswalks/alignments.csv,
+                        crosswalks/alignments.csv, crosswalks/ddi.csv,
                         examples/*.datacite.json, examples/*.datacite.xml
 
 Usage:
@@ -58,6 +58,15 @@ def build() -> dict[Path, str]:
             rows.append([e["id"], e["module"], e["label"], std["short"], std["name"], a["term"], a["match"],
                          a.get("status", ""), a.get("note", ""), std["url"]])
     files[BASE / "crosswalks" / "alignments.csv"] = csv_text(rows)
+
+    rows = [["vocabulary", "term_id", "term_label", "ddi_vocabulary", "ddi_code", "ddi_match", "oecd_fos", "isced", "rights_statement"]]
+    for vocab_id, vocab in p.vocabularies.items():
+        for t in vocab["terms"]:
+            ddi = t.get("ddi") or {}
+            if ddi or t.get("fos") or t.get("isced") or t.get("rs"):
+                rows.append([vocab_id, t["id"], t["label"], ddi.get("cv", ""), ddi.get("code", ""), ddi.get("match", ""),
+                             t.get("fos", ""), t.get("isced", ""), t.get("rs", "")])
+    files[BASE / "crosswalks" / "ddi.csv"] = csv_text(rows)
 
     rows = [["vocabulary", "term_id", "term_label", "eric_descriptor", "eric_status"]]
     for c in lib.constructs.values():

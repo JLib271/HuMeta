@@ -118,6 +118,9 @@ def record_form(record: dict) -> dict | None:
         changed["education"] = profile.empty_record(p, modules=("education",))["education"] if wanted else None
         store_record(changed, reset_widgets=True)
         st.rerun()
+    if "education" in (s.get("fields") or []) and not with_education:
+        st.info("You chose Education as a research field. Turn on the Education module above to record education "
+                "levels and instructional settings.")
     st.caption("Modules for other fields, starting with social science and humanities, are being developed with the "
                f"community. [Suggest one on GitHub]({ISSUES_URL}).")
     with st.form(key=f"profile_form_{v}"):
@@ -171,6 +174,13 @@ def record_form(record: dict) -> dict | None:
                                   index=license_options.index(current_license) if current_license in license_options else 0,
                                   format_func=lambda k: LICENSES[k], key=key("license"))
 
+        c1, c2 = st.columns(2)
+        with c1:
+            fields = multi("Research field *", "research_field", s.get("fields"), "fields", "study.fields",
+                           help="Choose all that apply. Shared across fields so studies can be found and compared across disciplines.")
+        with c2:
+            disciplines = multi("Discipline or subject area", "discipline", s.get("discipline"), "discipline", "study.discipline")
+
         st.subheader("2 · Study design")
         design = s.get("design") or {}
         topic = st.text_input(lab("Topic / content domain", "study.design.topic"), design.get("topic") or "", key=key("topic"),
@@ -186,6 +196,8 @@ def record_form(record: dict) -> dict | None:
             methods = multi("Data collection method", "data_collection_method", s["evidence"].get("data_collection_methods"), "methods",
                             "study.evidence.data_collection_methods")
         with c2:
+            analysis = multi("Analysis method", "analysis_method", s["evidence"].get("analysis_methods"), "analysis",
+                             "study.evidence.analysis_methods")
             sampling = multi("Sampling procedure", "sampling_procedure", design.get("sampling_procedure"), "sampling",
                              "study.design.sampling_procedure")
             measurement = multi("Measurement evidence (for instruments)", "measurement_evidence",
@@ -198,12 +210,16 @@ def record_form(record: dict) -> dict | None:
         end = c2.text_input(lab("Data collection end (YYYY-MM-DD)", "resource.collection_dates"), dates.get("end") or "",
                             key=key("end"), help=tip("resource.collection_dates"))
 
-        st.subheader("3 · Population and context")
+        st.subheader("3 · People and place")
         c1, c2 = st.columns(2)
         with c1:
-            roles = multi("Participants *", "participant_role", s["population"].get("participant_roles"), "roles",
-                          "study.population.participant_roles")
-            disciplines = multi("Discipline", "discipline", s.get("discipline"), "discipline", "study.discipline")
+            participants = single("Do people take part in this study? *", "human_participants",
+                                  s["population"].get("human_participants"), "participants",
+                                  "study.population.human_participants",
+                                  help="If no people take part (for example, only texts, artworks, or objects), choose No "
+                                       "and describe your sources in the next section.")
+            roles = multi("Participants (required if people take part)", "participant_role",
+                          s["population"].get("participant_roles"), "roles", "study.population.participant_roles")
         with c2:
             locale = multi("Locale", "locale", s["context"].get("locale"), "locale", "study.context.locale",
                            help="NCES locale types. Fully online study? Leave blank.")
@@ -221,9 +237,27 @@ def record_form(record: dict) -> dict | None:
                                       value=int(s["population"].get("sample_size") or 0), key=key("n"),
                                       help=tip("study.population.sample_size", "Planned or actual. Leave 0 if not known."))
 
-        number = 4
+        st.subheader("4 · Sources")
+        st.caption("Texts, archives, images, artworks, media, online content, objects, or existing datasets you study. "
+                   "Required if no people take part; useful for any study that analyzes materials.")
+        src = s.get("sources") or {}
+        c1, c2 = st.columns(2)
+        with c1:
+            source_types = multi("Source type", "source_type", src.get("types"), "srctypes", "study.sources.types")
+            source_rights = single("Rights status of sources", "source_rights", src.get("rights"), "srcrights",
+                                   "study.sources.rights")
+        with c2:
+            holdings = st.text_input(lab("Holding institutions or platforms", "study.sources.holdings"), src.get("holdings") or "",
+                                     key=key("holdings"), help=tip("study.sources.holdings"))
+            time_period = st.text_input(lab("Time period of sources", "study.sources.time_period"), src.get("time_period") or "",
+                                        key=key("period"), placeholder="e.g., 1850-1900 or 19th century",
+                                        help=tip("study.sources.time_period", "A year range such as 1850-1900 is also exported as a DataCite Coverage date."))
+        sources_description = st.text_area(lab("Sources description", "study.sources.description"), src.get("description") or "",
+                                           key=key("srcdesc"), help=tip("study.sources.description"))
+
+        number = 5
         if with_education:
-            st.subheader("4 · Education module")
+            st.subheader("5 · Education module")
             st.caption("Learners, institutions and instructional settings. Turn the module off above if this study "
                        "is not in an education setting.")
             c1, c2, c3 = st.columns(3)
@@ -240,7 +274,7 @@ def record_form(record: dict) -> dict | None:
                 environments = multi("Learning environment", "learning_environment", edu.get("learning_environments"), "env",
                                      "education.learning_environments")
                 pedagogy = multi("Instructional approach", "pedagogy", edu.get("pedagogy"), "pedagogy", "education.pedagogy")
-            number = 5
+            number = 6
 
         st.subheader(f"{number} · Ethics, consent, and access")
         c1, c2, c3 = st.columns(3)
@@ -258,6 +292,9 @@ def record_form(record: dict) -> dict | None:
             access = single("Access level *", "access_level", s["ethics"].get("access_level"), "access", "study.ethics.access_level")
             flags = multi("Sensitivity flags", "sensitivity_flag", s["ethics"].get("sensitivity_flags"), "flags",
                           "study.ethics.sensitivity_flags")
+        online_data = multi("Online data practices (required if you use social media, websites, or platform data)",
+                            "online_data_practice", s["ethics"].get("online_data"), "online", "study.ethics.online_data",
+                            help="Informed by the Association of Internet Researchers' ethical guidelines (IRE 3.0).")
         governance_notes = st.text_area(lab("Governance notes (approval references, data-use restrictions; nothing confidential)",
                                             "study.ethics.governance_notes"), help=tip("study.ethics.governance_notes"), value=
                                         s["ethics"].get("governance_notes") or "", key=key("govnotes"))
@@ -315,19 +352,25 @@ def record_form(record: dict) -> dict | None:
     })
     ns = new["study"]
     ns["constructs"] = s.get("constructs") or []  # edited in Module 3
+    ns["fields"] = fields
     ns["discipline"] = disciplines
     ns["design"].update({"topic": _blank(topic), "research_questions": _blank(research_questions),
                          "unit_of_analysis": units, "sampling_procedure": sampling})
-    ns["population"].update({"participant_roles": roles, "description": _blank(population_description),
+    ns["population"].update({"human_participants": participants, "participant_roles": roles,
+                             "description": _blank(population_description),
                              "sample_size": int(sample_size) if sample_size else None})
     ns["context"].update({"locale": locale})
     if with_education:
         new["education"].update({"education_levels": levels, "undergraduate_levels": ug_levels,
                                  "institution_types": institutions, "modality": modality,
                                  "learning_environments": environments, "pedagogy": pedagogy})
-    ns["evidence"].update({"study_designs": designs, "measurement_evidence": measurement, "data_collection_methods": methods})
+    ns["evidence"].update({"study_designs": designs, "measurement_evidence": measurement, "data_collection_methods": methods,
+                           "analysis_methods": analysis})
+    ns["sources"].update({"types": source_types, "rights": source_rights, "holdings": _blank(holdings),
+                          "time_period": _blank(time_period), "description": _blank(sources_description)})
     ns["ethics"].update({"human_subjects_review": review, "consent": consent, "consent_for_sharing": sharing,
                          "identifiability": identifiability, "sensitivity_flags": flags, "access_level": access,
+                         "online_data": online_data,
                          "governance_notes": _blank(governance_notes)})
     ns["care"].update({"indigenous_data": indigenous, "governance": governance, "statement": _blank(care_statement),
                        "local_contexts_project": _blank(lc_project),

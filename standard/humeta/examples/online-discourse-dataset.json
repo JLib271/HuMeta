@@ -1,0 +1,131 @@
+{
+  "profile": "humeta",
+  "profile_version": "1.0.0-draft.1",
+  "resource": {
+    "title": "Public talk about climate anxiety on two social platforms, 2018-2023 (illustrative)",
+    "creators": [
+      {
+        "name": "Example, Researcher",
+        "orcid": null,
+        "affiliation": "Example University"
+      }
+    ],
+    "publisher": "Example University",
+    "publication_year": 2026,
+    "resource_type": "Dataset",
+    "keywords": [
+      "climate anxiety",
+      "social media",
+      "discourse"
+    ],
+    "funding": [],
+    "related": [],
+    "identifier": {
+      "value": "10.5072/example-humeta-2",
+      "type": "DOI"
+    },
+    "description": "Illustrative record (fictional study) showing how a communication and humanities study of public online posts is described with HuMeta: no direct participants, social media sources, and online data practices.",
+    "language": "en",
+    "license": {
+      "spdx": "CC-BY-4.0",
+      "name": "Creative Commons Attribution 4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/"
+    },
+    "collection_dates": {
+      "start": "2024-01-15",
+      "end": "2024-03-30"
+    },
+    "geography": {
+      "countries": [
+        "US",
+        "GB"
+      ],
+      "us_states": []
+    }
+  },
+  "study": {
+    "fields": [
+      "social_sciences",
+      "humanities"
+    ],
+    "discipline": [
+      "media_communication",
+      "languages_literature"
+    ],
+    "population": {
+      "participant_roles": [
+        "online_authors"
+      ],
+      "human_participants": "indirect",
+      "description": "Authors of public posts that mention climate anxiety; no authors were contacted.",
+      "sample_size": null
+    },
+    "context": {
+      "locale": []
+    },
+    "evidence": {
+      "study_designs": [
+        "qualitative",
+        "time_series"
+      ],
+      "measurement_evidence": [],
+      "data_collection_methods": [
+        "web_platform_data",
+        "corpus_collection"
+      ],
+      "analysis_methods": [
+        "discourse_analysis",
+        "content_analysis",
+        "computational"
+      ]
+    },
+    "design": {
+      "unit_of_analysis": [
+        "text"
+      ],
+      "sampling_procedure": [
+        "purposive"
+      ],
+      "topic": "Climate anxiety in public online discourse",
+      "research_questions": "How do people describe climate anxiety in public posts, and how has this changed since 2018?"
+    },
+    "sources": {
+      "types": [
+        "social_media"
+      ],
+      "rights": "platform_terms",
+      "description": "About 12,000 public posts in English selected by keyword, with replies.",
+      "holdings": "Two public social media platforms (collected through their research APIs)",
+      "time_period": "2018-2023"
+    },
+    "ethics": {
+      "sensitivity_flags": [
+        "public_online_content"
+      ],
+      "online_data": [
+        "public_content",
+        "platform_terms",
+        "no_consent_public",
+        "usernames_removed",
+        "quotes_altered",
+        "ids_only",
+        "deletions_honored"
+      ],
+      "human_subjects_review": "exempt",
+      "consent": "not_applicable",
+      "consent_for_sharing": "not_applicable",
+      "identifiability": "coded",
+      "access_level": "controlled",
+      "governance_notes": "Only post IDs and derived codes are shared; researchers rehydrate posts under the platforms' terms."
+    },
+    "care": {
+      "indigenous_data": "no",
+      "governance": null,
+      "statement": null,
+      "local_contexts_project": null,
+      "local_contexts_labels": []
+    },
+    "constructs": []
+  },
+  "education": null
+}

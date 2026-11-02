@@ -12,6 +12,8 @@ from oem.library import Library
 
 ROOT = Path(__file__).resolve().parent.parent
 BASE = ROOT / "standard" / "humeta"
+ONLINE = json.loads((ROOT / "standard" / "humeta" / "examples" / "online-discourse-dataset.json").read_text())
+ARCHIVAL = json.loads((ROOT / "standard" / "humeta" / "examples" / "archival-letters-collection.json").read_text())
 EXAMPLE = json.loads((BASE / "examples" / "climate-inventory-dataset.json").read_text())
 
 
@@ -188,8 +190,8 @@ def test_study_record_view_for_later_modules(p):
     meta = json.loads(study["study_description"])["metadata"]
     assert study["study_title"] == EXAMPLE["resource"]["title"]
     assert meta["content_domain"] == EXAMPLE["study"]["design"]["topic"]
-    assert meta["unit_of_analysis"] == "Individual (person / participant)"
-    assert meta["sampling_procedure"] == "Convenience sample"
+    assert meta["unit_of_analysis"] == "Individual (person)"
+    assert meta["sampling_procedure"].startswith("Non-probability: availability")
     assert meta["participant_populations"] == ["Students / learners"]
     assert meta["state_origin"] == "MI"
     again = profile.to_study_record(EXAMPLE, existing=study, profile=p)
@@ -211,8 +213,8 @@ def test_every_element_has_alignments_to_known_standards(p):
 
 
 def test_alignment_badges(p):
-    assert profile.alignment_badges("resource.title", p) == "`DataCite: titles.title` `DC: title` `schema.org: name`"
-    assert profile.alignment_badges("resource.publication_year", p).count("≈") == 2
+    assert profile.alignment_badges("resource.title", p) == "`DataCite: titles.title` `DC: title` `schema.org: name` `DDI-C: titl`"
+    assert profile.alignment_badges("resource.publication_year", p).count("≈") == 3
     assert profile.alignment_badges("study.constructs", p).startswith("`HuMeta`")
     assert "Close match: Dublin Core" in profile.alignment_help("resource.publication_year", p)
 
@@ -257,3 +259,66 @@ def test_every_element_belongs_to_a_known_module(p):
         prefix = e["id"].split(".")[0]
         expected = ("resource", "study") if e["module"] == "core" else (e["module"],)
         assert prefix in expected, e["id"]
+
+
+def test_examples_from_three_fields_are_valid(lib, p):
+    for record in (EXAMPLE, ONLINE, ARCHIVAL):
+        assert profile.is_valid(record, lib, p), [i for i in profile.validate(record, lib, p) if i.severity == "error"]
+        assert profile.migrate(record, p) == record
+
+
+def test_studies_without_participants_need_sources_not_roles_or_constructs(lib, p):
+    record = copy.deepcopy(ARCHIVAL)
+    record["resource"]["resource_type"] = "Dataset"
+    assert profile.is_valid(record, lib, p)  # no constructs or participant roles needed
+    record["study"]["sources"]["types"] = []
+    assert any(i.element == "study.sources.types" for i in profile.validate(record, lib, p))
+    record = copy.deepcopy(EXAMPLE)
+    record["study"]["population"]["participant_roles"] = []
+    assert any(i.element == "study.population.participant_roles" for i in profile.validate(record, lib, p))
+
+
+def test_online_data_rules(lib, p):
+    record = copy.deepcopy(ONLINE)
+    record["study"]["ethics"]["online_data"] = []
+    assert any(i.element == "study.ethics.online_data" and i.severity == "error" for i in profile.validate(record, lib, p))
+    record["study"]["ethics"]["online_data"] = ["public_content", "private_spaces", "minors_possible"]
+    record["study"]["ethics"]["access_level"] = "open"
+    assert {"R13", "R14", "R15", "R16"} <= rules_fired(record, lib)
+    assert {"R13", "R14", "R15", "R16"}.isdisjoint(rules_fired(ONLINE, lib))
+
+
+def test_source_rights_rule(lib):
+    record = copy.deepcopy(ARCHIVAL)
+    record["study"]["sources"]["rights"] = "in_copyright"
+    assert "R17" in rules_fired(record, lib)
+    assert "R17" not in rules_fired(ARCHIVAL, lib)
+
+
+def test_fos_subjects_coverage_dates_and_source_rights(lib, p):
+    data = profile.to_datacite_json(ARCHIVAL, lib, p)
+    fos = [s for s in data["subjects"] if s.get("subjectScheme") == profile.FOS_SCHEME]
+    assert {s["subject"] for s in fos} == {"FOS: Humanities", "FOS: Educational sciences", "FOS: History and archaeology"}
+    assert all(s["classificationCode"] in profile.FOS_LABELS for s in fos)
+    assert {"date": "1921/1929", "dateType": "Coverage"} in data["dates"]
+    assert any(r.get("rightsUri") == "http://rightsstatements.org/vocab/NoC-US/1.0/" for r in data["rightsList"])
+    methods = next(d["description"] for d in data["descriptions"] if d["descriptionType"] == "Methods")
+    assert "Archival research" in methods and "Period covered: 1921-1929" in methods
+
+
+def test_vocabulary_mappings_point_to_known_codes(p):
+    ddi_codes = {
+        "AnalysisUnit": {"Individual", "Group", "Household", "OrganizationOrInstitution", "EventOrProcessOrActivity",
+                         "GeographicUnit", "TimeUnit", "MediaUnit.Text", "MediaUnit.StillImage", "MediaUnit.Sound",
+                         "MediaUnit.Video", "Object", "Other"},
+    }
+    for vocab_id, vocab in p.vocabularies.items():
+        for t in vocab["terms"]:
+            if "fos" in t:
+                assert t["fos"] in profile.FOS_LABELS, (vocab_id, t["id"])
+            if "ddi" in t:
+                assert t["ddi"]["match"] in p.definition["match_types"]
+                if t["ddi"]["cv"] in ddi_codes:
+                    assert t["ddi"]["code"] in ddi_codes[t["ddi"]["cv"]], t["id"]
+            if "rs" in t:
+                assert t["rs"] in {"InC", "NoC-US", "CNE", "UND", "NKC"}

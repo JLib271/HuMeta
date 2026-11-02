@@ -13,6 +13,34 @@
   `modality`, `learning_environments`, `pedagogy` (from `setting`). Education
   level is mandatory only when the module is used. Rule R11 (tribal college
   prompt) now reads the module's institution types.
+* **Broader core for the social sciences and humanities.**
+  * New `study.fields` (Research field, mandatory): education, social sciences,
+    humanities, arts, other, with OECD Fields of Science codes, exported as
+    DataCite FOS subjects.
+  * `study.discipline` adds social-science and humanities disciplines, each
+    with its FOS code.
+  * New `study.population.human_participants` (direct / indirect / none).
+    Participant roles are required only when people are involved; new roles
+    for creators, online authors, and staff.
+  * Unit of analysis and sampling procedure now follow the DDI AnalysisUnit
+    and SamplingProcedure vocabularies (units now include texts, images,
+    sound, video, and objects). Data collection methods, time-related designs,
+    and source types map to DDI ModeOfCollection, TimeMethod,
+    GeneralDataFormat, and DataSourceType. DDI-Codebook alignments added.
+  * New methods: ethnography, archival research, corpus collection, web and
+    platform data, visual and arts-based methods, diaries, recording,
+    experiment, practice-based making. New designs: ethnographic, historical,
+    interpretive or critical, practice-based.
+  * New `study.evidence.analysis_methods`, including content and discourse
+    analysis, close reading, visual analysis, and computational analysis.
+  * New `study.sources` section (types, description, holdings, time period,
+    rights), mandatory in type when no people take part.
+  * New `study.ethics.online_data` practices and warning rules R13–R16 for
+    public online data, following the AoIR ethical guidelines; R17 warns
+    about sharing copies of copyrighted sources. R1 (constructs) now applies
+    to instruments and to datasets with direct participants.
+  * Two new examples: a study of public online posts and an archival
+    humanities collection.
 
 * Every element now lists its alignments to DataCite, Dublin Core, schema.org,
   ERIC and other standards, with match type (exact, close, related);

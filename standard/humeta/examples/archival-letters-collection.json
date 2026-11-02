@@ -1,0 +1,106 @@
+{
+  "profile": "humeta",
+  "profile_version": "1.0.0-draft.1",
+  "resource": {
+    "title": "Letters and drawings from a 1920s rural school (illustrative)",
+    "creators": [
+      {
+        "name": "Example, Historian",
+        "orcid": null,
+        "affiliation": "Example University"
+      }
+    ],
+    "publisher": "Example University",
+    "publication_year": 2026,
+    "resource_type": "Collection",
+    "keywords": [
+      "history of education",
+      "rural schools",
+      "children's drawings"
+    ],
+    "funding": [],
+    "related": [],
+    "description": "Illustrative record (fictional project) showing how an archival humanities and education history project with images is described with HuMeta: no participants, archival and image sources, and source rights.",
+    "language": "en",
+    "geography": {
+      "countries": [
+        "US"
+      ],
+      "us_states": [
+        "MI"
+      ]
+    }
+  },
+  "study": {
+    "fields": [
+      "humanities",
+      "education"
+    ],
+    "discipline": [
+      "history",
+      "education_studies"
+    ],
+    "population": {
+      "participant_roles": [],
+      "human_participants": "none",
+      "description": null,
+      "sample_size": null
+    },
+    "context": {
+      "locale": []
+    },
+    "evidence": {
+      "study_designs": [
+        "historical"
+      ],
+      "measurement_evidence": [],
+      "data_collection_methods": [
+        "archival_research"
+      ],
+      "analysis_methods": [
+        "historical_analysis",
+        "close_reading",
+        "visual_analysis"
+      ]
+    },
+    "design": {
+      "unit_of_analysis": [
+        "text",
+        "still_image"
+      ],
+      "sampling_procedure": [],
+      "topic": "Rural schooling in the 1920s",
+      "research_questions": "What did rural students and teachers write and draw about school life?"
+    },
+    "sources": {
+      "types": [
+        "archival_records",
+        "correspondence",
+        "artworks"
+      ],
+      "rights": "public_domain",
+      "description": "Letters between a teacher and families, school reports, and students' drawings in one county archive.",
+      "holdings": "A county historical society archive (fictional)",
+      "time_period": "1921-1929"
+    },
+    "ethics": {
+      "sensitivity_flags": [],
+      "online_data": [],
+      "human_subjects_review": "not_human_subjects",
+      "consent": "not_applicable",
+      "consent_for_sharing": "not_applicable",
+      "identifiability": "not_applicable",
+      "access_level": "open",
+      "governance_notes": null
+    },
+    "care": {
+      "indigenous_data": "no",
+      "governance": null,
+      "statement": null,
+      "local_contexts_project": null,
+      "local_contexts_labels": []
+    },
+    "constructs": []
+  },
+  "education": null
+}

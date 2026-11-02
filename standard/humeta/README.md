@@ -10,12 +10,19 @@ sciences, the humanities, and education. Researchers fill it in themselves,
 from study design onward. It adds what general-purpose repository metadata
 leaves out:
 
+* **Research field and discipline**, using the OECD Fields of Science that
+  DataCite already uses, so studies can be found across fields
 * **Constructs measured**, from a shared, defined construct vocabulary
-* **Population and context**: who participated and where
-* **Evidence type**: study design, measurement (validity and reliability)
-  evidence, and data collection methods
+* **People and place**: whether people take part (directly, indirectly, or not
+  at all), who they are, and where
+* **Sources**: texts, archives, images, artworks, media, online content,
+  objects, and existing datasets, with their time period and rights status
+* **Evidence type**: study design, data collection and analysis methods
+  (quantitative, qualitative, interpretive, and computational), and
+  measurement (validity and reliability) evidence
 * **Consent and access**: human-subjects review, consent for participation and
-  for data sharing, identifiability, sensitivity, and access level
+  for data sharing, identifiability, sensitivity, access level, and practices
+  for public online data
 * **CARE**: whether the resource involves Indigenous data and how Indigenous
   authority to control those data is exercised
 
@@ -28,9 +35,15 @@ Social Science module will link to the field's existing infrastructure rather
 than duplicate it: DDI-Codebook for deposit at ICPSR, Dataverse and the UK
 Data Service, and the ELSST thesaurus for topics.
 
+Where a social-science standard already exists, the profile uses it: units of
+analysis and sampling follow the **DDI Alliance controlled vocabularies**, and
+collection modes, designs, and source types map to them, so the same terms
+work in education, social science, and humanities records.
+
 Every record also carries standard citation metadata, and the profile defines
-crosswalks to **DataCite Metadata Schema 4.7** and the **ERIC Thesaurus**, with
-alignments to Dublin Core, schema.org, and other standards, so records work
+crosswalks to **DataCite Metadata Schema 4.7**, **DDI-Codebook**, and the
+**ERIC Thesaurus**, with alignments to Dublin Core, schema.org, and other
+standards, so records work
 with DOI registration, repositories, and indexes that people already use.
 
 The profile began as the STEMEd+ Metadata Application Profile for STEM
@@ -48,6 +61,7 @@ module.
 | `schema/humeta-record.schema.json` | JSON Schema for records (generated) |
 | `crosswalks/datacite-4.7.csv` | Element-to-DataCite crosswalk (generated) |
 | `crosswalks/alignments.csv` | Every element's alignment to DataCite, Dublin Core, schema.org, ERIC and other standards, with match type (generated) |
+| `crosswalks/ddi.csv` | Vocabulary terms mapped to DDI controlled vocabularies, OECD Fields of Science, ISCED, and RightsStatements.org (generated) |
 | `crosswalks/eric.csv` | Vocabulary-to-ERIC descriptor crosswalk with verification status (generated) |
 | `crosswalks/eric_descriptor_status.json` | Which ERIC descriptors have been verified, and how |
 | `examples/` | Example record with its DataCite JSON and XML (fictional study) |
@@ -67,10 +81,18 @@ levels, plus adult and workforce education), informal and public learning
 (museums, science centers, community and out-of-school programs), and research
 with educators. It describes resources; it does not contain participant data.
 
-The core was first written for education research. Some of its vocabularies
-(for example, disciplines and data collection methods) and rules (for example,
-that datasets list constructs measured) still reflect that, and will be
-broadened with reviewers from the social sciences and humanities.
+The core works for studies with people (surveys, interviews, observation,
+tests, creative work), studies about people who do not take part (records,
+public online posts), and studies of texts, artworks, objects, and other
+sources with no participants. A study's research fields are recorded in a
+shared element (`study.fields`) rather than by choosing a separate profile,
+because many studies cross fields: an education study may analyze students'
+photographs or artworks, as humanities research does, and a communication
+study may use both surveys and close reading.
+
+The core was first written for education research and was broadened in
+1.0.0-draft.1 for the social sciences and humanities. Reviewers from those
+fields are invited to propose further terms.
 
 ## 2. Record structure and conformance
 
@@ -109,16 +131,24 @@ checks is `oem/profile.py` (`validate()`).
 | Element | Obl. | Vocabulary |
 |---|---|---|
 | `resource.title`, `.creators`, `.publisher`, `.publication_year`, `.resource_type` | M | DataCite resourceTypeGeneral |
-| `study.constructs` | MA (datasets, instruments) | construct vocabulary |
-| `study.discipline` | R | `discipline` |
-| `study.population.participant_roles` | M | `participant_role` |
+| `study.fields` | M | `research_field` (OECD FOS) |
+| `study.discipline` | R | `discipline` (with OECD FOS codes) |
+| `study.constructs` | MA (instruments; datasets with direct participants) | construct vocabulary |
+| `study.design.unit_of_analysis`, `.sampling_procedure` | O | DDI AnalysisUnit, DDI SamplingProcedure |
+| `study.population.human_participants` | M | `human_participants` (direct / indirect / none) |
+| `study.population.participant_roles` | MA (people take part directly or indirectly) | `participant_role` |
 | `study.population.description`, `.sample_size` | R | |
 | `study.context.locale` | R | `locale` (NCES locale types) |
 | `study.evidence.study_designs` | MA (datasets, study registrations) | `study_design` |
 | `study.evidence.measurement_evidence` | MA (instruments) | `measurement_evidence` |
-| `study.evidence.data_collection_methods` | R | `data_collection_method` |
+| `study.evidence.data_collection_methods` | R | `data_collection_method` (mapped to DDI ModeOfCollection) |
+| `study.evidence.analysis_methods` | R | `analysis_method` |
+| `study.sources.types` | MA (no participants) | `source_type` (mapped to DDI GeneralDataFormat / DataSourceType) |
+| `study.sources.description`, `.rights` | R | `source_rights` |
+| `study.sources.holdings`, `.time_period` | O | |
 | `study.ethics.human_subjects_review`, `.consent_for_sharing`, `.identifiability`, `.access_level` | M | see vocabularies |
 | `study.ethics.consent`, `.sensitivity_flags` | R | `consent`, `sensitivity_flag` |
+| `study.ethics.online_data` | MA (online sources or platform data) | `online_data_practice` |
 | `study.care.indigenous_data` | M | `indigenous_data` |
 | `study.care.governance`, `.statement` | MA (Indigenous data) | `indigenous_governance` |
 | `study.care.local_contexts_project`, `.local_contexts_labels` | O | Local Contexts |
@@ -174,7 +204,10 @@ Vocabularies are in `vocabularies.json` and the construct vocabulary is in
 
 * Term codes are **permanent**. A code is never renamed or reused; a term that
   is no longer needed is marked deprecated in a later version.
-* Each term has a label and, where applicable, ERIC descriptors.
+* Each term has a label and, where applicable, ERIC descriptors, a DDI
+  controlled-vocabulary code (`ddi`: vocabulary, code, match), an OECD Fields
+  of Science code (`fos`), an ISCED level (`isced`), or a RightsStatements.org
+  statement (`rs`). `crosswalks/ddi.csv` lists every DDI and FOS mapping.
 * Vocabularies follow established standards where they exist; for example,
   measurement evidence uses the sources of validity evidence in the
   *Standards for Educational and Psychological Testing*.
@@ -188,7 +221,7 @@ Every element in `profile.json` lists the standards it corresponds to, under
 (≈, similar enough to map with care) or **related** (~, overlapping but not
 interchangeable). Elements marked `HuMeta` are defined by this profile and
 have no equivalent in a general-purpose standard. The standards are listed in
-the `standards` block of `profile.json`. The OpenEdMetadata app shows these
+the `standards` block of `profile.json`. The HuMeta Portal shows these
 alignments beside each field, `elements.md` shows them per element, and
 `crosswalks/alignments.csv` lists them all.
 
@@ -218,6 +251,34 @@ datasets, the instrument used is linked with `relationType` `IsCollectedBy`
 date range, and places to `geoLocationPlace`. The generated XML for the
 example validates against the official DataCite 4.7 XML Schema (tested in
 CI). See `crosswalks/datacite-4.7.csv`.
+
+### DDI-Codebook and the DDI controlled vocabularies
+
+Elements align with DDI-Codebook 2.5 where it has an equivalent (for example
+`titl`, `AuthEnty`, `abstract`, `collDate`, `universe`, `anlyUnit`,
+`sampProc`, `collMode`, `timeMeth`, `dataSrc`, `timePrd`, `restrctn`). Units
+of analysis use the DDI AnalysisUnit vocabulary (2.1.3) and sampling uses DDI
+SamplingProcedure (2.0.2) directly. Data collection methods map to DDI
+ModeOfCollection (5.0.1), time-related study designs to DDI TimeMethod
+(1.2.3), and source types to DDI GeneralDataFormat (2.0.3) and DataSourceType
+(1.0.2). The DDI vocabularies are published by the DDI Alliance under CC BY
+4.0. A DDI-Codebook export, for deposit at ICPSR, Dataverse and CESSDA
+archives, is planned for the Social Science module.
+
+### OECD Fields of Science and Technology
+
+Research fields and disciplines carry OECD Fields of Science (FOS) codes and
+are exported as DataCite subjects in the form DataCite uses ("FOS:
+Educational sciences", subjectScheme "Fields of Science and Technology
+(FOS)", with the FOS code as `classificationCode`).
+
+### Sources and public online data
+
+Source rights map to RightsStatements.org statements where one fits, and are
+exported as a `rightsList` entry. A source time period written as a year range
+(for example 1850-1900) is exported as a DataCite `Coverage` date. Online data
+practices and rules R13–R16 follow the Association of Internet Researchers'
+*Internet Research: Ethical Guidelines 3.0*.
 
 ### ERIC Thesaurus
 
@@ -274,15 +335,26 @@ A DOI will be registered for version 1.0.0 (DataCite resourceTypeGeneral
 * American Educational Research Association, American Psychological
   Association, & National Council on Measurement in Education. (2014).
   *Standards for educational and psychological testing.* AERA.
+* Association of Internet Researchers. (2020). *Internet research: Ethical
+  guidelines 3.0* (a. s. franzke, A. Bechmann, M. Zimmer, & C. M. Ess).
+  https://aoir.org/reports/ethics3.pdf
 * Carroll, S. R., et al. (2020). The CARE Principles for Indigenous Data
   Governance. *Data Science Journal, 19*(1), 43.
   https://doi.org/10.5334/dsj-2020-043
 * DataCite Metadata Working Group. (2026). *DataCite Metadata Schema
   Documentation for the Publication and Citation of Research Data and Other
   Research Outputs* (Version 4.7). DataCite e.V. https://schema.datacite.org/
+* DDI Alliance. *DDI Controlled Vocabularies* (AnalysisUnit 2.1.3,
+  DataSourceType 1.0.2, GeneralDataFormat 2.0.3, ModeOfCollection 5.0.1,
+  SamplingProcedure 2.0.2, TimeMethod 1.2.3). CC BY 4.0.
+  https://rdf-vocabulary.ddialliance.org/
+* DDI Alliance. *DDI-Codebook 2.5.* https://ddialliance.org/Specification/DDI-Codebook/2.5/
 * Education Resources Information Center. *ERIC Thesaurus.*
   https://eric.ed.gov/?ti=all
 * Global Indigenous Data Alliance. *CARE Principles for Indigenous Data
   Governance.* https://www.gida-global.org/care
+* OECD. (2007). *Revised Field of Science and Technology (FOS) classification
+  in the Frascati Manual.* http://www.oecd.org/science/inno/38235147.pdf
+* RightsStatements.org. *Rights statements.* https://rightsstatements.org/
 * Local Contexts. *Traditional Knowledge and Biocultural Labels and Notices.*
   https://localcontexts.org/

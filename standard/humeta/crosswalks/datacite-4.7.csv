@@ -13,13 +13,15 @@ resource.funding,core,Funding,O,0..n,,fundingReferences
 resource.collection_dates,core,Data collection dates,R,0..1,,"dates (dateType Collected, as start/end)"
 resource.geography,core,Geographic coverage,R,0..1,,geoLocations (geoLocationPlace)
 resource.related,core,Related resources,O,0..n,,relatedIdentifiers
+study.fields,core,Research field,M,1..n,research_field,"subjects (subjectScheme 'Fields of Science and Technology (FOS)', e.g. 'FOS: Educational sciences')"
 study.design.topic,core,Topic / content domain,R,0..1,,subjects (no scheme)
 study.design.research_questions,core,Research questions and aims,R,0..1,,descriptions (descriptionType Methods)
 study.design.unit_of_analysis,core,Unit of analysis,O,0..n,unit_of_analysis,subjects (subjectScheme 'HuMeta Units of Analysis')
 study.design.sampling_procedure,core,Sampling procedure,O,0..n,sampling_procedure,subjects (subjectScheme 'HuMeta Sampling Procedures'); descriptions (Methods)
 study.constructs,core,Constructs measured,MA,0..n,,"subjects (subjectScheme 'HuMeta Constructs', valueURI per construct); for datasets, relatedIdentifiers to the instrument's library record (URL, relationType IsCollectedBy) and its publication (DOI, relationType References); ERIC descriptors as additional subjects"
-study.discipline,core,Discipline,R,0..n,discipline,subjects (subjectScheme 'HuMeta Disciplines')
-study.population.participant_roles,core,Participant population,M,1..n,participant_role,subjects (subjectScheme 'HuMeta Participant Roles')
+study.discipline,core,Discipline or subject area,R,0..n,discipline,subjects (subjectScheme 'HuMeta Disciplines'; plus 'Fields of Science and Technology (FOS)' with each term's FOS code)
+study.population.human_participants,core,Human participants,M,1,human_participants,descriptions (Methods)
+study.population.participant_roles,core,Participant population,MA,0..n,participant_role,subjects (subjectScheme 'HuMeta Participant Roles')
 education.education_levels,education,Education level,M,1..n,education_level,subjects (subjectScheme 'HuMeta Education Levels'); ISCED 2011 level as an additional subject (subjectScheme 'ISCED 2011')
 education.undergraduate_levels,education,Undergraduate course level,O,0..n,undergraduate_level,subjects (subjectScheme 'HuMeta Undergraduate Levels')
 study.population.description,core,Population description,R,0..1,,descriptions (descriptionType Methods)
@@ -32,11 +34,18 @@ education.pedagogy,education,Instructional approach,O,0..n,pedagogy,subjects (su
 study.evidence.study_designs,core,Study design,MA,0..n,study_design,subjects (subjectScheme 'HuMeta Study Designs'); descriptions (Methods)
 study.evidence.measurement_evidence,core,Measurement evidence,MA,0..n,measurement_evidence,subjects (subjectScheme 'HuMeta Measurement Evidence')
 study.evidence.data_collection_methods,core,Data collection method,R,0..n,data_collection_method,subjects (subjectScheme 'HuMeta Data Collection Methods')
+study.evidence.analysis_methods,core,Analysis method,R,0..n,analysis_method,subjects (subjectScheme 'HuMeta Analysis Methods'); descriptions (Methods)
+study.sources.types,core,Source type,MA,0..n,source_type,subjects (subjectScheme 'HuMeta Source Types')
+study.sources.description,core,Sources description,R,0..1,,descriptions (descriptionType Methods)
+study.sources.holdings,core,Holding institutions or platforms,O,0..1,,descriptions (descriptionType Methods)
+study.sources.time_period,core,Time period of sources,O,0..1,,dates (dateType Coverage)
+study.sources.rights,core,Rights status of sources,R,0..1,source_rights,rightsList (rights statement for sources)
 study.ethics.human_subjects_review,core,Human-subjects review,M,1,human_subjects_review,"descriptions (descriptionType Other, 'Ethics and access')"
 study.ethics.consent,core,Participation consent,R,0..1,consent,"descriptions (Other, 'Ethics and access')"
 study.ethics.consent_for_sharing,core,Consent for data sharing,M,1,consent_for_sharing,"descriptions (Other, 'Ethics and access'); rightsList"
 study.ethics.identifiability,core,Identifiability,M,1,identifiability,"descriptions (Other, 'Ethics and access')"
 study.ethics.sensitivity_flags,core,Sensitivity flags,R,0..n,sensitivity_flag,"descriptions (Other, 'Ethics and access')"
+study.ethics.online_data,core,Online data practices,MA,0..n,online_data_practice,"descriptions (descriptionType Other, ethics statement)"
 study.ethics.access_level,core,Access level,M,1,access_level,rightsList (access statement)
 study.ethics.governance_notes,core,Governance notes,O,0..1,,"descriptions (Other, 'Ethics and access')"
 study.care.indigenous_data,core,Indigenous data,M,1,indigenous_data,"descriptions (Other, 'CARE statement')"
