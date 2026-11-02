@@ -264,12 +264,14 @@ value_propositions = [
         "5. Descriptive & Scale Analytics",
         "📊 Analysis by Construct",
         "Matches your data's columns to the constructs in your variable plan and reports descriptives, scale "
-        "scores, reliability, and correlations, computed with an established open-source package.",
+        "scores, reliability, correlations, group and before/after comparisons, and regression, computed with an "
+        "established open-source package.",
         "5. Descriptive & Scale Analytics",
         [
             "Upload a private dataset (kept in memory only), pick a published one, or try example data.",
             "Columns match your plan automatically; see each construct's scores and Cronbach's alpha with a 95% CI.",
-            "Correlate scale scores; download results, a PDF report, and an R script that reproduces them.",
+            "Correlate scores, compare groups or timepoints, test associations, and run linear or logistic regression.",
+            "Download results, a PDF report, and an R script that reproduces them.",
         ],
     ),
     (

@@ -44,7 +44,7 @@ their data with common names and metadata, and sharing data responsibly.
    sensitivity (direct identifiers, small cells, free text, dates), deposit
    packages (codebook + README) for repositories with access controls, and
    storing repository DOIs instead of hosting datasets in this repository.
-5. **Module 5 next steps.** Done: automatic column matching, analysis by construct with pingouin, and an R script (psych). Next: confirmatory factor analysis (lavaan or semopy) and measurement invariance across groups, as recommended by researchers.
+5. **Module 5 next steps.** Done: automatic column matching, analysis by construct with pingouin, group and before/after comparisons, chi-square, linear and logistic regression, and an R script (psych and base R). Next: confirmatory factor analysis (lavaan or semopy) and measurement invariance across groups, as recommended by researchers.
 
 ## Good first issues
 

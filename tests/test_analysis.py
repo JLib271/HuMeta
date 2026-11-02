@@ -42,7 +42,7 @@ def test_columns_match_the_plan_by_shared_names(lib, plan):
     pre = next(s for s in scales if s.label.startswith("Autonomy") and s.timepoint == "pre")
     assert pre.columns[0] == "AUTONOMY_01_PRE" and len(pre.columns) == 4 and pre.missing == []
     assert next(s for s in scales if s.construct == "Relatedness").data_type == "binary"
-    assert standard == ["participant_id"] and unmatched == ["extra_column"]
+    assert standard == ["participant_id"] and unmatched == ["example_group", "extra_column"]
 
 
 def test_missing_codes_scores_and_descriptives(lib, plan):
@@ -108,3 +108,90 @@ def test_pdf_report(lib, plan):
     corr = pd.DataFrame({"Variable 1": ["a"], "Variable 2": ["b"], "n": [30], "r": [0.4], "p": [np.float64(0.03)]})
     pdf = A.pdf_report("Test report", len(data), scales, A.descriptives(scores), rel, corr, "mean")
     assert pdf.startswith(b"%PDF")
+
+
+@pytest.fixture(scope="module")
+def frame():
+    rng = np.random.default_rng(7)
+    n = 90
+    group = np.repeat(["a", "b", "c"], n // 3)
+    x1 = rng.normal(0, 1, n)
+    x2 = rng.normal(0, 1, n)
+    y = 1 + 0.6 * x1 - 0.3 * x2 + (group == "c") * 0.8 + rng.normal(0, 1, n)
+    return pd.DataFrame({"y": y, "x1": x1, "x2": x2, "group": group, "two": np.where(group == "a", "a", "b"),
+                         "pre": y, "post": y + 0.4 + rng.normal(0, 0.5, n), "yes": (y > 1).astype(int),
+                         "cat": rng.choice(["p", "q"], n)})
+
+
+def test_compare_two_groups_matches_scipy(frame):
+    pytest.importorskip("pingouin")
+    from scipy import stats
+    res = A.compare_groups(frame["y"], frame["two"])
+    welch = res["tests"].iloc[0]
+    ref = stats.ttest_ind(frame.loc[frame.two == "a", "y"], frame.loc[frame.two == "b", "y"], equal_var=False)
+    assert welch["Test"] == "Welch's t-test"
+    assert welch["Statistic"] == pytest.approx(ref.statistic, abs=1e-6) and welch["p"] == pytest.approx(ref.pvalue, abs=1e-6)
+    assert list(res["descriptives"]["Group"]) == ["a", "b"] and "Cohen's d" in res["summary"]
+
+
+def test_compare_three_groups_matches_scipy(frame):
+    pytest.importorskip("pingouin")
+    from scipy import stats
+    res = A.compare_groups(frame["y"], frame["group"])
+    tests = res["tests"].set_index("Test")
+    groups = [g["y"] for _, g in frame.groupby("group")]
+    assert tests.loc["One-way ANOVA", "Statistic"] == pytest.approx(stats.f_oneway(*groups).statistic, abs=1e-6)
+    assert tests.loc["Kruskal-Wallis H", "Statistic"] == pytest.approx(stats.kruskal(*groups).statistic, abs=1e-6)
+    assert len(res["posthoc"]) == 3 and {"A", "B", "p"} <= set(res["posthoc"].columns)
+
+
+def test_paired_comparison_matches_scipy(frame):
+    pytest.importorskip("pingouin")
+    from scipy import stats
+    res = A.compare_paired(frame["pre"], frame["post"])
+    t = res["tests"].iloc[0]
+    ref = stats.ttest_rel(frame["post"], frame["pre"])
+    assert t["Statistic"] == pytest.approx(ref.statistic, abs=1e-6) and t["p"] == pytest.approx(ref.pvalue, abs=1e-6)
+    assert res["descriptives"].iloc[2]["Mean"] == pytest.approx((frame["post"] - frame["pre"]).mean())
+
+
+def test_chi_square_matches_scipy(frame):
+    pytest.importorskip("pingouin")
+    from scipy import stats
+    res = A.association(frame["group"], frame["cat"])
+    chi2, p, dof, _ = stats.chi2_contingency(pd.crosstab(frame["group"], frame["cat"]))
+    row = res["tests"].iloc[0]
+    assert row["Chi-square"] == pytest.approx(chi2, abs=1e-6) and row["df"] == dof and row["p"] == pytest.approx(p, abs=1e-6)
+    assert 0 <= row["Cramer's V"] <= 1
+
+
+def test_linear_regression_matches_least_squares(frame):
+    pytest.importorskip("pingouin")
+    res = A.regression(frame, "y", ["x1", "x2", "group"])
+    table = res["coefficients"].set_index("Term")
+    X = np.column_stack([np.ones(len(frame)), frame.x1, frame.x2, frame.group == "b", frame.group == "c"]).astype(float)
+    b, *_ = np.linalg.lstsq(X, frame["y"].to_numpy(), rcond=None)
+    assert list(table.index) == ["Intercept", "x1", "x2", "group_b", "group_c"]  # 'a' is the reference group
+    assert table["B"].to_numpy() == pytest.approx(b, abs=1e-6)
+    resid = frame["y"] - X @ b
+    assert res["model"]["r2"] == pytest.approx(1 - (resid ** 2).sum() / ((frame.y - frame.y.mean()) ** 2).sum(), abs=1e-6)
+
+
+def test_logistic_regression(frame):
+    pytest.importorskip("pingouin")
+    res = A.regression(frame, "yes", ["x1"], logistic=True)
+    row = res["coefficients"].set_index("Term").loc["x1"]
+    assert row["B"] > 0 and row["Odds ratio"] == pytest.approx(np.exp(row["B"]))
+    assert res["model"]["n"] == len(frame)
+
+
+def test_r_script_includes_chosen_tests():
+    tests = [{"type": "groups", "outcome": "Score (pre)", "group": "site"},
+             {"type": "paired", "before": "Score (pre)", "after": "Score (post)"},
+             {"type": "chisq", "x": "code_a", "y": "site"},
+             {"type": "regression", "outcome": "passed", "predictors": ["Score (pre)", "site"], "logistic": True}]
+    script = A.r_script([], "mean", "pearson", tests)
+    for snippet in ["t.test(y ~ g", "oneway.test", "kruskal.test", "paired = TRUE", "chisq.test(tab)",
+                    "family = binomial", "confint(fit)", 'v("Score (pre)")']:
+        assert snippet in script
+    assert "Comparisons and regression" not in A.r_script([], "mean", "pearson")

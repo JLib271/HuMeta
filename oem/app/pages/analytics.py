@@ -40,8 +40,9 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     st.header("5. Descriptive & Scale Analytics")
     st.caption(
         "Analyze your data by construct, using the variable plan from Module 2. Columns are matched to your plan by "
-        "their shared variable names. Each construct gets descriptives, a scale score, and reliability, and scale "
-        "scores are correlated. Statistics are computed with pingouin, a peer-reviewed open-source package, and you "
+        "their shared variable names. Each construct gets descriptives, a scale score, and reliability; then you can "
+        "correlate scores, compare groups or timepoints, test categorical associations, and run regressions. "
+        "Statistics are computed with pingouin, a peer-reviewed open-source package, and you "
         "can download an R script that reproduces them."
     )
     plan = P.normalize(current_project().get("module2_plan"), lib)
@@ -150,18 +151,12 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
         return
 
     # ------------------------------------------------------------ Step 4
-    st.subheader("Step 4 · Relationships between scale scores")
-    corr_method = st.radio("Correlation", ["pearson", "spearman"], format_func=str.capitalize, horizontal=True, key="m5_corr",
-                           help="Spearman suits ordinal or skewed scores; Pearson suits roughly continuous, linear relationships.")
-    corr_table = pd.DataFrame()
-    if scores.shape[1] >= 2:
-        corr_table = A.correlations(scores, corr_method)
-        matrix = A.correlation_matrix(scores, corr_method)
-        st.dataframe(matrix.style.background_gradient(cmap="coolwarm", vmin=-1, vmax=1).format("{:.2f}"),
-                     use_container_width=True)
-        st.dataframe(corr_table.round(3), use_container_width=True, hide_index=True)
-    else:
-        st.caption("Correlations need at least two scale scores.")
+    st.subheader("Step 4 · Relationships and comparisons")
+    try:
+        corr_table, corr_method, tests = _relationships(df, scores, scales)
+    except RuntimeError as error:
+        st.error(str(error))
+        return
     score_desc = A.descriptives(scores)
 
     # ------------------------------------------------------------ Step 5
@@ -184,11 +179,142 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
         d3.download_button("Report (PDF)", pdf, file_name="module5_report.pdf", mime="application/pdf", key="m5_dl_pdf")
     except Exception as error:  # reportlab problems should not hide the results
         d3.caption(f"PDF unavailable: {error}")
-    d4.download_button("R script (psych)", A.r_script(scales, method, corr_method).encode("utf-8"),
+    d4.download_button("R script (psych)", A.r_script(scales, method, corr_method, tests).encode("utf-8"),
                        file_name="module5_analysis.R", mime="text/plain", key="m5_dl_r",
-                       help="Reproduces these analyses in R on your own computer, including McDonald's omega.")
+                       help="Reproduces these analyses in R on your own computer, including McDonald's omega and any "
+                            "comparisons or regressions you ran in Step 4.")
     _other_tools()
     _recommend_analysis(publish_disabled, publish_hint)
+
+
+def _relationships(df: pd.DataFrame, scores: pd.DataFrame, scales: list) -> tuple[pd.DataFrame, str, list[dict]]:
+    """Step 4: correlations, group comparisons, before/after, chi-square, and regression.
+    Returns the correlation table, the correlation method, and the tests run (for the R script)."""
+    # Questionnaire items are summarized by their scale score; codes (0/1) stay available as categories.
+    item_columns = {c for s in scales if s.data_type != "binary" for c in s.columns}
+    raw_numeric = [c for c in df.columns if c not in item_columns and pd.api.types.is_numeric_dtype(df[c])
+                   and df[c].nunique() > 2]
+    numeric = list(scores.columns) + raw_numeric
+    categorical = [c for c in df.columns if c not in item_columns and 2 <= df[c].nunique(dropna=True) <= 20]
+    binary = [c for c in list(scores.columns) + list(df.columns)
+              if c not in item_columns and _values(df, scores, c).dropna().isin([0, 1]).all()
+              and _values(df, scores, c).nunique(dropna=True) == 2]
+    tests: list[dict] = []
+    corr_table = pd.DataFrame()
+    st.caption("Variables offered here are your scale scores, codes, and other columns in your data (not individual "
+               "questionnaire items). "
+               "Choose tests that fit your research questions and design; a significant result is not by itself evidence "
+               "of a cause.")
+    t_corr, t_groups, t_paired, t_chi, t_reg = st.tabs(
+        ["Correlations", "Compare groups", "Before and after", "Categorical association", "Regression"])
+
+    with t_corr:
+        corr_method = st.radio("Correlation", ["pearson", "spearman"], format_func=str.capitalize, horizontal=True,
+                               key="m5_corr", help="Spearman suits ordinal or skewed scores; Pearson suits roughly "
+                               "continuous, linear relationships.")
+        if scores.shape[1] >= 2:
+            corr_table = A.correlations(scores, corr_method)
+            matrix = A.correlation_matrix(scores, corr_method)
+            st.dataframe(matrix.style.background_gradient(cmap="coolwarm", vmin=-1, vmax=1).format("{:.2f}"),
+                         use_container_width=True)
+            st.dataframe(corr_table.round(3), use_container_width=True, hide_index=True)
+        else:
+            st.caption("Correlations need at least two scale scores.")
+
+    with t_groups:
+        st.caption("Does a score differ between groups (for example, by condition, course section, or site)? Two groups: "
+                   "Welch's t-test and Mann-Whitney U. Three or more: ANOVA, Welch's ANOVA, Kruskal-Wallis, and "
+                   "Games-Howell follow-up comparisons.")
+        if numeric and categorical:
+            c1, c2 = st.columns(2)
+            outcome = c1.selectbox("Outcome (numeric)", numeric, key="m5_grp_y")
+            group = c2.selectbox("Group variable", [c for c in categorical if c != outcome], key="m5_grp_g")
+            if group and st.toggle("Run this comparison", key="m5_grp_run"):
+                res = A.compare_groups(_values(df, scores, outcome), _values(df, scores, group))
+                _show(res, "descriptives", "tests", "posthoc")
+                tests.append({"type": "groups", "outcome": outcome, "group": group})
+        else:
+            st.caption("Needs a numeric score and a column with 2 to 20 groups.")
+
+    with t_paired:
+        st.caption("Did scores change for the same people (for example, pre vs post)? Paired t-test and Wilcoxon "
+                   "signed-rank test. Pairs of the same construct and measure at different timepoints are suggested.")
+        pairs = _timepoint_pairs(scales, scores)
+        mode = st.radio("Choose", ["Suggested pairs", "Any two scores"], horizontal=True, key="m5_pair_mode") if pairs else "Any two scores"
+        if mode == "Suggested pairs":
+            before, after = st.selectbox("Pair", pairs, format_func=lambda p: f"{p[0]}  →  {p[1]}", key="m5_pair")
+        elif len(numeric) >= 2:
+            c1, c2 = st.columns(2)
+            before = c1.selectbox("Before", numeric, key="m5_pair_x")
+            after = c2.selectbox("After", [c for c in numeric if c != before], key="m5_pair_y")
+        else:
+            before = after = None
+            st.caption("Needs two numeric scores measured on the same people.")
+        if before and after and st.toggle("Run this comparison", key="m5_pair_run"):
+            res = A.compare_paired(_values(df, scores, before), _values(df, scores, after))
+            _show(res, "descriptives", "tests")
+            tests.append({"type": "paired", "before": before, "after": after})
+
+    with t_chi:
+        st.caption("Are two categorical variables related (for example, a code's presence by group)? Chi-square test of "
+                   "independence with Cramér's V.")
+        cats = categorical + [c for c in binary if c not in categorical]
+        if len(cats) >= 2:
+            c1, c2 = st.columns(2)
+            x = c1.selectbox("First variable", cats, key="m5_chi_x")
+            y = c2.selectbox("Second variable", [c for c in cats if c != x], key="m5_chi_y")
+            if st.toggle("Run this test", key="m5_chi_run"):
+                res = A.association(_values(df, scores, x), _values(df, scores, y))
+                st.dataframe(res["observed"], use_container_width=True)
+                _show(res, "tests")
+                if res["warning"]:
+                    st.warning(res["warning"])
+                tests.append({"type": "chisq", "x": x, "y": y})
+        else:
+            st.caption("Needs two columns with 2 to 20 categories each.")
+
+    with t_reg:
+        st.caption("Predict an outcome from one or more predictors. Linear regression for a numeric outcome; logistic "
+                   "regression for a 0/1 outcome. Categorical predictors are dummy-coded against their first category.")
+        kind = st.radio("Model", ["Linear", "Logistic (0/1 outcome)"], horizontal=True, key="m5_reg_kind")
+        logistic = kind.startswith("Logistic")
+        outcomes = binary if logistic else numeric
+        if outcomes:
+            outcome = st.selectbox("Outcome", outcomes, key=f"m5_reg_y_{logistic}")
+            pool = [c for c in dict.fromkeys(numeric + categorical) if c != outcome]
+            predictors = st.multiselect("Predictors", pool, key=f"m5_reg_x_{logistic}")
+            if predictors and st.toggle("Run this model", key="m5_reg_run"):
+                frame = pd.DataFrame({c: _values(df, scores, c) for c in [outcome, *predictors]})
+                res = A.regression(frame, outcome, predictors, logistic=logistic)
+                st.markdown(res["summary"])
+                if not res["coefficients"].empty:
+                    st.dataframe(res["coefficients"].round(3), use_container_width=True, hide_index=True)
+                    tests.append({"type": "regression", "outcome": outcome, "predictors": predictors, "logistic": logistic})
+        else:
+            st.caption("Logistic regression needs a column coded 0 and 1." if logistic else "Needs a numeric outcome.")
+    return corr_table, corr_method, tests
+
+
+def _values(df: pd.DataFrame, scores: pd.DataFrame, name: str) -> pd.Series:
+    return scores[name] if name in scores.columns else df[name]
+
+
+def _timepoint_pairs(scales: list, scores: pd.DataFrame) -> list[tuple[str, str]]:
+    """Consecutive timepoints of the same construct and measure, e.g. (pre, post)."""
+    by_measure: dict[tuple, list[str]] = {}
+    for s in scales:
+        if s.timepoint and s.label in scores.columns:
+            by_measure.setdefault((s.construct, s.measure), []).append(s.label)
+    return [(labels[i], labels[i + 1]) for labels in by_measure.values() for i in range(len(labels) - 1)]
+
+
+def _show(res: dict, *tables: str) -> None:
+    if res.get("summary"):
+        st.markdown(res["summary"])
+    for name in tables:
+        frame = res.get(name)
+        if frame is not None and not frame.empty:
+            st.dataframe(frame.round(3) if hasattr(frame, "round") else frame, use_container_width=True, hide_index=True)
 
 
 def _other_tools() -> None:
