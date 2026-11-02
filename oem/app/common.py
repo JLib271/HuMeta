@@ -13,6 +13,7 @@ import time
 import uuid
 from pathlib import Path
 from github import Github
+from oem import feedback
 from oem.vocab import (APP_DIR, DEFAULT_GITHUB_REPO, LEGACY_PROJECT_FILE_FORMATS, PROJECT_FILE_FORMAT, PUBLISHED_DATASETS_DIR, PUBLISHED_SUMMARIES_DIR)
 
 
@@ -405,6 +406,82 @@ def open_review_pull_request(
         )
     except Exception as git_error:
         return f"❌ Could not open the pull request: {git_error}"
+
+
+def _secret_flag(name: str) -> bool:
+    try:
+        return str(st.secrets.get(name, "")).strip().lower() in ("1", "true", "yes")
+    except Exception:
+        return False
+
+
+def open_feedback_issue(issue: "feedback.Issue") -> str:
+    """File tester feedback as a GitHub issue. Testers need no GitHub account.
+
+    Sign-in is optional unless the secret FEEDBACK_REQUIRES_SIGN_IN is true (for example once the app is
+    public). The token needs the Issues: Read and write permission.
+    """
+    try:
+        if _secret_flag("FEEDBACK_REQUIRES_SIGN_IN") and not researcher_is_signed_in():
+            return "❌ Sign in with Google (sidebar) to send feedback."
+        if "GITHUB_PAT" not in st.secrets:
+            return "❌ Feedback is not set up for this copy of the app (no GitHub token in its secrets)."
+        sent = st.session_state.get("feedback_sent", 0)
+        if sent >= feedback.MAX_PER_SESSION:
+            return "❌ That's the limit for one session. Thank you! Reload the page to send more."
+        repo = Github(str(st.secrets["GITHUB_PAT"]).strip()).get_repo(
+            str(st.secrets.get("GITHUB_REPO", DEFAULT_GITHUB_REPO)).strip()
+        )
+        labels = []
+        for name in issue.labels:
+            try:
+                labels.append(repo.get_label(name))
+            except Exception:
+                try:
+                    color = feedback.label_color(name)
+                    labels.append(repo.create_label(name, color))
+                except Exception:
+                    pass  # a missing label must not lose the feedback
+        created = repo.create_issue(title=issue.title[:250], body=issue.body, labels=labels)
+        st.session_state["feedback_sent"] = sent + 1
+        return f"🎉 Thank you! Your feedback was sent (#{created.number})."
+    except Exception as git_error:
+        return f"❌ Could not send feedback: {git_error}"
+
+
+def render_feedback_box(page: str) -> None:
+    """'Send feedback about this page': a short form that files a GitHub issue for the tester."""
+    st.markdown("---")
+    with st.expander("💬 Send feedback about this page", expanded=False):
+        st.caption(
+            "Tell us what is confusing, broken, missing for your field, or working well. No GitHub account is "
+            "needed. Your message goes to the project's issue list on GitHub, where people who can view the "
+            "repository can read it. Do not include participant data or anything confidential."
+        )
+        with st.form(key=f"feedback_form_{safe_slug(page, 'page', 40)}", clear_on_submit=True):
+            kind = st.radio("What kind of feedback?", list(feedback.KINDS), format_func=lambda k: feedback.KINDS[k][0],
+                            index=None, key=f"feedback_kind_{page}")
+            message = st.text_area("Your feedback", key=f"feedback_text_{page}", height=140,
+                                   placeholder="What were you trying to do, and what happened? Suggestions welcome.")
+            c1, c2 = st.columns(2)
+            if researcher_is_signed_in():
+                name = None
+                c1.caption(f"Sent as {researcher_display_name()}.")
+            else:
+                name = c1.text_input("Your name (optional)", key=f"feedback_name_{page}",
+                                     help="Leave a name if you'd like a follow-up. It appears with your feedback.")
+            field = c2.text_input("Your field (optional)", key=f"feedback_field_{page}",
+                                  placeholder="e.g., sociology, art history, science education")
+            sent = st.form_submit_button("Send feedback", type="primary")
+        if sent:
+            try:
+                issue = feedback.build_issue(kind, page, message, name=name, field=field,
+                                             signed_in_as=researcher_display_name() if researcher_is_signed_in() else None)
+            except ValueError as problem:
+                st.error(str(problem))
+                return
+            result = open_feedback_issue(issue)
+            (st.success if result.startswith("🎉") else st.error)(result)
 
 
 def automate_github_pull_request(suggestion_type: str, file_name: str, file_content: str, title_summary: str) -> str:

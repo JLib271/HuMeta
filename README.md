@@ -121,10 +121,12 @@ In Streamlit Community Cloud, open the app's **Settings → Secrets** and add:
 
 ```toml
 # Fine-grained GitHub token limited to this repository:
-# Contents: Read and write; Pull requests: Read and write
+# Contents: Read and write; Pull requests: Read and write; Issues: Read and write (for the feedback box)
 GITHUB_PAT = "your-fine-grained-token"
 # Optional; defaults to JLib271/HuMeta
 GITHUB_REPO = "JLib271/HuMeta"
+# Optional: require Google sign-in to send feedback (recommended once the app is public)
+# FEEDBACK_REQUIRES_SIGN_IN = true
 
 [auth]
 redirect_uri = "https://<your-app>.streamlit.app/oauth2callback"
@@ -133,6 +135,16 @@ client_id = "xxxxxxxx.apps.googleusercontent.com"
 client_secret = "..."
 server_metadata_url = "https://accounts.google.com/.well-known/openid-configuration"
 ```
+
+### Sharing the app with testers
+
+1. Deploy on Streamlit Community Cloud from this repository (main file `openscience.py`) and add the secrets above.
+2. While the repository is private, the app is private too. Invite testers from the app's **Share** button by
+   email; they sign in with Google or a one-time emailed link. No GitHub account is needed.
+3. Testers use **Send feedback about this page** at the bottom of any page. Each message becomes a GitHub
+   issue labeled `feedback`, with its kind (`feedback: confusing`, `feedback: bug`, …) and page
+   (`page: module 2`, …). See them all at
+   [issues labeled feedback](https://github.com/JLib271/HuMeta/issues?q=label%3Afeedback).
 
 For local development, put the same content in `.streamlit/secrets.toml`
 (already git-ignored) and use `http://localhost:8501/oauth2callback` as the
