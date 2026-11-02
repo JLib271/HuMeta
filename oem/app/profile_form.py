@@ -119,10 +119,14 @@ def record_form(record: dict) -> dict | None:
 
     def single(label: str, vocab_id: str, current: str | None, name: str, element_id: str,
                help: str | None = None) -> str | None:
-        options = [None, *p.ids(vocab_id)]
-        return st.selectbox(lab(label, element_id), options, index=options.index(current) if current in options else 0,
-                            format_func=lambda t: "— choose —" if t is None else p.label(vocab_id, t),
-                            key=key(name), help=tip(element_id, help))
+        """One answer from a vocabulary, as radio buttons: answers wrap instead of being cut off in a dropdown.
+        Required questions (label ends with *) start unanswered; optional ones offer 'Not answered'."""
+        required = label.rstrip().endswith("*")
+        options = p.ids(vocab_id) if required else [None, *p.ids(vocab_id)]
+        index = options.index(current) if current in options else (None if required else 0)
+        return st.radio(lab(label, element_id), options, index=index,
+                        format_func=lambda t: "Not answered" if t is None else p.label(vocab_id, t),
+                        key=key(name), help=tip(element_id, help))
 
     with st.expander("How fields align with metadata standards", expanded=False):
         st.markdown(
@@ -396,21 +400,20 @@ def record_form(record: dict) -> dict | None:
             number += 1
 
         st.subheader(f"{number} · Ethics, consent, and access")
-        c1, c2, c3 = st.columns(3)
+        c1, c2 = st.columns(2)
         with c1:
             review = single("Human-subjects review *", "human_subjects_review", s["ethics"].get("human_subjects_review"), "review",
                             "study.ethics.human_subjects_review")
             consent = single("Participation consent", "consent", s["ethics"].get("consent"), "consent", "study.ethics.consent")
+            identifiability = single("Identifiability *", "identifiability", s["ethics"].get("identifiability"), "ident",
+                                     "study.ethics.identifiability")
         with c2:
             sharing = single("Consent for data sharing *", "consent_for_sharing", s["ethics"].get("consent_for_sharing"), "sharing",
                              "study.ethics.consent_for_sharing",
                              help="What participants agreed to about sharing beyond your team. Plan this before you collect data.")
-            identifiability = single("Identifiability *", "identifiability", s["ethics"].get("identifiability"), "ident",
-                                     "study.ethics.identifiability")
-        with c3:
             access = single("Access level *", "access_level", s["ethics"].get("access_level"), "access", "study.ethics.access_level")
-            flags = multi("Sensitivity flags", "sensitivity_flag", s["ethics"].get("sensitivity_flags"), "flags",
-                          "study.ethics.sensitivity_flags")
+        flags = multi("Sensitivity flags", "sensitivity_flag", s["ethics"].get("sensitivity_flags"), "flags",
+                      "study.ethics.sensitivity_flags")
         online_data = multi("Online data practices (required if you use social media, websites, or platform data)",
                             "online_data_practice", s["ethics"].get("online_data"), "online", "study.ethics.online_data",
                             help="Informed by the Association of Internet Researchers' ethical guidelines (IRE 3.0).")
