@@ -308,6 +308,7 @@ def test_fos_subjects_coverage_dates_and_source_rights(lib, p):
 
 def test_vocabulary_mappings_point_to_known_codes(p):
     ddi_codes = {
+        "KindOfData": {"Quantitative", "Qualitative", "Mixed"},  # DDI CV KindOfData 1.0.0
         "AnalysisUnit": {"Individual", "Group", "Household", "OrganizationOrInstitution", "EventOrProcessOrActivity",
                          "GeographicUnit", "TimeUnit", "MediaUnit.Text", "MediaUnit.StillImage", "MediaUnit.Sound",
                          "MediaUnit.Video", "Object", "Other"},
@@ -341,3 +342,38 @@ def test_theoretical_frameworks_are_validated_and_exported(lib, p):
     assert "Theoretical framework: New Historicism and Cultural History." in methods
     record["study"]["design"]["frameworks"] = ["not_a_framework"]
     assert any(i.element == "study.design.frameworks" for i in profile.validate(record, lib, p))
+
+
+def test_social_science_module_uses_ddi_and_links_the_ddi_record(lib, p):
+    record = copy.deepcopy(ONLINE)
+    assert profile.uses(record, "social_science")
+    record["social_science"]["ddi_record"] = "https://www.icpsr.umich.edu/web/ICPSR/studies/0000"
+    assert profile.is_valid(record, lib, p)
+    data = profile.to_datacite_json(record, lib, p)
+    assert {"relatedIdentifier": record["social_science"]["ddi_record"], "relatedIdentifierType": "URL",
+            "relationType": "IsDocumentedBy"} in data["relatedIdentifiers"]
+    methods = next(d["description"] for d in data["descriptions"] if d["descriptionType"] == "Methods")
+    assert "Kind of data (DDI): Mixed." in methods and "Universe: Public English-language posts" in methods
+    for e in p.definition["elements"]:
+        if e["module"] == "social_science" and e["id"] != "social_science.ddi_record":
+            assert any(a["standard"] in ("ddi", "ddi_cv") and a["match"] == "exact" for a in e["alignments"]), e["id"]
+
+
+def test_humanities_module_exports_tadirah_concepts(lib, p):
+    terms = p.vocab("tadirah_activity")
+    assert len(terms) == 36 and len({t["tadirah"] for t in terms}) == 36
+    data = profile.to_datacite_json(ARCHIVAL, lib, p)
+    tadirah = [s for s in data["subjects"] if s.get("subjectScheme") == profile.TADIRAH_SCHEME]
+    assert tadirah[0] == {"subject": "Capturing: Transcribing", "subjectScheme": "TaDiRAH",
+                          "schemeUri": "https://vocabs.dariah.eu/tadirah/",
+                          "valueUri": "https://vocabs.dariah.eu/tadirah/transcribing"}
+    record = copy.deepcopy(ARCHIVAL)
+    record["humanities"]["source_languages"] = ["French"]
+    assert any(i.element.startswith("humanities") for i in profile.validate(record, lib, p) if i.severity == "error")
+
+
+def test_new_modules_are_optional(lib, p):
+    record = copy.deepcopy(ONLINE)
+    record["social_science"] = record["humanities"] = None
+    assert profile.is_valid(record, lib, p)
+    assert profile.empty_record(p, modules=("social_science", "humanities"))["humanities"]["source_languages"] == []

@@ -25,13 +25,24 @@ leaves out:
   authority to control those data is exercised
 
 The profile has a **core**, which applies to every study, and optional **field
-modules** for what is specific to a field. The first module is
-**Education**, which covers learners' education levels (UNESCO ISCED 2011),
-institution types, and instructional settings. Modules for the social sciences
-and the humanities are in development with researchers from those fields. The
-Social Science module will link to the field's existing infrastructure rather
-than duplicate it: DDI-Codebook for deposit at ICPSR, Dataverse and the UK
-Data Service, and the ELSST thesaurus for topics.
+modules** for what is specific to a field. There are three, each a starting
+point to be developed with researchers in that field:
+
+* **Education**: learners' education levels (UNESCO ISCED 2011), institution
+  types, and instructional settings.
+* **Social Science**: the social sciences already have a full metadata
+  standard, DDI. This module does not duplicate it. It records a few
+  study-level details using DDI-Codebook's own elements (kind of data from the
+  DDI KindOfData vocabulary; universe, smallest geographic unit, response rate,
+  weighting) and links to the study's full DDI documentation, for example at
+  ICPSR, the CESSDA Data Catalogue, the UK Data Service, or a Dataverse. What
+  HuMeta adds is the link from constructs and measures to theory. The ELSST
+  thesaurus for topics is a planned addition.
+* **Arts and Humanities**: research activities from TaDiRAH (the Taxonomy of
+  Digital Research Activities in the Humanities, DARIAH), the works, creators,
+  or objects studied, the languages of the sources, and editorial or encoding
+  standards such as TEI. Sources, their period, holdings, and rights are in
+  the core.
 
 Where a social-science standard already exists, the profile uses it: units of
 analysis and sampling follow the **DDI Alliance controlled vocabularies**, and
@@ -102,10 +113,13 @@ A HuMeta record is a JSON object with these parts:
   geography, related resources)
 * `study`: the core elements, grouped as `design`, `constructs`,
   `discipline`, `population`, `context`, `evidence`, `ethics`, and `care`
-* one key per field module the record uses, currently `education`
-  (`education_levels`, `undergraduate_levels`, `institution_types`,
-  `modality`, `learning_environments`, `pedagogy`). The key is `null` or
-  absent when the module is not used.
+* one key per field module: `education` (`education_levels`,
+  `undergraduate_levels`, `institution_types`, `modality`,
+  `learning_environments`, `pedagogy`), `social_science` (`kind_of_data`,
+  `universe`, `geographic_unit`, `response_rate`, `weighting`, `ddi_record`),
+  and `humanities` (`research_activities`, `objects_of_study`,
+  `source_languages`, `editorial_standards`). A key is `null` or absent when
+  the module is not used.
 
 A record **conforms** to version 1.0 of the profile when it (1) validates
 against `schema/humeta-record.schema.json`, (2) includes every mandatory
@@ -155,6 +169,13 @@ checks is `oem/profile.py` (`validate()`).
 | `education.undergraduate_levels` | O | `undergraduate_level` |
 | `education.institution_types` | R | `institution_type` |
 | `education.modality`, `.learning_environments`, `.pedagogy` | R / R / O | `modality`, `learning_environment`, `pedagogy` |
+| **Social Science module** | | |
+| `social_science.kind_of_data` | O | `kind_of_data` (DDI KindOfData 1.0.0) |
+| `social_science.universe`, `.geographic_unit`, `.response_rate`, `.weighting` | O | DDI-Codebook `universe`, `geogUnit`, `respRate`, `weight` |
+| `social_science.ddi_record` | O | link to the study's DDI documentation |
+| **Arts and Humanities module** | | |
+| `humanities.research_activities` | O | `tadirah_activity` (TaDiRAH 2.0.3) |
+| `humanities.objects_of_study`, `.source_languages`, `.editorial_standards` | O | |
 
 Full definitions, cardinalities, and DataCite mappings are in
 [`elements.md`](elements.md).
@@ -297,7 +318,7 @@ data, adding a crosswalk does not change the profile.
 ## 7. Implementations
 
 * **HuMeta Portal** (this repository's app): Module 1 is the
-  profile form for a study, with the Education module switched on or off; Module 3
+  profile form for a study; researchers start by choosing their fields, which adds the matching modules; Module 3
   adds the constructs measured (suggested from the Module 2 variable plan),
   checks the rules, and exports DataCite and ERIC metadata.
 * **`oem/profile.py`**: reference Python implementation (validation, DataCite

@@ -124,6 +124,21 @@
       "short": "AoIR IRE 3.0",
       "name": "Association of Internet Researchers, Internet Research: Ethical Guidelines 3.0 (2019)",
       "url": "https://aoir.org/reports/ethics3.pdf"
+    },
+    "tadirah": {
+      "short": "TaDiRAH",
+      "name": "TaDiRAH 2.0.3: Taxonomy of Digital Research Activities in the Humanities (DARIAH, CC0)",
+      "url": "https://vocabs.dariah.eu/tadirah/"
+    },
+    "tei": {
+      "short": "TEI",
+      "name": "TEI P5 Guidelines (Text Encoding Initiative)",
+      "url": "https://tei-c.org/guidelines/p5/"
+    },
+    "iso639": {
+      "short": "ISO 639",
+      "name": "ISO 639 language codes (as used in BCP 47)",
+      "url": "https://www.loc.gov/standards/iso639-2/php/code_list.php"
     }
   },
   "modules": {
@@ -135,6 +150,16 @@
       "label": "Education",
       "definition": "Optional module for studies in education settings: learners' education levels, institutions and instructional settings. Its mandatory elements apply only when a record includes the module.",
       "record_key": "education"
+    },
+    "social_science": {
+      "label": "Social Science",
+      "definition": "Optional module for social science studies. The social sciences already have a full metadata standard, DDI (Data Documentation Initiative), used by ICPSR, CESSDA archives, the UK Data Service, and Dataverse. This module does not replace it: it records a few study-level details using DDI-Codebook's own elements and links to the study's full DDI documentation. What HuMeta adds is the link from constructs and measures to theory (Module 2).",
+      "record_key": "social_science"
+    },
+    "humanities": {
+      "label": "Arts and Humanities",
+      "definition": "Optional module for studies in the arts and humanities: research activities (TaDiRAH), the works, creators, or objects studied, the languages of the sources, and editorial or encoding standards. Sources, their time period, holdings, and rights are in the core.",
+      "record_key": "humanities"
     }
   },
   "elements": [
@@ -1782,6 +1807,208 @@
         }
       ],
       "module": "core"
+    },
+    {
+      "id": "social_science.kind_of_data",
+      "label": "Kind of data",
+      "obligation": "O",
+      "cardinality": "0..1",
+      "type": "vocab",
+      "vocabulary": "kind_of_data",
+      "definition": "Whether the data are quantitative, qualitative, or mixed.",
+      "datacite": "descriptions (descriptionType Methods)",
+      "alignments": [
+        {
+          "standard": "ddi_cv",
+          "term": "KindOfData 1.0.0",
+          "match": "exact"
+        },
+        {
+          "standard": "ddi",
+          "term": "dataKind",
+          "match": "exact"
+        }
+      ],
+      "module": "social_science"
+    },
+    {
+      "id": "social_science.universe",
+      "label": "Universe",
+      "obligation": "O",
+      "cardinality": "0..1",
+      "type": "text",
+      "definition": "The group of people, organizations, or other units the findings are meant to describe, including who is excluded (e.g., adults 18 and older living in private households in Michigan).",
+      "datacite": "descriptions (descriptionType Methods)",
+      "alignments": [
+        {
+          "standard": "ddi",
+          "term": "universe",
+          "match": "exact"
+        }
+      ],
+      "module": "social_science"
+    },
+    {
+      "id": "social_science.geographic_unit",
+      "label": "Smallest geographic unit",
+      "obligation": "O",
+      "cardinality": "0..1",
+      "type": "text",
+      "definition": "The lowest level of geography the data identify (e.g., country, state, county, school district, census tract).",
+      "datacite": "descriptions (descriptionType Methods)",
+      "alignments": [
+        {
+          "standard": "ddi",
+          "term": "geogUnit",
+          "match": "exact"
+        }
+      ],
+      "module": "social_science"
+    },
+    {
+      "id": "social_science.response_rate",
+      "label": "Response rate",
+      "obligation": "O",
+      "cardinality": "0..1",
+      "type": "text",
+      "definition": "The share of sampled units that provided data, with how it was calculated (e.g., AAPOR RR3 = 41%).",
+      "datacite": "descriptions (descriptionType Methods)",
+      "alignments": [
+        {
+          "standard": "ddi",
+          "term": "respRate",
+          "match": "exact"
+        }
+      ],
+      "module": "social_science"
+    },
+    {
+      "id": "social_science.weighting",
+      "label": "Weighting",
+      "obligation": "O",
+      "cardinality": "0..1",
+      "type": "text",
+      "definition": "Whether the data include weights, what they adjust for, and which variable holds them.",
+      "datacite": "descriptions (descriptionType Methods)",
+      "alignments": [
+        {
+          "standard": "ddi",
+          "term": "weight",
+          "match": "exact"
+        }
+      ],
+      "module": "social_science"
+    },
+    {
+      "id": "social_science.ddi_record",
+      "label": "Full DDI documentation",
+      "obligation": "O",
+      "cardinality": "0..1",
+      "type": "url",
+      "definition": "Link to the study's full documentation in DDI (DDI-Codebook or DDI-Lifecycle), for example its page at ICPSR, the CESSDA Data Catalogue, the UK Data Service, or a Dataverse. DDI is the place for variable-, question-, and sampling-level detail.",
+      "datacite": "relatedIdentifiers (relatedIdentifierType URL, relationType IsDocumentedBy)",
+      "alignments": [
+        {
+          "standard": "ddi",
+          "term": "codeBook (the study's DDI record)",
+          "match": "related"
+        },
+        {
+          "standard": "datacite",
+          "term": "relatedIdentifier",
+          "match": "close"
+        }
+      ],
+      "module": "social_science"
+    },
+    {
+      "id": "humanities.research_activities",
+      "label": "Research activities",
+      "obligation": "O",
+      "cardinality": "0..n",
+      "type": "vocab",
+      "vocabulary": "tadirah_activity",
+      "definition": "The research activities the study involves, from TaDiRAH, the Taxonomy of Digital Research Activities in the Humanities.",
+      "datacite": "subjects (subjectScheme 'TaDiRAH', valueURI per concept)",
+      "alignments": [
+        {
+          "standard": "tadirah",
+          "term": "concepts (version 2.0.3)",
+          "match": "exact"
+        },
+        {
+          "standard": "datacite",
+          "term": "subject (scheme)",
+          "match": "close"
+        }
+      ],
+      "module": "humanities"
+    },
+    {
+      "id": "humanities.objects_of_study",
+      "label": "Works, creators, or objects studied",
+      "obligation": "O",
+      "cardinality": "0..1",
+      "type": "text",
+      "definition": "The works, people, collections, artifacts, performances, or other objects the study examines (e.g., the letters of Zitkála-Šá; Detroit murals of the 1930s).",
+      "datacite": "subjects",
+      "alignments": [
+        {
+          "standard": "dcterms",
+          "term": "subject",
+          "match": "close"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "about",
+          "match": "close"
+        },
+        {
+          "standard": "datacite",
+          "term": "subject",
+          "match": "close"
+        }
+      ],
+      "module": "humanities"
+    },
+    {
+      "id": "humanities.source_languages",
+      "label": "Languages of the sources",
+      "obligation": "O",
+      "cardinality": "0..n",
+      "type": "language_list",
+      "definition": "Languages of the sources studied (ISO 639 or BCP 47 codes, e.g., fr, la, nv), as distinct from the language of this resource.",
+      "datacite": "descriptions (descriptionType Methods)",
+      "alignments": [
+        {
+          "standard": "dcterms",
+          "term": "language (of the sources)",
+          "match": "related"
+        },
+        {
+          "standard": "iso639",
+          "term": "language code",
+          "match": "exact"
+        }
+      ],
+      "module": "humanities"
+    },
+    {
+      "id": "humanities.editorial_standards",
+      "label": "Editorial or encoding standards",
+      "obligation": "O",
+      "cardinality": "0..1",
+      "type": "text",
+      "definition": "Standards or conventions used to transcribe, edit, encode, or image the sources (e.g., TEI P5, IIIF, a documentary-editing style guide).",
+      "datacite": "descriptions (descriptionType Methods)",
+      "alignments": [
+        {
+          "standard": "tei",
+          "term": "encodingDesc / editorialDecl",
+          "match": "close"
+        }
+      ],
+      "module": "humanities"
     }
   ],
   "rules": [

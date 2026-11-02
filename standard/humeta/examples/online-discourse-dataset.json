@@ -131,5 +131,25 @@
     },
     "constructs": []
   },
-  "education": null
+  "education": null,
+  "social_science": {
+    "kind_of_data": "mixed",
+    "universe": "Public English-language posts about climate anxiety on two social platforms, 2018-2023; excludes private and deleted posts.",
+    "geographic_unit": null,
+    "response_rate": null,
+    "weighting": "No weights; the corpus is a purposive keyword sample, not a probability sample.",
+    "ddi_record": null
+  },
+  "humanities": {
+    "research_activities": [
+      "gathering",
+      "content_analysis",
+      "network_analysis"
+    ],
+    "objects_of_study": null,
+    "source_languages": [
+      "en"
+    ],
+    "editorial_standards": null
+  }
 }

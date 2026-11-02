@@ -882,7 +882,130 @@
           }
         }
       },
-      "description": "Education module. Null or absent when the study is not in an education setting."
+      "description": "Education module. Null or absent when the record does not use it."
+    },
+    "social_science": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "kind_of_data": {
+          "enum": [
+            "quantitative",
+            "qualitative",
+            "mixed",
+            null
+          ]
+        },
+        "universe": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "geographic_unit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "response_rate": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "weighting": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ddi_record": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        }
+      },
+      "description": "Social Science module. Null or absent when the record does not use it."
+    },
+    "humanities": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "research_activities": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "converting",
+              "data_recognition",
+              "discovering",
+              "extracting",
+              "gathering",
+              "imaging",
+              "recording",
+              "transcribing",
+              "annotating",
+              "data_cleansing",
+              "editing",
+              "content_analysis",
+              "network_analysis",
+              "relational_analysis",
+              "spatial_analysis",
+              "structural_analysis",
+              "stylistic_analysis",
+              "visual_analysis",
+              "contextualizing",
+              "modeling",
+              "theorizing",
+              "archiving",
+              "identifying",
+              "organizing",
+              "preserving",
+              "designing",
+              "programming",
+              "translating",
+              "web_development",
+              "writing",
+              "collaborating",
+              "commenting",
+              "communicating",
+              "crowdsourcing",
+              "publishing",
+              "teaching"
+            ]
+          }
+        },
+        "objects_of_study": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "editorial_standards": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_languages": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]+)*$"
+          }
+        }
+      },
+      "description": "Arts and Humanities module. Null or absent when the record does not use it."
     }
   }
 }

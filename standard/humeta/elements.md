@@ -8,7 +8,7 @@ Obligations: **M** = Mandatory: every record must have it.; **MA** = Mandatory i
 
 Alignments: each element lists the standards it corresponds to. No mark = exact match; **≈** = close match; **~** = related. `HuMeta` = defined by this profile, with no equivalent in a general-purpose standard. *(expert input wanted)* = we are seeking expert input on this alignment. Full list, with notes, in [`crosswalks/alignments.csv`](crosswalks/alignments.csv).
 
-Standards: [HuMeta](https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md) = HuMeta profile (element or vocabulary defined by this profile); [DataCite](https://schema.datacite.org/) = DataCite Metadata Schema 4.7; [DC](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) = Dublin Core (DCMI Metadata Terms); [schema.org](https://schema.org/Dataset) = schema.org Dataset; [ERIC](https://eric.ed.gov/?ti=all) = ERIC Thesaurus; [DDI-C](https://ddialliance.org/Specification/DDI-Codebook/2.5/) = DDI-Codebook 2.5 (Data Documentation Initiative); [DDI CV](https://rdf-vocabulary.ddialliance.org/) = DDI Alliance Controlled Vocabularies (CC BY 4.0); [OECD FOS](http://www.oecd.org/science/inno/38235147.pdf) = OECD Fields of Science and Technology (FOS), as used by DataCite; [ORCID](https://orcid.org/) = ORCID iD; [SPDX](https://spdx.org/licenses/) = SPDX License List; [BCP 47](https://www.rfc-editor.org/info/bcp47) = IETF BCP 47 language tags; [ISO 3166](https://www.iso.org/iso-3166-country-codes.html) = ISO 3166-1 alpha-2 country codes; [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) = ISO 8601 dates; [NCES](https://nces.ed.gov/programs/edge/Geographic/LocaleBoundaries) = NCES locale classification (locale types City, Suburb, Town, Rural); [ISCED](https://uis.unesco.org/sites/default/files/documents/international-standard-classification-of-education-isced-2011-en.pdf) = UNESCO International Standard Classification of Education (ISCED 2011); [AERA/APA/NCME](https://www.testingstandards.net/) = Standards for Educational and Psychological Testing (2014); [Common Rule](https://www.hhs.gov/ohrp/regulations-and-policy/regulations/45-cfr-46/) = US Common Rule for human-subjects research (45 CFR 46); [FERPA](https://studentprivacy.ed.gov/) = Family Educational Rights and Privacy Act (34 CFR Part 99); [CARE](https://www.gida-global.org/care) = CARE Principles for Indigenous Data Governance; [Local Contexts](https://localcontexts.org/) = Local Contexts Traditional Knowledge and Biocultural Labels and Notices; [RightsStatements](https://rightsstatements.org/) = RightsStatements.org rights statements; [AoIR IRE 3.0](https://aoir.org/reports/ethics3.pdf) = Association of Internet Researchers, Internet Research: Ethical Guidelines 3.0 (2019)
+Standards: [HuMeta](https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md) = HuMeta profile (element or vocabulary defined by this profile); [DataCite](https://schema.datacite.org/) = DataCite Metadata Schema 4.7; [DC](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) = Dublin Core (DCMI Metadata Terms); [schema.org](https://schema.org/Dataset) = schema.org Dataset; [ERIC](https://eric.ed.gov/?ti=all) = ERIC Thesaurus; [DDI-C](https://ddialliance.org/Specification/DDI-Codebook/2.5/) = DDI-Codebook 2.5 (Data Documentation Initiative); [DDI CV](https://rdf-vocabulary.ddialliance.org/) = DDI Alliance Controlled Vocabularies (CC BY 4.0); [OECD FOS](http://www.oecd.org/science/inno/38235147.pdf) = OECD Fields of Science and Technology (FOS), as used by DataCite; [ORCID](https://orcid.org/) = ORCID iD; [SPDX](https://spdx.org/licenses/) = SPDX License List; [BCP 47](https://www.rfc-editor.org/info/bcp47) = IETF BCP 47 language tags; [ISO 3166](https://www.iso.org/iso-3166-country-codes.html) = ISO 3166-1 alpha-2 country codes; [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) = ISO 8601 dates; [NCES](https://nces.ed.gov/programs/edge/Geographic/LocaleBoundaries) = NCES locale classification (locale types City, Suburb, Town, Rural); [ISCED](https://uis.unesco.org/sites/default/files/documents/international-standard-classification-of-education-isced-2011-en.pdf) = UNESCO International Standard Classification of Education (ISCED 2011); [AERA/APA/NCME](https://www.testingstandards.net/) = Standards for Educational and Psychological Testing (2014); [Common Rule](https://www.hhs.gov/ohrp/regulations-and-policy/regulations/45-cfr-46/) = US Common Rule for human-subjects research (45 CFR 46); [FERPA](https://studentprivacy.ed.gov/) = Family Educational Rights and Privacy Act (34 CFR Part 99); [CARE](https://www.gida-global.org/care) = CARE Principles for Indigenous Data Governance; [Local Contexts](https://localcontexts.org/) = Local Contexts Traditional Knowledge and Biocultural Labels and Notices; [RightsStatements](https://rightsstatements.org/) = RightsStatements.org rights statements; [AoIR IRE 3.0](https://aoir.org/reports/ethics3.pdf) = Association of Internet Researchers, Internet Research: Ethical Guidelines 3.0 (2019); [TaDiRAH](https://vocabs.dariah.eu/tadirah/) = TaDiRAH 2.0.3: Taxonomy of Digital Research Activities in the Humanities (DARIAH, CC0); [TEI](https://tei-c.org/guidelines/p5/) = TEI P5 Guidelines (Text Encoding Initiative); [ISO 639](https://www.loc.gov/standards/iso639-2/php/code_list.php) = ISO 639 language codes (as used in BCP 47)
 
 Modules: the **core** applies to every record; a field module (such as **Education**) applies only when a record includes it, and its mandatory elements are mandatory only then.
 
@@ -81,6 +81,30 @@ Optional module for studies in education settings: learners' education levels, i
 | <a id="education.modality"></a>`education.modality` | R | 0..n | How instruction or participation was delivered. Vocabulary: [modality](#modality). | `HuMeta`, `≈ERIC: descriptors` | subjects (subjectScheme 'HuMeta Modalities') |
 | <a id="education.learning_environments"></a>`education.learning_environments` | R | 0..n | Instructional setting(s). Vocabulary: [learning_environment](#learning_environment). | `HuMeta`, `≈ERIC: descriptors` | subjects (subjectScheme 'HuMeta Learning Environments') |
 | <a id="education.pedagogy"></a>`education.pedagogy` | O | 0..n | Instructional approach(es) used or studied. Vocabulary: [pedagogy](#pedagogy). | `HuMeta`, `≈ERIC: descriptors`, `≈DC: instructionalMethod` (expert input wanted) | subjects (subjectScheme 'HuMeta Instructional Approaches') |
+
+## Social Science module
+
+Optional module for social science studies. The social sciences already have a full metadata standard, DDI (Data Documentation Initiative), used by ICPSR, CESSDA archives, the UK Data Service, and Dataverse. This module does not replace it: it records a few study-level details using DDI-Codebook's own elements and links to the study's full DDI documentation. What HuMeta adds is the link from constructs and measures to theory (Module 2).
+
+| Element | Obligation | Cardinality | Definition | Aligned with | DataCite 4.7 mapping |
+|---|---|---|---|---|---|
+| <a id="social_science.kind_of_data"></a>`social_science.kind_of_data` | O | 0..1 | Whether the data are quantitative, qualitative, or mixed. Vocabulary: [kind_of_data](#kind_of_data). | `DDI CV: KindOfData 1.0.0`, `DDI-C: dataKind` | descriptions (descriptionType Methods) |
+| <a id="social_science.universe"></a>`social_science.universe` | O | 0..1 | The group of people, organizations, or other units the findings are meant to describe, including who is excluded (e.g., adults 18 and older living in private households in Michigan). | `DDI-C: universe` | descriptions (descriptionType Methods) |
+| <a id="social_science.geographic_unit"></a>`social_science.geographic_unit` | O | 0..1 | The lowest level of geography the data identify (e.g., country, state, county, school district, census tract). | `DDI-C: geogUnit` | descriptions (descriptionType Methods) |
+| <a id="social_science.response_rate"></a>`social_science.response_rate` | O | 0..1 | The share of sampled units that provided data, with how it was calculated (e.g., AAPOR RR3 = 41%). | `DDI-C: respRate` | descriptions (descriptionType Methods) |
+| <a id="social_science.weighting"></a>`social_science.weighting` | O | 0..1 | Whether the data include weights, what they adjust for, and which variable holds them. | `DDI-C: weight` | descriptions (descriptionType Methods) |
+| <a id="social_science.ddi_record"></a>`social_science.ddi_record` | O | 0..1 | Link to the study's full documentation in DDI (DDI-Codebook or DDI-Lifecycle), for example its page at ICPSR, the CESSDA Data Catalogue, the UK Data Service, or a Dataverse. DDI is the place for variable-, question-, and sampling-level detail. | `~DDI-C: codeBook (the study's DDI record)`, `≈DataCite: relatedIdentifier` | relatedIdentifiers (relatedIdentifierType URL, relationType IsDocumentedBy) |
+
+## Arts and Humanities module
+
+Optional module for studies in the arts and humanities: research activities (TaDiRAH), the works, creators, or objects studied, the languages of the sources, and editorial or encoding standards. Sources, their time period, holdings, and rights are in the core.
+
+| Element | Obligation | Cardinality | Definition | Aligned with | DataCite 4.7 mapping |
+|---|---|---|---|---|---|
+| <a id="humanities.research_activities"></a>`humanities.research_activities` | O | 0..n | The research activities the study involves, from TaDiRAH, the Taxonomy of Digital Research Activities in the Humanities. Vocabulary: [tadirah_activity](#tadirah_activity). | `TaDiRAH: concepts (version 2.0.3)`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'TaDiRAH', valueURI per concept) |
+| <a id="humanities.objects_of_study"></a>`humanities.objects_of_study` | O | 0..1 | The works, people, collections, artifacts, performances, or other objects the study examines (e.g., the letters of Zitkála-Šá; Detroit murals of the 1930s). | `≈DC: subject`, `≈schema.org: about`, `≈DataCite: subject` | subjects |
+| <a id="humanities.source_languages"></a>`humanities.source_languages` | O | 0..n | Languages of the sources studied (ISO 639 or BCP 47 codes, e.g., fr, la, nv), as distinct from the language of this resource. | `~DC: language (of the sources)`, `ISO 639: language code` | descriptions (descriptionType Methods) |
+| <a id="humanities.editorial_standards"></a>`humanities.editorial_standards` | O | 0..1 | Standards or conventions used to transcribe, edit, encode, or image the sources (e.g., TEI P5, IIIF, a documentary-editing style guide). | `≈TEI: encodingDesc / editorialDecl` | descriptions (descriptionType Methods) |
 
 ## Rules
 
@@ -571,6 +595,59 @@ How Indigenous authority to control the data (CARE: Authority to control) is exe
 | `consultation_ongoing` | Consultation in progress |  |
 | `none` | No governance arrangement |  |
 | `not_applicable` | Not applicable |  |
+
+### <a id="kind_of_data"></a>Kind of data (`kind_of_data`)
+
+Whether the data are quantitative, qualitative, or both. DDI Alliance KindOfData controlled vocabulary 1.0.0. Quantitative: numbers that can be counted, measured, and analyzed statistically. Qualitative: non-numeric data such as texts, images, or recordings, analyzed interpretively. Mixed: both.
+
+| Code | Label | ERIC descriptors |
+|---|---|---|
+| `quantitative` | Quantitative |  |
+| `qualitative` | Qualitative |  |
+| `mixed` | Mixed (quantitative and qualitative) |  |
+
+### <a id="tadirah_activity"></a>Research activity (TaDiRAH) (`tadirah_activity`)
+
+Research activities from TaDiRAH 2.0.3, the Taxonomy of Digital Research Activities in the Humanities (DARIAH; CC0). Each term is a second-level TaDiRAH concept, shown with its top-level activity; 'tadirah' is the concept's identifier at https://vocabs.dariah.eu/tadirah/.
+
+| Code | Label | ERIC descriptors |
+|---|---|---|
+| `converting` | Capturing: Converting |  |
+| `data_recognition` | Capturing: Data Recognition |  |
+| `discovering` | Capturing: Discovering |  |
+| `extracting` | Capturing: Extracting |  |
+| `gathering` | Capturing: Gathering |  |
+| `imaging` | Capturing: Imaging |  |
+| `recording` | Capturing: Recording |  |
+| `transcribing` | Capturing: Transcribing |  |
+| `annotating` | Enriching: Annotating |  |
+| `data_cleansing` | Enriching: Data Cleansing |  |
+| `editing` | Enriching: Editing |  |
+| `content_analysis` | Analyzing: Content Analysis |  |
+| `network_analysis` | Analyzing: Network Analysis |  |
+| `relational_analysis` | Analyzing: Relational Analysis |  |
+| `spatial_analysis` | Analyzing: Spatial Analysis |  |
+| `structural_analysis` | Analyzing: Structural Analysis |  |
+| `stylistic_analysis` | Analyzing: Stylistic Analysis |  |
+| `visual_analysis` | Analyzing: Visual Analysis |  |
+| `contextualizing` | Interpreting: Contextualizing |  |
+| `modeling` | Interpreting: Modeling |  |
+| `theorizing` | Interpreting: Theorizing |  |
+| `archiving` | Storing: Archiving |  |
+| `identifying` | Storing: Identifying |  |
+| `organizing` | Storing: Organizing |  |
+| `preserving` | Storing: Preserving |  |
+| `designing` | Creating: Designing |  |
+| `programming` | Creating: Programming |  |
+| `translating` | Creating: Translating |  |
+| `web_development` | Creating: Web Development |  |
+| `writing` | Creating: Writing |  |
+| `collaborating` | Disseminating: Collaborating |  |
+| `commenting` | Disseminating: Commenting |  |
+| `communicating` | Disseminating: Communicating |  |
+| `crowdsourcing` | Disseminating: Crowdsourcing |  |
+| `publishing` | Disseminating: Publishing |  |
+| `teaching` | Disseminating: Teaching |  |
 
 ### <a id="constructs"></a>Constructs
 

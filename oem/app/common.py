@@ -217,7 +217,8 @@ value_propositions = [
         "institutions use the same fields and vocabularies and stay searchable and comparable.",
         "1. Study Metadata Profile",
         [
-            "Describe the study, team, design, population, and instructional setting.",
+            "Start by choosing your fields: Education, Social science, or Arts and humanities.",
+            "Describe the study, team, design, population, sources, and field-specific details.",
             "Record ethics review, consent for participation and for data sharing, and access plans.",
             "Address Indigenous data governance (CARE) where it applies.",
             "Save it to a project file you keep — the app stores nothing private.",

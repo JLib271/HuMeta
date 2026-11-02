@@ -2,7 +2,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """HuMeta: The Social Science, Humanities, and Education Study Metadata Profile.
 
-A core for any study, plus optional field modules (currently: Education).
+A core for any study, plus optional field modules: Education, Social Science,
+and Arts and Humanities.
 The profile itself is data in ``standard/humeta/`` (``profile.json`` and
 ``vocabularies.json``); this module loads it and works with records:
 
@@ -65,6 +66,8 @@ FOS_LABELS = {
 DDI_CV_URI = "http://rdf-vocabulary.ddialliance.org/cv/"
 RIGHTS_STATEMENTS_URI = "http://rightsstatements.org/vocab/{}/1.0/"
 ONLINE_SOURCES = {"social_media", "websites"}
+TADIRAH_SCHEME = "TaDiRAH"
+TADIRAH_URI = "https://vocabs.dariah.eu/tadirah/"
 
 #: record path (from the record root) -> (vocabulary id, DataCite subjectScheme label)
 VOCAB_FIELDS: dict[tuple[str, ...], tuple[str, str | None]] = {
@@ -88,6 +91,8 @@ VOCAB_FIELDS: dict[tuple[str, ...], tuple[str, str | None]] = {
     ("education", "modality"): ("modality", "HuMeta Modalities"),
     ("education", "learning_environments"): ("learning_environment", "HuMeta Learning Environments"),
     ("education", "pedagogy"): ("pedagogy", "HuMeta Instructional Approaches"),
+    # Arts and Humanities module (exported with TaDiRAH's own concept URIs)
+    ("humanities", "research_activities"): ("tadirah_activity", TADIRAH_SCHEME),
 }
 #: single-valued vocabulary fields
 VOCAB_SINGLE: dict[tuple[str, ...], str] = {
@@ -100,9 +105,15 @@ VOCAB_SINGLE: dict[tuple[str, ...], str] = {
     ("study", "ethics", "access_level"): "access_level",
     ("study", "care", "indigenous_data"): "indigenous_data",
     ("study", "care", "governance"): "indigenous_governance",
+    ("social_science", "kind_of_data"): "kind_of_data",
 }
+#: free-text fields of the field modules (record path)
+MODULE_TEXT: tuple[tuple[str, ...], ...] = (
+    ("social_science", "universe"), ("social_science", "geographic_unit"), ("social_science", "response_rate"),
+    ("social_science", "weighting"), ("humanities", "objects_of_study"), ("humanities", "editorial_standards"),
+)
 #: optional field modules: record key -> label
-MODULES = {"education": "Education"}
+MODULES = {"education": "Education", "social_science": "Social Science", "humanities": "Arts and Humanities"}
 PROFILE_ID = "humeta"
 RESOURCE_TYPES = ("Dataset", "Instrument", "StudyRegistration", "Text", "Software", "Collection", "Other")
 
@@ -160,7 +171,7 @@ def json_schema(profile: Profile | None = None) -> dict:
     def obj() -> dict:
         return {"type": "object", "additionalProperties": False, "properties": {}}
 
-    root: dict[str, dict] = {"study": obj(), "education": obj()}
+    root: dict[str, dict] = {"study": obj(), **{m: obj() for m in MODULES}}
 
     def put(path: tuple[str, ...], schema: dict) -> None:
         node = root[path[0]]
@@ -185,6 +196,11 @@ def json_schema(profile: Profile | None = None) -> dict:
     put(("study", "sources", "holdings"), text)
     put(("study", "sources", "time_period"), text)
     put(("study", "care", "statement"), text)
+    for path in MODULE_TEXT:
+        put(path, text)
+    put(("social_science", "ddi_record"), {"type": ["string", "null"], "format": "uri"})
+    put(("humanities", "source_languages"), {"type": "array", "uniqueItems": True,
+                                            "items": {"type": "string", "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]+)*$"}})
     put(("study", "care", "local_contexts_project"), {"type": ["string", "null"], "format": "uri"})
     put(("study", "care", "local_contexts_labels"), {"type": "array", "items": {"type": "string"}})
     put(("study", "constructs"), {
@@ -199,9 +215,9 @@ def json_schema(profile: Profile | None = None) -> dict:
             },
         },
     })
-    education = root["education"]
-    education["type"] = ["object", "null"]
-    education["description"] = "Education module. Null or absent when the study is not in an education setting."
+    for module, label in MODULES.items():
+        root[module]["type"] = ["object", "null"]
+        root[module]["description"] = f"{label} module. Null or absent when the record does not use it."
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/schema/humeta-record.schema.json",
@@ -250,7 +266,7 @@ def json_schema(profile: Profile | None = None) -> dict:
                 },
             },
             "study": root["study"],
-            "education": education,
+            **{m: root[m] for m in MODULES},
         },
     }
 
@@ -278,6 +294,13 @@ def _empty_section(section: str) -> dict:
         out["ethics"]["governance_notes"] = None
         out["sources"].update({"description": None, "holdings": None, "time_period": None})
         out["care"].update({"statement": None, "local_contexts_project": None, "local_contexts_labels": []})
+    for path in MODULE_TEXT:
+        if path[0] == section:
+            put(path, None)
+    if section == "social_science":
+        out["ddi_record"] = None
+    if section == "humanities":
+        out["source_languages"] = []
     return out
 
 
@@ -554,6 +577,20 @@ def _methods_text(record: dict, p: Profile, lib: Library | None = None) -> str |
             parts.append(f"{label}: {src[key].strip()}")
     if (s["population"].get("description") or "").strip():
         parts.append("Participants: " + s["population"]["description"].strip())
+    social = record.get("social_science") or {}
+    if social.get("kind_of_data"):
+        parts.append("Kind of data (DDI): " + p.term("kind_of_data", social["kind_of_data"])["ddi"]["code"] + ".")
+    for key, label in (("universe", "Universe"), ("geographic_unit", "Smallest geographic unit"),
+                       ("response_rate", "Response rate"), ("weighting", "Weighting")):
+        if (social.get(key) or "").strip():
+            parts.append(f"{label}: {social[key].strip()}")
+    hum = record.get("humanities") or {}
+    if (hum.get("objects_of_study") or "").strip():
+        parts.append("Works, creators, or objects studied: " + hum["objects_of_study"].strip())
+    if hum.get("source_languages"):
+        parts.append("Languages of the sources: " + ", ".join(hum["source_languages"]) + ".")
+    if (hum.get("editorial_standards") or "").strip():
+        parts.append("Editorial or encoding standards: " + hum["editorial_standards"].strip())
     return " ".join(parts) or None
 
 
@@ -602,6 +639,11 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
         if not scheme:
             continue
         for term_id in get(record, path) or []:
+            tadirah = p.term(vocab_id, term_id).get("tadirah")
+            if tadirah:
+                subjects.append({"subject": p.label(vocab_id, term_id), "subjectScheme": scheme,
+                                 "schemeUri": TADIRAH_URI, "valueUri": TADIRAH_URI + tadirah})
+                continue
             subjects.append({"subject": p.label(vocab_id, term_id), "subjectScheme": scheme,
                              "schemeUri": VOCAB_URI.rstrip("#"), "valueUri": f"{VOCAB_URI}{vocab_id}.{term_id}"})
             isced = p.term(vocab_id, term_id).get("isced")
@@ -683,6 +725,9 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
             if doi:
                 # ... and the instrument's publication is cited.
                 related.append({"relatedIdentifier": doi, "relatedIdentifierType": "DOI", "relationType": "References"})
+    ddi_record = (record.get("social_science") or {}).get("ddi_record")
+    if ddi_record:
+        related.append({"relatedIdentifier": ddi_record, "relatedIdentifierType": "URL", "relationType": "IsDocumentedBy"})
     if s["care"].get("local_contexts_project"):
         related.append({"relatedIdentifier": s["care"]["local_contexts_project"], "relatedIdentifierType": "URL", "relationType": "IsDescribedBy"})
     if related:

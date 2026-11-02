@@ -55,3 +55,13 @@ study.care.governance,core,Indigenous data governance,MA,0..1,indigenous_governa
 study.care.statement,core,CARE statement,MA,0..1,,"descriptions (Other, 'CARE statement')"
 study.care.local_contexts_project,core,Local Contexts project,O,0..1,,"relatedIdentifiers (relatedIdentifierType URL, relationType IsDescribedBy)"
 study.care.local_contexts_labels,core,Local Contexts Labels and Notices,O,0..n,,"descriptions (Other, 'CARE statement')"
+social_science.kind_of_data,social_science,Kind of data,O,0..1,kind_of_data,descriptions (descriptionType Methods)
+social_science.universe,social_science,Universe,O,0..1,,descriptions (descriptionType Methods)
+social_science.geographic_unit,social_science,Smallest geographic unit,O,0..1,,descriptions (descriptionType Methods)
+social_science.response_rate,social_science,Response rate,O,0..1,,descriptions (descriptionType Methods)
+social_science.weighting,social_science,Weighting,O,0..1,,descriptions (descriptionType Methods)
+social_science.ddi_record,social_science,Full DDI documentation,O,0..1,,"relatedIdentifiers (relatedIdentifierType URL, relationType IsDocumentedBy)"
+humanities.research_activities,humanities,Research activities,O,0..n,tadirah_activity,"subjects (subjectScheme 'TaDiRAH', valueURI per concept)"
+humanities.objects_of_study,humanities,"Works, creators, or objects studied",O,0..1,,subjects
+humanities.source_languages,humanities,Languages of the sources,O,0..n,,descriptions (descriptionType Methods)
+humanities.editorial_standards,humanities,Editorial or encoding standards,O,0..1,,descriptions (descriptionType Methods)

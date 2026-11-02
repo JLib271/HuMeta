@@ -1,7 +1,7 @@
 {
   "profile": "humeta",
   "profile_version": "1.0.0-draft.1",
-  "note": "Controlled vocabularies of the HuMeta profile. 'eric' lists ERIC Thesaurus descriptors for the term (see crosswalks/eric_descriptor_status.json for verification). Term codes are permanent: never change or reuse a code; deprecate it instead. 'ddi' maps a term to a DDI Alliance controlled vocabulary (cv, code, match). 'fos' is the OECD Fields of Science and Technology code. 'isced' is the ISCED 2011 level. 'rs' is a RightsStatements.org statement.",
+  "note": "Controlled vocabularies of the HuMeta profile. 'eric' lists ERIC Thesaurus descriptors for the term (see crosswalks/eric_descriptor_status.json for verification). Term codes are permanent: never change or reuse a code; deprecate it instead. 'ddi' maps a term to a DDI Alliance controlled vocabulary (cv, code, match). 'fos' is the OECD Fields of Science and Technology code. 'isced' is the ISCED 2011 level. 'rs' is a RightsStatements.org statement. 'tadirah' is a TaDiRAH 2.0.3 concept identifier.",
   "vocabularies": {
     "research_field": {
       "label": "Research field",
@@ -2111,6 +2111,225 @@
           "id": "not_applicable",
           "label": "Not applicable",
           "eric": []
+        }
+      ]
+    },
+    "kind_of_data": {
+      "label": "Kind of data",
+      "definition": "Whether the data are quantitative, qualitative, or both. DDI Alliance KindOfData controlled vocabulary 1.0.0. Quantitative: numbers that can be counted, measured, and analyzed statistically. Qualitative: non-numeric data such as texts, images, or recordings, analyzed interpretively. Mixed: both.",
+      "terms": [
+        {
+          "id": "quantitative",
+          "label": "Quantitative",
+          "ddi": {
+            "cv": "KindOfData",
+            "code": "Quantitative",
+            "match": "exact"
+          }
+        },
+        {
+          "id": "qualitative",
+          "label": "Qualitative",
+          "ddi": {
+            "cv": "KindOfData",
+            "code": "Qualitative",
+            "match": "exact"
+          }
+        },
+        {
+          "id": "mixed",
+          "label": "Mixed (quantitative and qualitative)",
+          "ddi": {
+            "cv": "KindOfData",
+            "code": "Mixed",
+            "match": "exact"
+          }
+        }
+      ]
+    },
+    "tadirah_activity": {
+      "label": "Research activity (TaDiRAH)",
+      "definition": "Research activities from TaDiRAH 2.0.3, the Taxonomy of Digital Research Activities in the Humanities (DARIAH; CC0). Each term is a second-level TaDiRAH concept, shown with its top-level activity; 'tadirah' is the concept's identifier at https://vocabs.dariah.eu/tadirah/.",
+      "terms": [
+        {
+          "id": "converting",
+          "label": "Capturing: Converting",
+          "tadirah": "converting"
+        },
+        {
+          "id": "data_recognition",
+          "label": "Capturing: Data Recognition",
+          "tadirah": "dataRecognition"
+        },
+        {
+          "id": "discovering",
+          "label": "Capturing: Discovering",
+          "tadirah": "discovering"
+        },
+        {
+          "id": "extracting",
+          "label": "Capturing: Extracting",
+          "tadirah": "extracting"
+        },
+        {
+          "id": "gathering",
+          "label": "Capturing: Gathering",
+          "tadirah": "gathering"
+        },
+        {
+          "id": "imaging",
+          "label": "Capturing: Imaging",
+          "tadirah": "imaging"
+        },
+        {
+          "id": "recording",
+          "label": "Capturing: Recording",
+          "tadirah": "recording"
+        },
+        {
+          "id": "transcribing",
+          "label": "Capturing: Transcribing",
+          "tadirah": "transcribing"
+        },
+        {
+          "id": "annotating",
+          "label": "Enriching: Annotating",
+          "tadirah": "annotating"
+        },
+        {
+          "id": "data_cleansing",
+          "label": "Enriching: Data Cleansing",
+          "tadirah": "dataCleansing"
+        },
+        {
+          "id": "editing",
+          "label": "Enriching: Editing",
+          "tadirah": "editing"
+        },
+        {
+          "id": "content_analysis",
+          "label": "Analyzing: Content Analysis",
+          "tadirah": "contentAnalysis"
+        },
+        {
+          "id": "network_analysis",
+          "label": "Analyzing: Network Analysis",
+          "tadirah": "networkAnalysis"
+        },
+        {
+          "id": "relational_analysis",
+          "label": "Analyzing: Relational Analysis",
+          "tadirah": "relationalAnalysis"
+        },
+        {
+          "id": "spatial_analysis",
+          "label": "Analyzing: Spatial Analysis",
+          "tadirah": "spatialAnalysis"
+        },
+        {
+          "id": "structural_analysis",
+          "label": "Analyzing: Structural Analysis",
+          "tadirah": "structuralAnalysis"
+        },
+        {
+          "id": "stylistic_analysis",
+          "label": "Analyzing: Stylistic Analysis",
+          "tadirah": "stylisticAnalysis"
+        },
+        {
+          "id": "visual_analysis",
+          "label": "Analyzing: Visual Analysis",
+          "tadirah": "visualAnalysis"
+        },
+        {
+          "id": "contextualizing",
+          "label": "Interpreting: Contextualizing",
+          "tadirah": "contextualizing"
+        },
+        {
+          "id": "modeling",
+          "label": "Interpreting: Modeling",
+          "tadirah": "modeling"
+        },
+        {
+          "id": "theorizing",
+          "label": "Interpreting: Theorizing",
+          "tadirah": "theorizing"
+        },
+        {
+          "id": "archiving",
+          "label": "Storing: Archiving",
+          "tadirah": "archiving"
+        },
+        {
+          "id": "identifying",
+          "label": "Storing: Identifying",
+          "tadirah": "identifying"
+        },
+        {
+          "id": "organizing",
+          "label": "Storing: Organizing",
+          "tadirah": "organizing"
+        },
+        {
+          "id": "preserving",
+          "label": "Storing: Preserving",
+          "tadirah": "preserving"
+        },
+        {
+          "id": "designing",
+          "label": "Creating: Designing",
+          "tadirah": "designing"
+        },
+        {
+          "id": "programming",
+          "label": "Creating: Programming",
+          "tadirah": "programming"
+        },
+        {
+          "id": "translating",
+          "label": "Creating: Translating",
+          "tadirah": "translating"
+        },
+        {
+          "id": "web_development",
+          "label": "Creating: Web Development",
+          "tadirah": "webDevelopment"
+        },
+        {
+          "id": "writing",
+          "label": "Creating: Writing",
+          "tadirah": "writing"
+        },
+        {
+          "id": "collaborating",
+          "label": "Disseminating: Collaborating",
+          "tadirah": "collaborating"
+        },
+        {
+          "id": "commenting",
+          "label": "Disseminating: Commenting",
+          "tadirah": "commenting"
+        },
+        {
+          "id": "communicating",
+          "label": "Disseminating: Communicating",
+          "tadirah": "communicating"
+        },
+        {
+          "id": "crowdsourcing",
+          "label": "Disseminating: Crowdsourcing",
+          "tadirah": "crowdsourcing"
+        },
+        {
+          "id": "publishing",
+          "label": "Disseminating: Publishing",
+          "tadirah": "publishing"
+        },
+        {
+          "id": "teaching",
+          "label": "Disseminating: Teaching",
+          "tadirah": "teaching"
         }
       ]
     }

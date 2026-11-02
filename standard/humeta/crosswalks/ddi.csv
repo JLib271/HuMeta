@@ -108,3 +108,6 @@ source_rights,public_domain,Public domain or no known copyright,,,,,,NoC-US
 source_rights,permission,"In copyright, used with permission from rights holders",,,,,,InC
 source_rights,in_copyright,"In copyright, used under an exception such as fair use (copies not shared)",,,,,,InC
 source_rights,unknown_rights,Not yet evaluated,,,,,,CNE
+kind_of_data,quantitative,Quantitative,KindOfData,Quantitative,exact,,,
+kind_of_data,qualitative,Qualitative,KindOfData,Qualitative,exact,,,
+kind_of_data,mixed,Mixed (quantitative and qualitative),KindOfData,Mixed,exact,,,

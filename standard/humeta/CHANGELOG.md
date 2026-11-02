@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+* **New field modules: Social Science and Arts and Humanities.** Starting
+  points, to be developed with researchers in those fields.
+  * `social_science`: `kind_of_data` (DDI KindOfData 1.0.0), `universe`,
+    `geographic_unit`, `response_rate`, `weighting` (DDI-Codebook `universe`,
+    `geogUnit`, `respRate`, `weight`), and `ddi_record`, a link to the study's
+    full DDI documentation, exported as a DataCite related identifier
+    (IsDocumentedBy). The module points to DDI rather than duplicating it.
+  * `humanities`: `research_activities` (TaDiRAH 2.0.3, exported as DataCite
+    subjects with TaDiRAH concept URIs), `objects_of_study`,
+    `source_languages`, `editorial_standards`.
+  * New vocabularies `kind_of_data` and `tadirah_activity`. The example
+    records for archival letters and online discourse use the new modules.
 * **Renamed** from the STEMEd+ Metadata Application Profile to **HuMeta: The Social Science, Humanities, and Education Study Metadata Profile**, to serve the social sciences and humanities as well as education.
   Folder `standard/stemed-ap/` is now `standard/humeta/`; the record's `profile`
   value is `humeta`; DataCite subject schemes are named "HuMeta …".
