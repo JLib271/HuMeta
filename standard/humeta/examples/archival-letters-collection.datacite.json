@@ -43,16 +43,18 @@
       "valueUri": "https://github.com/JLib271/HuMeta/blob/main/library/frameworks.json#new_historicism"
     },
     {
-      "subject": "History",
-      "subjectScheme": "HuMeta Disciplines",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#discipline.history"
+      "subject": "Historical studies",
+      "subjectScheme": "ANZSRC Fields of Research",
+      "schemeUri": "https://linked.data.gov.au/def/anzsrc-for/2020",
+      "valueUri": "https://linked.data.gov.au/def/anzsrc-for/2020/4303",
+      "classificationCode": "4303"
     },
     {
-      "subject": "Education (as a subject: policy, foundations, teaching and learning)",
-      "subjectScheme": "HuMeta Disciplines",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#discipline.education_studies"
+      "subject": "Education",
+      "subjectScheme": "ANZSRC Fields of Research",
+      "schemeUri": "https://linked.data.gov.au/def/anzsrc-for/2020",
+      "valueUri": "https://linked.data.gov.au/def/anzsrc-for/2020/39",
+      "classificationCode": "39"
     },
     {
       "subject": "Historical study",

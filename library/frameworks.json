@@ -1,6 +1,6 @@
 {
   "vocabulary_version": 1,
-  "note": "Theories, theoretical lenses, and framework approaches offered in Module 2. Each theory lists its constructs; a construct links to the shared construct vocabulary (library/constructs.json) where one matches (shared_construct_match: exact, close, or related). Paths are the theory's expected relationships between its constructs. citation_status 'added' marks citations added by maintainers that a reviewer should confirm. 'disciplines' lists the HuMeta discipline terms (standard/humeta/vocabularies.json) where the framework is widely used, for browsing. status 'draft' marks frameworks whose description, constructs, relationships, and links to shared constructs still need review by experts in the field; every theory and lens is a draft until the governance committee reviews it.",
+  "note": "Theories, theoretical lenses, and framework approaches offered in Module 2. Each theory lists its constructs; a construct links to the shared construct vocabulary (library/constructs.json) where one matches (shared_construct_match: exact, close, or related). Paths are the theory's expected relationships between its constructs. citation_status 'added' marks citations added by maintainers that a reviewer should confirm. 'disciplines' lists ANZSRC 2020 Fields of Research divisions and groups (the HuMeta discipline vocabulary, standard/humeta/vocabularies.json) where the framework is widely used, for browsing. status 'draft' marks frameworks whose description, constructs, relationships, and links to shared constructs still need review by experts in the field; every theory and lens is a draft until the governance committee reviews it.",
   "frameworks": [
     {
       "id": "tpb",
@@ -73,7 +73,7 @@
         }
       ],
       "disciplines": [
-        "psychology"
+        "anzsrc_52"
       ]
     },
     {
@@ -131,8 +131,8 @@
         }
       ],
       "disciplines": [
-        "psychology",
-        "education_studies"
+        "anzsrc_52",
+        "anzsrc_39"
       ]
     },
     {
@@ -212,8 +212,8 @@
         }
       ],
       "disciplines": [
-        "psychology",
-        "education_studies"
+        "anzsrc_52",
+        "anzsrc_39"
       ]
     },
     {
@@ -268,8 +268,8 @@
         }
       ],
       "disciplines": [
-        "education_studies",
-        "sociology"
+        "anzsrc_39",
+        "anzsrc_4410"
       ]
     },
     {
@@ -328,8 +328,9 @@
         }
       ],
       "disciplines": [
-        "psychology",
-        "media_communication"
+        "anzsrc_52",
+        "anzsrc_4701",
+        "anzsrc_4609"
       ]
     },
     {
@@ -418,7 +419,8 @@
         }
       ],
       "disciplines": [
-        "psychology"
+        "anzsrc_52",
+        "anzsrc_4206"
       ]
     },
     {
@@ -496,8 +498,8 @@
         }
       ],
       "disciplines": [
-        "psychology",
-        "education_studies"
+        "anzsrc_52",
+        "anzsrc_39"
       ]
     },
     {
@@ -560,8 +562,8 @@
         }
       ],
       "disciplines": [
-        "psychology",
-        "education_studies"
+        "anzsrc_52",
+        "anzsrc_39"
       ]
     },
     {
@@ -620,7 +622,8 @@
         }
       ],
       "disciplines": [
-        "psychology"
+        "anzsrc_52",
+        "anzsrc_4206"
       ]
     },
     {
@@ -685,7 +688,7 @@
         }
       ],
       "disciplines": [
-        "psychology"
+        "anzsrc_52"
       ]
     },
     {
@@ -765,7 +768,8 @@
         }
       ],
       "disciplines": [
-        "psychology"
+        "anzsrc_52",
+        "anzsrc_4206"
       ]
     },
     {
@@ -845,7 +849,8 @@
       ],
       "paths": [],
       "disciplines": [
-        "psychology"
+        "anzsrc_52",
+        "anzsrc_4203"
       ]
     },
     {
@@ -905,8 +910,8 @@
         }
       ],
       "disciplines": [
-        "psychology",
-        "education_studies"
+        "anzsrc_52",
+        "anzsrc_39"
       ]
     },
     {
@@ -925,9 +930,9 @@
       "constructs": [],
       "paths": [],
       "disciplines": [
-        "education_studies",
-        "psychology",
-        "anthropology"
+        "anzsrc_39",
+        "anzsrc_52",
+        "anzsrc_4401"
       ]
     },
     {
@@ -945,9 +950,9 @@
       "constructs": [],
       "paths": [],
       "disciplines": [
-        "education_studies",
-        "anthropology",
-        "sociology"
+        "anzsrc_39",
+        "anzsrc_4401",
+        "anzsrc_4410"
       ]
     },
     {
@@ -966,9 +971,10 @@
       "constructs": [],
       "paths": [],
       "disciplines": [
-        "law",
-        "sociology",
-        "education_studies"
+        "anzsrc_48",
+        "anzsrc_4410",
+        "anzsrc_39",
+        "anzsrc_45"
       ]
     },
     {
@@ -987,9 +993,10 @@
       "constructs": [],
       "paths": [],
       "disciplines": [
-        "sociology",
-        "law",
-        "other_humanities"
+        "anzsrc_4410",
+        "anzsrc_48",
+        "anzsrc_4702",
+        "anzsrc_4405"
       ]
     },
     {
@@ -1006,10 +1013,11 @@
       "constructs": [],
       "paths": [],
       "disciplines": [
-        "sociology",
-        "languages_literature",
-        "philosophy_religion",
-        "history"
+        "anzsrc_4410",
+        "anzsrc_4705",
+        "anzsrc_50",
+        "anzsrc_4303",
+        "anzsrc_4405"
       ],
       "citation": "hooks, b. (1984). Feminist theory: From margin to center. South End Press.",
       "citation_status": "added"
@@ -1028,9 +1036,11 @@
       "constructs": [],
       "paths": [],
       "disciplines": [
-        "history",
-        "languages_literature",
-        "anthropology"
+        "anzsrc_4303",
+        "anzsrc_4705",
+        "anzsrc_4401",
+        "anzsrc_45",
+        "anzsrc_4702"
       ],
       "citation": "Said, E. W. (1978). Orientalism. Pantheon Books.",
       "citation_status": "added"
@@ -1049,9 +1059,9 @@
       "constructs": [],
       "paths": [],
       "disciplines": [
-        "philosophy_religion",
-        "psychology",
-        "education_studies"
+        "anzsrc_50",
+        "anzsrc_52",
+        "anzsrc_39"
       ],
       "citation": "van Manen, M. (1990). Researching lived experience: Human science for an action sensitive pedagogy. State University of New York Press.",
       "citation_status": "added"
@@ -1069,8 +1079,8 @@
       "constructs": [],
       "paths": [],
       "disciplines": [
-        "philosophy_religion",
-        "sociology"
+        "anzsrc_50",
+        "anzsrc_4410"
       ],
       "citation": "Horkheimer, M. (1972). Critical theory: Selected essays (M. J. O'Connell et al., Trans.). Herder and Herder.",
       "citation_status": "added"
@@ -1088,8 +1098,9 @@
       "constructs": [],
       "paths": [],
       "disciplines": [
-        "history",
-        "languages_literature"
+        "anzsrc_4303",
+        "anzsrc_4705",
+        "anzsrc_4702"
       ],
       "citation": "Greenblatt, S. (1980). Renaissance self-fashioning: From More to Shakespeare. University of Chicago Press.",
       "citation_status": "added"
@@ -1108,9 +1119,10 @@
       "constructs": [],
       "paths": [],
       "disciplines": [
-        "media_communication",
-        "visual_arts",
-        "languages_literature"
+        "anzsrc_4701",
+        "anzsrc_3606",
+        "anzsrc_4705",
+        "anzsrc_4702"
       ],
       "citation": "Barthes, R. (1977). Image, music, text (S. Heath, Trans.). Hill and Wang.",
       "citation_status": "added"
@@ -1126,9 +1138,9 @@
         "arts"
       ],
       "disciplines": [
-        "sociology",
-        "education_studies",
-        "anthropology"
+        "anzsrc_4410",
+        "anzsrc_39",
+        "anzsrc_4401"
       ],
       "citation": "Bourdieu, P. (1986). The forms of capital. In J. G. Richardson (Ed.), Handbook of theory and research for the sociology of education (pp. 241-258). Greenwood.",
       "citation_status": "added",
@@ -1203,10 +1215,10 @@
         "education"
       ],
       "disciplines": [
-        "sociology",
-        "political_science",
-        "education_studies",
-        "economics"
+        "anzsrc_4410",
+        "anzsrc_4408",
+        "anzsrc_39",
+        "anzsrc_38"
       ],
       "citation": "Coleman, J. S. (1988). Social capital in the creation of human capital. American Journal of Sociology, 94, S95-S120.",
       "doi": "10.1086/228943",
@@ -1274,9 +1286,9 @@
         "education"
       ],
       "disciplines": [
-        "sociology",
-        "psychology",
-        "media_communication"
+        "anzsrc_4410",
+        "anzsrc_52",
+        "anzsrc_4701"
       ],
       "citation": "Blumer, H. (1969). Symbolic interactionism: Perspective and method. Prentice-Hall.",
       "citation_status": "added",
@@ -1294,9 +1306,11 @@
         "education"
       ],
       "disciplines": [
-        "sociology",
-        "political_science",
-        "education_studies"
+        "anzsrc_4410",
+        "anzsrc_4408",
+        "anzsrc_39",
+        "anzsrc_4407",
+        "anzsrc_3507"
       ],
       "citation": "DiMaggio, P. J., & Powell, W. W. (1983). The iron cage revisited: Institutional isomorphism and collective rationality in organizational fields. American Sociological Review, 48(2), 147-160.",
       "doi": "10.2307/2095101",
@@ -1362,9 +1376,9 @@
         "education"
       ],
       "disciplines": [
-        "psychology",
-        "sociology",
-        "political_science"
+        "anzsrc_52",
+        "anzsrc_4410",
+        "anzsrc_4408"
       ],
       "citation": "Tajfel, H., & Turner, J. C. (1979). An integrative theory of intergroup conflict. In W. G. Austin & S. Worchel (Eds.), The social psychology of intergroup relations (pp. 33-47). Brooks/Cole.",
       "citation_status": "added",
@@ -1430,8 +1444,8 @@
         "social_sciences"
       ],
       "disciplines": [
-        "political_science",
-        "sociology"
+        "anzsrc_4408",
+        "anzsrc_4410"
       ],
       "citation": "Verba, S., Schlozman, K. L., & Brady, H. E. (1995). Voice and equality: Civic voluntarism in American politics. Harvard University Press.",
       "citation_status": "added",
@@ -1485,9 +1499,9 @@
         "social_sciences"
       ],
       "disciplines": [
-        "political_science",
-        "economics",
-        "sociology"
+        "anzsrc_4408",
+        "anzsrc_38",
+        "anzsrc_4410"
       ],
       "citation": "Downs, A. (1957). An economic theory of democracy. Harper & Row.",
       "citation_status": "added",
@@ -1505,9 +1519,9 @@
         "humanities"
       ],
       "disciplines": [
-        "media_communication",
-        "political_science",
-        "sociology"
+        "anzsrc_4701",
+        "anzsrc_4408",
+        "anzsrc_4410"
       ],
       "citation": "Entman, R. M. (1993). Framing: Toward clarification of a fractured paradigm. Journal of Communication, 43(4), 51-58.",
       "doi": "10.1111/j.1460-2466.1993.tb01304.x",
@@ -1552,8 +1566,8 @@
         "social_sciences"
       ],
       "disciplines": [
-        "media_communication",
-        "political_science"
+        "anzsrc_4701",
+        "anzsrc_4408"
       ],
       "citation": "McCombs, M. E., & Shaw, D. L. (1972). The agenda-setting function of mass media. Public Opinion Quarterly, 36(2), 176-187.",
       "doi": "10.1086/267990",
@@ -1598,8 +1612,8 @@
         "social_sciences"
       ],
       "disciplines": [
-        "media_communication",
-        "psychology"
+        "anzsrc_4701",
+        "anzsrc_52"
       ],
       "citation": "Katz, E., Blumler, J. G., & Gurevitch, M. (1973). Uses and gratifications research. Public Opinion Quarterly, 37(4), 509-523.",
       "doi": "10.1086/268109",
@@ -1655,10 +1669,11 @@
         "education"
       ],
       "disciplines": [
-        "sociology",
-        "media_communication",
-        "education_studies",
-        "economics"
+        "anzsrc_4410",
+        "anzsrc_4701",
+        "anzsrc_39",
+        "anzsrc_38",
+        "anzsrc_4407"
       ],
       "citation": "Rogers, E. M. (2003). Diffusion of innovations (5th ed.). Free Press.",
       "citation_status": "added",
@@ -1735,9 +1750,10 @@
         "education"
       ],
       "disciplines": [
-        "economics",
-        "education_studies",
-        "sociology"
+        "anzsrc_38",
+        "anzsrc_39",
+        "anzsrc_4410",
+        "anzsrc_3902"
       ],
       "citation": "Becker, G. S. (1964). Human capital: A theoretical and empirical analysis, with special reference to education. National Bureau of Economic Research; Columbia University Press.",
       "citation_status": "added",
@@ -1794,9 +1810,9 @@
         "social_sciences"
       ],
       "disciplines": [
-        "psychology",
-        "education_studies",
-        "sociology"
+        "anzsrc_52",
+        "anzsrc_39",
+        "anzsrc_4410"
       ],
       "citation": "Bronfenbrenner, U. (1979). The ecology of human development: Experiments by nature and design. Harvard University Press.",
       "citation_status": "added",
@@ -1873,8 +1889,9 @@
         "social_sciences"
       ],
       "disciplines": [
-        "education_studies",
-        "psychology"
+        "anzsrc_39",
+        "anzsrc_52",
+        "anzsrc_3901"
       ],
       "citation": "Piaget, J. (1952). The origins of intelligence in children (M. Cook, Trans.). International Universities Press.",
       "citation_status": "added",
@@ -1891,8 +1908,9 @@
         "education"
       ],
       "disciplines": [
-        "education_studies",
-        "psychology"
+        "anzsrc_39",
+        "anzsrc_52",
+        "anzsrc_3901"
       ],
       "citation": "Sweller, J. (1988). Cognitive load during problem solving: Effects on learning. Cognitive Science, 12(2), 257-285.",
       "doi": "10.1207/s15516709cog1202_4",
@@ -1961,7 +1979,8 @@
         "education"
       ],
       "disciplines": [
-        "education_studies"
+        "anzsrc_39",
+        "anzsrc_3901"
       ],
       "citation": "Garrison, D. R., Anderson, T., & Archer, W. (1999). Critical inquiry in a text-based environment: Computer conferencing in higher education. The Internet and Higher Education, 2(2-3), 87-105.",
       "doi": "10.1016/S1096-7516(00)00016-6",
@@ -2025,7 +2044,8 @@
         "education"
       ],
       "disciplines": [
-        "education_studies"
+        "anzsrc_39",
+        "anzsrc_3901"
       ],
       "citation": "Ladson-Billings, G. (1995). Toward a theory of culturally relevant pedagogy. American Educational Research Journal, 32(3), 465-491.",
       "doi": "10.3102/00028312032003465",
@@ -2044,8 +2064,9 @@
         "social_sciences"
       ],
       "disciplines": [
-        "education_studies",
-        "anthropology"
+        "anzsrc_39",
+        "anzsrc_4401",
+        "anzsrc_3902"
       ],
       "citation": "Moll, L. C., Amanti, C., Neff, D., & Gonzalez, N. (1992). Funds of knowledge for teaching: Using a qualitative approach to connect homes and classrooms. Theory Into Practice, 31(2), 132-141.",
       "citation_status": "added",
@@ -2064,9 +2085,9 @@
         "social_sciences"
       ],
       "disciplines": [
-        "philosophy_religion",
-        "languages_literature",
-        "history"
+        "anzsrc_50",
+        "anzsrc_4705",
+        "anzsrc_4303"
       ],
       "citation": "Gadamer, H.-G. (2004). Truth and method (2nd rev. ed., J. Weinsheimer & D. G. Marshall, Trans.). Continuum. (Original work published 1960)",
       "citation_status": "added",
@@ -2085,10 +2106,10 @@
         "education"
       ],
       "disciplines": [
-        "philosophy_religion",
-        "history",
-        "sociology",
-        "languages_literature"
+        "anzsrc_50",
+        "anzsrc_4303",
+        "anzsrc_4410",
+        "anzsrc_4705"
       ],
       "citation": "Foucault, M. (1972). The archaeology of knowledge (A. M. Sheridan Smith, Trans.). Pantheon.",
       "citation_status": "added",
@@ -2106,9 +2127,9 @@
         "arts"
       ],
       "disciplines": [
-        "languages_literature",
-        "media_communication",
-        "performing_arts"
+        "anzsrc_4705",
+        "anzsrc_4701",
+        "anzsrc_3604"
       ],
       "citation": "Genette, G. (1980). Narrative discourse: An essay in method (J. E. Lewin, Trans.). Cornell University Press.",
       "citation_status": "added",
@@ -2126,10 +2147,10 @@
         "arts"
       ],
       "disciplines": [
-        "languages_literature",
-        "history",
-        "visual_arts",
-        "performing_arts"
+        "anzsrc_4705",
+        "anzsrc_4303",
+        "anzsrc_3606",
+        "anzsrc_3604"
       ],
       "citation": "Jauss, H. R. (1982). Toward an aesthetic of reception (T. Bahti, Trans.). University of Minnesota Press.",
       "citation_status": "added",
@@ -2148,10 +2169,11 @@
         "arts"
       ],
       "disciplines": [
-        "languages_literature",
-        "sociology",
-        "philosophy_religion",
-        "performing_arts"
+        "anzsrc_4705",
+        "anzsrc_4410",
+        "anzsrc_50",
+        "anzsrc_3604",
+        "anzsrc_4405"
       ],
       "citation": "Butler, J. (1990). Gender trouble: Feminism and the subversion of identity. Routledge.",
       "citation_status": "added",
@@ -2169,9 +2191,10 @@
         "arts"
       ],
       "disciplines": [
-        "languages_literature",
-        "history",
-        "visual_arts"
+        "anzsrc_4705",
+        "anzsrc_4303",
+        "anzsrc_3606",
+        "anzsrc_4702"
       ],
       "citation": "Glotfelty, C., & Fromm, H. (Eds.). (1996). The ecocriticism reader: Landmarks in literary ecology. University of Georgia Press.",
       "citation_status": "added",
@@ -2190,10 +2213,11 @@
         "social_sciences"
       ],
       "disciplines": [
-        "languages_literature",
-        "history",
-        "sociology",
-        "visual_arts"
+        "anzsrc_4705",
+        "anzsrc_4303",
+        "anzsrc_4410",
+        "anzsrc_3606",
+        "anzsrc_4702"
       ],
       "citation": "Eagleton, T. (1976). Marxism and literary criticism. University of California Press.",
       "citation_status": "added",
@@ -2212,10 +2236,11 @@
         "social_sciences"
       ],
       "disciplines": [
-        "history",
-        "archaeology",
-        "anthropology",
-        "visual_arts"
+        "anzsrc_4303",
+        "anzsrc_4301",
+        "anzsrc_4401",
+        "anzsrc_3606",
+        "anzsrc_4302"
       ],
       "citation": "Prown, J. D. (1982). Mind in matter: An introduction to material culture theory and method. Winterthur Portfolio, 17(1), 1-19.",
       "doi": "10.1086/496065",
@@ -2235,9 +2260,10 @@
         "social_sciences"
       ],
       "disciplines": [
-        "visual_arts",
-        "performing_arts",
-        "education_studies"
+        "anzsrc_3606",
+        "anzsrc_3604",
+        "anzsrc_39",
+        "anzsrc_36"
       ],
       "citation": "Barone, T., & Eisner, E. W. (2012). Arts based research. SAGE.",
       "citation_status": "added",

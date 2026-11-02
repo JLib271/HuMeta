@@ -49,8 +49,9 @@
       "humanities"
     ],
     "discipline": [
-      "media_communication",
-      "languages_literature"
+      "anzsrc_4701",
+      "anzsrc_4703",
+      "anzsrc_4705"
     ],
     "population": {
       "participant_roles": [

@@ -155,16 +155,19 @@ def record_form(record: dict) -> dict | None:
         # Narrow the subject list to the chosen fields (education studies can be about any subject).
         current_fields = set(s.get("fields") or [])
         prefixes = {FIELD_FOS[f] for f in current_fields if f in FIELD_FOS}
-        all_subjects = p.ids("discipline")
+        all_subjects = p.active_ids("discipline")
         narrowed = bool(prefixes) and not current_fields & {"education", "other_field"}
         subject_ids = [d for d in all_subjects if not narrowed or d in (s.get("discipline") or [])
                        or any(str(p.term("discipline", d).get("fos", "")).startswith(x) for x in prefixes)]
         disciplines = st.multiselect(
             lab("Discipline or subject area", "study.discipline"), subject_ids,
             default=[d for d in s.get("discipline") or [] if d in subject_ids],
-            format_func=lambda t: p.label("discipline", t), key=key("discipline"),
-            help=tip("study.discipline", "Showing subjects in the fields you chose above." if narrowed else
-                     "For education studies, the subject taught or learned."))
+            format_func=lambda t: (f"{p.term('discipline', t)['label']} ({p.label('discipline', p.term('discipline', t)['division']).removesuffix(' (all)')})"
+                                   if p.term("discipline", t).get("division") else p.label("discipline", t)),
+            key=key("discipline"),
+            help=tip("study.discipline", "From the ANZSRC 2020 Fields of Research: choose a group, or a whole division "
+                     "marked (all). Type to search. " + ("Showing disciplines in the fields you chose above." if narrowed else
+                     "For education studies, also choose the subject taught or learned.")))
         st.subheader("1 · The study")
         title = st.text_input(lab("Title *", "resource.title"), res.get("title") or "", key=key("title"),
                               help=tip("resource.title"))

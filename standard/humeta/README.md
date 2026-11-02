@@ -8,8 +8,9 @@ sciences, the humanities, and education. Researchers fill it in themselves,
 from study design onward. It adds what general-purpose repository metadata
 leaves out:
 
-* **Research field and discipline**, using the OECD Fields of Science that
-  DataCite already uses, so studies can be found across fields
+* **Research field and discipline**: disciplines from the ANZSRC 2020 Fields
+  of Research (236 divisions and groups), each mapped to the OECD Fields of
+  Science that DataCite uses, so studies can be found across fields
 * **Constructs measured**, from a shared, defined construct vocabulary
 * **People and place**: whether people take part (directly, indirectly, or not
   at all), who they are, and where
@@ -144,7 +145,7 @@ checks is `oem/profile.py` (`validate()`).
 |---|---|---|
 | `resource.title`, `.creators`, `.publisher`, `.publication_year`, `.resource_type` | M | DataCite resourceTypeGeneral |
 | `study.fields` | M | `research_field` (OECD FOS) |
-| `study.discipline` | R | `discipline` (with OECD FOS codes) |
+| `study.discipline` | R | `discipline` (ANZSRC 2020 FoR divisions and groups, with OECD FOS codes) |
 | `study.constructs` | MA (instruments; datasets with direct participants) | construct vocabulary |
 | `study.design.unit_of_analysis`, `.sampling_procedure` | O | DDI AnalysisUnit, DDI SamplingProcedure |
 | `study.population.human_participants` | M | `human_participants` (direct / indirect / none) |
@@ -284,9 +285,18 @@ ModeOfCollection (5.0.1), time-related study designs to DDI TimeMethod
 4.0. A DDI-Codebook export, for deposit at ICPSR, Dataverse and CESSDA
 archives, is planned for the Social Science module.
 
-### OECD Fields of Science and Technology
+### ANZSRC Fields of Research and OECD Fields of Science
 
-Research fields and disciplines carry OECD Fields of Science (FOS) codes and
+Disciplines are the divisions and groups of the Australian and New Zealand
+Standard Research Classification 2020 Fields of Research (ANZSRC FoR; (c)
+Commonwealth of Australia and Crown Copyright New Zealand 2020; source: ABS
+and Stats NZ). Each is exported as a DataCite subject with subjectScheme
+"ANZSRC Fields of Research", its concept URI
+(`https://linked.data.gov.au/def/anzsrc-for/2020/<code>`) as `valueUri`, and
+its code as `classificationCode`. The profile's earlier discipline terms are
+deprecated; records that use them are moved to their ANZSRC replacements.
+
+Research fields and disciplines also carry OECD Fields of Science (FOS) codes and
 are exported as DataCite subjects in the form DataCite uses ("FOS:
 Educational sciences", subjectScheme "Fields of Science and Technology
 (FOS)", with the FOS code as `classificationCode`).

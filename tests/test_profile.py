@@ -389,3 +389,13 @@ def test_start_choices_set_fields_and_modules(p):
     record["study"]["fields"] = ["arts"]
     assert profile.start_choices(record) == ["humanities"]
     assert profile.apply_start_choices(record, ["humanities"], p)["study"]["fields"] == ["humanities", "arts"]
+
+
+def test_old_discipline_terms_move_to_anzsrc(lib, p):
+    record = copy.deepcopy(EXAMPLE)
+    record["study"]["discipline"] = ["sociology", "general_stem", "other_discipline", "anzsrc_4410"]
+    assert profile.is_valid(record, lib, p)  # old terms still validate
+    moved = profile.migrate(record, p)["study"]["discipline"]
+    assert moved[0] == "anzsrc_4410" and "anzsrc_49" in moved and "sociology" not in moved and len(moved) == len(set(moved))
+    active = p.active_ids("discipline")
+    assert len(active) == 236 and all(p.term("discipline", d).get("fos") in profile.FOS_LABELS for d in active)

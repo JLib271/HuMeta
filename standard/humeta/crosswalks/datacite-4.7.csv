@@ -21,7 +21,7 @@ study.design.framework_description,core,Framework description,O,0..1,,descriptio
 study.design.unit_of_analysis,core,Unit of analysis,O,0..n,unit_of_analysis,subjects (subjectScheme 'HuMeta Units of Analysis')
 study.design.sampling_procedure,core,Sampling procedure,O,0..n,sampling_procedure,subjects (subjectScheme 'HuMeta Sampling Procedures'); descriptions (Methods)
 study.constructs,core,Constructs measured,MA,0..n,,"subjects (subjectScheme 'HuMeta Constructs', valueURI per construct); for datasets, relatedIdentifiers to the instrument's library record (URL, relationType IsCollectedBy) and its publication (DOI, relationType References); ERIC descriptors as additional subjects"
-study.discipline,core,Discipline or subject area,R,0..n,discipline,subjects (subjectScheme 'HuMeta Disciplines'; plus 'Fields of Science and Technology (FOS)' with each term's FOS code)
+study.discipline,core,Discipline or subject area,R,0..n,discipline,"subjects (subjectScheme 'ANZSRC Fields of Research', valueURI and classificationCode per term), plus the corresponding OECD Fields of Science subject (subjectScheme 'Fields of Science and Technology (FOS)')"
 study.population.human_participants,core,Human participants,M,1,human_participants,descriptions (Methods)
 study.population.participant_roles,core,Participant population,MA,0..n,participant_role,subjects (subjectScheme 'HuMeta Participant Roles')
 education.education_levels,education,Education level,M,1..n,education_level,subjects (subjectScheme 'HuMeta Education Levels'); ISCED 2011 level as an additional subject (subjectScheme 'ISCED 2011')

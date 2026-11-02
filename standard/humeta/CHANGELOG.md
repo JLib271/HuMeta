@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+* **Disciplines follow ANZSRC 2020 Fields of Research.** `study.discipline`
+  now offers the 23 divisions and 213 groups of the ANZSRC 2020 FoR (from the
+  official code set published by Stats NZ's research information system),
+  each mapped to an OECD FOS code. Exported as DataCite subjects with the
+  ANZSRC concept URI and code. The earlier 28 discipline terms are deprecated
+  with `replaced_by` links, and `migrate` moves records to the new terms. FOS
+  labels now cover all 48 OECD categories as DataCite labels them.
 * **Measurement evidence is optional; rule R3 retired.**
   `study.evidence.measurement_evidence` is now optional (O) and is no longer
   asked in the portal's study profile; an instrument's reliability and

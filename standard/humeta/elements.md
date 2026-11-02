@@ -8,7 +8,7 @@ Obligations: **M** = Mandatory: every record must have it.; **MA** = Mandatory i
 
 Alignments: each element lists the standards it corresponds to. No mark = exact match; **≈** = close match; **~** = related. `HuMeta` = defined by this profile, with no equivalent in a general-purpose standard. *(expert input wanted)* = we are seeking expert input on this alignment. Full list, with notes, in [`crosswalks/alignments.csv`](crosswalks/alignments.csv).
 
-Standards: [HuMeta](https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md) = HuMeta profile (element or vocabulary defined by this profile); [DataCite](https://schema.datacite.org/) = DataCite Metadata Schema 4.7; [DC](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) = Dublin Core (DCMI Metadata Terms); [schema.org](https://schema.org/Dataset) = schema.org Dataset; [ERIC](https://eric.ed.gov/?ti=all) = ERIC Thesaurus; [DDI-C](https://ddialliance.org/Specification/DDI-Codebook/2.5/) = DDI-Codebook 2.5 (Data Documentation Initiative); [DDI CV](https://rdf-vocabulary.ddialliance.org/) = DDI Alliance Controlled Vocabularies (CC BY 4.0); [OECD FOS](http://www.oecd.org/science/inno/38235147.pdf) = OECD Fields of Science and Technology (FOS), as used by DataCite; [ORCID](https://orcid.org/) = ORCID iD; [SPDX](https://spdx.org/licenses/) = SPDX License List; [BCP 47](https://www.rfc-editor.org/info/bcp47) = IETF BCP 47 language tags; [ISO 3166](https://www.iso.org/iso-3166-country-codes.html) = ISO 3166-1 alpha-2 country codes; [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) = ISO 8601 dates; [NCES](https://nces.ed.gov/programs/edge/Geographic/LocaleBoundaries) = NCES locale classification (locale types City, Suburb, Town, Rural); [ISCED](https://uis.unesco.org/sites/default/files/documents/international-standard-classification-of-education-isced-2011-en.pdf) = UNESCO International Standard Classification of Education (ISCED 2011); [AERA/APA/NCME](https://www.testingstandards.net/) = Standards for Educational and Psychological Testing (2014); [Common Rule](https://www.hhs.gov/ohrp/regulations-and-policy/regulations/45-cfr-46/) = US Common Rule for human-subjects research (45 CFR 46); [FERPA](https://studentprivacy.ed.gov/) = Family Educational Rights and Privacy Act (34 CFR Part 99); [CARE](https://www.gida-global.org/care) = CARE Principles for Indigenous Data Governance; [Local Contexts](https://localcontexts.org/) = Local Contexts Traditional Knowledge and Biocultural Labels and Notices; [RightsStatements](https://rightsstatements.org/) = RightsStatements.org rights statements; [AoIR IRE 3.0](https://aoir.org/reports/ethics3.pdf) = Association of Internet Researchers, Internet Research: Ethical Guidelines 3.0 (2019); [TaDiRAH](https://vocabs.dariah.eu/tadirah/) = TaDiRAH 2.0.3: Taxonomy of Digital Research Activities in the Humanities (DARIAH, CC0); [TEI](https://tei-c.org/guidelines/p5/) = TEI P5 Guidelines (Text Encoding Initiative); [ISO 639](https://www.loc.gov/standards/iso639-2/php/code_list.php) = ISO 639 language codes (as used in BCP 47)
+Standards: [HuMeta](https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md) = HuMeta profile (element or vocabulary defined by this profile); [DataCite](https://schema.datacite.org/) = DataCite Metadata Schema 4.7; [DC](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) = Dublin Core (DCMI Metadata Terms); [schema.org](https://schema.org/Dataset) = schema.org Dataset; [ERIC](https://eric.ed.gov/?ti=all) = ERIC Thesaurus; [DDI-C](https://ddialliance.org/Specification/DDI-Codebook/2.5/) = DDI-Codebook 2.5 (Data Documentation Initiative); [DDI CV](https://rdf-vocabulary.ddialliance.org/) = DDI Alliance Controlled Vocabularies (CC BY 4.0); [OECD FOS](http://www.oecd.org/science/inno/38235147.pdf) = OECD Fields of Science and Technology (FOS), as used by DataCite; [ORCID](https://orcid.org/) = ORCID iD; [SPDX](https://spdx.org/licenses/) = SPDX License List; [BCP 47](https://www.rfc-editor.org/info/bcp47) = IETF BCP 47 language tags; [ISO 3166](https://www.iso.org/iso-3166-country-codes.html) = ISO 3166-1 alpha-2 country codes; [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) = ISO 8601 dates; [NCES](https://nces.ed.gov/programs/edge/Geographic/LocaleBoundaries) = NCES locale classification (locale types City, Suburb, Town, Rural); [ISCED](https://uis.unesco.org/sites/default/files/documents/international-standard-classification-of-education-isced-2011-en.pdf) = UNESCO International Standard Classification of Education (ISCED 2011); [AERA/APA/NCME](https://www.testingstandards.net/) = Standards for Educational and Psychological Testing (2014); [Common Rule](https://www.hhs.gov/ohrp/regulations-and-policy/regulations/45-cfr-46/) = US Common Rule for human-subjects research (45 CFR 46); [FERPA](https://studentprivacy.ed.gov/) = Family Educational Rights and Privacy Act (34 CFR Part 99); [CARE](https://www.gida-global.org/care) = CARE Principles for Indigenous Data Governance; [Local Contexts](https://localcontexts.org/) = Local Contexts Traditional Knowledge and Biocultural Labels and Notices; [RightsStatements](https://rightsstatements.org/) = RightsStatements.org rights statements; [AoIR IRE 3.0](https://aoir.org/reports/ethics3.pdf) = Association of Internet Researchers, Internet Research: Ethical Guidelines 3.0 (2019); [TaDiRAH](https://vocabs.dariah.eu/tadirah/) = TaDiRAH 2.0.3: Taxonomy of Digital Research Activities in the Humanities (DARIAH, CC0); [TEI](https://tei-c.org/guidelines/p5/) = TEI P5 Guidelines (Text Encoding Initiative); [ISO 639](https://www.loc.gov/standards/iso639-2/php/code_list.php) = ISO 639 language codes (as used in BCP 47); [ANZSRC FoR](https://linked.data.gov.au/def/anzsrc-for/2020) = Australian and New Zealand Standard Research Classification 2020: Fields of Research (ABS and Stats NZ)
 
 Modules: the **core** applies to every record; a field module (such as **Education**) applies only when a record includes it, and its mandatory elements are mandatory only then.
 
@@ -40,7 +40,7 @@ Elements for any study in the social sciences, humanities, or education.
 | <a id="study.design.unit_of_analysis"></a>`study.design.unit_of_analysis` | O | 0..n | The unit(s) the analysis is about: people, groups, places, texts, images, objects, and so on. Vocabulary: [unit_of_analysis](#unit_of_analysis). | `HuMeta`, `DDI CV: AnalysisUnit 2.1.3`, `DDI-C: anlyUnit`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Units of Analysis') |
 | <a id="study.design.sampling_procedure"></a>`study.design.sampling_procedure` | O | 0..n | How cases (people, texts, objects, sites) were selected. Vocabulary: [sampling_procedure](#sampling_procedure). | `HuMeta`, `DDI CV: SamplingProcedure 2.0.2`, `DDI-C: sampProc`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Sampling Procedures'); descriptions (Methods) |
 | <a id="study.constructs"></a>`study.constructs` | MA | 0..n | Constructs measured, from the HuMeta construct vocabulary (library/constructs.json), optionally with the instrument, version and subscale used. *Mandatory when resource_type is Dataset or Instrument.* | `HuMeta`, `≈ERIC: descriptors`, `≈schema.org: variableMeasured`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Constructs', valueURI per construct); for datasets, relatedIdentifiers to the instrument's library record (URL, relationType IsCollectedBy) and its publication (DOI, relationType References); ERIC descriptors as additional subjects |
-| <a id="study.discipline"></a>`study.discipline` | R | 0..n | Discipline(s) or subject area(s) of the study; for education studies, the subject taught or learned. Vocabulary: [discipline](#discipline). | `HuMeta`, `≈OECD FOS: subcategory (per term)`, `≈ERIC: descriptors`, `≈DC: subject`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Disciplines'; plus 'Fields of Science and Technology (FOS)' with each term's FOS code) |
+| <a id="study.discipline"></a>`study.discipline` | R | 0..n | Discipline(s) or subject area(s) the study is about; for education studies, also the subject taught or learned. Chosen from the ANZSRC 2020 Fields of Research (divisions and groups). Vocabulary: [discipline](#discipline). | `ANZSRC FoR: Fields of Research 2020 (divisions and groups)`, `≈OECD FOS: subcategory (per term)`, `≈ERIC: descriptors`, `≈DC: subject`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'ANZSRC Fields of Research', valueURI and classificationCode per term), plus the corresponding OECD Fields of Science subject (subjectScheme 'Fields of Science and Technology (FOS)') |
 | <a id="study.population.human_participants"></a>`study.population.human_participants` | M | 1 | Whether people take part in the study directly, are its subject only indirectly (records, public posts), or are not involved (texts, artworks, objects only). Vocabulary: [human_participants](#human_participants). | `HuMeta`, `~Common Rule: "human subject" definition` | descriptions (Methods) |
 | <a id="study.population.participant_roles"></a>`study.population.participant_roles` | MA | 0..n | Who the participants, or the people the data are about, are. *Mandatory when human participants is direct or indirect.* Vocabulary: [participant_role](#participant_role). | `HuMeta`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Participant Roles') |
 | <a id="study.population.description"></a>`study.population.description` | R | 0..1 | Narrative description of the participants and sampling, without identifying information. | `HuMeta`, `≈DataCite: description (Methods)`, `≈DDI-C: universe` | descriptions (descriptionType Methods) |
@@ -143,10 +143,246 @@ Broad field(s) the study belongs to. Choose all that apply; interdisciplinary st
 
 ### <a id="discipline"></a>Discipline or subject area (`discipline`)
 
-Discipline(s) or subject area(s) the study is about. For education studies, the subject taught or learned. Each term carries its OECD Fields of Science (FOS) code.
+Discipline(s) or subject area(s) the study is about; for education studies, also the subject taught or learned. Terms are the Divisions (broad) and Groups of the Australian and New Zealand Standard Research Classification (ANZSRC) 2020 Fields of Research, (c) Commonwealth of Australia and Crown Copyright New Zealand 2020, source: Australian Bureau of Statistics and Stats NZ. 'anzsrc' is the FoR code (concept URI https://linked.data.gov.au/def/anzsrc-for/2020/<code>); 'fos' is the corresponding OECD Fields of Science code used for DataCite. Terms marked deprecated are the profile's earlier discipline list; records using them are moved to the terms in replaced_by.
 
 | Code | Label | ERIC descriptors |
 |---|---|---|
+| `anzsrc_30` | Agricultural, veterinary and food sciences (all) |  |
+| `anzsrc_3001` | Agricultural biotechnology |  |
+| `anzsrc_3002` | Agriculture, land and farm management |  |
+| `anzsrc_3003` | Animal production |  |
+| `anzsrc_3004` | Crop and pasture production |  |
+| `anzsrc_3005` | Fisheries sciences |  |
+| `anzsrc_3006` | Food sciences |  |
+| `anzsrc_3007` | Forestry sciences |  |
+| `anzsrc_3008` | Horticultural production |  |
+| `anzsrc_3009` | Veterinary sciences |  |
+| `anzsrc_3099` | Other agricultural, veterinary and food sciences |  |
+| `anzsrc_31` | Biological sciences (all) | Biology |
+| `anzsrc_3101` | Biochemistry and cell biology |  |
+| `anzsrc_3102` | Bioinformatics and computational biology |  |
+| `anzsrc_3103` | Ecology |  |
+| `anzsrc_3104` | Evolutionary biology |  |
+| `anzsrc_3105` | Genetics |  |
+| `anzsrc_3106` | Industrial biotechnology |  |
+| `anzsrc_3107` | Microbiology |  |
+| `anzsrc_3108` | Plant biology |  |
+| `anzsrc_3109` | Zoology |  |
+| `anzsrc_3199` | Other biological sciences |  |
+| `anzsrc_32` | Biomedical and clinical sciences (all) |  |
+| `anzsrc_3201` | Cardiovascular medicine and haematology |  |
+| `anzsrc_3202` | Clinical sciences |  |
+| `anzsrc_3203` | Dentistry |  |
+| `anzsrc_3204` | Immunology |  |
+| `anzsrc_3205` | Medical biochemistry and metabolomics |  |
+| `anzsrc_3206` | Medical biotechnology |  |
+| `anzsrc_3207` | Medical microbiology |  |
+| `anzsrc_3208` | Medical physiology |  |
+| `anzsrc_3209` | Neurosciences |  |
+| `anzsrc_3210` | Nutrition and dietetics |  |
+| `anzsrc_3211` | Oncology and carcinogenesis |  |
+| `anzsrc_3212` | Ophthalmology and optometry |  |
+| `anzsrc_3213` | Paediatrics |  |
+| `anzsrc_3214` | Pharmacology and pharmaceutical sciences |  |
+| `anzsrc_3215` | Reproductive medicine |  |
+| `anzsrc_3299` | Other biomedical and clinical sciences |  |
+| `anzsrc_33` | Built environment and design (all) |  |
+| `anzsrc_3301` | Architecture |  |
+| `anzsrc_3302` | Building |  |
+| `anzsrc_3303` | Design |  |
+| `anzsrc_3304` | Urban and regional planning |  |
+| `anzsrc_3399` | Other built environment and design |  |
+| `anzsrc_34` | Chemical sciences (all) | Chemistry |
+| `anzsrc_3401` | Analytical chemistry |  |
+| `anzsrc_3402` | Inorganic chemistry |  |
+| `anzsrc_3403` | Macromolecular and materials chemistry |  |
+| `anzsrc_3404` | Medicinal and biomolecular chemistry |  |
+| `anzsrc_3405` | Organic chemistry |  |
+| `anzsrc_3406` | Physical chemistry |  |
+| `anzsrc_3407` | Theoretical and computational chemistry |  |
+| `anzsrc_3499` | Other chemical sciences |  |
+| `anzsrc_35` | Commerce, management, tourism and services (all) |  |
+| `anzsrc_3501` | Accounting, auditing and accountability |  |
+| `anzsrc_3502` | Banking, finance and investment |  |
+| `anzsrc_3503` | Business systems in context |  |
+| `anzsrc_3504` | Commercial services |  |
+| `anzsrc_3505` | Human resources and industrial relations |  |
+| `anzsrc_3506` | Marketing |  |
+| `anzsrc_3507` | Strategy, management and organisational behaviour |  |
+| `anzsrc_3508` | Tourism |  |
+| `anzsrc_3509` | Transportation, logistics and supply chains |  |
+| `anzsrc_3599` | Other commerce, management, tourism and services |  |
+| `anzsrc_36` | Creative arts and writing (all) |  |
+| `anzsrc_3601` | Art history, theory and criticism |  |
+| `anzsrc_3602` | Creative and professional writing |  |
+| `anzsrc_3603` | Music |  |
+| `anzsrc_3604` | Performing arts |  |
+| `anzsrc_3605` | Screen and digital media |  |
+| `anzsrc_3606` | Visual arts |  |
+| `anzsrc_3699` | Other creative arts and writing |  |
+| `anzsrc_37` | Earth sciences (all) | Earth Science, Geology |
+| `anzsrc_3701` | Atmospheric sciences |  |
+| `anzsrc_3702` | Climate change science | Climate, Earth Science |
+| `anzsrc_3703` | Geochemistry |  |
+| `anzsrc_3704` | Geoinformatics |  |
+| `anzsrc_3705` | Geology |  |
+| `anzsrc_3706` | Geophysics |  |
+| `anzsrc_3707` | Hydrology |  |
+| `anzsrc_3708` | Oceanography |  |
+| `anzsrc_3709` | Physical geography and environmental geoscience |  |
+| `anzsrc_3799` | Other earth sciences |  |
+| `anzsrc_38` | Economics (all) |  |
+| `anzsrc_3801` | Applied economics |  |
+| `anzsrc_3802` | Econometrics |  |
+| `anzsrc_3803` | Economic theory |  |
+| `anzsrc_3899` | Other economics |  |
+| `anzsrc_39` | Education (all) |  |
+| `anzsrc_3901` | Curriculum and pedagogy |  |
+| `anzsrc_3902` | Education policy, sociology and philosophy |  |
+| `anzsrc_3903` | Education systems |  |
+| `anzsrc_3904` | Specialist studies in education |  |
+| `anzsrc_3999` | Other Education |  |
+| `anzsrc_40` | Engineering (all) | Engineering Education |
+| `anzsrc_4001` | Aerospace engineering |  |
+| `anzsrc_4002` | Automotive engineering |  |
+| `anzsrc_4003` | Biomedical engineering |  |
+| `anzsrc_4004` | Chemical engineering |  |
+| `anzsrc_4005` | Civil engineering |  |
+| `anzsrc_4006` | Communications engineering |  |
+| `anzsrc_4007` | Control engineering, mechatronics and robotics |  |
+| `anzsrc_4008` | Electrical engineering |  |
+| `anzsrc_4009` | Electronics, sensors and digital hardware |  |
+| `anzsrc_4010` | Engineering practice and education |  |
+| `anzsrc_4011` | Environmental engineering |  |
+| `anzsrc_4012` | Fluid mechanics and thermal engineering |  |
+| `anzsrc_4013` | Geomatic engineering |  |
+| `anzsrc_4014` | Manufacturing engineering |  |
+| `anzsrc_4015` | Maritime engineering |  |
+| `anzsrc_4016` | Materials engineering |  |
+| `anzsrc_4017` | Mechanical engineering |  |
+| `anzsrc_4018` | Nanotechnology |  |
+| `anzsrc_4019` | Resources engineering and extractive metallurgy |  |
+| `anzsrc_4099` | Other engineering |  |
+| `anzsrc_41` | Environmental sciences (all) |  |
+| `anzsrc_4101` | Climate change impacts and adaptation |  |
+| `anzsrc_4102` | Ecological applications |  |
+| `anzsrc_4103` | Environmental biotechnology |  |
+| `anzsrc_4104` | Environmental management |  |
+| `anzsrc_4105` | Pollution and contamination |  |
+| `anzsrc_4106` | Soil sciences |  |
+| `anzsrc_4199` | Other environmental sciences |  |
+| `anzsrc_42` | Health sciences (all) |  |
+| `anzsrc_4201` | Allied health and rehabilitation science |  |
+| `anzsrc_4202` | Epidemiology |  |
+| `anzsrc_4203` | Health services and systems |  |
+| `anzsrc_4204` | Midwifery |  |
+| `anzsrc_4205` | Nursing |  |
+| `anzsrc_4206` | Public health |  |
+| `anzsrc_4207` | Sports science and exercise |  |
+| `anzsrc_4208` | Traditional, complementary and integrative medicine |  |
+| `anzsrc_4299` | Other health sciences |  |
+| `anzsrc_43` | History, heritage and archaeology (all) |  |
+| `anzsrc_4301` | Archaeology |  |
+| `anzsrc_4302` | Heritage, archive and museum studies |  |
+| `anzsrc_4303` | Historical studies |  |
+| `anzsrc_4399` | Other history, heritage and archaeology |  |
+| `anzsrc_44` | Human society (all) |  |
+| `anzsrc_4401` | Anthropology |  |
+| `anzsrc_4402` | Criminology |  |
+| `anzsrc_4403` | Demography |  |
+| `anzsrc_4404` | Development studies |  |
+| `anzsrc_4405` | Gender studies |  |
+| `anzsrc_4406` | Human geography |  |
+| `anzsrc_4407` | Policy and administration |  |
+| `anzsrc_4408` | Political science |  |
+| `anzsrc_4409` | Social work |  |
+| `anzsrc_4410` | Sociology |  |
+| `anzsrc_4499` | Other human society |  |
+| `anzsrc_45` | Indigenous studies (all) |  |
+| `anzsrc_4501` | Aboriginal and Torres Strait Islander culture, language and history |  |
+| `anzsrc_4502` | Aboriginal and Torres Strait Islander education |  |
+| `anzsrc_4503` | Aboriginal and Torres Strait Islander environmental knowledges and management |  |
+| `anzsrc_4504` | Aboriginal and Torres Strait Islander health and wellbeing |  |
+| `anzsrc_4505` | Aboriginal and Torres Strait Islander peoples, society and community |  |
+| `anzsrc_4506` | Aboriginal and Torres Strait Islander sciences |  |
+| `anzsrc_4507` | Te ahurea, reo me te hītori o te Māori (Māori culture, language and history) |  |
+| `anzsrc_4508` | Mātauranga Māori (Māori education) |  |
+| `anzsrc_4509` | Ngā mātauranga taiao o te Māori (Māori environmental knowledges) |  |
+| `anzsrc_4510` | Te hauora me te oranga o te Māori (Māori health and wellbeing) |  |
+| `anzsrc_4511` | Ngā tāngata, te porihanga me ngā hapori o te Māori (Māori peoples, society and community) |  |
+| `anzsrc_4512` | Ngā pūtaiao Māori (Māori sciences) |  |
+| `anzsrc_4513` | Pacific Peoples culture, language and history |  |
+| `anzsrc_4514` | Pacific Peoples education |  |
+| `anzsrc_4515` | Pacific Peoples environmental knowledges |  |
+| `anzsrc_4516` | Pacific Peoples health and wellbeing |  |
+| `anzsrc_4517` | Pacific Peoples sciences |  |
+| `anzsrc_4518` | Pacific Peoples society and community |  |
+| `anzsrc_4519` | Other Indigenous data, methodologies and global Indigenous studies |  |
+| `anzsrc_4599` | Other Indigenous studies |  |
+| `anzsrc_46` | Information and computing sciences (all) | Computer Science Education |
+| `anzsrc_4601` | Applied computing |  |
+| `anzsrc_4602` | Artificial intelligence |  |
+| `anzsrc_4603` | Computer vision and multimedia computation |  |
+| `anzsrc_4604` | Cybersecurity and privacy |  |
+| `anzsrc_4605` | Data management and data science |  |
+| `anzsrc_4606` | Distributed computing and systems software |  |
+| `anzsrc_4607` | Graphics, augmented reality and games |  |
+| `anzsrc_4608` | Human-centred computing |  |
+| `anzsrc_4609` | Information systems |  |
+| `anzsrc_4610` | Library and information studies |  |
+| `anzsrc_4611` | Machine learning |  |
+| `anzsrc_4612` | Software engineering |  |
+| `anzsrc_4613` | Theory of computation |  |
+| `anzsrc_4699` | Other information and computing sciences |  |
+| `anzsrc_47` | Language, communication and culture (all) |  |
+| `anzsrc_4701` | Communication and media studies |  |
+| `anzsrc_4702` | Cultural studies |  |
+| `anzsrc_4703` | Language studies |  |
+| `anzsrc_4704` | Linguistics |  |
+| `anzsrc_4705` | Literary studies |  |
+| `anzsrc_4799` | Other language, communication and culture |  |
+| `anzsrc_48` | Law and legal studies (all) |  |
+| `anzsrc_4801` | Commercial law |  |
+| `anzsrc_4802` | Environmental and resources law |  |
+| `anzsrc_4803` | International and comparative law |  |
+| `anzsrc_4804` | Law in context |  |
+| `anzsrc_4805` | Legal systems |  |
+| `anzsrc_4806` | Private law and civil obligations |  |
+| `anzsrc_4807` | Public law |  |
+| `anzsrc_4899` | Other law and legal studies |  |
+| `anzsrc_49` | Mathematical sciences (all) | Mathematics Education |
+| `anzsrc_4901` | Applied mathematics |  |
+| `anzsrc_4902` | Mathematical physics |  |
+| `anzsrc_4903` | Numerical and computational mathematics |  |
+| `anzsrc_4904` | Pure mathematics |  |
+| `anzsrc_4905` | Statistics |  |
+| `anzsrc_4999` | Other mathematical sciences |  |
+| `anzsrc_50` | Philosophy and religious studies (all) |  |
+| `anzsrc_5001` | Applied ethics |  |
+| `anzsrc_5002` | History and philosophy of specific fields |  |
+| `anzsrc_5003` | Philosophy |  |
+| `anzsrc_5004` | Religious studies |  |
+| `anzsrc_5005` | Theology |  |
+| `anzsrc_5099` | Other philosophy and religious studies |  |
+| `anzsrc_51` | Physical sciences (all) | Physics |
+| `anzsrc_5101` | Astronomical sciences | Astronomy |
+| `anzsrc_5102` | Atomic, molecular and optical physics |  |
+| `anzsrc_5103` | Classical physics |  |
+| `anzsrc_5104` | Condensed matter physics |  |
+| `anzsrc_5105` | Medical and biological physics |  |
+| `anzsrc_5106` | Nuclear and plasma physics |  |
+| `anzsrc_5107` | Particle and high energy physics |  |
+| `anzsrc_5108` | Quantum physics |  |
+| `anzsrc_5109` | Space sciences |  |
+| `anzsrc_5110` | Synchrotrons and accelerators |  |
+| `anzsrc_5199` | Other physical sciences |  |
+| `anzsrc_52` | Psychology (all) |  |
+| `anzsrc_5201` | Applied and developmental psychology |  |
+| `anzsrc_5202` | Biological psychology |  |
+| `anzsrc_5203` | Clinical and health psychology |  |
+| `anzsrc_5204` | Cognitive and computational psychology |  |
+| `anzsrc_5205` | Social and personality psychology |  |
+| `anzsrc_5299` | Other psychology |  |
 | `biology` | Biology and life sciences | Biology |
 | `chemistry` | Chemistry | Chemistry |
 | `physics` | Physics | Physics |
