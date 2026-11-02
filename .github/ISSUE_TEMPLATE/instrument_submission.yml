@@ -19,10 +19,18 @@ body:
     validations:
       required: true
   - type: textarea
+    id: alignment
+    attributes:
+      label: What does each part measure?
+      description: 'One line for the whole instrument, or one line per subscale, as "Part (items): construct it measures". These are proposed mappings; the governance committee decides.'
+      placeholder: "Self-efficacy subscale (items 5, 6, 12, 15): self-efficacy"
+    validations:
+      required: true
+  - type: textarea
     id: measures
     attributes:
-      label: What does it measure, and with whom?
-      description: Constructs, populations/settings it was developed and validated with.
+      label: With whom has it been developed and validated?
+      description: Populations and settings.
   - type: dropdown
     id: access
     attributes:

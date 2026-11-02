@@ -32,6 +32,15 @@ Current maintainers are listed in [`.github/CODEOWNERS`](.github/CODEOWNERS).
 * If consensus cannot be reached, the project lead decides and records the
   reasoning in the issue.
 
+## Construct mappings
+
+Which instruments measure which constructs, and how a theory's constructs link
+to the shared construct list, will be decided by a **governance committee**,
+not by one person. Until the committee is formed, every mapping in the library
+is marked `provisional`. Researchers always decide whether an instrument fits
+their own construct; the library shows mappings as candidates with their
+status. See [suggestions/README.md](suggestions/README.md).
+
 ## Becoming a maintainer or curator
 
 Contributors who have made several substantive, well-reviewed contributions may

@@ -19,6 +19,24 @@
       ]
     },
     {
+      "id": "climate_change_conceptual_understanding",
+      "label": "Climate change conceptual understanding",
+      "domain": "cognitive",
+      "broader": "conceptual_understanding",
+      "definition": "Understanding of the scientific ideas behind climate and climate change, such as Earth's energy balance, the greenhouse effect, the carbon cycle, and natural and human causes of change, including common alternative conceptions.",
+      "synonyms": [
+        "climate change knowledge",
+        "climate literacy",
+        "climate science understanding",
+        "climate change concepts",
+        "climate change misconceptions"
+      ],
+      "eric": [
+        "Climate",
+        "Scientific Concepts"
+      ]
+    },
+    {
       "id": "content_knowledge",
       "label": "Content knowledge",
       "domain": "cognitive",

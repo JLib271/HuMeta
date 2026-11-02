@@ -6,22 +6,28 @@ A plan runs from theory to data, and each step builds on the one before:
 
 1. ``frameworks``: theories, lenses, the researcher's own framework, or an
    exploratory approach (ids from ``library/frameworks.json``).
-2. ``concepts``: what the framework says matters. A framework's concepts are
-   copied in, and the researcher can add their own. Each concept may link to a
-   construct in ``library/constructs.json``.
-3. ``measures``: how each concept is measured or coded. There are three kinds:
+2. ``constructs``: what the framework says matters. A theory's constructs are
+   copied in, and the researcher can add their own. A plan construct may link
+   to the shared construct vocabulary (``library/constructs.json``) through
+   ``shared_construct_id``.
+3. ``measures``: how each construct is measured or coded. There are three kinds:
 
    * ``instrument``: a library instrument, optionally one version or subscale
    * ``question``: a researcher-written item
    * ``code``: a code in a coding scheme, for texts, images, media, or interviews
 
-4. ``relationships``: expected links between concepts. They start from the
+4. ``relationships``: expected links between constructs. They start from the
    framework's paths and the researcher can edit them; the diagram is drawn
    from them.
 
+The researcher decides whether an instrument fits a construct as they define
+it. :func:`candidate_measures` only lists library instruments whose recorded
+construct mapping matches, together with that mapping's review status.
+Mappings are provisional until the HuMeta governance committee approves them.
+
 From a plan you can build a :class:`oem.codebook.Codebook`, the variable
-matrix that Module 5 reads, the construct list that Module 3 uses, and a
-diagram. Nothing here imports Streamlit.
+matrix that Module 5 reads, the constructs that Module 3 uses, and a diagram.
+Nothing here imports Streamlit.
 """
 
 from __future__ import annotations
@@ -33,7 +39,7 @@ from typing import Any
 from oem import codebook, naming
 from oem.library import Library
 
-PLAN_VERSION = 2
+PLAN_VERSION = 3
 MEASURE_KINDS = {
     "instrument": "Library instrument",
     "question": "Researcher-written question",
@@ -45,8 +51,12 @@ FRAMEWORK_KINDS = {
     "own": "Your own framework",
     "exploratory": "No framework in advance",
 }
+MAPPING_STATUS = {
+    "provisional": "Provisional (not yet reviewed by the governance committee)",
+    "approved": "Approved by the governance committee",
+}
 OWN_PREFIX = "own"
-MANIFEST_FIELDS = ("Variable_ID", "Variable_Label", "Framework_Source", "Concept_Construct", "Measure", "Items")
+MANIFEST_FIELDS = ("Variable_ID", "Variable_Label", "Framework_Source", "Construct", "Measure", "Items")
 
 
 # --------------------------------------------------------------------- plans
@@ -55,7 +65,7 @@ def empty_plan() -> dict:
         "schema_version": PLAN_VERSION,
         "frameworks": [],
         "framework_description": "",
-        "concepts": [],
+        "constructs": [],
         "measures": [],
         "relationships": [],
         "standard_variables": [],
@@ -65,86 +75,109 @@ def empty_plan() -> dict:
 
 
 def normalize(plan: dict | None, lib: Library | None = None) -> dict:
-    """Return a version-2 plan, migrating a version-1 plan if needed."""
+    """Return a current-version plan, migrating an older plan if needed."""
     if not plan:
         return empty_plan()
-    if plan.get("schema_version", 1) < PLAN_VERSION:
+    version = plan.get("schema_version", 1)
+    if version < 2:
         return migrate_v1(plan, lib or Library.load())
+    if version == 2:
+        plan = migrate_v2(plan)
     out = empty_plan()
     out.update(copy.deepcopy({k: v for k, v in plan.items() if k in out}))
+    out["schema_version"] = PLAN_VERSION
     return out
 
 
-def concept_id(framework_id: str | None, label_or_id: str) -> str:
-    """Plan-wide concept id: '<framework>.<concept>' or 'own.<slug>'."""
-    local = re.sub(r"[^a-z0-9]+", "_", str(label_or_id).lower()).strip("_") or "concept"
+def construct_key(framework_id: str | None, label_or_id: str) -> str:
+    """Plan-wide construct key: '<framework>.<construct>' or 'own.<slug>'."""
+    local = re.sub(r"[^a-z0-9]+", "_", str(label_or_id).lower()).strip("_") or "construct"
     return f"{framework_id or OWN_PREFIX}.{local}"
 
 
-def framework_concepts(lib: Library, framework_ids: list[str]) -> list[dict]:
-    """Concepts supplied by the chosen frameworks, in framework order."""
-    concepts = []
+def framework_constructs(lib: Library, framework_ids: list[str]) -> list[dict]:
+    """Constructs supplied by the chosen frameworks, in framework order."""
+    constructs = []
     for fid in framework_ids:
-        for c in lib.frameworks.get(fid, {}).get("concepts", []):
-            concepts.append({
-                "id": concept_id(fid, c["id"]),
+        for c in lib.frameworks.get(fid, {}).get("constructs", []):
+            constructs.append({
+                "id": construct_key(fid, c["id"]),
                 "label": c["label"],
                 "framework_id": fid,
-                "construct_id": c.get("construct_id"),
+                "shared_construct_id": c.get("shared_construct_id"),
                 "definition": c.get("definition", ""),
             })
-    return concepts
+    return constructs
 
 
 def default_relationships(lib: Library, framework_ids: list[str], included: set[str]) -> list[dict]:
-    """The frameworks' expected paths between the concepts that were kept."""
+    """The frameworks' expected paths between the constructs that were kept."""
     rows = []
     for fid in framework_ids:
         for path in lib.frameworks.get(fid, {}).get("paths", []):
-            a, b = concept_id(fid, path["from"]), concept_id(fid, path["to"])
+            a, b = construct_key(fid, path["from"]), construct_key(fid, path["to"])
             if a in included and b in included:
                 rows.append({"from": a, "to": b, "relationship": path["relationship"], "hypothesis": ""})
     return rows
 
 
-def suggest_measures(lib: Library, concepts: list[dict]) -> list[dict]:
-    """Library instruments (or subscales) that measure each concept's construct."""
+def mapping_status(instrument: dict) -> str:
+    """Review status of an instrument's construct mapping (provisional unless approved)."""
+    return (instrument.get("construct_mapping") or {}).get("status", "provisional")
+
+
+def candidate_measures(lib: Library, constructs: list[dict]) -> list[dict]:
+    """Library instruments (or subscales) recorded as measuring each construct's shared construct.
+
+    These are candidates for the researcher to judge, not recommendations: each
+    row carries the mapping's review status and what the instrument part was
+    developed to measure.
+    """
     rows = []
-    for c in concepts:
-        cid = c.get("construct_id")
+    for c in constructs:
+        cid = c.get("shared_construct_id")
         if not cid:
             continue
         for inst in lib.instruments_for_constructs([cid]):
             version_id = (inst.get("versions") or [{}])[0].get("version_id")
             dims = [d for d in inst.get("dimensions", []) if cid in d.get("construct_ids", [])]
-            if dims:
-                for d in dims:
-                    rows.append(_instrument_row(c["id"], inst["id"], version_id, d["dimension_id"]))
-            elif cid in inst.get("construct_ids", []):
-                rows.append(_instrument_row(c["id"], inst["id"], version_id, None))
+            parts = [(d["dimension_id"], d["name"], d.get("construct_ids", [])) for d in dims]
+            if not parts and cid in inst.get("construct_ids", []):
+                parts = [(None, "Whole instrument", inst.get("construct_ids", []))]
+            for dimension_id, part, measured in parts:
+                rows.append({
+                    "construct": c["id"], "kind": "instrument", "instrument_id": inst["id"], "version_id": version_id,
+                    "dimension_id": dimension_id, "name": "", "label": "", "text": "", "scale_id": None,
+                    "part": part,
+                    "measures": [lib.constructs[m]["label"] for m in measured if m in lib.constructs],
+                    "mapping_status": mapping_status(inst),
+                })
     return rows
 
 
-def _instrument_row(concept: str, instrument_id: str, version_id: str | None, dimension_id: str | None) -> dict:
-    return {"concept_id": concept, "kind": "instrument", "instrument_id": instrument_id, "version_id": version_id,
-            "dimension_id": dimension_id, "name": "", "label": "", "text": "", "scale_id": None}
+MEASURE_KEYS = ("construct", "kind", "instrument_id", "version_id", "dimension_id", "name", "label", "text", "scale_id")
+
+
+def as_measure(row: dict) -> dict:
+    """Keep only the fields a plan measure stores (drops candidate display fields)."""
+    return {k: row.get(k) for k in MEASURE_KEYS}
 
 
 # ------------------------------------------------------------------ checking
 def problems(lib: Library, plan: dict) -> list[str]:
     """Things to fix before the plan's codebook can be built."""
     issues = []
-    concept_ids = {c["id"] for c in plan["concepts"]}
+    keys = {c["id"] for c in plan["constructs"]}
     for fid in plan["frameworks"]:
         if fid not in lib.frameworks:
             issues.append(f"Unknown framework {fid!r}.")
-    for c in plan["concepts"]:
-        if c.get("construct_id") and c["construct_id"] not in lib.constructs:
-            issues.append(f"Concept {c['label']!r}: unknown construct {c['construct_id']!r}.")
+    for c in plan["constructs"]:
+        if c.get("shared_construct_id") and c["shared_construct_id"] not in lib.constructs:
+            issues.append(f"Construct {c['label']!r}: unknown shared construct {c['shared_construct_id']!r}.")
     for i, m in enumerate(plan["measures"], start=1):
         where = f"Measure {i}"
-        if m.get("concept_id") not in concept_ids:
-            issues.append(f"{where}: choose one of the plan's concepts.")
+        if m.get("construct") not in keys:
+            issues.append(f"{where}: choose one of the plan's constructs.")
         if m.get("kind") not in MEASURE_KINDS:
             issues.append(f"{where}: choose a measure type.")
         elif m["kind"] == "instrument":
@@ -158,8 +191,8 @@ def problems(lib: Library, plan: dict) -> list[str]:
         if m.get("scale_id") and m["scale_id"] not in lib.scales:
             issues.append(f"{where}: unknown response scale {m['scale_id']!r}.")
     for r in plan["relationships"]:
-        if r.get("from") not in concept_ids or r.get("to") not in concept_ids:
-            issues.append(f"Relationship {r.get('from')} -> {r.get('to')}: both ends must be concepts in the plan.")
+        if r.get("from") not in keys or r.get("to") not in keys:
+            issues.append(f"Relationship {r.get('from')} -> {r.get('to')}: both ends must be constructs in the plan.")
     for name in plan["standard_variables"]:
         if name not in lib.standard_variables:
             issues.append(f"Unknown standard variable {name!r}.")
@@ -175,8 +208,8 @@ def problems(lib: Library, plan: dict) -> list[str]:
 
 
 # ----------------------------------------------------------------- codebook
-def _concepts(plan: dict) -> dict[str, dict]:
-    return {c["id"]: c for c in plan["concepts"]}
+def _constructs(plan: dict) -> dict[str, dict]:
+    return {c["id"]: c for c in plan["constructs"]}
 
 
 def _score_name(prefix: str, dimension_id: str | None) -> str:
@@ -187,16 +220,16 @@ def _score_name(prefix: str, dimension_id: str | None) -> str:
 
 
 def measure_groups(lib: Library, plan: dict) -> list[dict]:
-    """One group per (concept, measure): the variables that measure it, before timepoints."""
-    concepts = _concepts(plan)
+    """One group per (construct, measure): the variables that measure it, before timepoints."""
+    constructs = _constructs(plan)
     counters: dict[str, int] = {}
     groups = []
     for m in plan["measures"]:
-        concept = concepts.get(m.get("concept_id"))
-        if not concept or m.get("kind") not in MEASURE_KINDS:
+        construct = constructs.get(m.get("construct"))
+        if not construct or m.get("kind") not in MEASURE_KINDS:
             continue
-        construct_ids = [concept["construct_id"]] if concept.get("construct_id") else []
-        notes = f"Measures concept: {concept['label']}"
+        shared = [construct["shared_construct_id"]] if construct.get("shared_construct_id") else []
+        notes = f"Measures construct: {construct['label']}"
         variables: list[codebook.Variable] = []
         if m["kind"] == "instrument":
             inst = lib.instruments.get(m.get("instrument_id"))
@@ -208,27 +241,27 @@ def measure_groups(lib: Library, plan: dict) -> list[dict]:
             if lib.items(inst["id"], version_id) and not dim:
                 variables = codebook.instrument_items(lib, inst["id"], version_id)
                 for v in variables:
-                    v.construct_ids = sorted(set(v.construct_ids) | set(construct_ids))
+                    v.construct_ids = sorted(set(v.construct_ids) | set(shared))
                     v.notes = notes
             else:
                 name = (m.get("name") or "").strip() or _score_name(inst["variable_prefix"], m.get("dimension_id"))
                 variables = [codebook.Variable(
                     name=name, label=f"{title} (scale score)", data_type="numeric",
                     instrument_id=inst["id"], version_id=version_id,
-                    construct_ids=sorted(set(construct_ids) | set((dim or inst).get("construct_ids", []))),
+                    construct_ids=sorted(set(shared) | set((dim or inst).get("construct_ids", []))),
                     notes=notes + "; scale score (item-level variables are not in the library for this instrument)")]
             group_label = title
         elif m["kind"] == "question":
-            counters[concept["id"]] = counters.get(concept["id"], 0) + 1
-            name = (m.get("name") or "").strip() or naming.custom_variable(concept["label"], counters[concept["id"]])
+            counters[construct["id"]] = counters.get(construct["id"], 0) + 1
+            name = (m.get("name") or "").strip() or naming.custom_variable(construct["label"], counters[construct["id"]])
             scale = lib.scales.get(m.get("scale_id") or "")
             variables = [codebook.Variable(
-                name=name, label=(m.get("label") or "").strip() or f"{concept['label']} item {counters[concept['id']]}",
+                name=name, label=(m.get("label") or "").strip() or f"{construct['label']} item {counters[construct['id']]}",
                 data_type=("ordinal" if scale.level == "ordinal" else "categorical") if scale else "numeric",
                 values=list(scale.points) if scale else [], missing=list(scale.missing) if scale else [],
                 scale_id=scale.id if scale else None, question=(m.get("text") or "").strip() or None,
-                construct_ids=construct_ids, notes=notes)]
-            group_label = f"{concept['label']} (researcher-written items)"
+                construct_ids=shared, notes=notes)]
+            group_label = f"{construct['label']} (researcher-written items)"
         else:  # code
             label = (m.get("label") or m.get("text") or "").strip()
             name = (m.get("name") or "").strip() or naming.check("code_" + naming.slugify(label, naming.MAX_LENGTH - 5))
@@ -238,10 +271,10 @@ def measure_groups(lib: Library, plan: dict) -> list[dict]:
                 values=list(selected.points) if selected else [(0, "Absent"), (1, "Present")],
                 missing=list(selected.missing) if selected else [],
                 scale_id="selected" if selected else None,
-                question=(m.get("text") or "").strip() or None, construct_ids=construct_ids,
+                question=(m.get("text") or "").strip() or None, construct_ids=shared,
                 notes=notes + "; code in a coding scheme (1 = present in the unit of analysis)")]
-            group_label = f"{concept['label']} (codes)"
-        groups.append({"concept": concept, "measure": m, "label": group_label, "variables": variables})
+            group_label = f"{construct['label']} (codes)"
+        groups.append({"construct": construct, "measure": m, "label": group_label, "variables": variables})
     return groups
 
 
@@ -264,44 +297,58 @@ def build_codebook(lib: Library, plan: dict) -> codebook.Codebook:
     return codebook.Codebook(variables)
 
 
-def manifest(lib: Library, plan: dict) -> list[dict]:
-    """The variable matrix Module 5 reads: one row per concept, listing its variables."""
-    frameworks = {fid: lib.frameworks.get(fid, {}).get("label", fid) for fid in plan["frameworks"]}
-    by_concept: dict[str, dict] = {}
+def alignment(lib: Library, plan: dict) -> list[dict]:
+    """Construct -> measure -> variables, one row per measure, for review in Module 2."""
+    rows = []
     for group in measure_groups(lib, plan):
-        c = group["concept"]
-        row = by_concept.setdefault(c["id"], {
+        m, c = group["measure"], group["construct"]
+        inst = lib.instruments.get(m.get("instrument_id") or "")
+        rows.append({
+            "Construct": c["label"],
+            "Shared construct": lib.constructs.get(c.get("shared_construct_id") or "", {}).get("label", ""),
+            "Measure": group["label"],
+            "Variables": ", ".join(v.name for v in group["variables"]),
+            "Mapping status": MAPPING_STATUS[mapping_status(inst)] if inst else "Researcher-defined",
+        })
+    return rows
+
+
+def manifest(lib: Library, plan: dict) -> list[dict]:
+    """The variable matrix Module 5 reads: one row per construct, listing its variables."""
+    frameworks = {fid: lib.frameworks.get(fid, {}).get("label", fid) for fid in plan["frameworks"]}
+    by_construct: dict[str, dict] = {}
+    for group in measure_groups(lib, plan):
+        c = group["construct"]
+        row = by_construct.setdefault(c["id"], {
             "Variable_ID": naming.slugify(c["label"], 24),
             "Variable_Label": c["label"],
             "Framework_Source": frameworks.get(c.get("framework_id"), "Researcher-defined"),
-            "Concept_Construct": c.get("construct_id") or c["label"],
+            "Construct": c.get("shared_construct_id") or c["label"],
             "Measure": [],
             "Items": [],
         })
         row["Measure"].append(group["label"])
         row["Items"] += [v.name for v in group["variables"]]
-    rows = []
-    for row in by_concept.values():
-        rows.append({**row, "Measure": "; ".join(dict.fromkeys(row["Measure"])), "Items": "; ".join(row["Items"])})
-    return rows
+    return [{**row, "Measure": "; ".join(dict.fromkeys(row["Measure"])), "Items": "; ".join(row["Items"])}
+            for row in by_construct.values()]
 
 
-def construct_ids(plan: dict) -> list[str]:
-    """Constructs the plan measures (for Module 3), in plan order."""
-    measured = {m.get("concept_id") for m in plan["measures"]}
-    return list(dict.fromkeys(c["construct_id"] for c in plan["concepts"]
-                              if c.get("construct_id") and c["id"] in measured))
+def shared_construct_ids(plan: dict) -> list[str]:
+    """Shared constructs the plan measures (for Module 3), in plan order."""
+    measured = {m.get("construct") for m in plan["measures"]}
+    return list(dict.fromkeys(c["shared_construct_id"] for c in plan["constructs"]
+                              if c.get("shared_construct_id") and c["id"] in measured))
 
 
 def profile_constructs(plan: dict) -> list[dict]:
     """Constructs for the study profile (Module 3), with the library instrument used when there is one."""
-    concepts = _concepts(plan)
+    constructs = _constructs(plan)
     out: dict[str, dict] = {}
     for m in plan["measures"]:
-        concept = concepts.get(m.get("concept_id"))
-        if not concept or not concept.get("construct_id"):
+        construct = constructs.get(m.get("construct"))
+        if not construct or not construct.get("shared_construct_id"):
             continue
-        cid = concept["construct_id"]
+        cid = construct["shared_construct_id"]
         entry = out.setdefault(cid, {"construct_id": cid, "instrument_id": None, "version_id": None, "dimension_id": None})
         if m.get("kind") == "instrument" and not entry["instrument_id"]:
             entry.update({"instrument_id": m.get("instrument_id"), "version_id": m.get("version_id"),
@@ -315,19 +362,19 @@ def _dot_text(text: str) -> str:
 
 
 def diagram_dot(lib: Library, plan: dict) -> str:
-    """Graphviz DOT source: concepts grouped by framework, with relationships."""
+    """Graphviz DOT source: constructs grouped by framework, with relationships."""
     counts: dict[str, int] = {}
     for m in plan["measures"]:
-        counts[m.get("concept_id")] = counts.get(m.get("concept_id"), 0) + 1
+        counts[m.get("construct")] = counts.get(m.get("construct"), 0) + 1
     lines = ["digraph plan {", '  rankdir=LR; node [shape=box, style="rounded,filled", fillcolor="#f4f6fb", fontname="Helvetica"];',
              '  edge [fontname="Helvetica", fontsize=10];']
     groups: dict[str, list[dict]] = {}
-    for c in plan["concepts"]:
+    for c in plan["constructs"]:
         groups.setdefault(c.get("framework_id") or OWN_PREFIX, []).append(c)
-    for i, (fid, concepts) in enumerate(groups.items()):
-        title = lib.frameworks.get(fid, {}).get("label", "Researcher-defined concepts")
+    for i, (fid, constructs) in enumerate(groups.items()):
+        title = lib.frameworks.get(fid, {}).get("label", "Researcher-defined constructs")
         lines.append(f'  subgraph cluster_{i} {{ label="{_dot_text(title)}"; style=dashed; color="#9aa3b5";')
-        for c in concepts:
+        for c in constructs:
             n = counts.get(c["id"], 0)
             note = f"{n} measure{'s' if n != 1 else ''}" if n else "no measure yet"
             lines.append(f'    "{_dot_text(c["id"])}" [label="{_dot_text(c["label"])}\\n({note})"];')
@@ -339,39 +386,51 @@ def diagram_dot(lib: Library, plan: dict) -> str:
 
 
 # ---------------------------------------------------------------- migration
+def migrate_v2(old: dict) -> dict:
+    """Version 2 called constructs 'concepts'; rename the keys."""
+    plan = copy.deepcopy(old)
+    plan["constructs"] = [
+        {"id": c["id"], "label": c["label"], "framework_id": c.get("framework_id"),
+         "shared_construct_id": c.get("construct_id"), "definition": c.get("definition", "")}
+        for c in plan.pop("concepts", [])]
+    for m in plan.get("measures", []):
+        m["construct"] = m.pop("concept_id", m.get("construct"))
+    plan.pop("behavior", None)
+    plan["schema_version"] = PLAN_VERSION
+    return plan
+
+
 def migrate_v1(old: dict, lib: Library) -> dict:
-    """Convert a plan saved by the earlier Module 2 (schema_version 1)."""
+    """Convert a plan saved by the earliest Module 2 (schema_version 1)."""
     plan = empty_plan()
     by_label = {f["label"]: fid for fid, f in lib.frameworks.items()}
     plan["frameworks"] = [by_label[t] for t in old.get("selected_theories", []) if t in by_label]
     plan["framework_description"] = str(old.get("other_theory_sources") or "")
     plan["narrative"] = str(old.get("narrative") or "")
-    known = {c["label"].lower(): c for c in framework_concepts(lib, plan["frameworks"])}
-    concepts: dict[str, dict] = {}
+    known = {c["label"].lower(): c for c in framework_constructs(lib, plan["frameworks"])}
+    constructs: dict[str, dict] = {}
     for row in list(old.get("variables") or []) + list(old.get("custom_variables") or []):
         if not isinstance(row, dict):
             continue
         label = str(row.get("Concept_Construct") or row.get("Variable_Label") or "").strip()
         if not label:
             continue
-        c = known.get(label.lower()) or {"id": concept_id(None, label), "label": label, "framework_id": None,
-                                         "construct_id": None, "definition": ""}
-        concepts.setdefault(c["id"], c)
+        c = known.get(label.lower()) or {"id": construct_key(None, label), "label": label, "framework_id": None,
+                                         "shared_construct_id": None, "definition": ""}
+        constructs.setdefault(c["id"], c)
         text = str(row.get("Item_Text") or row.get("Question") or "").strip()
         if text:
-            plan["measures"].append({"concept_id": c["id"], "kind": "question", "instrument_id": None, "version_id": None,
-                                     "dimension_id": None, "name": "", "label": "", "text": text, "scale_id": None})
-    plan["concepts"] = list(concepts.values())
-    plan["relationships"] = default_relationships(lib, plan["frameworks"], set(concepts))
+            plan["measures"].append({**{k: None for k in MEASURE_KEYS}, "construct": c["id"], "kind": "question",
+                                     "name": "", "label": "", "text": text})
+    plan["constructs"] = list(constructs.values())
+    plan["relationships"] = default_relationships(lib, plan["frameworks"], set(constructs))
     return plan
 
 
 def summary(lib: Library, plan: dict) -> dict[str, Any]:
     """What a published study summary shares about the plan: no item text, no data."""
     frameworks = [lib.frameworks[f]["label"] for f in plan["frameworks"] if f in lib.frameworks]
-    variables = []
-    for row in manifest(lib, plan):
-        variables.append({"Variable_ID": row["Variable_ID"], "Concept_Construct": row["Concept_Construct"],
-                          "Variable_Label": row["Variable_Label"], "Framework_Source": row["Framework_Source"],
-                          "Instrument_Name": row["Measure"]})
+    variables = [{"Variable_ID": row["Variable_ID"], "Construct": row["Construct"], "Variable_Label": row["Variable_Label"],
+                  "Framework_Source": row["Framework_Source"], "Instrument_Name": row["Measure"]}
+                 for row in manifest(lib, plan)]
     return {"selected_theories": frameworks, "framework_ids": list(plan["frameworks"]), "variables": variables}

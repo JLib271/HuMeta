@@ -12,6 +12,10 @@
     "teaching_practices",
     "student_classroom_activity"
   ],
+  "construct_mapping": {
+    "status": "provisional",
+    "note": "Recorded by maintainers; awaiting governance committee review."
+  },
   "disciplines": [
     "general_stem"
   ],

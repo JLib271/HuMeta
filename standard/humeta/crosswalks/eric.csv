@@ -2,6 +2,8 @@ vocabulary,term_id,term_label,eric_descriptor,eric_status
 construct,conceptual_understanding,Conceptual understanding,Scientific Concepts,verified
 construct,conceptual_understanding,Conceptual understanding,Misconceptions,verified
 construct,conceptual_understanding,Conceptual understanding,Concept Formation,verified
+construct,climate_change_conceptual_understanding,Climate change conceptual understanding,Climate,verified
+construct,climate_change_conceptual_understanding,Climate change conceptual understanding,Scientific Concepts,verified
 construct,content_knowledge,Content knowledge,Knowledge Level,verified
 construct,content_knowledge,Content knowledge,Academic Achievement,verified
 construct,problem_solving,Problem solving,Problem Solving,verified

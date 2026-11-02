@@ -579,6 +579,7 @@ Defined in [`library/constructs.json`](../../library/constructs.json).
 | Code | Label | Definition | ERIC descriptors |
 |---|---|---|---|
 | `conceptual_understanding` | Conceptual understanding | Grasp of core disciplinary ideas and the ability to apply them to new situations, as distinct from recall or procedural skill. | Scientific Concepts, Misconceptions, Concept Formation |
+| `climate_change_conceptual_understanding` | Climate change conceptual understanding | Understanding of the scientific ideas behind climate and climate change, such as Earth's energy balance, the greenhouse effect, the carbon cycle, and natural and human causes of change, including common alternative conceptions. | Climate, Scientific Concepts |
 | `content_knowledge` | Content knowledge | Factual and procedural knowledge of a subject area, as typically measured by course exams or knowledge tests. | Knowledge Level, Academic Achievement |
 | `problem_solving` | Problem solving | Approaches and skill in working through unfamiliar disciplinary problems, including planning, representation and checking. | Problem Solving |
 | `scientific_reasoning` | Scientific reasoning | Reasoning about evidence, variables, models and experiments, including control of variables and proportional reasoning. | Science Process Skills, Scientific Literacy |

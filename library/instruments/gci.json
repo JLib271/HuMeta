@@ -11,6 +11,10 @@
   "construct_ids": [
     "conceptual_understanding"
   ],
+  "construct_mapping": {
+    "status": "provisional",
+    "note": "Recorded by maintainers; awaiting governance committee review."
+  },
   "disciplines": [
     "geoscience"
   ],
@@ -28,9 +32,9 @@
     "item_text_shareable": true,
     "item_text_basis": {
       "basis": "written_permission",
-      "evidence": "Developer approved storing GCI question text in the STEMEd+ instrument library (2026-10-31). The developer's lab page also states the items may be used freely and without restriction. Developer chose to release the item text in this library under CC BY-SA 4.0 (2026-10-31).",
+      "evidence": "Developer approved storing GCI question text in the library, then named the STEMEd+ instrument library (2026-10-31), and confirmed the permission for the HuMeta Instrument Library after the rename (2026-11-02). The developer's lab page also states the items may be used freely and without restriction. Developer chose to release the item text in this library under CC BY-SA 4.0 (2026-10-31).",
       "granted_by": "Julie C. Libarkin (GCI developer)",
-      "granted_on": "2026-10-31",
+      "granted_on": "2026-11-02",
       "license": "CC BY-SA 4.0"
     },
     "answer_key_shareable": false,

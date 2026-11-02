@@ -311,12 +311,12 @@ def get(record: dict, path: tuple[str, ...]) -> Any:
 def suggest_constructs(lib: Library, plan: dict) -> list[str]:
     """Constructs measured in the Module 2 variable plan.
 
-    Version-2 plans link concepts to constructs directly. Older plans are
-    matched by variable keys, labels and construct synonyms.
+    Current plans link their constructs to the shared construct list directly.
+    The earliest plans are matched by variable keys, labels and construct synonyms.
     """
     if (plan or {}).get("schema_version", 1) >= 2:
         from oem import plan as plan_model
-        return [c for c in plan_model.construct_ids(plan_model.normalize(plan, lib)) if c in lib.constructs]
+        return [c for c in plan_model.shared_construct_ids(plan_model.normalize(plan, lib)) if c in lib.constructs]
     texts: list[str] = []
     for row in (plan or {}).get("variables", []) + (plan or {}).get("custom_variables", []):
         if isinstance(row, dict):

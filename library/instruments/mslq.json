@@ -16,6 +16,10 @@
     "learning_strategies",
     "self_regulated_learning"
   ],
+  "construct_mapping": {
+    "status": "provisional",
+    "note": "Recorded by maintainers; awaiting governance committee review."
+  },
   "disciplines": [
     "discipline_general"
   ],

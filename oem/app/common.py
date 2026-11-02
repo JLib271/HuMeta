@@ -227,11 +227,11 @@ value_propositions = [
         "2. Framework and Measures",
         "🗺️ From Theory to Measures",
         "Starts from the framework that guides the study, whether a theory, a lens, your own framework, or an exploratory "
-        "approach, and links each of its concepts to how it is measured or coded.",
+        "approach, and links each of its constructs to how it is measured or coded.",
         "2. Framework and Measures",
         [
-            "Choose a theory, lens, or your own framework; it supplies the concepts.",
-            "Give each concept a measure: a library instrument, your own questions, or codes in a coding scheme.",
+            "Choose a theory, lens, or your own framework; it supplies the constructs.",
+            "Give each construct a measure: a library instrument you judge fits, your own questions, or codes.",
             "The framework's relationships draw the diagram; download the codebook and variable matrix.",
             "Recommend theories, frameworks, and instruments so they are available to everyone.",
         ],

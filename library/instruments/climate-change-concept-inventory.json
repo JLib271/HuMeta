@@ -9,8 +9,12 @@
   ],
   "description": "Test of understanding of basic climate change processes, built from published items, conceptions research and instructor experience and refined with Rasch analysis. Validated with both undergraduates and members of the general public, and used alongside measures of risk perception, worldview and values. Not to be confused with the high school climate change concept inventory developed in Australia by Jarrett and colleagues (2012).",
   "construct_ids": [
-    "conceptual_understanding"
+    "climate_change_conceptual_understanding"
   ],
+  "construct_mapping": {
+    "status": "provisional",
+    "note": "Mapped to Climate change conceptual understanding at the developer's direction (2026-11-02); awaiting governance committee review."
+  },
   "disciplines": [
     "geoscience",
     "climate_science"
@@ -31,13 +35,13 @@
     "access_type": "unclear",
     "item_text_shareable": true,
     "answer_key_shareable": false,
-    "terms_summary": "Lead developer has approved storing question text in this library. The answer key is not stored unless separately approved.",
+    "terms_summary": "Lead developer has approved storing question text in the HuMeta Instrument Library. The answer key is not stored unless separately approved.",
     "terms_url": "https://geocognitionresearchlaboratory.com/2018/11/20/the-geoscience-concept-inventory/",
     "item_text_basis": {
       "basis": "written_permission",
-      "evidence": "Developer approved storing Climate Change Concept Inventory question text in the STEMEd+ instrument library (2026-10-31). Developer chose to release the item text in this library under CC BY-SA 4.0 (2026-10-31).",
+      "evidence": "Developer approved storing Climate Change Concept Inventory question text in the library, then named the STEMEd+ instrument library (2026-10-31), and confirmed the permission for the HuMeta Instrument Library after the rename (2026-11-02). Developer chose to release the item text in this library under CC BY-SA 4.0 (2026-10-31).",
       "granted_by": "Julie C. Libarkin (lead developer)",
-      "granted_on": "2026-10-31",
+      "granted_on": "2026-11-02",
       "license": "CC BY-SA 4.0"
     }
   },
