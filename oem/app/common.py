@@ -344,6 +344,27 @@ value_propositions = [
 ALLOWED_PR_FOLDERS = ("suggestions/", "published/study_summaries/", "published/datasets/")
 
 
+LICENSE_GUIDE_URL = "https://creativecommons.org/share-your-work/cclicenses/"
+LICENSE_CHOOSER_URL = "https://creativecommons.org/chooser/"
+LICENSE_HELP = (
+    "Not sure which license to choose? Read [about the Creative Commons licenses]("
+    + LICENSE_GUIDE_URL + ") or try the [license chooser](" + LICENSE_CHOOSER_URL + "). "
+    "For research data, CC0 and CC BY are the most widely reused. Licenses are hard to take back "
+    "once data are shared, so check your institution's and funder's requirements first."
+)
+
+
+LICENSE_TABLE_NOTE = (
+    "The License column says how each item may be reused. Learn [about the Creative Commons licenses]("
+    + LICENSE_GUIDE_URL + ")."
+)
+
+
+def license_help_link() -> None:
+    """Show links to license guidance under any license field."""
+    st.caption(LICENSE_HELP)
+
+
 PUBLIC_SUBMISSION_NOTICE = (
     "**Visible as soon as you submit.** Submitting opens a pull request on the project's GitHub "
     "repository. Anyone who can view the repository can see what you submit right away, before a "

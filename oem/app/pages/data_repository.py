@@ -12,7 +12,7 @@ import time
 import uuid
 from pathlib import Path
 from oem.vocab import (PUBLIC_DATASET_MAX_MB)
-from oem.app.common import (load_published_datasets, open_review_pull_request, public_submission_warning, safe_slug)
+from oem.app.common import (LICENSE_TABLE_NOTE, license_help_link, load_published_datasets, open_review_pull_request, public_submission_warning, safe_slug)
 
 
 def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None) -> None:
@@ -50,6 +50,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
             use_container_width=True,
             hide_index=True,
         )
+        st.caption(LICENSE_TABLE_NOTE)
         download_choice = st.selectbox(
             "Download a published dataset",
             published_datasets,
@@ -91,6 +92,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
         "License",
         ["CC BY 4.0", "CC0 1.0 (public domain)", "CC BY-NC 4.0", "Other (describe in description)"],
     )
+    license_help_link()
     uploaded_data_file = st.file_uploader(
         "Choose a de-identified dataset (.csv)",
         type=["csv"],

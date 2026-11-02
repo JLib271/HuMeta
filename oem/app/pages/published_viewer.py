@@ -6,7 +6,7 @@ from __future__ import annotations
 import streamlit as st
 import pandas as pd
 import json
-from oem.app.common import (load_measure_catalog, load_published_datasets, load_published_summaries)
+from oem.app.common import (LICENSE_TABLE_NOTE, load_measure_catalog, load_published_datasets, load_published_summaries)
 
 
 def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None) -> None:
@@ -57,6 +57,8 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
         st.info(f"Nothing has been published in “{view_label}” yet.")
     else:
         st.dataframe(display_df.astype(str), use_container_width=True, hide_index=True)
+        if "license" in {str(c).lower() for c in display_df.columns}:
+            st.caption(LICENSE_TABLE_NOTE)
         st.download_button(
             label=f"📥 Download {view_label} (.csv)",
             data=display_df.to_csv(index=False).encode("utf-8"),

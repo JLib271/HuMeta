@@ -15,7 +15,7 @@ import pandas as pd
 import streamlit as st
 
 from oem import profile
-from oem.app.common import current_project
+from oem.app.common import LICENSE_HELP, current_project
 from oem.library import Library
 
 SPEC_URL = "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md"
@@ -172,6 +172,7 @@ def record_form(record: dict) -> dict | None:
         license_id = c2.selectbox(lab("Data license", "resource.license"), license_options, help=tip("resource.license"),
                                   index=license_options.index(current_license) if current_license in license_options else 0,
                                   format_func=lambda k: LICENSES[k], key=key("license"))
+        c2.caption(LICENSE_HELP)
 
         c1, c2 = st.columns(2)
         with c1:
