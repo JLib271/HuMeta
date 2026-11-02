@@ -33,8 +33,8 @@ RESOURCE_TYPE_LABELS = {
     "Other": "Something else",
 }
 #: starting choice in Module 1: field module -> button label, and the research field it adds
-FIELD_START = {"education": "Education", "social_science": "Social science", "humanities": "Arts and humanities"}
-FIELD_FOR_MODULE = {"education": "education", "social_science": "social_sciences", "humanities": "humanities"}
+FIELD_START = {"education": "Education", "social_science": "Social sciences", "humanities": "Arts and humanities",
+               "other": "Other field"}
 #: research field -> OECD FOS prefix used to narrow the discipline list
 FIELD_FOS = {"social_sciences": "5", "humanities": "6", "arts": "6"}
 CARE_URL = "https://www.gida-global.org/care"
@@ -87,6 +87,10 @@ def _blank(value: str | None) -> str | None:
 def record_form(record: dict) -> dict | None:
     """Render the profile form (everything except constructs). Returns the new record on submit."""
     p = profile.load()
+    # Older profiles may list a research field without its section; add the section (saved with the form).
+    if any(m and profile.START_CHOICES[c][1] == m and not profile.uses(record, m)
+           for c in profile.start_choices(record) for m in [profile.START_CHOICES[c][1]]):
+        record = profile.apply_start_choices(record, profile.start_choices(record), p)
     res, s = record["resource"], record["study"]
     edu = record.get("education") or {}
     social = record.get("social_science") or {}
@@ -128,33 +132,34 @@ def record_form(record: dict) -> dict | None:
         )
         st.markdown("\n".join(f"- **{std['short']}**: [{std['name']}]({std['url']})"
                                  for std in p.definition["standards"].values()))
-    st.markdown("**Start here: what field is your study in?**")
-    st.caption("Choose all that apply. Each choice adds a short section for that field to the form below, and every "
-               "study also gets the shared core. Another field? Skip this step. Removing a field clears its section.")
-    active = [m for m in FIELD_START if profile.uses(record, m)]
+    st.markdown("**Start here: what field is your study in?** *")
+    st.caption("Choose all that apply. Education, social sciences, and arts and humanities each add a short section "
+               "for that field to the form below; every study gets the shared core. Removing a field clears its section.")
+    active = profile.start_choices(record)
     chosen = list(st.pills("Field", list(FIELD_START), selection_mode="multi", default=active,
-                           format_func=FIELD_START.get, key=key("start_fields"), label_visibility="collapsed") or [])
+                           format_func=FIELD_START.get, key=key("start_fields"), label_visibility="collapsed",
+                           help=tip("study.fields")) or [])
     if set(chosen) != set(active):
-        changed = profile.migrate(record, p)
-        fields_now = list(changed["study"].get("fields") or [])
-        for module in FIELD_START:
-            if module in chosen and module not in active:
-                changed[module] = profile.empty_record(p, modules=(module,))[module]
-                if FIELD_FOR_MODULE[module] not in fields_now:
-                    fields_now.append(FIELD_FOR_MODULE[module])
-            elif module not in chosen and module in active:
-                changed[module] = None
-        changed["study"]["fields"] = fields_now
-        store_record(changed, reset_widgets=True)
+        store_record(profile.apply_start_choices(record, chosen, p), reset_widgets=True)
         st.rerun()
-    missing = [FIELD_START[m] for m, fid in FIELD_FOR_MODULE.items()
-               if (fid in (s.get("fields") or []) or (m == "humanities" and "arts" in (s.get("fields") or [])))
-               and m not in active]
-    if missing:
-        st.info(f"Your research fields include {', '.join(missing)}. Choose it above to add that field's section.")
+    if not chosen:
+        st.warning("Choose at least one field to continue.")
     st.caption("Field sections are starting points, to be developed with researchers in each field. "
                f"[Suggest changes on GitHub]({ISSUES_URL}).")
     with st.form(key=f"profile_form_{v}"):
+        # Narrow the subject list to the chosen fields (education studies can be about any subject).
+        current_fields = set(s.get("fields") or [])
+        prefixes = {FIELD_FOS[f] for f in current_fields if f in FIELD_FOS}
+        all_subjects = p.ids("discipline")
+        narrowed = bool(prefixes) and not current_fields & {"education", "other_field"}
+        subject_ids = [d for d in all_subjects if not narrowed or d in (s.get("discipline") or [])
+                       or any(str(p.term("discipline", d).get("fos", "")).startswith(x) for x in prefixes)]
+        disciplines = st.multiselect(
+            lab("Discipline or subject area", "study.discipline"), subject_ids,
+            default=[d for d in s.get("discipline") or [] if d in subject_ids],
+            format_func=lambda t: p.label("discipline", t), key=key("discipline"),
+            help=tip("study.discipline", "Showing subjects in the fields you chose above." if narrowed else
+                     "For education studies, the subject taught or learned."))
         st.subheader("1 · The study")
         title = st.text_input(lab("Title *", "resource.title"), res.get("title") or "", key=key("title"),
                               help=tip("resource.title"))
@@ -219,25 +224,6 @@ def record_form(record: dict) -> dict | None:
                                   index=license_options.index(current_license) if current_license in license_options else 0,
                                   format_func=lambda k: LICENSES[k], key=key("license"))
         c2.caption(LICENSE_HELP)
-
-        c1, c2 = st.columns(2)
-        with c1:
-            fields = multi("Research field *", "research_field", s.get("fields"), "fields", "study.fields",
-                           help="Choose all that apply. Your choices under Start here are filled in; add Arts or other fields here. "
-                                "Shared across fields so studies can be found and compared across disciplines.")
-        with c2:
-            # Narrow the subject list to the chosen fields (education studies can be about any subject).
-            current_fields = set(s.get("fields") or [])
-            prefixes = {FIELD_FOS[f] for f in current_fields if f in FIELD_FOS}
-            all_subjects = p.ids("discipline")
-            narrowed = bool(prefixes) and not current_fields & {"education", "other_field"}
-            subject_ids = [d for d in all_subjects if not narrowed or d in (s.get("discipline") or [])
-                           or any(str(p.term("discipline", d).get("fos", "")).startswith(x) for x in prefixes)]
-            disciplines = st.multiselect(
-                lab("Discipline or subject area", "study.discipline"), subject_ids,
-                default=[d for d in s.get("discipline") or [] if d in subject_ids],
-                format_func=lambda t: p.label("discipline", t), key=key("discipline"),
-                help=tip("study.discipline", "Showing subjects in your saved research fields." if narrowed else None))
 
         st.subheader("2 · Study design")
         design = s.get("design") or {}
@@ -480,7 +466,7 @@ def record_form(record: dict) -> dict | None:
     })
     ns = new["study"]
     ns["constructs"] = s.get("constructs") or []  # edited in Module 3
-    ns["fields"] = fields
+    ns["fields"] = list(s.get("fields") or [])  # set by the starting question
     ns["discipline"] = disciplines
     ns["design"].update({"topic": _blank(topic), "research_questions": _blank(research_questions),
                          "frameworks": frameworks, "framework_description": _blank(framework_description),

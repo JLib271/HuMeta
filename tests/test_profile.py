@@ -377,3 +377,15 @@ def test_new_modules_are_optional(lib, p):
     record["social_science"] = record["humanities"] = None
     assert profile.is_valid(record, lib, p)
     assert profile.empty_record(p, modules=("social_science", "humanities"))["humanities"]["source_languages"] == []
+
+
+def test_start_choices_set_fields_and_modules(p):
+    record = copy.deepcopy(ARCHIVAL)  # fields: humanities, education; humanities module only
+    assert profile.start_choices(record) == ["education", "humanities"]
+    new = profile.apply_start_choices(record, ["social_science", "humanities", "other"], p)
+    assert new["study"]["fields"] == ["social_sciences", "humanities", "other_field"]
+    assert profile.uses(new, "social_science") and profile.uses(new, "humanities") and not profile.uses(new, "education")
+    assert new["humanities"] == ARCHIVAL["humanities"]  # kept, not reset
+    record["study"]["fields"] = ["arts"]
+    assert profile.start_choices(record) == ["humanities"]
+    assert profile.apply_start_choices(record, ["humanities"], p)["study"]["fields"] == ["humanities", "arts"]
