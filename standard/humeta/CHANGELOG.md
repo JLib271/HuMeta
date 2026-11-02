@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+* **Measurement evidence is optional; rule R3 retired.**
+  `study.evidence.measurement_evidence` is now optional (O) and is no longer
+  asked in the portal's study profile; an instrument's reliability and
+  validity evidence is recorded with the instrument in the instrument library.
+  Rule R3 (instruments must list measurement evidence) is retired; its ID is
+  not reused.
 * **New field modules: Social Science and Arts and Humanities.** Starting
   points, to be developed with researchers in those fields.
   * `social_science`: `kind_of_data` (DDI KindOfData 1.0.0), `universe`,

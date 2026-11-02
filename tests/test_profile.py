@@ -80,11 +80,11 @@ def test_constructs_and_design_required_for_datasets(lib):
     assert {"R1", "R2"} <= rules_fired(record, lib)
 
 
-def test_instrument_needs_measurement_evidence(lib):
+def test_measurement_evidence_is_optional_for_instruments(lib):
     record = copy.deepcopy(EXAMPLE)
     record["resource"]["resource_type"] = "Instrument"
     record["study"]["evidence"]["measurement_evidence"] = []
-    assert "R3" in rules_fired(record, lib)
+    assert "R3" not in rules_fired(record, lib)  # R3 retired: evidence lives with the instrument in the library
 
 
 def test_care_rules(lib):

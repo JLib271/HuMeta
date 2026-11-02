@@ -475,8 +475,6 @@ def validate(record: dict, lib: Library | None = None, profile: Profile | None =
         flag("constructs_required", "study.constructs")
     if rtype in ("Dataset", "StudyRegistration") and not s["evidence"].get("study_designs"):
         flag("design_required", "study.evidence.study_designs")
-    if rtype == "Instrument" and not s["evidence"].get("measurement_evidence"):
-        flag("measurement_evidence_required", "study.evidence.measurement_evidence")
     if access == "open" and ethics.get("identifiability") not in (None, "deidentified", "anonymous", "aggregate_only", "synthetic", "not_applicable"):
         flag("open_requires_deidentified", "study.ethics.identifiability")
     if access == "open" and ethics.get("consent_for_sharing") not in (None, "broad_sharing", "not_applicable"):

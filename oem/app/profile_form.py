@@ -265,9 +265,6 @@ def record_form(record: dict) -> dict | None:
                              "study.evidence.analysis_methods")
             sampling = multi("Sampling procedure", "sampling_procedure", design.get("sampling_procedure"), "sampling",
                              "study.design.sampling_procedure")
-            measurement = multi("Measurement evidence (for instruments)", "measurement_evidence",
-                                s["evidence"].get("measurement_evidence"), "measurement", "study.evidence.measurement_evidence",
-                                help="Required for instruments. Sources of validity evidence follow the Standards for Educational and Psychological Testing.")
         dates = res.get("collection_dates") or {}
         c1, c2 = st.columns(2)
         start = c1.text_input(lab("Data collection start (YYYY-MM-DD)", "resource.collection_dates"), dates.get("start") or "",
@@ -495,8 +492,9 @@ def record_form(record: dict) -> dict | None:
         new["humanities"].update({"research_activities": activities, "objects_of_study": _blank(objects_of_study),
                                   "source_languages": [c.strip() for c in source_languages.split(",") if c.strip()],
                                   "editorial_standards": _blank(editorial)})
-    ns["evidence"].update({"study_designs": designs, "measurement_evidence": measurement, "data_collection_methods": methods,
-                           "analysis_methods": analysis})
+    # Measurement evidence is no longer asked here (it lives with instruments in the library); keep any saved value.
+    ns["evidence"].update({"study_designs": designs, "measurement_evidence": s["evidence"].get("measurement_evidence") or [],
+                           "data_collection_methods": methods, "analysis_methods": analysis})
     ns["sources"].update({"types": source_types, "rights": source_rights, "holdings": _blank(holdings),
                           "time_period": _blank(time_period), "description": _blank(sources_description)})
     ns["ethics"].update({"human_subjects_review": review, "consent": consent, "consent_for_sharing": sharing,

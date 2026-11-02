@@ -34,7 +34,7 @@ education.modality,education,Instructional modality,R,0..n,modality,subjects (su
 education.learning_environments,education,Learning environment,R,0..n,learning_environment,subjects (subjectScheme 'HuMeta Learning Environments')
 education.pedagogy,education,Instructional approach,O,0..n,pedagogy,subjects (subjectScheme 'HuMeta Instructional Approaches')
 study.evidence.study_designs,core,Study design,MA,0..n,study_design,subjects (subjectScheme 'HuMeta Study Designs'); descriptions (Methods)
-study.evidence.measurement_evidence,core,Measurement evidence,MA,0..n,measurement_evidence,subjects (subjectScheme 'HuMeta Measurement Evidence')
+study.evidence.measurement_evidence,core,Measurement evidence,O,0..n,measurement_evidence,subjects (subjectScheme 'HuMeta Measurement Evidence')
 study.evidence.data_collection_methods,core,Data collection method,R,0..n,data_collection_method,subjects (subjectScheme 'HuMeta Data Collection Methods')
 study.evidence.analysis_methods,core,Analysis method,R,0..n,analysis_method,subjects (subjectScheme 'HuMeta Analysis Methods'); descriptions (Methods)
 study.sources.types,core,Source type,MA,0..n,source_type,subjects (subjectScheme 'HuMeta Source Types')
