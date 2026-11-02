@@ -1,17 +1,17 @@
-# STEMEd+ Metadata Application Profile (STEMEd+ AP)
+# HuMeta
 
-**Version:** 1.0.0-draft.1 · **Status:** Draft for community comment · **Namespace prefix:** `stemed`
+**Social Science, Humanities, and Education Study Metadata Profile**
 
-The STEMEd+ Metadata Application Profile is a shared way to describe research
-data, instruments, and studies in STEM education research and related fields,
-including informal and public science learning. It adds what general-purpose
-repository metadata leaves out:
+**Version:** 1.0.0-draft.1 · **Status:** Draft for community comment · **Namespace prefix:** `humeta`
+
+The HuMeta profile is a shared way to describe research studies
+and the data, instruments, and records they produce across the social
+sciences, the humanities, and education. Researchers fill it in themselves,
+from study design onward. It adds what general-purpose repository metadata
+leaves out:
 
 * **Constructs measured**, from a shared, defined construct vocabulary
-* **Population and context**: who participated, at what education level, in
-  what kind of institution and community
-* **Instructional setting**: modality, learning environment, and instructional
-  approach
+* **Population and context**: who participated and where
 * **Evidence type**: study design, measurement (validity and reliability)
   evidence, and data collection methods
 * **Consent and access**: human-subjects review, consent for participation and
@@ -19,10 +19,23 @@ repository metadata leaves out:
 * **CARE**: whether the resource involves Indigenous data and how Indigenous
   authority to control those data is exercised
 
+The profile has a **core**, which applies to every study, and optional **field
+modules** for what is specific to a field. The first module is
+**Education**, which covers learners' education levels (UNESCO ISCED 2011),
+institution types, and instructional settings. Modules for the social sciences
+and the humanities are in development with researchers from those fields. The
+Social Science module will link to the field's existing infrastructure rather
+than duplicate it: DDI-Codebook for deposit at ICPSR, Dataverse and the UK
+Data Service, and the ELSST thesaurus for topics.
+
 Every record also carries standard citation metadata, and the profile defines
-crosswalks to **DataCite Metadata Schema 4.7** and the **ERIC Thesaurus**, so
-records work with DOI registration, repositories, and education indexes that
-people already use.
+crosswalks to **DataCite Metadata Schema 4.7** and the **ERIC Thesaurus**, with
+alignments to Dublin Core, schema.org, and other standards, so records work
+with DOI registration, repositories, and indexes that people already use.
+
+The profile began as the STEMEd+ Metadata Application Profile for STEM
+education research. Its education-specific elements are now the Education
+module.
 
 ## Contents of this folder
 
@@ -32,8 +45,9 @@ people already use.
 | `vocabularies.json` | **Source.** Controlled vocabularies with permanent term codes and ERIC mappings |
 | `../../library/constructs.json` | **Source.** The construct vocabulary (shared with the instrument library) |
 | [`elements.md`](elements.md) | Readable reference for every element, rule, and vocabulary (generated) |
-| `schema/stemed-ap-record.schema.json` | JSON Schema for records (generated) |
+| `schema/humeta-record.schema.json` | JSON Schema for records (generated) |
 | `crosswalks/datacite-4.7.csv` | Element-to-DataCite crosswalk (generated) |
+| `crosswalks/alignments.csv` | Every element's alignment to DataCite, Dublin Core, schema.org, ERIC and other standards, with match type (generated) |
 | `crosswalks/eric.csv` | Vocabulary-to-ERIC descriptor crosswalk with verification status (generated) |
 | `crosswalks/eric_descriptor_status.json` | Which ERIC descriptors have been verified, and how |
 | `examples/` | Example record with its DataCite JSON and XML (fictional study) |
@@ -45,29 +59,39 @@ CI fails if they are out of date.
 
 ## 1. Scope
 
-The profile describes **resources** produced or used in STEM education
-research: datasets, instruments, study registrations, and related texts and
-software. It applies to formal education (K-12, postsecondary, graduate,
-adult), informal and public learning (museums, science centers, community and
-out-of-school programs), and research with educators. It describes resources;
-it does not contain participant data.
+The profile describes **resources** produced or used in research in the
+social sciences, humanities, and education: datasets, instruments, study
+registrations, and related texts and software. With the Education module it
+covers formal education (early childhood through doctoral, using ISCED 2011
+levels, plus adult and workforce education), informal and public learning
+(museums, science centers, community and out-of-school programs), and research
+with educators. It describes resources; it does not contain participant data.
+
+The core was first written for education research. Some of its vocabularies
+(for example, disciplines and data collection methods) and rules (for example,
+that datasets list constructs measured) still reflect that, and will be
+broadened with reviewers from the social sciences and humanities.
 
 ## 2. Record structure and conformance
 
-A STEMEd+ record is a JSON object with two parts:
+A HuMeta record is a JSON object with these parts:
 
 * `resource`: citation metadata aligned with DataCite (title, creators with
   ORCID iDs, publisher, publication year, resource type, identifier,
   description, keywords, language, license, funding, collection dates,
   geography, related resources)
-* `stemed`: the profile's extension elements, grouped as `constructs`,
-  `discipline`, `population`, `context`, `setting`, `evidence`, `ethics`, and
-  `care`
+* `study`: the core elements, grouped as `design`, `constructs`,
+  `discipline`, `population`, `context`, `evidence`, `ethics`, and `care`
+* one key per field module the record uses, currently `education`
+  (`education_levels`, `undergraduate_levels`, `institution_types`,
+  `modality`, `learning_environments`, `pedagogy`). The key is `null` or
+  absent when the module is not used.
 
 A record **conforms** to version 1.0 of the profile when it (1) validates
-against `schema/stemed-ap-record.schema.json`, (2) includes every mandatory
+against `schema/humeta-record.schema.json`, (2) includes every mandatory
 (M) element and every mandatory-if-applicable (MA) element whose condition
-holds, and (3) triggers no rule of severity *error*. Warnings do not prevent
+holds, and (3) triggers no rule of severity *error*. A module's mandatory
+elements are mandatory only in records that include that module. Warnings do not prevent
 conformance but should be reviewed. The reference implementation of these
 checks is `oem/profile.py` (`validate()`).
 
@@ -85,21 +109,24 @@ checks is `oem/profile.py` (`validate()`).
 | Element | Obl. | Vocabulary |
 |---|---|---|
 | `resource.title`, `.creators`, `.publisher`, `.publication_year`, `.resource_type` | M | DataCite resourceTypeGeneral |
-| `stemed.constructs` | MA (datasets, instruments) | construct vocabulary |
-| `stemed.discipline` | R | `discipline` |
-| `stemed.population.participant_roles` | M | `participant_role` |
-| `stemed.population.education_levels` | M | `education_level` |
-| `stemed.population.undergraduate_levels`, `.description`, `.sample_size` | O / R / R | `undergraduate_level` |
-| `stemed.context.institution_types`, `.locale` | R | `institution_type`, `locale` |
-| `stemed.setting.modality`, `.learning_environments`, `.pedagogy` | R / R / O | `modality`, `learning_environment`, `pedagogy` |
-| `stemed.evidence.study_designs` | MA (datasets, study registrations) | `study_design` |
-| `stemed.evidence.measurement_evidence` | MA (instruments) | `measurement_evidence` |
-| `stemed.evidence.data_collection_methods` | R | `data_collection_method` |
-| `stemed.ethics.human_subjects_review`, `.consent_for_sharing`, `.identifiability`, `.access_level` | M | see vocabularies |
-| `stemed.ethics.consent`, `.sensitivity_flags` | R | `consent`, `sensitivity_flag` |
-| `stemed.care.indigenous_data` | M | `indigenous_data` |
-| `stemed.care.governance`, `.statement` | MA (Indigenous data) | `indigenous_governance` |
-| `stemed.care.local_contexts_project`, `.local_contexts_labels` | O | Local Contexts |
+| `study.constructs` | MA (datasets, instruments) | construct vocabulary |
+| `study.discipline` | R | `discipline` |
+| `study.population.participant_roles` | M | `participant_role` |
+| `study.population.description`, `.sample_size` | R | |
+| `study.context.locale` | R | `locale` (NCES locale types) |
+| `study.evidence.study_designs` | MA (datasets, study registrations) | `study_design` |
+| `study.evidence.measurement_evidence` | MA (instruments) | `measurement_evidence` |
+| `study.evidence.data_collection_methods` | R | `data_collection_method` |
+| `study.ethics.human_subjects_review`, `.consent_for_sharing`, `.identifiability`, `.access_level` | M | see vocabularies |
+| `study.ethics.consent`, `.sensitivity_flags` | R | `consent`, `sensitivity_flag` |
+| `study.care.indigenous_data` | M | `indigenous_data` |
+| `study.care.governance`, `.statement` | MA (Indigenous data) | `indigenous_governance` |
+| `study.care.local_contexts_project`, `.local_contexts_labels` | O | Local Contexts |
+| **Education module** | | |
+| `education.education_levels` | M (in the module) | `education_level` (ISCED 2011) |
+| `education.undergraduate_levels` | O | `undergraduate_level` |
+| `education.institution_types` | R | `institution_type` |
+| `education.modality`, `.learning_environments`, `.pedagogy` | R / R / O | `modality`, `learning_environment`, `pedagogy` |
 
 Full definitions, cardinalities, and DataCite mappings are in
 [`elements.md`](elements.md).
@@ -154,10 +181,33 @@ Vocabularies are in `vocabularies.json` and the construct vocabulary is in
 
 ## 6. Crosswalks
 
+### Alignments
+
+Every element in `profile.json` lists the standards it corresponds to, under
+`alignments`, each with a match type: **exact** (same meaning), **close**
+(≈, similar enough to map with care) or **related** (~, overlapping but not
+interchangeable). Elements marked `HuMeta` are defined by this profile and
+have no equivalent in a general-purpose standard. The standards are listed in
+the `standards` block of `profile.json`. The OpenEdMetadata app shows these
+alignments beside each field, `elements.md` shows them per element, and
+`crosswalks/alignments.csv` lists them all.
+
+Alignments marked `seeking_input` are ones we are not yet sure of, and we
+would welcome comment from people who know those standards. At present these
+are the Dublin Core and schema.org alignments for education level, and the
+Dublin Core alignment for instructional approach. In those standards the
+terms describe the audience or method a resource is *designed for*. In this
+profile they describe the participants or approach *studied*. Please comment
+through a GitHub issue.
+
+Education level uses the UNESCO ISCED 2011 levels of education (0–8), plus
+two HuMeta additions: adult, continuing or workforce education, and informal
+learning. Exports add the ISCED level as a DataCite subject.
+
 ### DataCite Metadata Schema 4.7
 
 Resource elements map directly to DataCite properties. Profile vocabularies
-map to `subjects` with a `subjectScheme` (e.g. "STEMEd+ Constructs") and a
+map to `subjects` with a `subjectScheme` (e.g. "HuMeta Constructs") and a
 `valueURI` for each term; ERIC descriptors are added as subjects with
 `subjectScheme` "ERIC Thesaurus". Study designs, methods, and population
 descriptions become a `Methods` description. Ethics, access, and CARE
@@ -187,7 +237,8 @@ data, adding a crosswalk does not change the profile.
 
 ## 7. Implementations
 
-* **OpenEdMetadata app**: Module 1 is the profile form for a study; Module 3
+* **HuMeta Portal** (this repository's app): Module 1 is the
+  profile form for a study, with the Education module switched on or off; Module 3
   adds the constructs measured (suggested from the Module 2 variable plan),
   checks the rules, and exports DataCite and ERIC metadata.
 * **`oem/profile.py`**: reference Python implementation (validation, DataCite
@@ -199,8 +250,9 @@ data, adding a crosswalk does not change the profile.
 The profile uses semantic versioning. **Patch** releases fix wording or add
 crosswalk entries; **minor** releases add optional elements or vocabulary
 terms; **major** releases change mandatory elements or remove anything.
-Proposed changes are opened as issues labeled `proposal` and left open for at
-least 14 days of comment (see [GOVERNANCE.md](../../GOVERNANCE.md)). Version
+Field modules are developed by working groups of researchers from each field,
+and each module is versioned with the profile. Proposed changes are opened as
+issues labeled `proposal` and left open for at least 14 days of comment (see [GOVERNANCE.md](../../GOVERNANCE.md)). Version
 1.0.0 will be released after a public comment period and submitted for
 endorsement; see [`endorsement/`](endorsement/).
 
@@ -210,9 +262,9 @@ The profile (this folder and the construct vocabulary) is licensed under
 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), like the rest
 of the library. Code implementing it is AGPL-3.0-or-later. Cite as:
 
-> Libarkin, J. C., & STEMEd+ contributors. (2026). *STEMEd+ Metadata
-> Application Profile* (Version 1.0.0-draft.1). OpenEdMetadata.
-> https://github.com/JLib271/OpenEdMetadata/tree/main/standard/stemed-ap
+> Libarkin, J. C., & HuMeta contributors. (2026). *HuMeta:
+> Social Science, Humanities, and Education Study Metadata Profile* (Version
+> 1.0.0-draft.1). https://github.com/JLib271/OpenEdMetadata/tree/main/standard/humeta
 
 A DOI will be registered for version 1.0.0 (DataCite resourceTypeGeneral
 `Standard`).

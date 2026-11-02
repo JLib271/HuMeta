@@ -12,14 +12,21 @@ their data with common names and metadata, and sharing data responsibly.
   race/ethnicity standard), and variable-naming rules (`oem/naming.py`)
 - Codebook builder with CSV/JSON export (`oem/codebook.py`)
 - App split into testable modules; CI with unit tests and page smoke tests
-- STEMEd+ Metadata Application Profile 1.0.0-draft.1 (`standard/stemed-ap/`) with DataCite 4.7 and ERIC
-  crosswalks; Module 1 is now the profile form and Module 3 checks and exports
+- Metadata profile 1.0.0-draft.1 with DataCite 4.7 and ERIC crosswalks; Module 1 is now the profile form
+  and Module 3 checks and exports
+- Renamed the profile to the HuMeta profile (`standard/humeta/`) and split it into a core plus an
+  optional Education module; every field shows its alignments to DataCite, Dublin Core, schema.org and others
 
 ## Next
 
-0. **STEMEd+ profile 1.0.** Public comment (including CARE review by Indigenous data governance experts),
+0. **HuMeta profile 1.0.** Public comment (including CARE review by Indigenous data governance experts),
    confirm remaining ERIC descriptors, persistent term URIs, DOI, and society endorsements
-   (see `standard/stemed-ap/endorsement/`).
+   (see `standard/humeta/endorsement/`).
+0b. **Field modules and a broader core.** Working groups for the Social Science module (DDI-Codebook export
+   for ICPSR, Dataverse and the UK Data Service; ELSST topics) and the Humanities module. Broaden core
+   vocabularies (disciplines, data collection methods such as archival research, ethnography, content and
+   discourse analysis), add a section for non-human sources (texts, artworks, media, platform data), and
+   revisit rules that assume measured constructs or human participants.
 
 1. **Connect Module 2 to the library.** Suggest instruments by construct, let
    researchers add library items as variables with generated names, export the

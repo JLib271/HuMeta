@@ -73,7 +73,7 @@
             "items": {
               "type": "string"
             },
-            "description": "ERIC Thesaurus descriptors for the construct (see standard/stemed-ap/crosswalks/eric_descriptor_status.json)."
+            "description": "ERIC Thesaurus descriptors for the construct (see standard/humeta/crosswalks/eric_descriptor_status.json)."
           }
         }
       }

@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Reference data used by the app (no Streamlit): file locations and the theory and
 framework dictionaries used by Module 2. Study metadata vocabularies live in the
-STEMEd+ profile (standard/stemed-ap/vocabularies.json)."""
+HuMeta profile (standard/humeta/vocabularies.json)."""
 
 from __future__ import annotations
 

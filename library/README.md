@@ -1,7 +1,8 @@
-# STEMEd+ Instrument Library
+# HuMeta Instrument Library
 
-A community-curated, version-controlled library of STEM education research
-instruments: what each one measures, its versions and adaptations, how it is
+A community-curated, version-controlled library of research instruments,
+starting with STEM education research and growing with the social sciences
+and humanities: what each one measures, its versions and adaptations, how it is
 scored, how it can be accessed, and the reliability and validity evidence
 reported for it in different populations.
 

@@ -1,58 +1,75 @@
-# STEMEd+ Metadata Application Profile: elements and vocabularies
+# HuMeta: elements and vocabularies
+
+*Social Science, Humanities, and Education Study Metadata Profile*
 
 Version 1.0.0-draft.1 (draft). Generated from `profile.json` and `vocabularies.json` by `scripts/build_profile_artifacts.py`; do not edit by hand.
 
 Obligations: **M** = Mandatory: every record must have it.; **MA** = Mandatory if applicable: required when the stated condition holds.; **R** = Recommended.; **O** = Optional.
 
-## Elements
+Alignments: each element lists the standards it corresponds to. No mark = exact match; **≈** = close match; **~** = related. `HuMeta` = defined by this profile, with no equivalent in a general-purpose standard. *(expert input wanted)* = we are seeking expert input on this alignment. Full list, with notes, in [`crosswalks/alignments.csv`](crosswalks/alignments.csv).
 
-| Element | Obligation | Cardinality | Definition | DataCite 4.7 |
-|---|---|---|---|---|
-| <a id="resource.title"></a>`resource.title` | M | 1 | Name of the resource. | titles.title |
-| <a id="resource.creators"></a>`resource.creators` | M | 1..n | People or organizations primarily responsible for the resource, with ORCID iDs where available. | creators (nameIdentifier with nameIdentifierScheme ORCID; affiliation) |
-| <a id="resource.publisher"></a>`resource.publisher` | M | 1 | Entity that holds, archives, or makes the resource available (usually the repository or institution). | publisher |
-| <a id="resource.publication_year"></a>`resource.publication_year` | M | 1 | Year the resource was or will be made publicly available. | publicationYear |
-| <a id="resource.resource_type"></a>`resource.resource_type` | M | 1 | General type of the resource, using DataCite resourceTypeGeneral values. | types.resourceTypeGeneral; types.resourceType = 'STEMEd+ <type>' |
-| <a id="resource.identifier"></a>`resource.identifier` | O | 0..1 | Persistent identifier (DOI preferred) once one has been assigned. | identifiers (DOI) or alternateIdentifiers |
-| <a id="resource.description"></a>`resource.description` | R | 0..1 | Abstract or summary of the resource. | descriptions (descriptionType Abstract) |
-| <a id="resource.keywords"></a>`resource.keywords` | O | 0..n | Free-text keywords. | subjects (no scheme) |
-| <a id="resource.language"></a>`resource.language` | R | 0..1 | Primary language of the resource (BCP 47 code, e.g. en). | language |
-| <a id="resource.license"></a>`resource.license` | R | 0..1 | License for the resource, as an SPDX identifier where possible (e.g. CC-BY-4.0). | rightsList (rightsIdentifier, rightsIdentifierScheme SPDX) |
-| <a id="resource.funding"></a>`resource.funding` | O | 0..n | Funders and award numbers. | fundingReferences |
-| <a id="resource.collection_dates"></a>`resource.collection_dates` | R | 0..1 | Start and end of data collection (ISO 8601 dates). | dates (dateType Collected, as start/end) |
-| <a id="resource.geography"></a>`resource.geography` | R | 0..1 | Countries (ISO 3166-1 alpha-2) and, for the US, states (USPS codes) where data were collected. | geoLocations (geoLocationPlace) |
-| <a id="resource.related"></a>`resource.related` | O | 0..n | Related publications, datasets, preregistrations, or instruments, with a DataCite relationType. | relatedIdentifiers |
-| <a id="stemed.design.topic"></a>`stemed.design.topic` | R | 0..1 | The main subject or topic of the study, in the researcher's words (e.g., 'introductory geology lab learning'). | subjects (no scheme) |
-| <a id="stemed.design.research_questions"></a>`stemed.design.research_questions` | R | 0..1 | Primary research questions, objectives, or hypotheses. | descriptions (descriptionType Methods) |
-| <a id="stemed.design.unit_of_analysis"></a>`stemed.design.unit_of_analysis` | O | 0..n | The unit(s) the analysis is about. Vocabulary: [unit_of_analysis](#unit_of_analysis). | subjects (subjectScheme 'STEMEd+ Units of Analysis') |
-| <a id="stemed.design.sampling_procedure"></a>`stemed.design.sampling_procedure` | O | 0..n | How participants or units were selected. Vocabulary: [sampling_procedure](#sampling_procedure). | subjects (subjectScheme 'STEMEd+ Sampling Procedures'); descriptions (Methods) |
-| <a id="stemed.constructs"></a>`stemed.constructs` | MA | 0..n | Constructs measured, from the STEMEd+ construct vocabulary (library/constructs.json), optionally with the instrument, version and subscale used. *Mandatory when resource_type is Dataset or Instrument.* | subjects (subjectScheme 'STEMEd+ Constructs', valueURI per construct); for datasets, relatedIdentifiers to the instrument's library record (URL, relationType IsCollectedBy) and its publication (DOI, relationType References); ERIC descriptors as additional subjects |
-| <a id="stemed.discipline"></a>`stemed.discipline` | R | 0..n | STEM discipline(s) of the learning or research. Vocabulary: [discipline](#discipline). | subjects (subjectScheme 'STEMEd+ Disciplines') |
-| <a id="stemed.population.participant_roles"></a>`stemed.population.participant_roles` | M | 1..n | Who the participants are. Vocabulary: [participant_role](#participant_role). | subjects (subjectScheme 'STEMEd+ Participant Roles') |
-| <a id="stemed.population.education_levels"></a>`stemed.population.education_levels` | M | 1..n | Education level(s) of the participants. Vocabulary: [education_level](#education_level). | subjects (subjectScheme 'STEMEd+ Education Levels') |
-| <a id="stemed.population.undergraduate_levels"></a>`stemed.population.undergraduate_levels` | O | 0..n | Course level(s) for undergraduate studies. Vocabulary: [undergraduate_level](#undergraduate_level). | subjects (subjectScheme 'STEMEd+ Undergraduate Levels') |
-| <a id="stemed.population.description"></a>`stemed.population.description` | R | 0..1 | Narrative description of the participants and sampling, without identifying information. | descriptions (descriptionType Methods) |
-| <a id="stemed.population.sample_size"></a>`stemed.population.sample_size` | R | 0..1 | Number of participants (or units) in the data. | sizes ('N = <n> participants') |
-| <a id="stemed.context.institution_types"></a>`stemed.context.institution_types` | R | 0..n | Type(s) of institution or organization. Vocabulary: [institution_type](#institution_type). | subjects (subjectScheme 'STEMEd+ Institution Types') |
-| <a id="stemed.context.locale"></a>`stemed.context.locale` | R | 0..n | Community type(s) where the study took place. Vocabulary: [locale](#locale). | subjects (subjectScheme 'STEMEd+ Locales') |
-| <a id="stemed.setting.modality"></a>`stemed.setting.modality` | R | 0..n | How instruction or participation was delivered. Vocabulary: [modality](#modality). | subjects (subjectScheme 'STEMEd+ Modalities') |
-| <a id="stemed.setting.learning_environments"></a>`stemed.setting.learning_environments` | R | 0..n | Instructional setting(s). Vocabulary: [learning_environment](#learning_environment). | subjects (subjectScheme 'STEMEd+ Learning Environments') |
-| <a id="stemed.setting.pedagogy"></a>`stemed.setting.pedagogy` | O | 0..n | Instructional approach(es) used or studied. Vocabulary: [pedagogy](#pedagogy). | subjects (subjectScheme 'STEMEd+ Instructional Approaches') |
-| <a id="stemed.evidence.study_designs"></a>`stemed.evidence.study_designs` | MA | 0..n | Design(s) that produced the evidence. *Mandatory when resource_type is Dataset or StudyRegistration.* Vocabulary: [study_design](#study_design). | subjects (subjectScheme 'STEMEd+ Study Designs'); descriptions (Methods) |
-| <a id="stemed.evidence.measurement_evidence"></a>`stemed.evidence.measurement_evidence` | MA | 0..n | Kinds of reliability and validity evidence the resource provides. *Mandatory when resource_type is Instrument.* Vocabulary: [measurement_evidence](#measurement_evidence). | subjects (subjectScheme 'STEMEd+ Measurement Evidence') |
-| <a id="stemed.evidence.data_collection_methods"></a>`stemed.evidence.data_collection_methods` | R | 0..n | How data were collected. Vocabulary: [data_collection_method](#data_collection_method). | subjects (subjectScheme 'STEMEd+ Data Collection Methods') |
-| <a id="stemed.ethics.human_subjects_review"></a>`stemed.ethics.human_subjects_review` | M | 1 | Ethics / IRB review status, as reported by the researcher. Vocabulary: [human_subjects_review](#human_subjects_review). | descriptions (descriptionType Other, 'Ethics and access') |
-| <a id="stemed.ethics.consent"></a>`stemed.ethics.consent` | R | 0..1 | How participants agreed to take part. Vocabulary: [consent](#consent). | descriptions (Other, 'Ethics and access') |
-| <a id="stemed.ethics.consent_for_sharing"></a>`stemed.ethics.consent_for_sharing` | M | 1 | What participants allow regarding sharing beyond the research team. Vocabulary: [consent_for_sharing](#consent_for_sharing). | descriptions (Other, 'Ethics and access'); rightsList |
-| <a id="stemed.ethics.identifiability"></a>`stemed.ethics.identifiability` | M | 1 | Identifiability of the data. Vocabulary: [identifiability](#identifiability). | descriptions (Other, 'Ethics and access') |
-| <a id="stemed.ethics.sensitivity_flags"></a>`stemed.ethics.sensitivity_flags` | R | 0..n | Kinds of sensitive information in the underlying data. Vocabulary: [sensitivity_flag](#sensitivity_flag). | descriptions (Other, 'Ethics and access') |
-| <a id="stemed.ethics.access_level"></a>`stemed.ethics.access_level` | M | 1 | How the data can be accessed. Vocabulary: [access_level](#access_level). | rightsList (access statement) |
-| <a id="stemed.ethics.governance_notes"></a>`stemed.ethics.governance_notes` | O | 0..1 | Approval references, data-use restrictions, retention or de-identification requirements (no confidential details). | descriptions (Other, 'Ethics and access') |
-| <a id="stemed.care.indigenous_data"></a>`stemed.care.indigenous_data` | M | 1 | Whether the resource contains or derives from data about Indigenous Peoples, nations, communities, lands, territories, or knowledges. Vocabulary: [indigenous_data](#indigenous_data). | descriptions (Other, 'CARE statement') |
-| <a id="stemed.care.governance"></a>`stemed.care.governance` | MA | 0..1 | How Indigenous authority to control the data is exercised (CARE: Authority to control). *Mandatory when indigenous_data is yes.* Vocabulary: [indigenous_governance](#indigenous_governance). | descriptions (Other, 'CARE statement'); rightsList |
-| <a id="stemed.care.statement"></a>`stemed.care.statement` | MA | 0..1 | How the work provides collective benefit, respects authority to control, and meets responsibility and ethics obligations to the communities involved. *Mandatory when indigenous_data is yes.* | descriptions (Other, 'CARE statement') |
-| <a id="stemed.care.local_contexts_project"></a>`stemed.care.local_contexts_project` | O | 0..1 | URL of a Local Contexts Hub project holding Traditional Knowledge or Biocultural Labels or Notices for this resource. | relatedIdentifiers (relatedIdentifierType URL, relationType IsDescribedBy) |
-| <a id="stemed.care.local_contexts_labels"></a>`stemed.care.local_contexts_labels` | O | 0..n | Names of Local Contexts Labels or Notices applied by the community (e.g. 'TK Attribution'). | descriptions (Other, 'CARE statement') |
+Standards: [HuMeta](https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md) = HuMeta profile (element or vocabulary defined by this profile); [DataCite](https://schema.datacite.org/) = DataCite Metadata Schema 4.7; [DC](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) = Dublin Core (DCMI Metadata Terms); [schema.org](https://schema.org/Dataset) = schema.org Dataset; [ERIC](https://eric.ed.gov/?ti=all) = ERIC Thesaurus; [ORCID](https://orcid.org/) = ORCID iD; [SPDX](https://spdx.org/licenses/) = SPDX License List; [BCP 47](https://www.rfc-editor.org/info/bcp47) = IETF BCP 47 language tags; [ISO 3166](https://www.iso.org/iso-3166-country-codes.html) = ISO 3166-1 alpha-2 country codes; [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) = ISO 8601 dates; [NCES](https://nces.ed.gov/programs/edge/Geographic/LocaleBoundaries) = NCES locale classification (locale types City, Suburb, Town, Rural); [ISCED](https://uis.unesco.org/sites/default/files/documents/international-standard-classification-of-education-isced-2011-en.pdf) = UNESCO International Standard Classification of Education (ISCED 2011); [AERA/APA/NCME](https://www.testingstandards.net/) = Standards for Educational and Psychological Testing (2014); [Common Rule](https://www.hhs.gov/ohrp/regulations-and-policy/regulations/45-cfr-46/) = US Common Rule for human-subjects research (45 CFR 46); [FERPA](https://studentprivacy.ed.gov/) = Family Educational Rights and Privacy Act (34 CFR Part 99); [CARE](https://www.gida-global.org/care) = CARE Principles for Indigenous Data Governance; [Local Contexts](https://localcontexts.org/) = Local Contexts Traditional Knowledge and Biocultural Labels and Notices
+
+Modules: the **core** applies to every record; a field module (such as **Education**) applies only when a record includes it, and its mandatory elements are mandatory only then.
+
+## Core elements
+
+Elements for any study in the social sciences, humanities, or education.
+
+| Element | Obligation | Cardinality | Definition | Aligned with | DataCite 4.7 mapping |
+|---|---|---|---|---|---|
+| <a id="resource.title"></a>`resource.title` | M | 1 | Name of the resource. | `DataCite: titles.title`, `DC: title`, `schema.org: name` | titles.title |
+| <a id="resource.creators"></a>`resource.creators` | M | 1..n | People or organizations primarily responsible for the resource, with ORCID iDs where available. | `DataCite: creators`, `DC: creator`, `schema.org: creator`, `ORCID: ORCID iD (nameIdentifier)` | creators (nameIdentifier with nameIdentifierScheme ORCID; affiliation) |
+| <a id="resource.publisher"></a>`resource.publisher` | M | 1 | Entity that holds, archives, or makes the resource available (usually the repository or institution). | `DataCite: publisher`, `DC: publisher`, `schema.org: publisher` | publisher |
+| <a id="resource.publication_year"></a>`resource.publication_year` | M | 1 | Year the resource was or will be made publicly available. | `DataCite: publicationYear`, `≈DC: issued`, `≈schema.org: datePublished` | publicationYear |
+| <a id="resource.resource_type"></a>`resource.resource_type` | M | 1 | General type of the resource, using DataCite resourceTypeGeneral values. | `DataCite: resourceTypeGeneral`, `≈DC: type`, `≈schema.org: @type` | types.resourceTypeGeneral; types.resourceType = 'HuMeta <type>' |
+| <a id="resource.identifier"></a>`resource.identifier` | O | 0..1 | Persistent identifier (DOI preferred) once one has been assigned. | `DataCite: identifier`, `DC: identifier`, `schema.org: identifier` | identifiers (DOI) or alternateIdentifiers |
+| <a id="resource.description"></a>`resource.description` | R | 0..1 | Abstract or summary of the resource. | `DataCite: description (Abstract)`, `DC: abstract`, `schema.org: description` | descriptions (descriptionType Abstract) |
+| <a id="resource.keywords"></a>`resource.keywords` | O | 0..n | Free-text keywords. | `DataCite: subject (no scheme)`, `≈DC: subject`, `schema.org: keywords` | subjects (no scheme) |
+| <a id="resource.language"></a>`resource.language` | R | 0..1 | Primary language of the resource (BCP 47 code, e.g. en). | `DataCite: language`, `DC: language`, `schema.org: inLanguage`, `BCP 47: language tag` | language |
+| <a id="resource.license"></a>`resource.license` | R | 0..1 | License for the resource, as an SPDX identifier where possible (e.g. CC-BY-4.0). | `DataCite: rightsList`, `DC: license`, `schema.org: license`, `SPDX: license identifier` | rightsList (rightsIdentifier, rightsIdentifierScheme SPDX) |
+| <a id="resource.funding"></a>`resource.funding` | O | 0..n | Funders and award numbers. | `DataCite: fundingReferences`, `≈schema.org: funder` | fundingReferences |
+| <a id="resource.collection_dates"></a>`resource.collection_dates` | R | 0..1 | Start and end of data collection (ISO 8601 dates). | `DataCite: date (Collected)`, `ISO 8601: date`, `~DC: temporal`, `~schema.org: temporalCoverage` | dates (dateType Collected, as start/end) |
+| <a id="resource.geography"></a>`resource.geography` | R | 0..1 | Countries (ISO 3166-1 alpha-2) and, for the US, states (USPS codes) where data were collected. | `DataCite: geoLocationPlace`, `ISO 3166: country code`, `≈DC: spatial`, `≈schema.org: spatialCoverage` | geoLocations (geoLocationPlace) |
+| <a id="resource.related"></a>`resource.related` | O | 0..n | Related publications, datasets, preregistrations, or instruments, with a DataCite relationType. | `DataCite: relatedIdentifiers`, `≈DC: relation`, `~schema.org: citation` | relatedIdentifiers |
+| <a id="study.design.topic"></a>`study.design.topic` | R | 0..1 | The main subject or topic of the study, in the researcher's words (e.g., 'introductory geology lab learning'). | `HuMeta`, `≈DataCite: subject`, `≈DC: subject`, `≈schema.org: about` | subjects (no scheme) |
+| <a id="study.design.research_questions"></a>`study.design.research_questions` | R | 0..1 | Primary research questions, objectives, or hypotheses. | `HuMeta`, `≈DataCite: description (Methods)`, `~DC: description` | descriptions (descriptionType Methods) |
+| <a id="study.design.unit_of_analysis"></a>`study.design.unit_of_analysis` | O | 0..n | The unit(s) the analysis is about. Vocabulary: [unit_of_analysis](#unit_of_analysis). | `HuMeta`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Units of Analysis') |
+| <a id="study.design.sampling_procedure"></a>`study.design.sampling_procedure` | O | 0..n | How participants or units were selected. Vocabulary: [sampling_procedure](#sampling_procedure). | `HuMeta`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Sampling Procedures'); descriptions (Methods) |
+| <a id="study.constructs"></a>`study.constructs` | MA | 0..n | Constructs measured, from the HuMeta construct vocabulary (library/constructs.json), optionally with the instrument, version and subscale used. *Mandatory when resource_type is Dataset or Instrument.* | `HuMeta`, `≈ERIC: descriptors`, `≈schema.org: variableMeasured`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Constructs', valueURI per construct); for datasets, relatedIdentifiers to the instrument's library record (URL, relationType IsCollectedBy) and its publication (DOI, relationType References); ERIC descriptors as additional subjects |
+| <a id="study.discipline"></a>`study.discipline` | R | 0..n | STEM discipline(s) of the learning or research. Vocabulary: [discipline](#discipline). | `HuMeta`, `≈ERIC: descriptors`, `≈DC: subject`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Disciplines') |
+| <a id="study.population.participant_roles"></a>`study.population.participant_roles` | M | 1..n | Who the participants are. Vocabulary: [participant_role](#participant_role). | `HuMeta`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Participant Roles') |
+| <a id="study.population.description"></a>`study.population.description` | R | 0..1 | Narrative description of the participants and sampling, without identifying information. | `HuMeta`, `≈DataCite: description (Methods)` | descriptions (descriptionType Methods) |
+| <a id="study.population.sample_size"></a>`study.population.sample_size` | R | 0..1 | Number of participants (or units) in the data. | `HuMeta`, `≈DataCite: sizes` | sizes ('N = <n> participants') |
+| <a id="study.context.locale"></a>`study.context.locale` | R | 0..n | Community type(s) where the study took place. Vocabulary: [locale](#locale). | `HuMeta`, `NCES: locale type`, `≈ERIC: descriptors` | subjects (subjectScheme 'HuMeta Locales') |
+| <a id="study.evidence.study_designs"></a>`study.evidence.study_designs` | MA | 0..n | Design(s) that produced the evidence. *Mandatory when resource_type is Dataset or StudyRegistration.* Vocabulary: [study_design](#study_design). | `HuMeta`, `≈ERIC: descriptors`, `≈DataCite: description (Methods)` | subjects (subjectScheme 'HuMeta Study Designs'); descriptions (Methods) |
+| <a id="study.evidence.measurement_evidence"></a>`study.evidence.measurement_evidence` | MA | 0..n | Kinds of reliability and validity evidence the resource provides. *Mandatory when resource_type is Instrument.* Vocabulary: [measurement_evidence](#measurement_evidence). | `HuMeta`, `≈AERA/APA/NCME: sources of validity evidence`, `≈ERIC: descriptors` | subjects (subjectScheme 'HuMeta Measurement Evidence') |
+| <a id="study.evidence.data_collection_methods"></a>`study.evidence.data_collection_methods` | R | 0..n | How data were collected. Vocabulary: [data_collection_method](#data_collection_method). | `HuMeta`, `≈ERIC: descriptors`, `≈schema.org: measurementTechnique` | subjects (subjectScheme 'HuMeta Data Collection Methods') |
+| <a id="study.ethics.human_subjects_review"></a>`study.ethics.human_subjects_review` | M | 1 | Ethics / IRB review status, as reported by the researcher. Vocabulary: [human_subjects_review](#human_subjects_review). | `HuMeta`, `~Common Rule: IRB review / exemption` | descriptions (descriptionType Other, 'Ethics and access') |
+| <a id="study.ethics.consent"></a>`study.ethics.consent` | R | 0..1 | How participants agreed to take part. Vocabulary: [consent](#consent). | `HuMeta`, `~Common Rule: informed consent / waiver` | descriptions (Other, 'Ethics and access') |
+| <a id="study.ethics.consent_for_sharing"></a>`study.ethics.consent_for_sharing` | M | 1 | What participants allow regarding sharing beyond the research team. Vocabulary: [consent_for_sharing](#consent_for_sharing). | `HuMeta`, `~schema.org: conditionsOfAccess`, `~DataCite: rightsList` | descriptions (Other, 'Ethics and access'); rightsList |
+| <a id="study.ethics.identifiability"></a>`study.ethics.identifiability` | M | 1 | Identifiability of the data. Vocabulary: [identifiability](#identifiability). | `HuMeta`, `~FERPA: de-identified records` | descriptions (Other, 'Ethics and access') |
+| <a id="study.ethics.sensitivity_flags"></a>`study.ethics.sensitivity_flags` | R | 0..n | Kinds of sensitive information in the underlying data. Vocabulary: [sensitivity_flag](#sensitivity_flag). | `HuMeta`, `≈FERPA: education records` | descriptions (Other, 'Ethics and access') |
+| <a id="study.ethics.access_level"></a>`study.ethics.access_level` | M | 1 | How the data can be accessed. Vocabulary: [access_level](#access_level). | `HuMeta`, `≈DC: accessRights`, `≈schema.org: conditionsOfAccess`, `≈DataCite: rightsList` | rightsList (access statement) |
+| <a id="study.ethics.governance_notes"></a>`study.ethics.governance_notes` | O | 0..1 | Approval references, data-use restrictions, retention or de-identification requirements (no confidential details). | `HuMeta`, `~DC: accessRights`, `≈DataCite: description (Other)` | descriptions (Other, 'Ethics and access') |
+| <a id="study.care.indigenous_data"></a>`study.care.indigenous_data` | M | 1 | Whether the resource contains or derives from data about Indigenous Peoples, nations, communities, lands, territories, or knowledges. Vocabulary: [indigenous_data](#indigenous_data). | `HuMeta`, `≈CARE: scope: Indigenous data` | descriptions (Other, 'CARE statement') |
+| <a id="study.care.governance"></a>`study.care.governance` | MA | 0..1 | How Indigenous authority to control the data is exercised (CARE: Authority to control). *Mandatory when indigenous_data is yes.* Vocabulary: [indigenous_governance](#indigenous_governance). | `HuMeta`, `≈CARE: Authority to control` | descriptions (Other, 'CARE statement'); rightsList |
+| <a id="study.care.statement"></a>`study.care.statement` | MA | 0..1 | How the work provides collective benefit, respects authority to control, and meets responsibility and ethics obligations to the communities involved. *Mandatory when indigenous_data is yes.* | `HuMeta`, `≈CARE: Collective benefit; Responsibility; Ethics`, `≈DataCite: description (Other)` | descriptions (Other, 'CARE statement') |
+| <a id="study.care.local_contexts_project"></a>`study.care.local_contexts_project` | O | 0..1 | URL of a Local Contexts Hub project holding Traditional Knowledge or Biocultural Labels or Notices for this resource. | `Local Contexts: Hub project`, `≈DataCite: relatedIdentifier` | relatedIdentifiers (relatedIdentifierType URL, relationType IsDescribedBy) |
+| <a id="study.care.local_contexts_labels"></a>`study.care.local_contexts_labels` | O | 0..n | Names of Local Contexts Labels or Notices applied by the community (e.g. 'TK Attribution'). | `Local Contexts: TK/BC Labels and Notices` | descriptions (Other, 'CARE statement') |
+
+## Education module
+
+Optional module for studies in education settings: learners' education levels, institutions and instructional settings. Its mandatory elements apply only when a record includes the module.
+
+| Element | Obligation | Cardinality | Definition | Aligned with | DataCite 4.7 mapping |
+|---|---|---|---|---|---|
+| <a id="education.education_levels"></a>`education.education_levels` | M | 1..n | Education level(s) of the participants. Vocabulary: [education_level](#education_level). | `HuMeta`, `ISCED: levels of education 0–8`, `≈ERIC: education level descriptors`, `≈DC: educationLevel` (expert input wanted) `≈schema.org: educationalLevel` (expert input wanted) | subjects (subjectScheme 'HuMeta Education Levels'); ISCED 2011 level as an additional subject (subjectScheme 'ISCED 2011') |
+| <a id="education.undergraduate_levels"></a>`education.undergraduate_levels` | O | 0..n | Course level(s) for undergraduate studies. Vocabulary: [undergraduate_level](#undergraduate_level). | `HuMeta`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Undergraduate Levels') |
+| <a id="education.institution_types"></a>`education.institution_types` | R | 0..n | Type(s) of institution or organization. Vocabulary: [institution_type](#institution_type). | `HuMeta`, `≈ERIC: descriptors` | subjects (subjectScheme 'HuMeta Institution Types') |
+| <a id="education.modality"></a>`education.modality` | R | 0..n | How instruction or participation was delivered. Vocabulary: [modality](#modality). | `HuMeta`, `≈ERIC: descriptors` | subjects (subjectScheme 'HuMeta Modalities') |
+| <a id="education.learning_environments"></a>`education.learning_environments` | R | 0..n | Instructional setting(s). Vocabulary: [learning_environment](#learning_environment). | `HuMeta`, `≈ERIC: descriptors` | subjects (subjectScheme 'HuMeta Learning Environments') |
+| <a id="education.pedagogy"></a>`education.pedagogy` | O | 0..n | Instructional approach(es) used or studied. Vocabulary: [pedagogy](#pedagogy). | `HuMeta`, `≈ERIC: descriptors`, `≈DC: instructionalMethod` (expert input wanted) | subjects (subjectScheme 'HuMeta Instructional Approaches') |
 
 ## Rules
 
@@ -93,18 +110,21 @@ Disciplinary content area of the learning or research studied.
 
 ### <a id="education_level"></a>Education level (`education_level`)
 
-Education level(s) of the learners or participants.
+Education level(s) of the participants. Levels 0–8 are the UNESCO ISCED 2011 levels of education; the last two options are HuMeta additions outside ISCED.
 
 | Code | Label | ERIC descriptors |
 |---|---|---|
-| `early_childhood` | Early childhood / pre-K | Early Childhood Education |
-| `elementary` | Elementary / primary | Elementary Education |
-| `middle_school` | Middle grades / lower secondary | Middle Schools, Secondary Education |
-| `high_school` | High school / upper secondary | High Schools, Secondary Education |
-| `undergraduate` | Undergraduate | Higher Education, Postsecondary Education, Undergraduate Students |
-| `graduate` | Graduate / professional | Higher Education, Graduate Students |
-| `adult_education` | Adult, continuing, or workforce education | Adult Education, Adults |
-| `informal_learning` | Informal or out-of-school learning (any age) | Informal Education |
+| `early_childhood` | Early childhood / pre-K (ISCED 0) | Early Childhood Education |
+| `primary` | Primary / elementary (ISCED 1) | Elementary Education |
+| `lower_secondary` | Lower secondary / middle grades (ISCED 2) | Middle Schools, Secondary Education |
+| `upper_secondary` | Upper secondary / high school (ISCED 3) | High Schools, Secondary Education |
+| `postsecondary_non_tertiary` | Post-secondary non-tertiary, e.g. certificate programs (ISCED 4) | Postsecondary Education |
+| `short_cycle_tertiary` | Short-cycle tertiary, e.g. associate degree (ISCED 5) | Two Year Colleges, Postsecondary Education |
+| `bachelors` | Bachelor's or equivalent (ISCED 6) | Higher Education, Postsecondary Education, Undergraduate Students |
+| `masters` | Master's or equivalent (ISCED 7) | Higher Education, Graduate Students |
+| `doctoral` | Doctoral or equivalent (ISCED 8) | Higher Education, Graduate Students |
+| `adult_education` | Adult, continuing, or workforce education (not an ISCED level) | Adult Education, Adults |
+| `informal_learning` | Informal or out-of-school learning (not an ISCED level) | Informal Education |
 
 ### <a id="undergraduate_level"></a>Undergraduate course level (`undergraduate_level`)
 
@@ -155,16 +175,14 @@ Type(s) of institution or organization where the study took place.
 
 ### <a id="locale"></a>Locale (`locale`)
 
-Community type where the study took place (NCES-style locale categories).
+Community type where the study took place, using the four NCES locale types. Choose more than one for multi-site studies. For fully online studies, leave blank and use Modality.
 
 | Code | Label | ERIC descriptors |
 |---|---|---|
-| `city` | City | Urban Areas |
-| `suburban` | Suburban |  |
-| `town` | Town |  |
-| `rural` | Rural | Rural Areas |
-| `online` | Online / virtual | Distance Education |
-| `multiple_locales` | Multiple locales |  |
+| `city` | City (NCES 11–13) | Urban Areas |
+| `suburb` | Suburb (NCES 21–23) |  |
+| `town` | Town (NCES 31–33) |  |
+| `rural` | Rural (NCES 41–43) | Rural Areas |
 
 ### <a id="modality"></a>Instructional modality (`modality`)
 

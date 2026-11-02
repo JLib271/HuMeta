@@ -1,17 +1,18 @@
-# Endorsing the STEMEd+ Metadata Application Profile
+# Endorsing the HuMeta profile
 
 Version 1.0.0 of the profile will be submitted to scientific and professional
 societies for formal endorsement. Endorsement turns a project specification
 into a community standard: it signals that a field's own organizations
-recommend it for describing STEM education research data, instruments, and
-studies. Endorsements are listed in the profile and in its citation record.
+recommend it for describing research data, instruments, and studies in their
+field. A society endorses the core and the field module (Education, Social
+Science, or Humanities) that serves its members. Endorsements are listed in the profile and in its citation record.
 
 ## What endorsement means
 
 An endorsing organization states that it:
 
-1. Recommends the STEMEd+ Metadata Application Profile (version 1.0) to its
-   members for describing STEM education research data, instruments, and
+1. Recommends the HuMeta profile (version 1.0) and its [module]
+   module to its members for describing research data, instruments, and
    studies when depositing or sharing them; and
 2. May name a liaison to the profile's governance, to bring members' needs to
    future versions.
@@ -25,7 +26,7 @@ any particular repository or product.
 | When | Step |
 |---|---|
 | Nov 2026 | Announce draft 1.0.0-draft.1; open public comment (GitHub issues labeled `proposal`, plus an email option for non-GitHub users) |
-| Nov–Dec 2026 | Targeted review: STEM education researchers in several disciplines, research data librarians, IRB/research-compliance staff, and Indigenous data governance experts (for the CARE elements) |
+| Nov–Dec 2026 | Targeted review: researchers in education, the social sciences, and the humanities (one working group per module), research data librarians, IRB/research-compliance staff, and Indigenous data governance experts (for the CARE elements) |
 | By mid-Dec 2026 | Close comment (at least 30 days); publish a response to every comment |
 | Jan 2027 | Release 1.0.0; register its DOI (DataCite resourceTypeGeneral `Standard`) |
 | Jan–Feb 2027 | Send endorsement requests; follow each society's process |

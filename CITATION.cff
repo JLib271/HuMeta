@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this software or its instrument library, please cite it as below."
-title: "OpenEdMetadata: Open Educational Metadata Platform and STEMEd+ Instrument Library"
+title: "HuMeta: Social Science, Humanities, and Education Study Metadata Profile, and the HuMeta Portal"
 type: software
 authors:
   - family-names: Libarkin
@@ -9,7 +9,10 @@ authors:
 repository-code: "https://github.com/JLib271/OpenEdMetadata"
 license: AGPL-3.0-or-later
 keywords:
-  - STEM education research
+  - education research
+  - social science research
+  - humanities research
+  - metadata standards
   - research metadata
   - measurement instruments
   - open science

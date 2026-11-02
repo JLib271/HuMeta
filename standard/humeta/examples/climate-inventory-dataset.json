@@ -1,5 +1,5 @@
 {
-  "profile": "stemed-ap",
+  "profile": "humeta",
   "profile_version": "1.0.0-draft.1",
   "resource": {
     "title": "Example: Pre/post climate change understanding in an introductory Earth science course",
@@ -14,10 +14,10 @@
     "publication_year": 2027,
     "resource_type": "Dataset",
     "identifier": {
-      "value": "10.5072/example-stemed-ap-1",
+      "value": "10.5072/example-humeta-1",
       "type": "DOI"
     },
-    "description": "Illustrative record (fictional study) showing how a dataset collected with the Climate Change Concept Inventory is described with the STEMEd+ Application Profile.",
+    "description": "Illustrative record (fictional study) showing how a dataset collected with the Climate Change Concept Inventory is described with the HuMeta profile, including its Education module.",
     "keywords": [
       "climate change",
       "concept inventory"
@@ -43,7 +43,7 @@
     },
     "related": []
   },
-  "stemed": {
+  "study": {
     "design": {
       "topic": "Climate change understanding in introductory Earth science",
       "research_questions": "How does students' understanding of basic climate change processes change over a semester of active-learning instruction?",
@@ -70,32 +70,12 @@
       "participant_roles": [
         "students"
       ],
-      "education_levels": [
-        "undergraduate"
-      ],
-      "undergraduate_levels": [
-        "introductory"
-      ],
       "description": "Students enrolled in two sections of an introductory Earth science course.",
       "sample_size": 212
     },
     "context": {
-      "institution_types": [
-        "research_university"
-      ],
       "locale": [
         "city"
-      ]
-    },
-    "setting": {
-      "modality": [
-        "in_person"
-      ],
-      "learning_environments": [
-        "large_lecture"
-      ],
-      "pedagogy": [
-        "active_learning"
       ]
     },
     "evidence": {
@@ -127,5 +107,25 @@
       "local_contexts_project": null,
       "local_contexts_labels": []
     }
+  },
+  "education": {
+    "education_levels": [
+      "bachelors"
+    ],
+    "undergraduate_levels": [
+      "introductory"
+    ],
+    "institution_types": [
+      "research_university"
+    ],
+    "modality": [
+      "in_person"
+    ],
+    "learning_environments": [
+      "large_lecture"
+    ],
+    "pedagogy": [
+      "active_learning"
+    ]
   }
 }

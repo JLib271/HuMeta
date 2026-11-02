@@ -12,7 +12,7 @@ are licensed under the
 You may reuse and adapt them, including commercially, if you credit the
 library and release adapted material under the same license.
 
-Suggested attribution: *STEMEd+ Instrument Library, OpenEdMetadata
+Suggested attribution: *HuMeta Instrument Library, HuMeta Portal
 (https://github.com/JLib271/OpenEdMetadata).*
 
 The JSON Schemas in `library/schema/` are part of the library content and

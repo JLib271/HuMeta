@@ -1,0 +1,1418 @@
+{
+  "profile": "humeta",
+  "title": "HuMeta",
+  "full_title": "Social Science, Humanities, and Education Study Metadata Profile",
+  "short_name": "HuMeta",
+  "profile_version": "1.0.0-draft.1",
+  "status": "draft",
+  "namespace": "humeta",
+  "namespace_uri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/elements.md#",
+  "datacite_schema": "4.7",
+  "obligations": {
+    "M": "Mandatory: every record must have it.",
+    "MA": "Mandatory if applicable: required when the stated condition holds.",
+    "R": "Recommended.",
+    "O": "Optional."
+  },
+  "standards": {
+    "humeta": {
+      "short": "HuMeta",
+      "name": "HuMeta profile (element or vocabulary defined by this profile)",
+      "url": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md"
+    },
+    "datacite": {
+      "short": "DataCite",
+      "name": "DataCite Metadata Schema 4.7",
+      "url": "https://schema.datacite.org/"
+    },
+    "dcterms": {
+      "short": "DC",
+      "name": "Dublin Core (DCMI Metadata Terms)",
+      "url": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+    },
+    "schemaorg": {
+      "short": "schema.org",
+      "name": "schema.org Dataset",
+      "url": "https://schema.org/Dataset"
+    },
+    "eric": {
+      "short": "ERIC",
+      "name": "ERIC Thesaurus",
+      "url": "https://eric.ed.gov/?ti=all"
+    },
+    "orcid": {
+      "short": "ORCID",
+      "name": "ORCID iD",
+      "url": "https://orcid.org/"
+    },
+    "spdx": {
+      "short": "SPDX",
+      "name": "SPDX License List",
+      "url": "https://spdx.org/licenses/"
+    },
+    "bcp47": {
+      "short": "BCP 47",
+      "name": "IETF BCP 47 language tags",
+      "url": "https://www.rfc-editor.org/info/bcp47"
+    },
+    "iso3166": {
+      "short": "ISO 3166",
+      "name": "ISO 3166-1 alpha-2 country codes",
+      "url": "https://www.iso.org/iso-3166-country-codes.html"
+    },
+    "iso8601": {
+      "short": "ISO 8601",
+      "name": "ISO 8601 dates",
+      "url": "https://www.iso.org/iso-8601-date-and-time-format.html"
+    },
+    "nces_locale": {
+      "short": "NCES",
+      "name": "NCES locale classification (locale types City, Suburb, Town, Rural)",
+      "url": "https://nces.ed.gov/programs/edge/Geographic/LocaleBoundaries"
+    },
+    "isced": {
+      "short": "ISCED",
+      "name": "UNESCO International Standard Classification of Education (ISCED 2011)",
+      "url": "https://uis.unesco.org/sites/default/files/documents/international-standard-classification-of-education-isced-2011-en.pdf"
+    },
+    "testing_standards": {
+      "short": "AERA/APA/NCME",
+      "name": "Standards for Educational and Psychological Testing (2014)",
+      "url": "https://www.testingstandards.net/"
+    },
+    "common_rule": {
+      "short": "Common Rule",
+      "name": "US Common Rule for human-subjects research (45 CFR 46)",
+      "url": "https://www.hhs.gov/ohrp/regulations-and-policy/regulations/45-cfr-46/"
+    },
+    "ferpa": {
+      "short": "FERPA",
+      "name": "Family Educational Rights and Privacy Act (34 CFR Part 99)",
+      "url": "https://studentprivacy.ed.gov/"
+    },
+    "care": {
+      "short": "CARE",
+      "name": "CARE Principles for Indigenous Data Governance",
+      "url": "https://www.gida-global.org/care"
+    },
+    "local_contexts": {
+      "short": "Local Contexts",
+      "name": "Local Contexts Traditional Knowledge and Biocultural Labels and Notices",
+      "url": "https://localcontexts.org/"
+    }
+  },
+  "modules": {
+    "core": {
+      "label": "Core",
+      "definition": "Elements for any study in the social sciences, humanities, or education."
+    },
+    "education": {
+      "label": "Education",
+      "definition": "Optional module for studies in education settings: learners' education levels, institutions and instructional settings. Its mandatory elements apply only when a record includes the module.",
+      "record_key": "education"
+    }
+  },
+  "elements": [
+    {
+      "id": "resource.title",
+      "label": "Title",
+      "obligation": "M",
+      "cardinality": "1",
+      "type": "text",
+      "definition": "Name of the resource.",
+      "datacite": "titles.title",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "titles.title",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "title",
+          "match": "exact"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "name",
+          "match": "exact"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "resource.creators",
+      "label": "Creators",
+      "obligation": "M",
+      "cardinality": "1..n",
+      "type": "creator",
+      "definition": "People or organizations primarily responsible for the resource, with ORCID iDs where available.",
+      "datacite": "creators (nameIdentifier with nameIdentifierScheme ORCID; affiliation)",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "creators",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "creator",
+          "match": "exact"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "creator",
+          "match": "exact"
+        },
+        {
+          "standard": "orcid",
+          "term": "ORCID iD (nameIdentifier)",
+          "match": "exact"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "resource.publisher",
+      "label": "Publisher",
+      "obligation": "M",
+      "cardinality": "1",
+      "type": "text",
+      "definition": "Entity that holds, archives, or makes the resource available (usually the repository or institution).",
+      "datacite": "publisher",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "publisher",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "publisher",
+          "match": "exact"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "publisher",
+          "match": "exact"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "resource.publication_year",
+      "label": "Publication year",
+      "obligation": "M",
+      "cardinality": "1",
+      "type": "year",
+      "definition": "Year the resource was or will be made publicly available.",
+      "datacite": "publicationYear",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "publicationYear",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "issued",
+          "match": "close"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "datePublished",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "resource.resource_type",
+      "label": "Resource type",
+      "obligation": "M",
+      "cardinality": "1",
+      "type": "enum",
+      "values": [
+        "Dataset",
+        "Instrument",
+        "StudyRegistration",
+        "Text",
+        "Software",
+        "Collection",
+        "Other"
+      ],
+      "definition": "General type of the resource, using DataCite resourceTypeGeneral values.",
+      "datacite": "types.resourceTypeGeneral; types.resourceType = 'HuMeta <type>'",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "resourceTypeGeneral",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "type",
+          "match": "close"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "@type",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "resource.identifier",
+      "label": "Identifier",
+      "obligation": "O",
+      "cardinality": "0..1",
+      "type": "identifier",
+      "definition": "Persistent identifier (DOI preferred) once one has been assigned.",
+      "datacite": "identifiers (DOI) or alternateIdentifiers",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "identifier",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "identifier",
+          "match": "exact"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "identifier",
+          "match": "exact"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "resource.description",
+      "label": "Description",
+      "obligation": "R",
+      "cardinality": "0..1",
+      "type": "text",
+      "definition": "Abstract or summary of the resource.",
+      "datacite": "descriptions (descriptionType Abstract)",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "description (Abstract)",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "abstract",
+          "match": "exact"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "description",
+          "match": "exact"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "resource.keywords",
+      "label": "Keywords",
+      "obligation": "O",
+      "cardinality": "0..n",
+      "type": "text",
+      "definition": "Free-text keywords.",
+      "datacite": "subjects (no scheme)",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "subject (no scheme)",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "subject",
+          "match": "close"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "keywords",
+          "match": "exact"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "resource.language",
+      "label": "Language",
+      "obligation": "R",
+      "cardinality": "0..1",
+      "type": "language",
+      "definition": "Primary language of the resource (BCP 47 code, e.g. en).",
+      "datacite": "language",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "language",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "language",
+          "match": "exact"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "inLanguage",
+          "match": "exact"
+        },
+        {
+          "standard": "bcp47",
+          "term": "language tag",
+          "match": "exact"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "resource.license",
+      "label": "License",
+      "obligation": "R",
+      "cardinality": "0..1",
+      "type": "license",
+      "definition": "License for the resource, as an SPDX identifier where possible (e.g. CC-BY-4.0).",
+      "datacite": "rightsList (rightsIdentifier, rightsIdentifierScheme SPDX)",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "rightsList",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "license",
+          "match": "exact"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "license",
+          "match": "exact"
+        },
+        {
+          "standard": "spdx",
+          "term": "license identifier",
+          "match": "exact"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "resource.funding",
+      "label": "Funding",
+      "obligation": "O",
+      "cardinality": "0..n",
+      "type": "funding",
+      "definition": "Funders and award numbers.",
+      "datacite": "fundingReferences",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "fundingReferences",
+          "match": "exact"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "funder",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "resource.collection_dates",
+      "label": "Data collection dates",
+      "obligation": "R",
+      "cardinality": "0..1",
+      "type": "date_range",
+      "definition": "Start and end of data collection (ISO 8601 dates).",
+      "datacite": "dates (dateType Collected, as start/end)",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "date (Collected)",
+          "match": "exact"
+        },
+        {
+          "standard": "iso8601",
+          "term": "date",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "temporal",
+          "match": "related"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "temporalCoverage",
+          "match": "related"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "resource.geography",
+      "label": "Geographic coverage",
+      "obligation": "R",
+      "cardinality": "0..1",
+      "type": "geography",
+      "definition": "Countries (ISO 3166-1 alpha-2) and, for the US, states (USPS codes) where data were collected.",
+      "datacite": "geoLocations (geoLocationPlace)",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "geoLocationPlace",
+          "match": "exact"
+        },
+        {
+          "standard": "iso3166",
+          "term": "country code",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "spatial",
+          "match": "close"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "spatialCoverage",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "resource.related",
+      "label": "Related resources",
+      "obligation": "O",
+      "cardinality": "0..n",
+      "type": "related",
+      "definition": "Related publications, datasets, preregistrations, or instruments, with a DataCite relationType.",
+      "datacite": "relatedIdentifiers",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "relatedIdentifiers",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "relation",
+          "match": "close"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "citation",
+          "match": "related"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.design.topic",
+      "label": "Topic / content domain",
+      "obligation": "R",
+      "cardinality": "0..1",
+      "type": "text",
+      "definition": "The main subject or topic of the study, in the researcher's words (e.g., 'introductory geology lab learning').",
+      "datacite": "subjects (no scheme)",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "design.topic",
+          "match": "exact"
+        },
+        {
+          "standard": "datacite",
+          "term": "subject",
+          "match": "close"
+        },
+        {
+          "standard": "dcterms",
+          "term": "subject",
+          "match": "close"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "about",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.design.research_questions",
+      "label": "Research questions and aims",
+      "obligation": "R",
+      "cardinality": "0..1",
+      "type": "text",
+      "definition": "Primary research questions, objectives, or hypotheses.",
+      "datacite": "descriptions (descriptionType Methods)",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "design.research_questions",
+          "match": "exact"
+        },
+        {
+          "standard": "datacite",
+          "term": "description (Methods)",
+          "match": "close"
+        },
+        {
+          "standard": "dcterms",
+          "term": "description",
+          "match": "related"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.design.unit_of_analysis",
+      "label": "Unit of analysis",
+      "obligation": "O",
+      "cardinality": "0..n",
+      "type": "vocab",
+      "vocabulary": "unit_of_analysis",
+      "definition": "The unit(s) the analysis is about.",
+      "datacite": "subjects (subjectScheme 'HuMeta Units of Analysis')",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "unit_of_analysis vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "datacite",
+          "term": "subject (scheme)",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.design.sampling_procedure",
+      "label": "Sampling procedure",
+      "obligation": "O",
+      "cardinality": "0..n",
+      "type": "vocab",
+      "vocabulary": "sampling_procedure",
+      "definition": "How participants or units were selected.",
+      "datacite": "subjects (subjectScheme 'HuMeta Sampling Procedures'); descriptions (Methods)",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "sampling_procedure vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "datacite",
+          "term": "subject (scheme)",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.constructs",
+      "label": "Constructs measured",
+      "obligation": "MA",
+      "cardinality": "0..n",
+      "type": "construct",
+      "condition": "Mandatory when resource_type is Dataset or Instrument.",
+      "definition": "Constructs measured, from the HuMeta construct vocabulary (library/constructs.json), optionally with the instrument, version and subscale used.",
+      "vocabulary_file": "library/constructs.json",
+      "datacite": "subjects (subjectScheme 'HuMeta Constructs', valueURI per construct); for datasets, relatedIdentifiers to the instrument's library record (URL, relationType IsCollectedBy) and its publication (DOI, relationType References); ERIC descriptors as additional subjects",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "construct vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "eric",
+          "term": "descriptors",
+          "match": "close"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "variableMeasured",
+          "match": "close"
+        },
+        {
+          "standard": "datacite",
+          "term": "subject (scheme)",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.discipline",
+      "label": "Discipline",
+      "obligation": "R",
+      "cardinality": "0..n",
+      "type": "vocab",
+      "vocabulary": "discipline",
+      "definition": "STEM discipline(s) of the learning or research.",
+      "datacite": "subjects (subjectScheme 'HuMeta Disciplines')",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "discipline vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "eric",
+          "term": "descriptors",
+          "match": "close"
+        },
+        {
+          "standard": "dcterms",
+          "term": "subject",
+          "match": "close"
+        },
+        {
+          "standard": "datacite",
+          "term": "subject (scheme)",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.population.participant_roles",
+      "label": "Participant population",
+      "obligation": "M",
+      "cardinality": "1..n",
+      "type": "vocab",
+      "vocabulary": "participant_role",
+      "definition": "Who the participants are.",
+      "datacite": "subjects (subjectScheme 'HuMeta Participant Roles')",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "participant_role vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "datacite",
+          "term": "subject (scheme)",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "education.education_levels",
+      "label": "Education level",
+      "obligation": "M",
+      "cardinality": "1..n",
+      "type": "vocab",
+      "vocabulary": "education_level",
+      "definition": "Education level(s) of the participants.",
+      "datacite": "subjects (subjectScheme 'HuMeta Education Levels'); ISCED 2011 level as an additional subject (subjectScheme 'ISCED 2011')",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "education_level vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "isced",
+          "term": "levels of education 0–8",
+          "match": "exact",
+          "note": "Options 0–8 are the ISCED 2011 levels; adult and informal learning are HuMeta additions outside ISCED."
+        },
+        {
+          "standard": "eric",
+          "term": "education level descriptors",
+          "match": "close"
+        },
+        {
+          "standard": "dcterms",
+          "term": "educationLevel",
+          "match": "close",
+          "status": "seeking_input",
+          "note": "Dublin Core's educationLevel describes the audience a resource is intended for; this element describes the participants studied."
+        },
+        {
+          "standard": "schemaorg",
+          "term": "educationalLevel",
+          "match": "close",
+          "status": "seeking_input",
+          "note": "schema.org's educationalLevel describes the level a resource is designed for; this element describes the participants studied."
+        }
+      ],
+      "module": "education"
+    },
+    {
+      "id": "education.undergraduate_levels",
+      "label": "Undergraduate course level",
+      "obligation": "O",
+      "cardinality": "0..n",
+      "type": "vocab",
+      "vocabulary": "undergraduate_level",
+      "definition": "Course level(s) for undergraduate studies.",
+      "datacite": "subjects (subjectScheme 'HuMeta Undergraduate Levels')",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "undergraduate_level vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "datacite",
+          "term": "subject (scheme)",
+          "match": "close"
+        }
+      ],
+      "module": "education"
+    },
+    {
+      "id": "study.population.description",
+      "label": "Population description",
+      "obligation": "R",
+      "cardinality": "0..1",
+      "type": "text",
+      "definition": "Narrative description of the participants and sampling, without identifying information.",
+      "datacite": "descriptions (descriptionType Methods)",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "population.description",
+          "match": "exact"
+        },
+        {
+          "standard": "datacite",
+          "term": "description (Methods)",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.population.sample_size",
+      "label": "Sample size",
+      "obligation": "R",
+      "cardinality": "0..1",
+      "type": "integer",
+      "definition": "Number of participants (or units) in the data.",
+      "datacite": "sizes ('N = <n> participants')",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "population.sample_size",
+          "match": "exact"
+        },
+        {
+          "standard": "datacite",
+          "term": "sizes",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "education.institution_types",
+      "label": "Institution type",
+      "obligation": "R",
+      "cardinality": "0..n",
+      "type": "vocab",
+      "vocabulary": "institution_type",
+      "definition": "Type(s) of institution or organization.",
+      "datacite": "subjects (subjectScheme 'HuMeta Institution Types')",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "institution_type vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "eric",
+          "term": "descriptors",
+          "match": "close"
+        }
+      ],
+      "module": "education"
+    },
+    {
+      "id": "study.context.locale",
+      "label": "Locale",
+      "obligation": "R",
+      "cardinality": "0..n",
+      "type": "vocab",
+      "vocabulary": "locale",
+      "definition": "Community type(s) where the study took place.",
+      "datacite": "subjects (subjectScheme 'HuMeta Locales')",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "locale vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "nces_locale",
+          "term": "locale type",
+          "match": "exact"
+        },
+        {
+          "standard": "eric",
+          "term": "descriptors",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "education.modality",
+      "label": "Instructional modality",
+      "obligation": "R",
+      "cardinality": "0..n",
+      "type": "vocab",
+      "vocabulary": "modality",
+      "definition": "How instruction or participation was delivered.",
+      "datacite": "subjects (subjectScheme 'HuMeta Modalities')",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "modality vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "eric",
+          "term": "descriptors",
+          "match": "close"
+        }
+      ],
+      "module": "education"
+    },
+    {
+      "id": "education.learning_environments",
+      "label": "Learning environment",
+      "obligation": "R",
+      "cardinality": "0..n",
+      "type": "vocab",
+      "vocabulary": "learning_environment",
+      "definition": "Instructional setting(s).",
+      "datacite": "subjects (subjectScheme 'HuMeta Learning Environments')",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "learning_environment vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "eric",
+          "term": "descriptors",
+          "match": "close"
+        }
+      ],
+      "module": "education"
+    },
+    {
+      "id": "education.pedagogy",
+      "label": "Instructional approach",
+      "obligation": "O",
+      "cardinality": "0..n",
+      "type": "vocab",
+      "vocabulary": "pedagogy",
+      "definition": "Instructional approach(es) used or studied.",
+      "datacite": "subjects (subjectScheme 'HuMeta Instructional Approaches')",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "pedagogy vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "eric",
+          "term": "descriptors",
+          "match": "close"
+        },
+        {
+          "standard": "dcterms",
+          "term": "instructionalMethod",
+          "match": "close",
+          "status": "seeking_input",
+          "note": "Dublin Core's instructionalMethod describes the teaching method a resource is designed to support; this element describes the approach used or studied in the research."
+        }
+      ],
+      "module": "education"
+    },
+    {
+      "id": "study.evidence.study_designs",
+      "label": "Study design",
+      "obligation": "MA",
+      "cardinality": "0..n",
+      "type": "vocab",
+      "vocabulary": "study_design",
+      "condition": "Mandatory when resource_type is Dataset or StudyRegistration.",
+      "definition": "Design(s) that produced the evidence.",
+      "datacite": "subjects (subjectScheme 'HuMeta Study Designs'); descriptions (Methods)",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "study_design vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "eric",
+          "term": "descriptors",
+          "match": "close"
+        },
+        {
+          "standard": "datacite",
+          "term": "description (Methods)",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.evidence.measurement_evidence",
+      "label": "Measurement evidence",
+      "obligation": "MA",
+      "cardinality": "0..n",
+      "type": "vocab",
+      "vocabulary": "measurement_evidence",
+      "condition": "Mandatory when resource_type is Instrument.",
+      "definition": "Kinds of reliability and validity evidence the resource provides.",
+      "datacite": "subjects (subjectScheme 'HuMeta Measurement Evidence')",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "measurement_evidence vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "testing_standards",
+          "term": "sources of validity evidence",
+          "match": "close"
+        },
+        {
+          "standard": "eric",
+          "term": "descriptors",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.evidence.data_collection_methods",
+      "label": "Data collection method",
+      "obligation": "R",
+      "cardinality": "0..n",
+      "type": "vocab",
+      "vocabulary": "data_collection_method",
+      "definition": "How data were collected.",
+      "datacite": "subjects (subjectScheme 'HuMeta Data Collection Methods')",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "data_collection_method vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "eric",
+          "term": "descriptors",
+          "match": "close"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "measurementTechnique",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.ethics.human_subjects_review",
+      "label": "Human-subjects review",
+      "obligation": "M",
+      "cardinality": "1",
+      "type": "vocab",
+      "vocabulary": "human_subjects_review",
+      "definition": "Ethics / IRB review status, as reported by the researcher.",
+      "datacite": "descriptions (descriptionType Other, 'Ethics and access')",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "human_subjects_review vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "common_rule",
+          "term": "IRB review / exemption",
+          "match": "related"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.ethics.consent",
+      "label": "Participation consent",
+      "obligation": "R",
+      "cardinality": "0..1",
+      "type": "vocab",
+      "vocabulary": "consent",
+      "definition": "How participants agreed to take part.",
+      "datacite": "descriptions (Other, 'Ethics and access')",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "consent vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "common_rule",
+          "term": "informed consent / waiver",
+          "match": "related"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.ethics.consent_for_sharing",
+      "label": "Consent for data sharing",
+      "obligation": "M",
+      "cardinality": "1",
+      "type": "vocab",
+      "vocabulary": "consent_for_sharing",
+      "definition": "What participants allow regarding sharing beyond the research team.",
+      "datacite": "descriptions (Other, 'Ethics and access'); rightsList",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "consent_for_sharing vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "conditionsOfAccess",
+          "match": "related"
+        },
+        {
+          "standard": "datacite",
+          "term": "rightsList",
+          "match": "related"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.ethics.identifiability",
+      "label": "Identifiability",
+      "obligation": "M",
+      "cardinality": "1",
+      "type": "vocab",
+      "vocabulary": "identifiability",
+      "definition": "Identifiability of the data.",
+      "datacite": "descriptions (Other, 'Ethics and access')",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "identifiability vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "ferpa",
+          "term": "de-identified records",
+          "match": "related"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.ethics.sensitivity_flags",
+      "label": "Sensitivity flags",
+      "obligation": "R",
+      "cardinality": "0..n",
+      "type": "vocab",
+      "vocabulary": "sensitivity_flag",
+      "definition": "Kinds of sensitive information in the underlying data.",
+      "datacite": "descriptions (Other, 'Ethics and access')",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "sensitivity_flag vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "ferpa",
+          "term": "education records",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.ethics.access_level",
+      "label": "Access level",
+      "obligation": "M",
+      "cardinality": "1",
+      "type": "vocab",
+      "vocabulary": "access_level",
+      "definition": "How the data can be accessed.",
+      "datacite": "rightsList (access statement)",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "access_level vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "accessRights",
+          "match": "close"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "conditionsOfAccess",
+          "match": "close"
+        },
+        {
+          "standard": "datacite",
+          "term": "rightsList",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.ethics.governance_notes",
+      "label": "Governance notes",
+      "obligation": "O",
+      "cardinality": "0..1",
+      "type": "text",
+      "definition": "Approval references, data-use restrictions, retention or de-identification requirements (no confidential details).",
+      "datacite": "descriptions (Other, 'Ethics and access')",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "ethics.governance_notes",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "accessRights",
+          "match": "related"
+        },
+        {
+          "standard": "datacite",
+          "term": "description (Other)",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.care.indigenous_data",
+      "label": "Indigenous data",
+      "obligation": "M",
+      "cardinality": "1",
+      "type": "vocab",
+      "vocabulary": "indigenous_data",
+      "definition": "Whether the resource contains or derives from data about Indigenous Peoples, nations, communities, lands, territories, or knowledges.",
+      "datacite": "descriptions (Other, 'CARE statement')",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "indigenous_data vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "care",
+          "term": "scope: Indigenous data",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.care.governance",
+      "label": "Indigenous data governance",
+      "obligation": "MA",
+      "cardinality": "0..1",
+      "type": "vocab",
+      "vocabulary": "indigenous_governance",
+      "condition": "Mandatory when indigenous_data is yes.",
+      "definition": "How Indigenous authority to control the data is exercised (CARE: Authority to control).",
+      "datacite": "descriptions (Other, 'CARE statement'); rightsList",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "indigenous_governance vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "care",
+          "term": "Authority to control",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.care.statement",
+      "label": "CARE statement",
+      "obligation": "MA",
+      "cardinality": "0..1",
+      "type": "text",
+      "condition": "Mandatory when indigenous_data is yes.",
+      "definition": "How the work provides collective benefit, respects authority to control, and meets responsibility and ethics obligations to the communities involved.",
+      "datacite": "descriptions (Other, 'CARE statement')",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "care.statement",
+          "match": "exact"
+        },
+        {
+          "standard": "care",
+          "term": "Collective benefit; Responsibility; Ethics",
+          "match": "close"
+        },
+        {
+          "standard": "datacite",
+          "term": "description (Other)",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.care.local_contexts_project",
+      "label": "Local Contexts project",
+      "obligation": "O",
+      "cardinality": "0..1",
+      "type": "url",
+      "definition": "URL of a Local Contexts Hub project holding Traditional Knowledge or Biocultural Labels or Notices for this resource.",
+      "datacite": "relatedIdentifiers (relatedIdentifierType URL, relationType IsDescribedBy)",
+      "alignments": [
+        {
+          "standard": "local_contexts",
+          "term": "Hub project",
+          "match": "exact"
+        },
+        {
+          "standard": "datacite",
+          "term": "relatedIdentifier",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.care.local_contexts_labels",
+      "label": "Local Contexts Labels and Notices",
+      "obligation": "O",
+      "cardinality": "0..n",
+      "type": "text",
+      "definition": "Names of Local Contexts Labels or Notices applied by the community (e.g. 'TK Attribution').",
+      "datacite": "descriptions (Other, 'CARE statement')",
+      "alignments": [
+        {
+          "standard": "local_contexts",
+          "term": "TK/BC Labels and Notices",
+          "match": "exact"
+        }
+      ],
+      "module": "core"
+    }
+  ],
+  "rules": [
+    {
+      "id": "R1",
+      "severity": "error",
+      "check": "constructs_required",
+      "message": "Datasets and instruments must list at least one construct measured."
+    },
+    {
+      "id": "R2",
+      "severity": "error",
+      "check": "design_required",
+      "message": "Datasets and study registrations must list at least one study design."
+    },
+    {
+      "id": "R3",
+      "severity": "error",
+      "check": "measurement_evidence_required",
+      "message": "Instruments must list at least one kind of measurement evidence."
+    },
+    {
+      "id": "R4",
+      "severity": "error",
+      "check": "open_requires_deidentified",
+      "message": "Open access requires data that are de-identified, anonymous, aggregate-only, synthetic, or not participant data."
+    },
+    {
+      "id": "R5",
+      "severity": "error",
+      "check": "open_requires_sharing_consent",
+      "message": "Open access requires consent for broad sharing (or no human-subjects data)."
+    },
+    {
+      "id": "R6",
+      "severity": "error",
+      "check": "sharing_requires_review",
+      "message": "Data cannot be open or registered-access while human-subjects review is 'not yet assessed' or 'pending'."
+    },
+    {
+      "id": "R7",
+      "severity": "error",
+      "check": "care_requires_governance",
+      "message": "Indigenous data require a governance arrangement and a CARE statement."
+    },
+    {
+      "id": "R8",
+      "severity": "error",
+      "check": "care_open_requires_agreement",
+      "message": "Indigenous data may be open only under a community data governance agreement or tribal review approval."
+    },
+    {
+      "id": "R9",
+      "severity": "warning",
+      "check": "education_records_review",
+      "message": "Data from education records (FERPA): confirm the institution's FERPA review before any sharing."
+    },
+    {
+      "id": "R10",
+      "severity": "warning",
+      "check": "care_unknown",
+      "message": "Indigenous data status is unknown; assess it before sharing."
+    },
+    {
+      "id": "R11",
+      "severity": "warning",
+      "check": "care_prompt",
+      "message": "A specific community or a tribal college is involved; confirm whether the data are Indigenous data."
+    },
+    {
+      "id": "R12",
+      "severity": "warning",
+      "check": "identifiers_not_shared",
+      "message": "Direct identifiers are flagged; they must be removed before the data are shared."
+    }
+  ],
+  "match_types": {
+    "exact": "Same meaning; values can be copied directly.",
+    "close": "Near-equivalent; usable interchangeably in most cases.",
+    "related": "Overlapping meaning; not a substitute."
+  },
+  "alignment_status": {
+    "seeking_input": "We are seeking expert input on this alignment."
+  }
+}
