@@ -24,7 +24,7 @@ from oem.app.profile_form import library
 
 PRIVATE = "Upload my dataset (.csv): analyzed in this session only, never stored"
 PUBLISHED = "Use a published public dataset"
-EXAMPLE = "Use example data shaped like my variable plan (synthetic, not research data)"
+EXAMPLE = "Use example data (synthetic, not research data)"
 TOOLS = [
     ("R", "https://www.r-project.org/", "free statistics software; the downloadable script uses it"),
     ("psych (R package)", "https://CRAN.R-project.org/package=psych", "reliability (alpha, omega), scale scoring, factor analysis"),
@@ -50,7 +50,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
 
     # ------------------------------------------------------------ Step 1
     st.subheader("Step 1 · Data")
-    options = [PRIVATE] + ([PUBLISHED] if load_published_datasets() else []) + ([EXAMPLE] if has_plan else [])
+    options = [EXAMPLE, PRIVATE] + ([PUBLISHED] if load_published_datasets() else [])
     source = st.radio("Data to analyze", options, key="m5_source")
     df = None
     if source == PRIVATE:
@@ -71,8 +71,15 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
         except (KeyError, TypeError, OSError, pd.errors.EmptyDataError, pd.errors.ParserError) as error:
             st.error(f"Could not load the dataset: {error}")
     else:
-        st.info("Example data are synthetic, generated to look like your plan's codebook. Use them to try the module, "
-                "not for research.")
+        if has_plan:
+            st.info("Example data are synthetic, generated to look like your Module 2 variable plan's codebook. Use "
+                    "them to try the module, not for research.")
+        else:
+            plan, has_plan = A.sample_plan(lib), True
+            st.info("You have no variable plan yet, so the example uses a sample one: Self-Determination Theory's "
+                    "autonomy, competence, and relatedness, each measured with 5-point agreement items before and after "
+                    "a course, for 120 made-up participants in three groups. The data are synthetic, for trying the "
+                    "module only. Save your own plan in Module 2 to get example data shaped like your study.")
         df = A.example_data(lib, plan)
     if df is None or df.empty:
         if not has_plan:

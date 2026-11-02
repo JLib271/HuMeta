@@ -195,3 +195,13 @@ def test_r_script_includes_chosen_tests():
                     "family = binomial", "confint(fit)", 'v("Score (pre)")']:
         assert snippet in script
     assert "Comparisons and regression" not in A.r_script([], "mean", "pearson")
+
+
+def test_sample_plan_gives_example_data_without_a_plan_of_your_own():
+    from oem.library import Library
+    lib = Library.load()
+    plan = A.sample_plan(lib)
+    data = A.example_data(lib, plan)
+    scales, standard, _ = A.match_columns(lib, plan, list(data.columns))
+    assert len(scales) == 6 and all(not s.missing for s in scales)  # 3 constructs x pre/post, every item found
+    assert standard == ["participant_id"] and "example_group" in data.columns and len(data) == 120
