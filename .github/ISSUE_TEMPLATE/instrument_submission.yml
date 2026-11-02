@@ -1,11 +1,11 @@
-name: Instrument for the library
-description: Propose adding (or correcting) an instrument in the library
+name: Recommend an instrument
+description: Recommend an instrument for the library (or a correction to one)
 labels: [library]
 body:
   - type: markdown
     attributes:
       value: |
-        You can also open a pull request directly; see CONTRIBUTING.md. **Do not paste item text here** unless the instrument's license allows it.
+        You can also recommend instruments in the HuMeta Portal (Module 2 → **Recommend an instrument**), with no GitHub account needed, or open a pull request directly (see CONTRIBUTING.md). **Do not paste item text here** unless the instrument's license allows it.
   - type: input
     id: name
     attributes:

@@ -233,6 +233,7 @@ value_propositions = [
             "Choose a theory, lens, or your own framework; it supplies the concepts.",
             "Give each concept a measure: a library instrument, your own questions, or codes in a coding scheme.",
             "The framework's relationships draw the diagram; download the codebook and variable matrix.",
+            "Recommend theories, frameworks, and instruments so they are available to everyone.",
         ],
     ),
     (
@@ -286,7 +287,8 @@ value_propositions = [
     ),
 ]
 
-ALLOWED_PR_FOLDERS = ("suggestions/", "published/study_summaries/", "published/datasets/")
+ALLOWED_PR_FOLDERS = ("suggestions/", "suggestions/frameworks/", "suggestions/instruments/", "suggestions/corrections/",
+                      "published/study_summaries/", "published/datasets/")
 
 
 LICENSE_GUIDE_URL = "https://creativecommons.org/share-your-work/cclicenses/"
@@ -395,7 +397,7 @@ def open_review_pull_request(
             base=base_branch,
         )
         return (
-            "🎉 Submitted for review. It becomes public only after a maintainer merges it. "
+            "🎉 Submitted. A maintainer will review it before it is added to the app. "
             f"Track it here: {pull_request.html_url}"
         )
     except Exception as git_error:

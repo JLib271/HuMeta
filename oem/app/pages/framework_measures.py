@@ -19,7 +19,8 @@ import pandas as pd
 import streamlit as st
 
 from oem import plan as P
-from oem.app.common import (APP_DIR, automate_github_pull_request, context_search_terms, current_project,
+from oem import recommend as R
+from oem.app.common import (APP_DIR, context_search_terms, current_project,
                             load_published_summaries, open_review_pull_request, public_submission_warning,
                             render_project_download, safe_slug)
 from oem.app.profile_form import current_record, library, store_record
@@ -99,17 +100,33 @@ def _instrument_label(options: dict, m: dict) -> str | None:
 
 
 # ------------------------------------------------------------------ page
+TABS = ["🧭 Build your plan", "💡 Recommend a theory or framework", "📏 Recommend an instrument", "✏️ Suggest a correction"]
+
+
 def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None) -> None:
     lib = library()
-    base = _base(lib)
-    v = st.session_state["m2_version"]
-
     st.header("2. Framework and Measures")
     st.caption(
         "Start from theory. Choose the framework that guides your study, and it supplies the concepts. Give each "
         "concept a measure (a library instrument, your own questions, or codes in a coding scheme), and the "
         "framework's expected relationships draw the diagram. The result is your variable plan and its codebook."
     )
+    st.info("**Help grow the shared library.** Know a theory, conceptual model, or instrument that should be here? "
+            "Use the **Recommend** tabs below. Each recommendation is reviewed before it is added for everyone.")
+    plan_tab, framework_tab, instrument_tab, correction_tab = st.tabs(TABS)
+    with plan_tab:
+        _plan(lib, publish_disabled, publish_hint)
+    with framework_tab:
+        _recommend_framework(lib, publish_disabled, publish_hint)
+    with instrument_tab:
+        _recommend_instrument(lib, publish_disabled, publish_hint)
+    with correction_tab:
+        _suggest_correction(lib, publish_disabled, publish_hint)
+
+
+def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
+    base = _base(lib)
+    v = st.session_state["m2_version"]
     if current_record() is None:
         st.info("Tip: save your study profile in Module 1 first, so this module can use your topic and framework.")
 
@@ -140,6 +157,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
         help="Required for your own framework or a lens: describe it and the ideas it brings.")
     if not plan["frameworks"]:
         st.warning("Choose a framework, or 'Exploratory or inductive' if you are not starting from one.")
+    st.caption(f"Don't see your theory or framework? Recommend it in the **{TABS[1]}** tab.")
     related = _related_studies(lib, plan["frameworks"])
     if related:
         with st.expander(f"Published studies using the same framework ({len(related)})"):
@@ -244,6 +262,8 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     if st.button(f"Add {len(suggestions)} library measure(s) for my concepts", disabled=not suggestions,
                  key=f"m2_add_lib_{v}", help="Instruments and subscales in the library that measure your concepts' constructs."):
         _rebase({**plan, "measures": measures + suggestions, "relationships": base["relationships"]})
+    st.caption(f"Know an instrument that measures one of your concepts but is not in the library? Recommend it in the "
+               f"**{TABS[2]}** tab.")
     unmeasured = [c["label"] for c in concepts if c["id"] not in {m["concept_id"] for m in measures}]
     if unmeasured:
         st.warning("No measure yet for: " + ", ".join(unmeasured))
@@ -403,26 +423,118 @@ def _share(lib, plan: dict, book, publish_disabled: bool, publish_hint: str | No
                         delete_paths=[summary_path], description="Removes this study summary. Earlier versions remain in git history.")
                 (st.error if "❌" in message else st.success)(message)
 
-    with st.expander("Suggest a theory or lens for the framework list"):
-        st.caption("Frameworks live in `library/frameworks.json`. Suggestions are reviewed before they are added.")
-        public_submission_warning()
-        name = st.text_input("Theory or lens name", key="m2_fw_name")
-        kind = st.selectbox("Kind", ["theory", "lens"], key="m2_fw_kind")
-        concepts = st.text_area("Concepts (one per line; for a theory)", key="m2_fw_concepts")
-        citation = st.text_input("Key citation (with DOI if there is one)", key="m2_fw_citation")
-        rationale = st.text_area("Why add it?", key="m2_fw_rationale")
-        consent = st.checkbox("I confirm this suggestion contains no confidential information and may be published.",
-                              key="m2_fw_consent")
-        if st.button("Submit suggestion", disabled=publish_disabled or not (consent and name.strip() and citation.strip()),
-                     help=publish_hint, key="m2_fw_submit"):
-            payload = json.dumps({"label": name.strip(), "kind": kind,
-                                  "concepts": [c.strip() for c in concepts.splitlines() if c.strip()],
-                                  "citation": citation.strip(), "rationale": rationale.strip(),
-                                  "submitted_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())},
-                                 ensure_ascii=False, indent=2)
-            with st.spinner("Opening a pull request for maintainer review..."):
-                message = automate_github_pull_request(suggestion_type="Framework",
-                                                       file_name=f"framework_{safe_slug(name, 'framework', 40)}.json",
-                                                       file_content=payload, title_summary=f"Framework suggestion: {name.strip()}")
-            (st.error if "❌" in message else st.success)(message)
 
+# -------------------------------------------------------- recommendations
+def _submission_notice() -> None:
+    public_submission_warning()
+    st.caption("Your name from sign-in appears on the submission. Recommendations land in the project's "
+               "`suggestions/` folder, and a maintainer checks the source before adding anything to the library.")
+
+
+def _send(rec: dict, issues: list[str]) -> None:
+    if issues:
+        for issue in issues:
+            st.error(issue)
+        return
+    path, content = R.file_for(rec)
+    with st.spinner("Opening a pull request for maintainer review..."):
+        message = open_review_pull_request(suggestion_type=f"{rec['recommendation'].capitalize()} recommendation",
+                                           title_summary=R.title_for(rec), files={path: content},
+                                           description=R.pr_description(rec))
+    (st.error if "❌" in message else st.success)(message)
+
+
+def _recommend_framework(lib, publish_disabled: bool, publish_hint: str | None) -> None:
+    st.subheader("Recommend a theory, conceptual model, or framework")
+    st.caption("Theories, lenses, and frameworks recommended here can be added to Step 1 for everyone, with their "
+               "concepts and expected relationships. Check the current list in Step 1 first.")
+    _submission_notice()
+    with st.form("m2_recommend_framework", clear_on_submit=False):
+        c1, c2 = st.columns(2)
+        name = c1.text_input("Name *", placeholder="e.g., Situated Expectancy-Value Theory")
+        kind = c2.selectbox("What kind is it? *", list(R.FRAMEWORK_KINDS), format_func=R.FRAMEWORK_KINDS.get)
+        description = st.text_area("Describe it in a sentence or two *")
+        concepts = st.text_area("Concepts, one per line (optionally 'Concept: definition') *for theories*",
+                                placeholder="Expectancy: belief about how well one will do\nTask value: ...")
+        relationships = st.text_area("Expected relationships, one per line, as 'A -> B: relationship' (optional)",
+                                     placeholder="Expectancy -> Achievement choices: predicts")
+        c1, c2 = st.columns(2)
+        citation = c1.text_area("Key citation *", height=90)
+        doi = c2.text_input("DOI (optional)", placeholder="10.xxxx/xxxxx")
+        fields = c2.multiselect("Fields where it is used", ["education", "social_sciences", "humanities", "arts", "other_field"],
+                                format_func=lambda f: f.replace("_", " ").capitalize())
+        rationale = st.text_area("Why should it be in the list? (optional)")
+        consent = st.checkbox("I confirm this recommendation contains no confidential information and may be published.")
+        submitted = st.form_submit_button("Submit recommendation", type="primary", disabled=publish_disabled, help=publish_hint)
+    if submitted:
+        rec = R.framework_recommendation(name=name, kind=kind, description=description, citation=citation, doi=doi,
+                                         fields=fields, concepts=concepts, relationships=relationships, rationale=rationale)
+        issues = R.framework_problems(rec, lib) + ([] if consent else ["Tick the confirmation box."])
+        _send(rec, issues)
+
+
+def _recommend_instrument(lib, publish_disabled: bool, publish_hint: str | None) -> None:
+    st.subheader("Recommend an instrument")
+    st.caption("Instruments recommended here can be added to the library, so Module 2 suggests them for the concepts "
+               "they measure. Do **not** paste item text unless you are the developer and the license allows it; "
+               "maintainers confirm permission before any items are added.")
+    _submission_notice()
+    construct_labels = {c["label"]: cid for cid, c in sorted(lib.constructs.items(), key=lambda kv: kv[1]["label"])}
+    plan_concepts = [c["label"] for c in (st.session_state.get("m2_pending") or {}).get("concepts", [])]
+    with st.form("m2_recommend_instrument", clear_on_submit=False):
+        c1, c2, c3 = st.columns([3, 1, 2])
+        name = c1.text_input("Instrument name *")
+        acronym = c2.text_input("Acronym")
+        relationship = c3.selectbox("Your relationship to it *", list(R.RELATIONSHIPS), format_func=R.RELATIONSHIPS.get)
+        c1, c2 = st.columns(2)
+        citation = c1.text_area("Primary citation *", height=90)
+        doi = c2.text_input("DOI (optional)", placeholder="10.xxxx/xxxxx")
+        url = c2.text_input("Link to the instrument or its manual (optional)")
+        constructs = st.multiselect("What does it measure? (constructs) *", list(construct_labels))
+        other = st.text_input("Other constructs it measures, if not listed (comma-separated)")
+        concept = st.selectbox("Concept in your plan that it measures (optional)", ["", *plan_concepts])
+        subscales = st.text_area("Subscales, one per line (optionally 'Subscale: what it measures')")
+        c1, c2, c3 = st.columns(3)
+        respondents = c1.text_input("Who responds?", placeholder="e.g., undergraduate students")
+        item_count = c2.text_input("Number of items")
+        response_format = c3.text_input("Response format", placeholder="e.g., 5-point agreement")
+        populations = st.text_input("Populations or settings it has been validated with")
+        c1, c2 = st.columns(2)
+        access = c1.selectbox("How can researchers get it? *", list(R.ACCESS_OPTIONS), format_func=R.ACCESS_OPTIONS.get)
+        access_details = c2.text_input("License or terms of use (if known)")
+        evidence = st.text_area("Reliability and validity evidence, with citations (optional)")
+        permission = st.checkbox("I am a developer and I am willing to share item text under an open license "
+                                 "(a maintainer will contact you to confirm).")
+        notes = st.text_area("Anything else (versions, translations, adaptations)?")
+        consent = st.checkbox("I confirm this recommendation contains no item text I lack permission to share, and no "
+                              "confidential information.")
+        submitted = st.form_submit_button("Submit recommendation", type="primary", disabled=publish_disabled, help=publish_hint)
+    if submitted:
+        rec = R.instrument_recommendation(
+            name=name, acronym=acronym, citation=citation, doi=doi, url=url,
+            construct_ids=[construct_labels[c] for c in constructs], other_constructs="\n".join(other.split(",")),
+            subscales=subscales, respondents=respondents, populations=populations, item_count=item_count,
+            response_format=response_format, access=access, access_details=access_details, evidence=evidence,
+            relationship=relationship, item_text_permission=permission, concept=concept, notes=notes)
+        issues = R.instrument_problems(rec, lib) + ([] if consent else ["Tick the confirmation box."])
+        _send(rec, issues)
+
+
+def _suggest_correction(lib, publish_disabled: bool, publish_hint: str | None) -> None:
+    st.subheader("Suggest a correction")
+    st.caption("Fix a citation, add a missing concept or relationship to a theory, link a concept to a different "
+               "construct, or correct an instrument's details.")
+    _submission_notice()
+    targets = {f"Framework: {f['label']}": ("framework", fid) for fid, f in sorted(lib.frameworks.items(), key=lambda kv: kv[1]["label"])}
+    targets.update({f"Instrument: {i['name']}": ("instrument", iid) for iid, i in sorted(lib.instruments.items(), key=lambda kv: kv[1]["name"])})
+    targets.update({f"Construct: {c['label']}": ("construct", cid) for cid, c in sorted(lib.constructs.items(), key=lambda kv: kv[1]["label"])})
+    with st.form("m2_correction", clear_on_submit=False):
+        target = st.selectbox("What needs correcting? *", list(targets))
+        change = st.text_area("What should change, and why? *")
+        source = st.text_input("Source that supports the change (citation or link)")
+        consent = st.checkbox("I confirm this suggestion contains no confidential information and may be published.")
+        submitted = st.form_submit_button("Submit correction", type="primary", disabled=publish_disabled, help=publish_hint)
+    if submitted:
+        kind, tid = targets[target]
+        rec = R.correction(target_kind=kind, target_id=tid, change=change, source=source)
+        _send(rec, R.correction_problems(rec) + ([] if consent else ["Tick the confirmation box."]))
