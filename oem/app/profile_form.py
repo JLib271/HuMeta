@@ -21,6 +21,7 @@ from oem.library import Library
 SPEC_URL = "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md"
 ISSUES_URL = "https://github.com/JLib271/HuMeta/issues"
 DDI_URL = "https://ddialliance.org/"
+KCWORKS_URL = "https://works.hcommons.org/"
 TADIRAH_URL = "https://vocabs.dariah.eu/tadirah/"
 #: plain-language answers for the DataCite resource type
 RESOURCE_TYPE_LABELS = {
@@ -191,9 +192,16 @@ def record_form(record: dict) -> dict | None:
         st.markdown("**For citing and sharing**")
         st.caption("These become the citation when you share data or register a DOI. Estimates are fine for now; "
                    "you can update them later.")
+        st.info(
+            f"**Need a DOI?** [KCWorks]({KCWORKS_URL}) (Knowledge Commons Works), a free open-access repository hosted "
+            "at Michigan State University, gives every public deposit a DOI. It accepts data, instruments, coding "
+            "schemes, course materials, and more, from any discipline. Deposits there are public and meant to be "
+            "permanent, so share only de-identified data or materials you are free to share; for restricted data, "
+            "use an archive such as ICPSR or your institution's repository."
+        )
         c1, c2, c3 = st.columns(3)
         publisher = c1.text_input(lab("Lead institution or repository *", "resource.publisher"), res.get("publisher") or "",
-                                  key=key("publisher"), placeholder="e.g., your university, or ICPSR",
+                                  key=key("publisher"), placeholder="e.g., your university, KCWorks, or ICPSR",
                                   help=tip("resource.publisher", "Who releases this: usually your university, or the "
                                            "repository that will publish the data. DataCite calls this the publisher."))
         publication_year = c2.number_input(lab("Year it will be shared (estimate) *", "resource.publication_year"),
@@ -203,7 +211,7 @@ def record_form(record: dict) -> dict | None:
                                                     "record will be available. DataCite calls this the publication year."))
         doi = c3.text_input(lab("DOI, if you already have one", "resource.identifier"),
                             (res.get("identifier") or {}).get("value") or "", key=key("doi"),
-                            placeholder="Leave blank until a repository assigns one",
+                            placeholder="Leave blank until a repository such as KCWorks assigns one",
                             help=tip("resource.identifier", "A DOI is a permanent link to your data or materials, "
                                      "usually assigned when you deposit them in a repository (for example 10.3886/ICPSR12345)."))
         c1, c2, c3 = st.columns(3)

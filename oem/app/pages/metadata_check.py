@@ -103,7 +103,9 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
         st.download_button("DataCite 4.7 metadata (JSON)", json.dumps(datacite, ensure_ascii=False, indent=2).encode("utf-8"),
                            file_name=f"{slug}.datacite.json", mime="application/json", key="m3_dl_dcjson",
                            use_container_width=True,
-                           help="DataCite REST API 'attributes'. Without a DOI, use it to register one through your repository or DataCite member.")
+                           help="DataCite REST API 'attributes'. No DOI yet? Deposit your data or materials in a repository that "
+                                "assigns one, such as KCWorks (https://works.hcommons.org/, free, hosted at Michigan "
+                                "State University) for open materials, or ICPSR for restricted data.")
     with c2:
         if (record["resource"].get("identifier") or {}).get("type") == "DOI":
             st.download_button("DataCite 4.7 metadata (XML)", profile.to_datacite_xml(record, lib, p).encode("utf-8"),
@@ -111,7 +113,8 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
                                use_container_width=True)
         else:
             st.button("DataCite 4.7 metadata (XML)", disabled=True, use_container_width=True, key="m3_dl_dcxml_off",
-                      help="DataCite XML requires a DOI. Add it in Module 1 once assigned.")
+                      help="DataCite XML requires a DOI. Get one by depositing in a repository such as KCWorks "
+                           "(https://works.hcommons.org/), then add it in Module 1.")
     plan = current_project().get("module2_plan")
     has_plan = bool((plan or {}).get("measures"))
     st.download_button("DDI-Codebook 2.5 (XML)", ddi.to_ddi_codebook_xml(record, plan if has_plan else None, lib, p).encode("utf-8"),
