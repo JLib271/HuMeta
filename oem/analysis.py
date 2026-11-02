@@ -333,16 +333,19 @@ def regression(frame: pd.DataFrame, outcome: str, predictors: list[str], logisti
         res = pg.logistic_regression(data[X.columns], data[outcome])
     else:
         res = pg.linear_regression(data[X.columns], data[outcome])
-    cols = {str(c).lower(): c for c in res.columns}
+    # pingouin has spelled some columns differently across versions (e.g. "CI[2.5%]" vs "CI2.5%"), so match loosely.
+    cols = {re.sub(r"[^a-z0-9.]", "", str(c).lower()): c for c in res.columns}
+    lo = next(c for k, c in cols.items() if k.startswith("ci") and "2.5" in k and "97.5" not in k)
+    hi = next(c for k, c in cols.items() if k.startswith("ci") and "97.5" in k)
     table = pd.DataFrame({"Term": res[cols["names"]], "B": res[cols["coef"]], "SE": res[cols["se"]],
                           ("z" if logistic else "t"): res[cols["z" if logistic else "t"]], "p": res[cols["pval"]],
-                          "95% CI low": res[cols["ci[2.5%]"]], "95% CI high": res[cols["ci[97.5%]"]]})
+                          "95% CI low": res[lo], "95% CI high": res[hi]})
     if logistic:
         table["Odds ratio"] = np.exp(table["B"])
     out["coefficients"] = table
     out["model"] = {"n": int(len(data)), "predictors": int(X.shape[1])}
     if not logistic:
-        out["model"].update(r2=float(res[cols["r2"]].iloc[0]), adj_r2=float(res[cols["adj_r2"]].iloc[0]))
+        out["model"].update(r2=float(res[cols["r2"]].iloc[0]), adj_r2=float(res[cols["adjr2"]].iloc[0]))
         out["summary"] = (f"Linear regression of {outcome} on {', '.join(predictors)} (n = {len(data)}): "
                           f"R² = {out['model']['r2']:.3f}, adjusted R² = {out['model']['adj_r2']:.3f}.")
     else:
