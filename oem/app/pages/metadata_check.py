@@ -15,6 +15,7 @@ import re
 import pandas as pd
 import streamlit as st
 
+from oem import ddi
 from oem import plan as plan_model
 from oem import profile
 from oem.app.common import current_project, navigate_to_module
@@ -111,6 +112,15 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
         else:
             st.button("DataCite 4.7 metadata (XML)", disabled=True, use_container_width=True, key="m3_dl_dcxml_off",
                       help="DataCite XML requires a DOI. Add it in Module 1 once assigned.")
+    plan = current_project().get("module2_plan")
+    has_plan = bool((plan or {}).get("measures"))
+    st.download_button("DDI-Codebook 2.5 (XML)", ddi.to_ddi_codebook_xml(record, plan if has_plan else None, lib, p).encode("utf-8"),
+                       file_name=f"{slug}.ddi.xml", mime="application/xml", key="m3_dl_ddi", use_container_width=True,
+                       help="DDI is the social sciences' metadata standard, used by ICPSR, CESSDA archives, the UK Data "
+                            "Service, and Dataverse. This file describes the study" + (" and every variable in your Module 2 "
+                            "variable plan, including the construct each one measures." if has_plan else
+                            ". Save a variable plan in Module 2 to add variable-level documentation.")
+                            + " Give it to your archive at deposit or keep it with your data.")
     descriptors = profile.eric_descriptors(record, lib, p)
     pending = [d for d in profile.eric_descriptors(record, lib, p, include_unverified=True) if d not in descriptors]
     st.markdown("**ERIC Thesaurus descriptors** (for ERIC submissions and education indexes)")

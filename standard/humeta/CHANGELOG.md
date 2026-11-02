@@ -12,7 +12,14 @@
   * `humanities`: `research_activities` (TaDiRAH 2.0.3, exported as DataCite
     subjects with TaDiRAH concept URIs), `objects_of_study`,
     `source_languages`, `editorial_standards`.
-  * New vocabularies `kind_of_data` and `tadirah_activity`. The example
+  * New vocabularies `kind_of_data` and `tadirah_activity`.
+* **DDI-Codebook 2.5 export** (`oem/ddi.py`): the study profile, and the
+  Module 2 variable plan when present, as DDI-Codebook XML. Unit of analysis,
+  sampling, collection mode, time method, and kind of data carry their DDI
+  controlled-vocabulary codes as `concept`; variables carry codes, missing
+  codes, question text, and the construct they measure (`concept`, vocabulary
+  "HuMeta Constructs"). Validated against the official DDI-Codebook 2.5.1
+  schema, vendored for tests in `tests/schemas/ddi-codebook-2.5.1/` (LGPL-3.0). The example
     records for archival letters and online discourse use the new modules.
 * **Renamed** from the STEMEd+ Metadata Application Profile to **HuMeta: The Social Science, Humanities, and Education Study Metadata Profile**, to serve the social sciences and humanities as well as education.
   Folder `standard/stemed-ap/` is now `standard/humeta/`; the record's `profile`

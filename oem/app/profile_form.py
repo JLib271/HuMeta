@@ -331,11 +331,12 @@ def record_form(record: dict) -> dict | None:
         if with_social:
             st.subheader(f"{number} · Social science")
             st.info(
-                f"The social sciences already have a full metadata standard: [DDI, the Data Documentation Initiative]({DDI_URL}), "
-                "used by ICPSR, CESSDA archives, the UK Data Service, and Dataverse. Document variables, questions, and "
-                "sampling in DDI (your archive's deposit tools produce it) and link the record below. These few fields use "
-                "DDI's own elements, so this profile stays consistent with that record. What HuMeta adds is how your "
-                "constructs and measures connect to theory (Module 2)."
+                f"The social sciences already have a full metadata standard: [DDI, the Data Documentation Initiative]({DDI_URL}). "
+                "ICPSR, CESSDA archives, the UK Data Service, and Dataverse all use it. If you deposit with ICPSR, ICPSR "
+                "creates the study's DDI record for you; link it below once it is published. Module 3 can also export "
+                "this profile and your Module 2 variable plan as a DDI-Codebook file to give your archive at deposit. "
+                "The fields here use DDI's own elements, so they stay consistent with that record. What HuMeta adds is "
+                "how your constructs and measures connect to theory (Module 2)."
             )
             c1, c2 = st.columns(2)
             with c1:
@@ -355,7 +356,7 @@ def record_form(record: dict) -> dict | None:
                                           key=key("weight"), help=tip("social_science.weighting"))
             ddi_record = st.text_input(lab("Full DDI documentation (URL)", "social_science.ddi_record"),
                                        social.get("ddi_record") or "", key=key("ddirecord"),
-                                       placeholder="e.g., the study's page at ICPSR, the CESSDA Data Catalogue, or a Dataverse",
+                                       placeholder="e.g., the study's page at ICPSR (after deposit), the CESSDA Data Catalogue, or a Dataverse",
                                        help=tip("social_science.ddi_record"))
             number += 1
 

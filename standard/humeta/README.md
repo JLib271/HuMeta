@@ -320,7 +320,8 @@ data, adding a crosswalk does not change the profile.
 * **HuMeta Portal** (this repository's app): Module 1 is the
   profile form for a study; researchers start by choosing their fields, which adds the matching modules; Module 3
   adds the constructs measured (suggested from the Module 2 variable plan),
-  checks the rules, and exports DataCite and ERIC metadata.
+  checks the rules, and exports DataCite, ERIC, and DDI-Codebook 2.5 metadata (study and variable
+  level, validated against the official DDI-Codebook 2.5.1 schema).
 * **`oem/profile.py`**: reference Python implementation (validation, DataCite
   JSON/XML, ERIC descriptors), with tests in `tests/test_profile.py`.
 * **JSON Schema** for use in any language.

@@ -241,12 +241,12 @@ value_propositions = [
         "3. Check & Export Metadata",
         "🏷️ Standards-Ready Metadata",
         "Completes your study profile with the constructs you measure, checks it against the profile's "
-        "responsible-sharing rules, and exports metadata that DOI registration and education indexes use.",
+        "responsible-sharing rules, and exports metadata that DOI registration, data archives, and education indexes use.",
         "3. Check & Export Metadata",
         [
             "Add constructs measured, suggested from your variable plan (Module 2).",
             "See what to fix before sharing: consent, de-identification, review, CARE.",
-            "Export HuMeta JSON, DataCite 4.7 (JSON/XML), and ERIC descriptors.",
+            "Export HuMeta JSON, DataCite 4.7 (JSON/XML), ERIC descriptors, and DDI-Codebook for social science archives.",
         ],
     ),
     (
