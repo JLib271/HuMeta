@@ -191,3 +191,24 @@ def test_study_record_view_for_later_modules(p):
     assert meta["state_origin"] == "MI"
     again = profile.to_study_record(EXAMPLE, existing=study, profile=p)
     assert again["id"] == study["id"] and again["created_at"] == study["created_at"]
+
+
+def test_every_element_has_alignments_to_known_standards(p):
+    standards = p.definition["standards"]
+    for e in p.definition["elements"]:
+        assert e.get("alignments"), f"{e['id']} has no standard alignments"
+        for a in e["alignments"]:
+            assert a["standard"] in standards, f"{e['id']}: unknown standard {a['standard']}"
+            assert a["match"] in p.definition["match_types"], f"{e['id']}: bad match type"
+            assert a["term"].strip()
+    # resource (citation) elements are general-purpose: each aligns exactly with DataCite
+    for e in p.definition["elements"]:
+        if e["id"].startswith("resource."):
+            assert any(a["standard"] == "datacite" and a["match"] == "exact" for a in e["alignments"]), e["id"]
+
+
+def test_alignment_badges(p):
+    assert profile.alignment_badges("resource.title", p) == "`DataCite: titles.title` `DC: title` `schema.org: name`"
+    assert profile.alignment_badges("resource.publication_year", p).count("≈") == 2
+    assert profile.alignment_badges("stemed.constructs", p).startswith("`STEMEd+`")
+    assert "Close match: Dublin Core" in profile.alignment_help("resource.publication_year", p)

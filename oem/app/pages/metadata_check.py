@@ -41,6 +41,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     instrument_names = {iid: label for label, iid in instrument_labels.items()}
 
     st.subheader("Constructs measured")
+    st.markdown(profile.alignment_badges("stemed.constructs"), help=profile.alignment_help("stemed.constructs"))
     plan = current_project().get("module2_plan") or {}
     suggestions = [c for c in profile.suggest_constructs(lib, plan)
                    if c not in {x["construct_id"] for x in record["stemed"]["constructs"]}]

@@ -1,0 +1,127 @@
+element,label,standard,standard_name,term,match,standard_url
+resource.title,Title,DataCite,DataCite Metadata Schema 4.7,titles.title,exact,https://schema.datacite.org/
+resource.title,Title,DC,Dublin Core (DCMI Metadata Terms),title,exact,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+resource.title,Title,schema.org,schema.org Dataset,name,exact,https://schema.org/Dataset
+resource.creators,Creators,DataCite,DataCite Metadata Schema 4.7,creators,exact,https://schema.datacite.org/
+resource.creators,Creators,DC,Dublin Core (DCMI Metadata Terms),creator,exact,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+resource.creators,Creators,schema.org,schema.org Dataset,creator,exact,https://schema.org/Dataset
+resource.creators,Creators,ORCID,ORCID iD,ORCID iD (nameIdentifier),exact,https://orcid.org/
+resource.publisher,Publisher,DataCite,DataCite Metadata Schema 4.7,publisher,exact,https://schema.datacite.org/
+resource.publisher,Publisher,DC,Dublin Core (DCMI Metadata Terms),publisher,exact,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+resource.publisher,Publisher,schema.org,schema.org Dataset,publisher,exact,https://schema.org/Dataset
+resource.publication_year,Publication year,DataCite,DataCite Metadata Schema 4.7,publicationYear,exact,https://schema.datacite.org/
+resource.publication_year,Publication year,DC,Dublin Core (DCMI Metadata Terms),issued,close,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+resource.publication_year,Publication year,schema.org,schema.org Dataset,datePublished,close,https://schema.org/Dataset
+resource.resource_type,Resource type,DataCite,DataCite Metadata Schema 4.7,resourceTypeGeneral,exact,https://schema.datacite.org/
+resource.resource_type,Resource type,DC,Dublin Core (DCMI Metadata Terms),type,close,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+resource.resource_type,Resource type,schema.org,schema.org Dataset,@type,close,https://schema.org/Dataset
+resource.identifier,Identifier,DataCite,DataCite Metadata Schema 4.7,identifier,exact,https://schema.datacite.org/
+resource.identifier,Identifier,DC,Dublin Core (DCMI Metadata Terms),identifier,exact,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+resource.identifier,Identifier,schema.org,schema.org Dataset,identifier,exact,https://schema.org/Dataset
+resource.description,Description,DataCite,DataCite Metadata Schema 4.7,description (Abstract),exact,https://schema.datacite.org/
+resource.description,Description,DC,Dublin Core (DCMI Metadata Terms),abstract,exact,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+resource.description,Description,schema.org,schema.org Dataset,description,exact,https://schema.org/Dataset
+resource.keywords,Keywords,DataCite,DataCite Metadata Schema 4.7,subject (no scheme),exact,https://schema.datacite.org/
+resource.keywords,Keywords,DC,Dublin Core (DCMI Metadata Terms),subject,close,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+resource.keywords,Keywords,schema.org,schema.org Dataset,keywords,exact,https://schema.org/Dataset
+resource.language,Language,DataCite,DataCite Metadata Schema 4.7,language,exact,https://schema.datacite.org/
+resource.language,Language,DC,Dublin Core (DCMI Metadata Terms),language,exact,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+resource.language,Language,schema.org,schema.org Dataset,inLanguage,exact,https://schema.org/Dataset
+resource.language,Language,BCP 47,IETF BCP 47 language tags,language tag,exact,https://www.rfc-editor.org/info/bcp47
+resource.license,License,DataCite,DataCite Metadata Schema 4.7,rightsList,exact,https://schema.datacite.org/
+resource.license,License,DC,Dublin Core (DCMI Metadata Terms),license,exact,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+resource.license,License,schema.org,schema.org Dataset,license,exact,https://schema.org/Dataset
+resource.license,License,SPDX,SPDX License List,license identifier,exact,https://spdx.org/licenses/
+resource.funding,Funding,DataCite,DataCite Metadata Schema 4.7,fundingReferences,exact,https://schema.datacite.org/
+resource.funding,Funding,schema.org,schema.org Dataset,funder,close,https://schema.org/Dataset
+resource.collection_dates,Data collection dates,DataCite,DataCite Metadata Schema 4.7,date (Collected),exact,https://schema.datacite.org/
+resource.collection_dates,Data collection dates,ISO 8601,ISO 8601 dates,date,exact,https://www.iso.org/iso-8601-date-and-time-format.html
+resource.collection_dates,Data collection dates,DC,Dublin Core (DCMI Metadata Terms),temporal,related,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+resource.collection_dates,Data collection dates,schema.org,schema.org Dataset,temporalCoverage,related,https://schema.org/Dataset
+resource.geography,Geographic coverage,DataCite,DataCite Metadata Schema 4.7,geoLocationPlace,exact,https://schema.datacite.org/
+resource.geography,Geographic coverage,ISO 3166,ISO 3166-1 alpha-2 country codes,country code,exact,https://www.iso.org/iso-3166-country-codes.html
+resource.geography,Geographic coverage,DC,Dublin Core (DCMI Metadata Terms),spatial,close,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+resource.geography,Geographic coverage,schema.org,schema.org Dataset,spatialCoverage,close,https://schema.org/Dataset
+resource.related,Related resources,DataCite,DataCite Metadata Schema 4.7,relatedIdentifiers,exact,https://schema.datacite.org/
+resource.related,Related resources,DC,Dublin Core (DCMI Metadata Terms),relation,close,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+resource.related,Related resources,schema.org,schema.org Dataset,citation,related,https://schema.org/Dataset
+stemed.design.topic,Topic / content domain,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),design.topic,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.design.topic,Topic / content domain,DataCite,DataCite Metadata Schema 4.7,subject,close,https://schema.datacite.org/
+stemed.design.topic,Topic / content domain,DC,Dublin Core (DCMI Metadata Terms),subject,close,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+stemed.design.topic,Topic / content domain,schema.org,schema.org Dataset,about,close,https://schema.org/Dataset
+stemed.design.research_questions,Research questions and aims,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),design.research_questions,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.design.research_questions,Research questions and aims,DataCite,DataCite Metadata Schema 4.7,description (Methods),close,https://schema.datacite.org/
+stemed.design.research_questions,Research questions and aims,DC,Dublin Core (DCMI Metadata Terms),description,related,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+stemed.design.unit_of_analysis,Unit of analysis,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),unit_of_analysis vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.design.unit_of_analysis,Unit of analysis,DataCite,DataCite Metadata Schema 4.7,subject (scheme),close,https://schema.datacite.org/
+stemed.design.sampling_procedure,Sampling procedure,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),sampling_procedure vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.design.sampling_procedure,Sampling procedure,DataCite,DataCite Metadata Schema 4.7,subject (scheme),close,https://schema.datacite.org/
+stemed.constructs,Constructs measured,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),construct vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.constructs,Constructs measured,ERIC,ERIC Thesaurus,descriptors,close,https://eric.ed.gov/?ti=all
+stemed.constructs,Constructs measured,schema.org,schema.org Dataset,variableMeasured,close,https://schema.org/Dataset
+stemed.constructs,Constructs measured,DataCite,DataCite Metadata Schema 4.7,subject (scheme),close,https://schema.datacite.org/
+stemed.discipline,Discipline,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),discipline vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.discipline,Discipline,ERIC,ERIC Thesaurus,descriptors,close,https://eric.ed.gov/?ti=all
+stemed.discipline,Discipline,DC,Dublin Core (DCMI Metadata Terms),subject,close,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+stemed.discipline,Discipline,DataCite,DataCite Metadata Schema 4.7,subject (scheme),close,https://schema.datacite.org/
+stemed.population.participant_roles,Participant population,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),participant_role vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.population.participant_roles,Participant population,DataCite,DataCite Metadata Schema 4.7,subject (scheme),close,https://schema.datacite.org/
+stemed.population.education_levels,Education level,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),education_level vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.population.education_levels,Education level,ERIC,ERIC Thesaurus,education level descriptors,close,https://eric.ed.gov/?ti=all
+stemed.population.education_levels,Education level,DC,Dublin Core (DCMI Metadata Terms),educationLevel,close,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+stemed.population.education_levels,Education level,schema.org,schema.org Dataset,educationalLevel,close,https://schema.org/Dataset
+stemed.population.undergraduate_levels,Undergraduate course level,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),undergraduate_level vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.population.undergraduate_levels,Undergraduate course level,DataCite,DataCite Metadata Schema 4.7,subject (scheme),close,https://schema.datacite.org/
+stemed.population.description,Population description,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),population.description,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.population.description,Population description,DataCite,DataCite Metadata Schema 4.7,description (Methods),close,https://schema.datacite.org/
+stemed.population.sample_size,Sample size,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),population.sample_size,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.population.sample_size,Sample size,DataCite,DataCite Metadata Schema 4.7,sizes,close,https://schema.datacite.org/
+stemed.context.institution_types,Institution type,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),institution_type vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.context.institution_types,Institution type,ERIC,ERIC Thesaurus,descriptors,close,https://eric.ed.gov/?ti=all
+stemed.context.locale,Locale,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),locale vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.context.locale,Locale,NCES,"NCES locale classifications (City, Suburb, Town, Rural)",locale category,close,https://nces.ed.gov/programs/edge/Geographic/LocaleBoundaries
+stemed.context.locale,Locale,ERIC,ERIC Thesaurus,descriptors,close,https://eric.ed.gov/?ti=all
+stemed.setting.modality,Instructional modality,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),modality vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.setting.modality,Instructional modality,ERIC,ERIC Thesaurus,descriptors,close,https://eric.ed.gov/?ti=all
+stemed.setting.learning_environments,Learning environment,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),learning_environment vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.setting.learning_environments,Learning environment,ERIC,ERIC Thesaurus,descriptors,close,https://eric.ed.gov/?ti=all
+stemed.setting.pedagogy,Instructional approach,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),pedagogy vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.setting.pedagogy,Instructional approach,ERIC,ERIC Thesaurus,descriptors,close,https://eric.ed.gov/?ti=all
+stemed.setting.pedagogy,Instructional approach,DC,Dublin Core (DCMI Metadata Terms),instructionalMethod,close,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+stemed.evidence.study_designs,Study design,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),study_design vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.evidence.study_designs,Study design,ERIC,ERIC Thesaurus,descriptors,close,https://eric.ed.gov/?ti=all
+stemed.evidence.study_designs,Study design,DataCite,DataCite Metadata Schema 4.7,description (Methods),close,https://schema.datacite.org/
+stemed.evidence.measurement_evidence,Measurement evidence,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),measurement_evidence vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.evidence.measurement_evidence,Measurement evidence,AERA/APA/NCME,Standards for Educational and Psychological Testing (2014),sources of validity evidence,close,https://www.testingstandards.net/
+stemed.evidence.measurement_evidence,Measurement evidence,ERIC,ERIC Thesaurus,descriptors,close,https://eric.ed.gov/?ti=all
+stemed.evidence.data_collection_methods,Data collection method,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),data_collection_method vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.evidence.data_collection_methods,Data collection method,ERIC,ERIC Thesaurus,descriptors,close,https://eric.ed.gov/?ti=all
+stemed.evidence.data_collection_methods,Data collection method,schema.org,schema.org Dataset,measurementTechnique,close,https://schema.org/Dataset
+stemed.ethics.human_subjects_review,Human-subjects review,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),human_subjects_review vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.ethics.human_subjects_review,Human-subjects review,Common Rule,US Common Rule for human-subjects research (45 CFR 46),IRB review / exemption,related,https://www.hhs.gov/ohrp/regulations-and-policy/regulations/45-cfr-46/
+stemed.ethics.consent,Participation consent,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),consent vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.ethics.consent,Participation consent,Common Rule,US Common Rule for human-subjects research (45 CFR 46),informed consent / waiver,related,https://www.hhs.gov/ohrp/regulations-and-policy/regulations/45-cfr-46/
+stemed.ethics.consent_for_sharing,Consent for data sharing,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),consent_for_sharing vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.ethics.consent_for_sharing,Consent for data sharing,schema.org,schema.org Dataset,conditionsOfAccess,related,https://schema.org/Dataset
+stemed.ethics.consent_for_sharing,Consent for data sharing,DataCite,DataCite Metadata Schema 4.7,rightsList,related,https://schema.datacite.org/
+stemed.ethics.identifiability,Identifiability,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),identifiability vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.ethics.identifiability,Identifiability,FERPA,Family Educational Rights and Privacy Act (34 CFR Part 99),de-identified records,related,https://studentprivacy.ed.gov/
+stemed.ethics.sensitivity_flags,Sensitivity flags,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),sensitivity_flag vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.ethics.sensitivity_flags,Sensitivity flags,FERPA,Family Educational Rights and Privacy Act (34 CFR Part 99),education records,close,https://studentprivacy.ed.gov/
+stemed.ethics.access_level,Access level,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),access_level vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.ethics.access_level,Access level,DC,Dublin Core (DCMI Metadata Terms),accessRights,close,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+stemed.ethics.access_level,Access level,schema.org,schema.org Dataset,conditionsOfAccess,close,https://schema.org/Dataset
+stemed.ethics.access_level,Access level,DataCite,DataCite Metadata Schema 4.7,rightsList,close,https://schema.datacite.org/
+stemed.ethics.governance_notes,Governance notes,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),ethics.governance_notes,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.ethics.governance_notes,Governance notes,DC,Dublin Core (DCMI Metadata Terms),accessRights,related,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+stemed.ethics.governance_notes,Governance notes,DataCite,DataCite Metadata Schema 4.7,description (Other),close,https://schema.datacite.org/
+stemed.care.indigenous_data,Indigenous data,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),indigenous_data vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.care.indigenous_data,Indigenous data,CARE,CARE Principles for Indigenous Data Governance,scope: Indigenous data,close,https://www.gida-global.org/care
+stemed.care.governance,Indigenous data governance,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),indigenous_governance vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.care.governance,Indigenous data governance,CARE,CARE Principles for Indigenous Data Governance,Authority to control,close,https://www.gida-global.org/care
+stemed.care.statement,CARE statement,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),care.statement,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
+stemed.care.statement,CARE statement,CARE,CARE Principles for Indigenous Data Governance,Collective benefit; Responsibility; Ethics,close,https://www.gida-global.org/care
+stemed.care.statement,CARE statement,DataCite,DataCite Metadata Schema 4.7,description (Other),close,https://schema.datacite.org/
+stemed.care.local_contexts_project,Local Contexts project,Local Contexts,Local Contexts Traditional Knowledge and Biocultural Labels and Notices,Hub project,exact,https://localcontexts.org/
+stemed.care.local_contexts_project,Local Contexts project,DataCite,DataCite Metadata Schema 4.7,relatedIdentifier,close,https://schema.datacite.org/
+stemed.care.local_contexts_labels,Local Contexts Labels and Notices,Local Contexts,Local Contexts Traditional Knowledge and Biocultural Labels and Notices,TK/BC Labels and Notices,exact,https://localcontexts.org/

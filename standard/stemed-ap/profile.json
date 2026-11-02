@@ -12,6 +12,88 @@
     "R": "Recommended.",
     "O": "Optional."
   },
+  "standards": {
+    "stemed": {
+      "short": "STEMEd+",
+      "name": "STEMEd+ Metadata Application Profile (extension element or vocabulary)",
+      "url": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md"
+    },
+    "datacite": {
+      "short": "DataCite",
+      "name": "DataCite Metadata Schema 4.7",
+      "url": "https://schema.datacite.org/"
+    },
+    "dcterms": {
+      "short": "DC",
+      "name": "Dublin Core (DCMI Metadata Terms)",
+      "url": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+    },
+    "schemaorg": {
+      "short": "schema.org",
+      "name": "schema.org Dataset",
+      "url": "https://schema.org/Dataset"
+    },
+    "eric": {
+      "short": "ERIC",
+      "name": "ERIC Thesaurus",
+      "url": "https://eric.ed.gov/?ti=all"
+    },
+    "orcid": {
+      "short": "ORCID",
+      "name": "ORCID iD",
+      "url": "https://orcid.org/"
+    },
+    "spdx": {
+      "short": "SPDX",
+      "name": "SPDX License List",
+      "url": "https://spdx.org/licenses/"
+    },
+    "bcp47": {
+      "short": "BCP 47",
+      "name": "IETF BCP 47 language tags",
+      "url": "https://www.rfc-editor.org/info/bcp47"
+    },
+    "iso3166": {
+      "short": "ISO 3166",
+      "name": "ISO 3166-1 alpha-2 country codes",
+      "url": "https://www.iso.org/iso-3166-country-codes.html"
+    },
+    "iso8601": {
+      "short": "ISO 8601",
+      "name": "ISO 8601 dates",
+      "url": "https://www.iso.org/iso-8601-date-and-time-format.html"
+    },
+    "nces_locale": {
+      "short": "NCES",
+      "name": "NCES locale classifications (City, Suburb, Town, Rural)",
+      "url": "https://nces.ed.gov/programs/edge/Geographic/LocaleBoundaries"
+    },
+    "testing_standards": {
+      "short": "AERA/APA/NCME",
+      "name": "Standards for Educational and Psychological Testing (2014)",
+      "url": "https://www.testingstandards.net/"
+    },
+    "common_rule": {
+      "short": "Common Rule",
+      "name": "US Common Rule for human-subjects research (45 CFR 46)",
+      "url": "https://www.hhs.gov/ohrp/regulations-and-policy/regulations/45-cfr-46/"
+    },
+    "ferpa": {
+      "short": "FERPA",
+      "name": "Family Educational Rights and Privacy Act (34 CFR Part 99)",
+      "url": "https://studentprivacy.ed.gov/"
+    },
+    "care": {
+      "short": "CARE",
+      "name": "CARE Principles for Indigenous Data Governance",
+      "url": "https://www.gida-global.org/care"
+    },
+    "local_contexts": {
+      "short": "Local Contexts",
+      "name": "Local Contexts Traditional Knowledge and Biocultural Labels and Notices",
+      "url": "https://localcontexts.org/"
+    }
+  },
   "elements": [
     {
       "id": "resource.title",
@@ -20,7 +102,24 @@
       "cardinality": "1",
       "type": "text",
       "definition": "Name of the resource.",
-      "datacite": "titles.title"
+      "datacite": "titles.title",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "titles.title",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "title",
+          "match": "exact"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "name",
+          "match": "exact"
+        }
+      ]
     },
     {
       "id": "resource.creators",
@@ -29,7 +128,29 @@
       "cardinality": "1..n",
       "type": "creator",
       "definition": "People or organizations primarily responsible for the resource, with ORCID iDs where available.",
-      "datacite": "creators (nameIdentifier with nameIdentifierScheme ORCID; affiliation)"
+      "datacite": "creators (nameIdentifier with nameIdentifierScheme ORCID; affiliation)",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "creators",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "creator",
+          "match": "exact"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "creator",
+          "match": "exact"
+        },
+        {
+          "standard": "orcid",
+          "term": "ORCID iD (nameIdentifier)",
+          "match": "exact"
+        }
+      ]
     },
     {
       "id": "resource.publisher",
@@ -38,7 +159,24 @@
       "cardinality": "1",
       "type": "text",
       "definition": "Entity that holds, archives, or makes the resource available (usually the repository or institution).",
-      "datacite": "publisher"
+      "datacite": "publisher",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "publisher",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "publisher",
+          "match": "exact"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "publisher",
+          "match": "exact"
+        }
+      ]
     },
     {
       "id": "resource.publication_year",
@@ -47,7 +185,24 @@
       "cardinality": "1",
       "type": "year",
       "definition": "Year the resource was or will be made publicly available.",
-      "datacite": "publicationYear"
+      "datacite": "publicationYear",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "publicationYear",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "issued",
+          "match": "close"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "datePublished",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "resource.resource_type",
@@ -65,7 +220,24 @@
         "Other"
       ],
       "definition": "General type of the resource, using DataCite resourceTypeGeneral values.",
-      "datacite": "types.resourceTypeGeneral; types.resourceType = 'STEMEd+ <type>'"
+      "datacite": "types.resourceTypeGeneral; types.resourceType = 'STEMEd+ <type>'",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "resourceTypeGeneral",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "type",
+          "match": "close"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "@type",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "resource.identifier",
@@ -74,7 +246,24 @@
       "cardinality": "0..1",
       "type": "identifier",
       "definition": "Persistent identifier (DOI preferred) once one has been assigned.",
-      "datacite": "identifiers (DOI) or alternateIdentifiers"
+      "datacite": "identifiers (DOI) or alternateIdentifiers",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "identifier",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "identifier",
+          "match": "exact"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "identifier",
+          "match": "exact"
+        }
+      ]
     },
     {
       "id": "resource.description",
@@ -83,7 +272,24 @@
       "cardinality": "0..1",
       "type": "text",
       "definition": "Abstract or summary of the resource.",
-      "datacite": "descriptions (descriptionType Abstract)"
+      "datacite": "descriptions (descriptionType Abstract)",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "description (Abstract)",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "abstract",
+          "match": "exact"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "description",
+          "match": "exact"
+        }
+      ]
     },
     {
       "id": "resource.keywords",
@@ -92,7 +298,24 @@
       "cardinality": "0..n",
       "type": "text",
       "definition": "Free-text keywords.",
-      "datacite": "subjects (no scheme)"
+      "datacite": "subjects (no scheme)",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "subject (no scheme)",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "subject",
+          "match": "close"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "keywords",
+          "match": "exact"
+        }
+      ]
     },
     {
       "id": "resource.language",
@@ -101,7 +324,29 @@
       "cardinality": "0..1",
       "type": "language",
       "definition": "Primary language of the resource (BCP 47 code, e.g. en).",
-      "datacite": "language"
+      "datacite": "language",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "language",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "language",
+          "match": "exact"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "inLanguage",
+          "match": "exact"
+        },
+        {
+          "standard": "bcp47",
+          "term": "language tag",
+          "match": "exact"
+        }
+      ]
     },
     {
       "id": "resource.license",
@@ -110,7 +355,29 @@
       "cardinality": "0..1",
       "type": "license",
       "definition": "License for the resource, as an SPDX identifier where possible (e.g. CC-BY-4.0).",
-      "datacite": "rightsList (rightsIdentifier, rightsIdentifierScheme SPDX)"
+      "datacite": "rightsList (rightsIdentifier, rightsIdentifierScheme SPDX)",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "rightsList",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "license",
+          "match": "exact"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "license",
+          "match": "exact"
+        },
+        {
+          "standard": "spdx",
+          "term": "license identifier",
+          "match": "exact"
+        }
+      ]
     },
     {
       "id": "resource.funding",
@@ -119,7 +386,19 @@
       "cardinality": "0..n",
       "type": "funding",
       "definition": "Funders and award numbers.",
-      "datacite": "fundingReferences"
+      "datacite": "fundingReferences",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "fundingReferences",
+          "match": "exact"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "funder",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "resource.collection_dates",
@@ -128,7 +407,29 @@
       "cardinality": "0..1",
       "type": "date_range",
       "definition": "Start and end of data collection (ISO 8601 dates).",
-      "datacite": "dates (dateType Collected, as start/end)"
+      "datacite": "dates (dateType Collected, as start/end)",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "date (Collected)",
+          "match": "exact"
+        },
+        {
+          "standard": "iso8601",
+          "term": "date",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "temporal",
+          "match": "related"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "temporalCoverage",
+          "match": "related"
+        }
+      ]
     },
     {
       "id": "resource.geography",
@@ -137,7 +438,29 @@
       "cardinality": "0..1",
       "type": "geography",
       "definition": "Countries (ISO 3166-1 alpha-2) and, for the US, states (USPS codes) where data were collected.",
-      "datacite": "geoLocations (geoLocationPlace)"
+      "datacite": "geoLocations (geoLocationPlace)",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "geoLocationPlace",
+          "match": "exact"
+        },
+        {
+          "standard": "iso3166",
+          "term": "country code",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "spatial",
+          "match": "close"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "spatialCoverage",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "resource.related",
@@ -146,7 +469,24 @@
       "cardinality": "0..n",
       "type": "related",
       "definition": "Related publications, datasets, preregistrations, or instruments, with a DataCite relationType.",
-      "datacite": "relatedIdentifiers"
+      "datacite": "relatedIdentifiers",
+      "alignments": [
+        {
+          "standard": "datacite",
+          "term": "relatedIdentifiers",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "relation",
+          "match": "close"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "citation",
+          "match": "related"
+        }
+      ]
     },
     {
       "id": "stemed.design.topic",
@@ -155,7 +495,29 @@
       "cardinality": "0..1",
       "type": "text",
       "definition": "The main subject or topic of the study, in the researcher's words (e.g., 'introductory geology lab learning').",
-      "datacite": "subjects (no scheme)"
+      "datacite": "subjects (no scheme)",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "design.topic",
+          "match": "exact"
+        },
+        {
+          "standard": "datacite",
+          "term": "subject",
+          "match": "close"
+        },
+        {
+          "standard": "dcterms",
+          "term": "subject",
+          "match": "close"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "about",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.design.research_questions",
@@ -164,7 +526,24 @@
       "cardinality": "0..1",
       "type": "text",
       "definition": "Primary research questions, objectives, or hypotheses.",
-      "datacite": "descriptions (descriptionType Methods)"
+      "datacite": "descriptions (descriptionType Methods)",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "design.research_questions",
+          "match": "exact"
+        },
+        {
+          "standard": "datacite",
+          "term": "description (Methods)",
+          "match": "close"
+        },
+        {
+          "standard": "dcterms",
+          "term": "description",
+          "match": "related"
+        }
+      ]
     },
     {
       "id": "stemed.design.unit_of_analysis",
@@ -174,7 +553,19 @@
       "type": "vocab",
       "vocabulary": "unit_of_analysis",
       "definition": "The unit(s) the analysis is about.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Units of Analysis')"
+      "datacite": "subjects (subjectScheme 'STEMEd+ Units of Analysis')",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "unit_of_analysis vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "datacite",
+          "term": "subject (scheme)",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.design.sampling_procedure",
@@ -184,7 +575,19 @@
       "type": "vocab",
       "vocabulary": "sampling_procedure",
       "definition": "How participants or units were selected.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Sampling Procedures'); descriptions (Methods)"
+      "datacite": "subjects (subjectScheme 'STEMEd+ Sampling Procedures'); descriptions (Methods)",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "sampling_procedure vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "datacite",
+          "term": "subject (scheme)",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.constructs",
@@ -195,7 +598,29 @@
       "condition": "Mandatory when resource_type is Dataset or Instrument.",
       "definition": "Constructs measured, from the STEMEd+ construct vocabulary (library/constructs.json), optionally with the instrument, version and subscale used.",
       "vocabulary_file": "library/constructs.json",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Constructs', valueURI per construct); for datasets, relatedIdentifiers to the instrument's library record (URL, relationType IsCollectedBy) and its publication (DOI, relationType References); ERIC descriptors as additional subjects"
+      "datacite": "subjects (subjectScheme 'STEMEd+ Constructs', valueURI per construct); for datasets, relatedIdentifiers to the instrument's library record (URL, relationType IsCollectedBy) and its publication (DOI, relationType References); ERIC descriptors as additional subjects",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "construct vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "eric",
+          "term": "descriptors",
+          "match": "close"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "variableMeasured",
+          "match": "close"
+        },
+        {
+          "standard": "datacite",
+          "term": "subject (scheme)",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.discipline",
@@ -205,7 +630,29 @@
       "type": "vocab",
       "vocabulary": "discipline",
       "definition": "STEM discipline(s) of the learning or research.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Disciplines')"
+      "datacite": "subjects (subjectScheme 'STEMEd+ Disciplines')",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "discipline vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "eric",
+          "term": "descriptors",
+          "match": "close"
+        },
+        {
+          "standard": "dcterms",
+          "term": "subject",
+          "match": "close"
+        },
+        {
+          "standard": "datacite",
+          "term": "subject (scheme)",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.population.participant_roles",
@@ -215,7 +662,19 @@
       "type": "vocab",
       "vocabulary": "participant_role",
       "definition": "Who the participants are.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Participant Roles')"
+      "datacite": "subjects (subjectScheme 'STEMEd+ Participant Roles')",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "participant_role vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "datacite",
+          "term": "subject (scheme)",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.population.education_levels",
@@ -225,7 +684,29 @@
       "type": "vocab",
       "vocabulary": "education_level",
       "definition": "Education level(s) of the participants.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Education Levels')"
+      "datacite": "subjects (subjectScheme 'STEMEd+ Education Levels')",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "education_level vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "eric",
+          "term": "education level descriptors",
+          "match": "close"
+        },
+        {
+          "standard": "dcterms",
+          "term": "educationLevel",
+          "match": "close"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "educationalLevel",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.population.undergraduate_levels",
@@ -235,7 +716,19 @@
       "type": "vocab",
       "vocabulary": "undergraduate_level",
       "definition": "Course level(s) for undergraduate studies.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Undergraduate Levels')"
+      "datacite": "subjects (subjectScheme 'STEMEd+ Undergraduate Levels')",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "undergraduate_level vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "datacite",
+          "term": "subject (scheme)",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.population.description",
@@ -244,7 +737,19 @@
       "cardinality": "0..1",
       "type": "text",
       "definition": "Narrative description of the participants and sampling, without identifying information.",
-      "datacite": "descriptions (descriptionType Methods)"
+      "datacite": "descriptions (descriptionType Methods)",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "population.description",
+          "match": "exact"
+        },
+        {
+          "standard": "datacite",
+          "term": "description (Methods)",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.population.sample_size",
@@ -253,7 +758,19 @@
       "cardinality": "0..1",
       "type": "integer",
       "definition": "Number of participants (or units) in the data.",
-      "datacite": "sizes ('N = <n> participants')"
+      "datacite": "sizes ('N = <n> participants')",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "population.sample_size",
+          "match": "exact"
+        },
+        {
+          "standard": "datacite",
+          "term": "sizes",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.context.institution_types",
@@ -263,7 +780,19 @@
       "type": "vocab",
       "vocabulary": "institution_type",
       "definition": "Type(s) of institution or organization.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Institution Types')"
+      "datacite": "subjects (subjectScheme 'STEMEd+ Institution Types')",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "institution_type vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "eric",
+          "term": "descriptors",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.context.locale",
@@ -273,7 +802,24 @@
       "type": "vocab",
       "vocabulary": "locale",
       "definition": "Community type(s) where the study took place.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Locales')"
+      "datacite": "subjects (subjectScheme 'STEMEd+ Locales')",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "locale vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "nces_locale",
+          "term": "locale category",
+          "match": "close"
+        },
+        {
+          "standard": "eric",
+          "term": "descriptors",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.setting.modality",
@@ -283,7 +829,19 @@
       "type": "vocab",
       "vocabulary": "modality",
       "definition": "How instruction or participation was delivered.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Modalities')"
+      "datacite": "subjects (subjectScheme 'STEMEd+ Modalities')",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "modality vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "eric",
+          "term": "descriptors",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.setting.learning_environments",
@@ -293,7 +851,19 @@
       "type": "vocab",
       "vocabulary": "learning_environment",
       "definition": "Instructional setting(s).",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Learning Environments')"
+      "datacite": "subjects (subjectScheme 'STEMEd+ Learning Environments')",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "learning_environment vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "eric",
+          "term": "descriptors",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.setting.pedagogy",
@@ -303,7 +873,24 @@
       "type": "vocab",
       "vocabulary": "pedagogy",
       "definition": "Instructional approach(es) used or studied.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Instructional Approaches')"
+      "datacite": "subjects (subjectScheme 'STEMEd+ Instructional Approaches')",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "pedagogy vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "eric",
+          "term": "descriptors",
+          "match": "close"
+        },
+        {
+          "standard": "dcterms",
+          "term": "instructionalMethod",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.evidence.study_designs",
@@ -314,7 +901,24 @@
       "vocabulary": "study_design",
       "condition": "Mandatory when resource_type is Dataset or StudyRegistration.",
       "definition": "Design(s) that produced the evidence.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Study Designs'); descriptions (Methods)"
+      "datacite": "subjects (subjectScheme 'STEMEd+ Study Designs'); descriptions (Methods)",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "study_design vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "eric",
+          "term": "descriptors",
+          "match": "close"
+        },
+        {
+          "standard": "datacite",
+          "term": "description (Methods)",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.evidence.measurement_evidence",
@@ -325,7 +929,24 @@
       "vocabulary": "measurement_evidence",
       "condition": "Mandatory when resource_type is Instrument.",
       "definition": "Kinds of reliability and validity evidence the resource provides.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Measurement Evidence')"
+      "datacite": "subjects (subjectScheme 'STEMEd+ Measurement Evidence')",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "measurement_evidence vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "testing_standards",
+          "term": "sources of validity evidence",
+          "match": "close"
+        },
+        {
+          "standard": "eric",
+          "term": "descriptors",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.evidence.data_collection_methods",
@@ -335,7 +956,24 @@
       "type": "vocab",
       "vocabulary": "data_collection_method",
       "definition": "How data were collected.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Data Collection Methods')"
+      "datacite": "subjects (subjectScheme 'STEMEd+ Data Collection Methods')",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "data_collection_method vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "eric",
+          "term": "descriptors",
+          "match": "close"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "measurementTechnique",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.ethics.human_subjects_review",
@@ -345,7 +983,19 @@
       "type": "vocab",
       "vocabulary": "human_subjects_review",
       "definition": "Ethics / IRB review status, as reported by the researcher.",
-      "datacite": "descriptions (descriptionType Other, 'Ethics and access')"
+      "datacite": "descriptions (descriptionType Other, 'Ethics and access')",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "human_subjects_review vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "common_rule",
+          "term": "IRB review / exemption",
+          "match": "related"
+        }
+      ]
     },
     {
       "id": "stemed.ethics.consent",
@@ -355,7 +1005,19 @@
       "type": "vocab",
       "vocabulary": "consent",
       "definition": "How participants agreed to take part.",
-      "datacite": "descriptions (Other, 'Ethics and access')"
+      "datacite": "descriptions (Other, 'Ethics and access')",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "consent vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "common_rule",
+          "term": "informed consent / waiver",
+          "match": "related"
+        }
+      ]
     },
     {
       "id": "stemed.ethics.consent_for_sharing",
@@ -365,7 +1027,24 @@
       "type": "vocab",
       "vocabulary": "consent_for_sharing",
       "definition": "What participants allow regarding sharing beyond the research team.",
-      "datacite": "descriptions (Other, 'Ethics and access'); rightsList"
+      "datacite": "descriptions (Other, 'Ethics and access'); rightsList",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "consent_for_sharing vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "conditionsOfAccess",
+          "match": "related"
+        },
+        {
+          "standard": "datacite",
+          "term": "rightsList",
+          "match": "related"
+        }
+      ]
     },
     {
       "id": "stemed.ethics.identifiability",
@@ -375,7 +1054,19 @@
       "type": "vocab",
       "vocabulary": "identifiability",
       "definition": "Identifiability of the data.",
-      "datacite": "descriptions (Other, 'Ethics and access')"
+      "datacite": "descriptions (Other, 'Ethics and access')",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "identifiability vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "ferpa",
+          "term": "de-identified records",
+          "match": "related"
+        }
+      ]
     },
     {
       "id": "stemed.ethics.sensitivity_flags",
@@ -385,7 +1076,19 @@
       "type": "vocab",
       "vocabulary": "sensitivity_flag",
       "definition": "Kinds of sensitive information in the underlying data.",
-      "datacite": "descriptions (Other, 'Ethics and access')"
+      "datacite": "descriptions (Other, 'Ethics and access')",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "sensitivity_flag vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "ferpa",
+          "term": "education records",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.ethics.access_level",
@@ -395,7 +1098,29 @@
       "type": "vocab",
       "vocabulary": "access_level",
       "definition": "How the data can be accessed.",
-      "datacite": "rightsList (access statement)"
+      "datacite": "rightsList (access statement)",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "access_level vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "accessRights",
+          "match": "close"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "conditionsOfAccess",
+          "match": "close"
+        },
+        {
+          "standard": "datacite",
+          "term": "rightsList",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.ethics.governance_notes",
@@ -404,7 +1129,24 @@
       "cardinality": "0..1",
       "type": "text",
       "definition": "Approval references, data-use restrictions, retention or de-identification requirements (no confidential details).",
-      "datacite": "descriptions (Other, 'Ethics and access')"
+      "datacite": "descriptions (Other, 'Ethics and access')",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "ethics.governance_notes",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "accessRights",
+          "match": "related"
+        },
+        {
+          "standard": "datacite",
+          "term": "description (Other)",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.care.indigenous_data",
@@ -414,7 +1156,19 @@
       "type": "vocab",
       "vocabulary": "indigenous_data",
       "definition": "Whether the resource contains or derives from data about Indigenous Peoples, nations, communities, lands, territories, or knowledges.",
-      "datacite": "descriptions (Other, 'CARE statement')"
+      "datacite": "descriptions (Other, 'CARE statement')",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "indigenous_data vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "care",
+          "term": "scope: Indigenous data",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.care.governance",
@@ -425,7 +1179,19 @@
       "vocabulary": "indigenous_governance",
       "condition": "Mandatory when indigenous_data is yes.",
       "definition": "How Indigenous authority to control the data is exercised (CARE: Authority to control).",
-      "datacite": "descriptions (Other, 'CARE statement'); rightsList"
+      "datacite": "descriptions (Other, 'CARE statement'); rightsList",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "indigenous_governance vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "care",
+          "term": "Authority to control",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.care.statement",
@@ -435,7 +1201,24 @@
       "type": "text",
       "condition": "Mandatory when indigenous_data is yes.",
       "definition": "How the work provides collective benefit, respects authority to control, and meets responsibility and ethics obligations to the communities involved.",
-      "datacite": "descriptions (Other, 'CARE statement')"
+      "datacite": "descriptions (Other, 'CARE statement')",
+      "alignments": [
+        {
+          "standard": "stemed",
+          "term": "care.statement",
+          "match": "exact"
+        },
+        {
+          "standard": "care",
+          "term": "Collective benefit; Responsibility; Ethics",
+          "match": "close"
+        },
+        {
+          "standard": "datacite",
+          "term": "description (Other)",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.care.local_contexts_project",
@@ -444,7 +1227,19 @@
       "cardinality": "0..1",
       "type": "url",
       "definition": "URL of a Local Contexts Hub project holding Traditional Knowledge or Biocultural Labels or Notices for this resource.",
-      "datacite": "relatedIdentifiers (relatedIdentifierType URL, relationType IsDescribedBy)"
+      "datacite": "relatedIdentifiers (relatedIdentifierType URL, relationType IsDescribedBy)",
+      "alignments": [
+        {
+          "standard": "local_contexts",
+          "term": "Hub project",
+          "match": "exact"
+        },
+        {
+          "standard": "datacite",
+          "term": "relatedIdentifier",
+          "match": "close"
+        }
+      ]
     },
     {
       "id": "stemed.care.local_contexts_labels",
@@ -453,7 +1248,14 @@
       "cardinality": "0..n",
       "type": "text",
       "definition": "Names of Local Contexts Labels or Notices applied by the community (e.g. 'TK Attribution').",
-      "datacite": "descriptions (Other, 'CARE statement')"
+      "datacite": "descriptions (Other, 'CARE statement')",
+      "alignments": [
+        {
+          "standard": "local_contexts",
+          "term": "TK/BC Labels and Notices",
+          "match": "exact"
+        }
+      ]
     }
   ],
   "rules": [
@@ -529,5 +1331,10 @@
       "check": "identifiers_not_shared",
       "message": "Direct identifiers are flagged; they must be removed before the data are shared."
     }
-  ]
+  ],
+  "match_types": {
+    "exact": "Same meaning; values can be copied directly.",
+    "close": "Near-equivalent; usable interchangeably in most cases.",
+    "related": "Overlapping meaning; not a substitute."
+  }
 }

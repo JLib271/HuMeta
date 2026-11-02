@@ -34,6 +34,7 @@ people already use.
 | [`elements.md`](elements.md) | Readable reference for every element, rule, and vocabulary (generated) |
 | `schema/stemed-ap-record.schema.json` | JSON Schema for records (generated) |
 | `crosswalks/datacite-4.7.csv` | Element-to-DataCite crosswalk (generated) |
+| `crosswalks/alignments.csv` | Every element's alignment to DataCite, Dublin Core, schema.org, ERIC and other standards, with match type (generated) |
 | `crosswalks/eric.csv` | Vocabulary-to-ERIC descriptor crosswalk with verification status (generated) |
 | `crosswalks/eric_descriptor_status.json` | Which ERIC descriptors have been verified, and how |
 | `examples/` | Example record with its DataCite JSON and XML (fictional study) |
@@ -153,6 +154,17 @@ Vocabularies are in `vocabularies.json` and the construct vocabulary is in
   *Standards for Educational and Psychological Testing*.
 
 ## 6. Crosswalks
+
+### Alignments
+
+Every element in `profile.json` lists the standards it corresponds to, under
+`alignments`, each with a match type: **exact** (same meaning), **close**
+(≈, similar enough to map with care) or **related** (~, overlapping but not
+interchangeable). Elements marked `STEMEd+` are defined by this profile and
+have no equivalent in a general-purpose standard. The standards are listed in
+the `standards` block of `profile.json`. The OpenEdMetadata app shows these
+alignments beside each field, `elements.md` shows them per element, and
+`crosswalks/alignments.csv` lists them all.
 
 ### DataCite Metadata Schema 4.7
 

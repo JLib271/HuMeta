@@ -678,3 +678,44 @@ def to_study_record(record: dict, existing: dict | None = None, profile: Profile
         "study_description": json.dumps(description, ensure_ascii=False),
         "created_at": existing.get("created_at") or time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
     }
+
+
+# ----------------------------------------------------------------- alignments
+MATCH_MARK = {"exact": "", "close": "≈", "related": "~"}
+
+
+def element(element_id: str, profile: Profile | None = None) -> dict:
+    p = profile or load()
+    for e in p.definition["elements"]:
+        if e["id"] == element_id:
+            return e
+    raise KeyError(f"No element {element_id!r} in the profile")
+
+
+def alignment_badges(element_id: str, profile: Profile | None = None) -> str:
+    """Short, label-ready summary of an element's alignments, e.g.
+    "`DataCite: titles.title` `DC: title` `schema.org: name`" (≈ close, ~ related).
+    STEMEd+-specific elements start with `STEMEd+`."""
+    p = profile or load()
+    parts = []
+    for a in element(element_id, p).get("alignments", []):
+        short = p.definition["standards"][a["standard"]]["short"]
+        if a["standard"] == "stemed":
+            parts.append("`STEMEd+`")
+        else:
+            parts.append(f"`{MATCH_MARK[a['match']]}{short}: {a['term']}`")
+    return " ".join(parts)
+
+
+def alignment_help(element_id: str, profile: Profile | None = None) -> str:
+    """Full-sentence alignment notes for tooltips."""
+    p = profile or load()
+    e = element(element_id, p)
+    lines = [e["definition"]]
+    for a in e.get("alignments", []):
+        std = p.definition["standards"][a["standard"]]
+        if a["standard"] == "stemed":
+            lines.append(f"STEMEd+ extension: {a['term']} (no equivalent in general-purpose metadata standards).")
+        else:
+            lines.append(f"{a['match'].capitalize()} match: {std['name']} — {a['term']}.")
+    return "\n\n".join(lines)

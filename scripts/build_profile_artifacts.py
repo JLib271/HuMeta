@@ -7,6 +7,7 @@ Sources (edit these):   standard/stemed-ap/profile.json, vocabularies.json,
                         library/constructs.json
 Generated (don't edit): schema/stemed-ap-record.schema.json, elements.md,
                         crosswalks/datacite-4.7.csv, crosswalks/eric.csv,
+                        crosswalks/alignments.csv,
                         examples/*.datacite.json, examples/*.datacite.xml
 
 Usage:
@@ -49,6 +50,14 @@ def build() -> dict[Path, str]:
         rows.append([e["id"], e["label"], e["obligation"], e["cardinality"], e.get("vocabulary", ""), e["datacite"]])
     files[BASE / "crosswalks" / "datacite-4.7.csv"] = csv_text(rows)
 
+    standards = p.definition["standards"]
+    rows = [["element", "label", "standard", "standard_name", "term", "match", "standard_url"]]
+    for e in p.definition["elements"]:
+        for a in e.get("alignments", []):
+            std = standards[a["standard"]]
+            rows.append([e["id"], e["label"], std["short"], std["name"], a["term"], a["match"], std["url"]])
+    files[BASE / "crosswalks" / "alignments.csv"] = csv_text(rows)
+
     rows = [["vocabulary", "term_id", "term_label", "eric_descriptor", "eric_status"]]
     for c in lib.constructs.values():
         for d in c.get("eric", []):
@@ -67,15 +76,22 @@ def build() -> dict[Path, str]:
         "",
         "Obligations: " + "; ".join(f"**{k}** = {v}" for k, v in p.definition["obligations"].items()),
         "",
+        "Alignments: each element lists the standards it corresponds to. No mark = exact match; "
+        "**≈** = close match; **~** = related. `STEMEd+` = defined by this profile, with no equivalent in a "
+        "general-purpose standard. Full list in [`crosswalks/alignments.csv`](crosswalks/alignments.csv).",
+        "",
+        "Standards: " + "; ".join(f"[{s['short']}]({s['url']}) = {s['name']}" for s in p.definition["standards"].values()),
+        "",
         "## Elements",
         "",
-        "| Element | Obligation | Cardinality | Definition | DataCite 4.7 |",
-        "|---|---|---|---|---|",
+        "| Element | Obligation | Cardinality | Definition | Aligned with | DataCite 4.7 mapping |",
+        "|---|---|---|---|---|---|",
     ]
     for e in p.definition["elements"]:
         definition = e["definition"] + (f" *{e['condition']}*" if e.get("condition") else "")
         vocab = f" Vocabulary: [{e['vocabulary']}](#{e['vocabulary']})." if e.get("vocabulary") else ""
-        lines.append(f"| <a id=\"{e['id']}\"></a>`{e['id']}` | {e['obligation']} | {e['cardinality']} | {definition}{vocab} | {e['datacite']} |")
+        lines.append(f"| <a id=\"{e['id']}\"></a>`{e['id']}` | {e['obligation']} | {e['cardinality']} | {definition}{vocab} | "
+                     f"{profile.alignment_badges(e['id'], p).replace('` `', '`, `')} | {e['datacite']} |")
     lines += ["", "## Rules", "", "| Rule | Severity | Requirement |", "|---|---|---|"]
     for r in p.definition["rules"]:
         lines.append(f"| {r['id']} | {r['severity']} | {r['message']} |")
