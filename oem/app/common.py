@@ -344,6 +344,19 @@ value_propositions = [
 ALLOWED_PR_FOLDERS = ("suggestions/", "published/study_summaries/", "published/datasets/")
 
 
+PUBLIC_SUBMISSION_NOTICE = (
+    "**Visible as soon as you submit.** Submitting opens a pull request on the project's GitHub "
+    "repository. Anyone who can view the repository can see what you submit right away, before a "
+    "maintainer reviews it, and it stays in the repository's history even if it is not accepted. "
+    "Do not include participant data, identifying or confidential information, or unpublished results."
+)
+
+
+def public_submission_warning() -> None:
+    """Show the standard warning before any form that submits to the GitHub repository."""
+    st.warning(PUBLIC_SUBMISSION_NOTICE)
+
+
 def open_review_pull_request(
     suggestion_type: str,
     title_summary: str,

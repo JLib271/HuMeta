@@ -14,7 +14,7 @@ from streamlit_flow.elements import StreamlitFlowEdge, StreamlitFlowNode
 from streamlit_flow.layouts import ManualLayout
 from streamlit_flow.state import StreamlitFlowState
 from oem.vocab import (APP_DIR, THEORY_MAP)
-from oem.app.common import (MEASURE_CATALOG_PATH, automate_github_pull_request, citation_for_framework, context_search_terms, current_project, find_measure_suggestions, load_measure_catalog, load_published_summaries, open_review_pull_request, render_project_download, safe_slug)
+from oem.app.common import (MEASURE_CATALOG_PATH, automate_github_pull_request, citation_for_framework, context_search_terms, current_project, find_measure_suggestions, load_measure_catalog, load_published_summaries, open_review_pull_request, public_submission_warning, render_project_download, safe_slug)
 
 
 def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None) -> None:
@@ -1624,11 +1624,13 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
                     "published_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 }
                 st.markdown("**Publish a limited study summary**")
+                public_submission_warning()
                 with st.expander("Preview exactly what will be published"):
                     st.json(summary_record)
                 summary_consent = st.checkbox(
                     "I confirm this summary contains no participant data or confidential "
-                    "information and I am authorized to make it public.",
+                    "information, I am authorized to make it public, and I understand it is "
+                    "visible on GitHub as soon as I submit it.",
                     key=f"module2_summary_consent_{flow_identity}",
                 )
                 if st.button(
@@ -1680,10 +1682,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
             "Submit the reviewed theory/variable map and conceptual relationships as a pull request "
             "for maintainer review. Accepted suggestions can be added to the app's catalog."
         )
-        st.warning(
-            "This proposal will be submitted to the public GitHub repository. Do not include "
-            "participant information, private study details, unpublished results, or other sensitive content."
-        )
+        public_submission_warning()
         proposal_frameworks = list(dict.fromkeys(
             str(value).strip()
             for value in df_manifest["Framework_Source"].fillna("")

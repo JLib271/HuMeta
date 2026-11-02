@@ -13,7 +13,7 @@ import json
 import streamlit as st
 
 from oem import profile
-from oem.app.common import automate_github_pull_request, navigate_to_module, render_project_download
+from oem.app.common import automate_github_pull_request, navigate_to_module, public_submission_warning, render_project_download
 from oem.app.profile_form import SPEC_URL, current_record, record_form, store_record
 
 CONSTRUCT_RULES = {"R1"}  # constructs are completed in Module 3
@@ -74,6 +74,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     st.caption("Suggest a new element, a vocabulary term, or a clearer definition. Proposals are reviewed publicly "
                "(see GOVERNANCE.md); do not include confidential study details.")
     with st.expander("Draft a proposal"):
+        public_submission_warning()
         target = st.text_input("Element or vocabulary", placeholder="e.g., learning_environment: add 'makerspace'",
                                key="module1_proposal_target")
         details = st.text_area("Proposed change and rationale", key="module1_proposal_text")

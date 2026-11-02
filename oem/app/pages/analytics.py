@@ -8,7 +8,7 @@ import pandas as pd
 import numpy as np
 import io
 import uuid
-from oem.app.common import (automate_github_pull_request, load_published_datasets)
+from oem.app.common import (automate_github_pull_request, load_published_datasets, public_submission_warning)
 
 
 def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None) -> None:
@@ -498,6 +498,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     st.markdown("### 🚀 Propose Alternative Statistical & Analytical Functions")
     st.caption("Seeking custom calculations? Enter a metric or statistical test title below. If you don't know the code, our system will auto-generate a Python template for you!")
     
+    public_submission_warning()
     suggested_stat_metric = st.text_input("Proposed Statistical Function Title", placeholder="e.g., Two-Way ANOVA, Chi-Square Test", key="mod4_metric")
     suggested_stat_code = st.text_area("Proposed Python Code block (Optional)", placeholder="Leave blank to let the system auto-create the statistical calculation template...", height=100, key="mod4_code")
     
