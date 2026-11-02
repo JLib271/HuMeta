@@ -262,15 +262,16 @@ value_propositions = [
     ),
     (
         "5. Descriptive & Scale Analytics",
-        "📊 Comparative Meta-Analytics",
-        "Maps observed dataset columns to the theory-derived, demographic/contextual, and custom "
-        "variables defined in Module 2, then supports descriptive, composite-score, reliability, "
-        "and relationship analyses.",
+        "📊 Analysis by Construct",
+        "Matches your data's columns to the constructs in your variable plan and reports descriptives, scale "
+        "scores, reliability, correlations, group and before/after comparisons, and regression, computed with an "
+        "established open-source package.",
         "5. Descriptive & Scale Analytics",
         [
-            "Upload a private dataset (kept in memory only) or pick a published one, then map its columns to Module 2 variables.",
-            "Inspect distributions, descriptive statistics, and categorical responses.",
-            "Review composite scores, reliability, correlations, and download a report.",
+            "Upload a private dataset (kept in memory only), pick a published one, or try example data.",
+            "Columns match your plan automatically; see each construct's scores and Cronbach's alpha with a 95% CI.",
+            "Correlate scores, compare groups or timepoints, test associations, and run linear or logistic regression.",
+            "Download results, a PDF report, and an R script that reproduces them.",
         ],
     ),
     (
@@ -288,6 +289,7 @@ value_propositions = [
 ]
 
 ALLOWED_PR_FOLDERS = ("suggestions/", "suggestions/frameworks/", "suggestions/instruments/", "suggestions/corrections/",
+                      "suggestions/analyses/",
                       "published/study_summaries/", "published/datasets/")
 
 

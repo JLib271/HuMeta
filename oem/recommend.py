@@ -30,6 +30,7 @@ FOLDERS = {
     "framework": "suggestions/frameworks/",
     "instrument": "suggestions/instruments/",
     "correction": "suggestions/corrections/",
+    "analysis": "suggestions/analyses/",
 }
 FRAMEWORK_KINDS = {
     "theory": "Theory (with constructs and expected relationships)",
@@ -229,6 +230,25 @@ def instrument_problems(rec: dict, lib: Library | None = None) -> list[str]:
     return issues
 
 
+# ----------------------------------------------------------- analyses
+def analysis_recommendation(*, name: str, purpose: str, when_to_use: str = "", software: str = "",
+                            citation: str = "", doi: str = "") -> dict:
+    return {"recommendation": "analysis", "format_version": 1, "submitted_at_utc": _now(), "name": name.strip(),
+            "purpose": purpose.strip(), "when_to_use": when_to_use.strip(), "software": software.strip(),
+            "citation": citation.strip(), "doi": clean_doi(doi)}
+
+
+def analysis_problems(rec: dict) -> list[str]:
+    issues = []
+    if not rec["name"]:
+        issues.append("Name the analysis (e.g., McDonald's omega, confirmatory factor analysis).")
+    if not rec["purpose"]:
+        issues.append("Say what it tells researchers.")
+    if rec["doi"] and not DOI_PATTERN.match(rec["doi"]):
+        issues.append("The DOI should look like 10.xxxx/xxxxx.")
+    return issues
+
+
 # ----------------------------------------------------------- corrections
 def correction(*, target_kind: str, target_id: str, change: str, source: str = "") -> dict:
     return {"recommendation": "correction", "format_version": 1, "submitted_at_utc": _now(),
@@ -287,7 +307,14 @@ def pr_description(rec: dict) -> str:
                      "Governance committee decided which constructs each part maps to",
                      "Access and license terms confirmed; no item text added without documented permission",
                      "Added as library/instruments/<id>.json and validate_library.py passes"]
+    elif rec["recommendation"] == "analysis":
+        lines = [f"**Recommended analysis for Module 5:** {rec['name']}", rec["purpose"],
+                 f"**When to use:** {rec['when_to_use']}" if rec["when_to_use"] else "",
+                 f"**Software (R or Python package and function):** {rec['software']}" if rec["software"] else "",
+                 f"**Citation:** {rec['citation']}" + (f" https://doi.org/{rec['doi']}" if rec["doi"] else "")]
+        checklist = ["Method and citation checked", "Implemented with an established open-source package (pingouin in "
+                     "the app, psych or lavaan in the R script), with tests", "Results checked against a published example"]
     else:
         lines = [f"**Correction to {rec['target_kind']}** `{rec['target_id']}`", rec["change"]]
         checklist = ["Change checked against the source", "Library files updated and validate_library.py passes"]
-    return "\n\n".join(lines) + "\n\n**Maintainer checklist** (see suggestions/README.md)\n" + "\n".join(f"- [ ] {c}" for c in checklist)
+    return "\n\n".join(line for line in lines if line) + "\n\n**Maintainer checklist** (see suggestions/README.md)\n" + "\n".join(f"- [ ] {c}" for c in checklist)
