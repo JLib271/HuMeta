@@ -4,8 +4,19 @@ updates:
     directory: "/"
     schedule:
       interval: weekly
-    open-pull-requests-limit: 5
+    # Only propose a change when the current requirement blocks a new release.
+    # Requirements use ">=" minimums, so new versions are already allowed and
+    # raising the minimum is not needed.
+    versioning-strategy: increase-if-necessary
+    # One pull request per week for all Python packages.
+    groups:
+      python-packages:
+        patterns: ["*"]
+    open-pull-requests-limit: 3
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
       interval: weekly
+    groups:
+      github-actions:
+        patterns: ["*"]
