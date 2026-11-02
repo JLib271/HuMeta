@@ -78,6 +78,32 @@
       },
       "description": "Constructs from library/constructs.json measured by the instrument as a whole."
     },
+    "construct_mapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status"
+      ],
+      "description": "Review status of the mapping from this instrument (and its dimensions) to constructs. Mappings are provisional until the HuMeta governance committee approves them; researchers decide whether an instrument fits their own construct.",
+      "properties": {
+        "status": {
+          "enum": [
+            "provisional",
+            "approved"
+          ]
+        },
+        "decided_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "decided_by": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
     "disciplines": {
       "type": "array",
       "minItems": 1,

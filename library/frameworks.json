@@ -1,6 +1,6 @@
 {
   "vocabulary_version": 1,
-  "note": "Theories, theoretical lenses, and framework approaches offered in Module 2. Each theory's concepts link to the construct vocabulary where one matches (construct_match: exact, close, or related). citation_status 'added' marks citations added by maintainers that a reviewer should confirm.",
+  "note": "Theories, theoretical lenses, and framework approaches offered in Module 2. Each theory lists its constructs; a construct links to the shared construct vocabulary (library/constructs.json) where one matches (shared_construct_match: exact, close, or related). Paths are the theory's expected relationships between its constructs. citation_status 'added' marks citations added by maintainers that a reviewer should confirm.",
   "frameworks": [
     {
       "id": "tpb",
@@ -14,30 +14,30 @@
       "citation": "Ajzen, I. (1991). The theory of planned behavior. Organizational Behavior and Human Decision Processes, 50(2), 179-211.",
       "doi": "10.1016/0749-5978(91)90020-T",
       "citation_status": "provided",
-      "concepts": [
+      "constructs": [
         {
           "id": "attitude_toward_the_behavior",
           "label": "Attitude Toward the Behavior",
-          "construct_id": "attitude_toward_subject",
-          "construct_match": "exact"
+          "shared_construct_id": "attitude_toward_subject",
+          "shared_construct_match": "exact"
         },
         {
           "id": "subjective_norms",
           "label": "Subjective Norms",
-          "construct_id": "subjective_norm",
-          "construct_match": "exact"
+          "shared_construct_id": "subjective_norm",
+          "shared_construct_match": "exact"
         },
         {
           "id": "perceived_behavioral_control",
           "label": "Perceived Behavioral Control",
-          "construct_id": "perceived_behavioral_control",
-          "construct_match": "exact"
+          "shared_construct_id": "perceived_behavioral_control",
+          "shared_construct_match": "exact"
         },
         {
           "id": "behavioral_intention",
           "label": "Behavioral Intention",
-          "construct_id": "behavioral_intention",
-          "construct_match": "exact"
+          "shared_construct_id": "behavioral_intention",
+          "shared_construct_match": "exact"
         },
         {
           "id": "behavior",
@@ -84,7 +84,7 @@
       "citation": "Ryan, R. M., & Deci, E. L. (2000). Self-determination theory and the facilitation of intrinsic motivation, social development, and well-being. American Psychologist, 55(1), 68-78.",
       "doi": "10.1037/0003-066X.55.1.68",
       "citation_status": "provided",
-      "concepts": [
+      "constructs": [
         {
           "id": "autonomy",
           "label": "Autonomy"
@@ -92,20 +92,20 @@
         {
           "id": "competence",
           "label": "Competence",
-          "construct_id": "self_efficacy",
-          "construct_match": "close"
+          "shared_construct_id": "self_efficacy",
+          "shared_construct_match": "close"
         },
         {
           "id": "relatedness",
           "label": "Relatedness",
-          "construct_id": "sense_of_belonging",
-          "construct_match": "close"
+          "shared_construct_id": "sense_of_belonging",
+          "shared_construct_match": "close"
         },
         {
           "id": "intrinsic_motivation",
           "label": "Intrinsic Motivation",
-          "construct_id": "interest",
-          "construct_match": "close"
+          "shared_construct_id": "interest",
+          "shared_construct_match": "close"
         }
       ],
       "paths": [
@@ -138,30 +138,30 @@
       "citation": "Wigfield, A., & Eccles, J. S. (2000). Expectancy-value theory of achievement motivation. Contemporary Educational Psychology, 25(1), 68-81.",
       "doi": "10.1006/ceps.1999.1015",
       "citation_status": "added",
-      "concepts": [
+      "constructs": [
         {
           "id": "expectancy_for_success",
           "label": "Expectancy for Success",
-          "construct_id": "self_efficacy",
-          "construct_match": "close"
+          "shared_construct_id": "self_efficacy",
+          "shared_construct_match": "close"
         },
         {
           "id": "intrinsic_value",
           "label": "Intrinsic Value",
-          "construct_id": "interest",
-          "construct_match": "close"
+          "shared_construct_id": "interest",
+          "shared_construct_match": "close"
         },
         {
           "id": "utility_value",
           "label": "Utility Value",
-          "construct_id": "task_value",
-          "construct_match": "close"
+          "shared_construct_id": "task_value",
+          "shared_construct_match": "close"
         },
         {
           "id": "attainment_value",
           "label": "Attainment Value",
-          "construct_id": "task_value",
-          "construct_match": "close"
+          "shared_construct_id": "task_value",
+          "shared_construct_match": "close"
         },
         {
           "id": "cost",
@@ -170,8 +170,8 @@
         {
           "id": "achievement_related_choices",
           "label": "Achievement-Related Choices",
-          "construct_id": "behavioral_intention",
-          "construct_match": "close"
+          "shared_construct_id": "behavioral_intention",
+          "shared_construct_match": "close"
         }
       ],
       "paths": [
@@ -213,12 +213,12 @@
       "citation": "Carlone, H. B., & Johnson, A. (2007). Understanding the science experiences of successful women of color: Science identity as an analytic lens. Journal of Research in Science Teaching, 44(8), 1187-1218.",
       "doi": "10.1002/tea.20237",
       "citation_status": "added",
-      "concepts": [
+      "constructs": [
         {
           "id": "competence",
           "label": "Competence",
-          "construct_id": "content_knowledge",
-          "construct_match": "related"
+          "shared_construct_id": "content_knowledge",
+          "shared_construct_match": "related"
         },
         {
           "id": "performance",
@@ -231,8 +231,8 @@
         {
           "id": "science_identity",
           "label": "Science Identity",
-          "construct_id": "disciplinary_identity",
-          "construct_match": "exact"
+          "shared_construct_id": "disciplinary_identity",
+          "shared_construct_match": "exact"
         }
       ],
       "paths": [
@@ -265,7 +265,7 @@
       "citation": "Davis, F. D. (1989). Perceived usefulness, perceived ease of use, and user acceptance of information technology. MIS Quarterly, 13(3), 319-340.",
       "doi": "10.2307/249008",
       "citation_status": "added",
-      "concepts": [
+      "constructs": [
         {
           "id": "perceived_usefulness",
           "label": "Perceived Usefulness"
@@ -277,8 +277,8 @@
         {
           "id": "behavioral_intention_to_use",
           "label": "Behavioral Intention to Use",
-          "construct_id": "behavioral_intention",
-          "construct_match": "exact"
+          "shared_construct_id": "behavioral_intention",
+          "shared_construct_match": "exact"
         },
         {
           "id": "actual_system_use",
@@ -319,7 +319,7 @@
       "citation": "Rosenstock, I. M. (1974). The health belief model and preventive health behavior. Health Education Monographs, 2(4), 354-386.",
       "doi": "10.1177/109019817400200405",
       "citation_status": "provided",
-      "concepts": [
+      "constructs": [
         {
           "id": "perceived_susceptibility",
           "label": "Perceived Susceptibility"
@@ -343,8 +343,8 @@
         {
           "id": "self_efficacy",
           "label": "Self-Efficacy",
-          "construct_id": "self_efficacy",
-          "construct_match": "exact"
+          "shared_construct_id": "self_efficacy",
+          "shared_construct_match": "exact"
         },
         {
           "id": "cues_to_action",
@@ -404,7 +404,7 @@
       ],
       "citation": "Bandura, A. (1986). Social foundations of thought and action: A social cognitive theory. Prentice-Hall.",
       "citation_status": "added",
-      "concepts": [
+      "constructs": [
         {
           "id": "personal_factors",
           "label": "Personal Factors"
@@ -412,8 +412,8 @@
         {
           "id": "environmental_factors",
           "label": "Environmental Factors",
-          "construct_id": "learning_environment",
-          "construct_match": "related"
+          "shared_construct_id": "learning_environment",
+          "shared_construct_match": "related"
         },
         {
           "id": "behavioral_factors",
@@ -430,8 +430,8 @@
         {
           "id": "self_efficacy",
           "label": "Self-Efficacy",
-          "construct_id": "self_efficacy",
-          "construct_match": "exact"
+          "shared_construct_id": "self_efficacy",
+          "shared_construct_match": "exact"
         }
       ],
       "paths": [
@@ -479,12 +479,12 @@
       "citation": "Bandura, A. (1977). Self-efficacy: Toward a unifying theory of behavioral change. Psychological Review, 84(2), 191-215.",
       "doi": "10.1037/0033-295X.84.2.191",
       "citation_status": "provided",
-      "concepts": [
+      "constructs": [
         {
           "id": "self_efficacy",
           "label": "Self-Efficacy",
-          "construct_id": "self_efficacy",
-          "construct_match": "exact"
+          "shared_construct_id": "self_efficacy",
+          "shared_construct_match": "exact"
         },
         {
           "id": "mastery_experiences",
@@ -536,7 +536,7 @@
       ],
       "citation": "Grimley, D., Prochaska, J. O., Velicer, W. F., Blais, L. M., & DiClemente, C. C. (1994). The transtheoretical model of change. In T. M. Brinthaupt & R. P. Lipka (Eds.), Changing the self: Philosophies, techniques, and experiences (pp. 201-227). SUNY Press.",
       "citation_status": "provided",
-      "concepts": [
+      "constructs": [
         {
           "id": "precontemplation",
           "label": "Precontemplation"
@@ -592,7 +592,7 @@
       "citation": "Carver, C. S., & Scheier, M. F. (1982). Control theory: A useful conceptual framework for personality-social, clinical, and health psychology. Psychological Bulletin, 92(1), 111-135.",
       "doi": "10.1037/0033-2909.92.1.111",
       "citation_status": "provided",
-      "concepts": [
+      "constructs": [
         {
           "id": "goal_or_reference_state",
           "label": "Goal or Reference State"
@@ -653,7 +653,7 @@
       "citation": "Michie, S., van Stralen, M. M., & West, R. (2011). The behaviour change wheel: A new method for characterising and designing behaviour change interventions. Implementation Science, 6, 42.",
       "doi": "10.1186/1748-5908-6-42",
       "citation_status": "added",
-      "concepts": [
+      "constructs": [
         {
           "id": "psychological_capability",
           "label": "Psychological Capability"
@@ -665,8 +665,8 @@
         {
           "id": "social_opportunity",
           "label": "Social Opportunity",
-          "construct_id": "subjective_norm",
-          "construct_match": "related"
+          "shared_construct_id": "subjective_norm",
+          "shared_construct_match": "related"
         },
         {
           "id": "physical_opportunity",
@@ -730,12 +730,12 @@
       "citation": "Atkins, L., Francis, J., Islam, R., O'Connor, D., Patey, A., Ivers, N., et al. (2017). A guide to using the Theoretical Domains Framework of behaviour change to investigate implementation problems. Implementation Science, 12, 77.",
       "doi": "10.1186/s13012-017-0605-9",
       "citation_status": "provided",
-      "concepts": [
+      "constructs": [
         {
           "id": "knowledge",
           "label": "Knowledge",
-          "construct_id": "content_knowledge",
-          "construct_match": "close"
+          "shared_construct_id": "content_knowledge",
+          "shared_construct_match": "close"
         },
         {
           "id": "skills",
@@ -744,8 +744,8 @@
         {
           "id": "beliefs_about_capabilities",
           "label": "Beliefs about Capabilities",
-          "construct_id": "self_efficacy",
-          "construct_match": "close"
+          "shared_construct_id": "self_efficacy",
+          "shared_construct_match": "close"
         },
         {
           "id": "beliefs_about_consequences",
@@ -754,32 +754,32 @@
         {
           "id": "intentions",
           "label": "Intentions",
-          "construct_id": "behavioral_intention",
-          "construct_match": "exact"
+          "shared_construct_id": "behavioral_intention",
+          "shared_construct_match": "exact"
         },
         {
           "id": "goals",
           "label": "Goals",
-          "construct_id": "goal_orientation",
-          "construct_match": "related"
+          "shared_construct_id": "goal_orientation",
+          "shared_construct_match": "related"
         },
         {
           "id": "social_influences",
           "label": "Social Influences",
-          "construct_id": "subjective_norm",
-          "construct_match": "close"
+          "shared_construct_id": "subjective_norm",
+          "shared_construct_match": "close"
         },
         {
           "id": "social_and_professional_role_and_identity",
           "label": "Social and Professional Role and Identity",
-          "construct_id": "disciplinary_identity",
-          "construct_match": "related"
+          "shared_construct_id": "disciplinary_identity",
+          "shared_construct_match": "related"
         },
         {
           "id": "environmental_context_and_resources",
           "label": "Environmental Context and Resources",
-          "construct_id": "learning_environment",
-          "construct_match": "related"
+          "shared_construct_id": "learning_environment",
+          "shared_construct_match": "related"
         },
         {
           "id": "emotion",
@@ -788,8 +788,8 @@
         {
           "id": "behavioral_regulation",
           "label": "Behavioral Regulation",
-          "construct_id": "self_regulated_learning",
-          "construct_match": "related"
+          "shared_construct_id": "self_regulated_learning",
+          "shared_construct_match": "related"
         }
       ],
       "paths": []
@@ -805,7 +805,7 @@
       ],
       "citation": "Skinner, B. F. (1953). Science and human behavior. Macmillan.",
       "citation_status": "added",
-      "concepts": [
+      "constructs": [
         {
           "id": "positive_reinforcement",
           "label": "Positive Reinforcement"
@@ -862,7 +862,7 @@
       ],
       "citation": "Vygotsky, L. S. (1978). Mind in society: The development of higher psychological processes. Harvard University Press.",
       "citation_status": "added",
-      "concepts": [],
+      "constructs": [],
       "paths": []
     },
     {
@@ -876,7 +876,7 @@
       ],
       "citation": "Lave, J., & Wenger, E. (1991). Situated learning: Legitimate peripheral participation. Cambridge University Press.",
       "citation_status": "added",
-      "concepts": [],
+      "constructs": [],
       "paths": []
     },
     {
@@ -891,7 +891,7 @@
       ],
       "citation": "Delgado, R., & Stefancic, J. (2017). Critical race theory: An introduction (3rd ed.). New York University Press.",
       "citation_status": "added",
-      "concepts": [],
+      "constructs": [],
       "paths": []
     },
     {
@@ -906,7 +906,7 @@
       ],
       "citation": "Crenshaw, K. (1989). Demarginalizing the intersection of race and sex. University of Chicago Legal Forum, 1989(1), 139-167.",
       "citation_status": "added",
-      "concepts": [],
+      "constructs": [],
       "paths": []
     },
     {
@@ -919,7 +919,7 @@
         "humanities",
         "arts"
       ],
-      "concepts": [],
+      "constructs": [],
       "paths": []
     },
     {
@@ -932,7 +932,7 @@
         "social_sciences",
         "arts"
       ],
-      "concepts": [],
+      "constructs": [],
       "paths": []
     },
     {
@@ -945,7 +945,7 @@
         "humanities",
         "education"
       ],
-      "concepts": [],
+      "constructs": [],
       "paths": []
     },
     {
@@ -957,7 +957,7 @@
         "social_sciences",
         "humanities"
       ],
-      "concepts": [],
+      "constructs": [],
       "paths": []
     },
     {
@@ -969,7 +969,7 @@
         "humanities",
         "arts"
       ],
-      "concepts": [],
+      "constructs": [],
       "paths": []
     },
     {
@@ -982,7 +982,7 @@
         "arts",
         "social_sciences"
       ],
-      "concepts": [],
+      "constructs": [],
       "paths": []
     },
     {
@@ -996,7 +996,7 @@
         "humanities",
         "arts"
       ],
-      "concepts": [],
+      "constructs": [],
       "paths": []
     },
     {
@@ -1010,7 +1010,7 @@
         "humanities",
         "arts"
       ],
-      "concepts": [],
+      "constructs": [],
       "paths": []
     }
   ]

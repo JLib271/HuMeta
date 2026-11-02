@@ -66,15 +66,15 @@ def main(library: Path) -> int:
             if fw.get("id") in seen_fw:
                 problems.append(f"{label}: duplicate id")
             seen_fw.add(fw.get("id"))
-            concept_ids = [c.get("id") for c in fw.get("concepts", [])]
-            if len(concept_ids) != len(set(concept_ids)):
-                problems.append(f"{label}: duplicate concept ids")
-            for c in fw.get("concepts", []):
-                if c.get("construct_id") and c["construct_id"] not in construct_ids:
-                    problems.append(f"{label}: concept {c['id']} has unknown construct_id {c['construct_id']}")
+            theory_construct_ids = [c.get("id") for c in fw.get("constructs", [])]
+            if len(theory_construct_ids) != len(set(theory_construct_ids)):
+                problems.append(f"{label}: duplicate construct ids")
+            for c in fw.get("constructs", []):
+                if c.get("shared_construct_id") and c["shared_construct_id"] not in construct_ids:
+                    problems.append(f"{label}: construct {c['id']} has unknown shared_construct_id {c['shared_construct_id']}")
             for path in fw.get("paths", []):
-                if path.get("from") not in concept_ids or path.get("to") not in concept_ids:
-                    problems.append(f"{label}: path {path.get('from')} -> {path.get('to')} uses an unknown concept")
+                if path.get("from") not in theory_construct_ids or path.get("to") not in theory_construct_ids:
+                    problems.append(f"{label}: path {path.get('from')} -> {path.get('to')} uses an unknown construct")
 
     def check_review(review: dict, label: str):
         if review.get("status") == "source_verified" and review.get("needs_check"):

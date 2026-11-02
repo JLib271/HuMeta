@@ -16,7 +16,7 @@ instead of copying by default.
 library/
   constructs.json              shared construct vocabulary (what things measure)
   frameworks.json              theories, theoretical lenses, and framework approaches
-                               used by Module 2, with concepts linked to constructs
+                               used by Module 2, with each theory's constructs
   instruments/<id>.json        one file per instrument
   evidence/<instrument-id>/<record-id>.json
                                one file per reliability/validity result
@@ -126,15 +126,27 @@ validator requires before any item text is accepted. See
 
 `frameworks.json` lists the theories, theoretical lenses, and framework
 approaches offered in Module 2 (Framework and Measures). A theory lists its
-concepts, each linked to a construct where one matches (`construct_match`:
-exact, close, or related), and its expected paths between concepts, which
-start the Module 2 diagram. Lenses (for example sociocultural theory or
-critical race theory) have no fixed concepts; researchers add their own.
+constructs, each optionally linked to a shared construct in `constructs.json`
+(`shared_construct_id`, with `shared_construct_match`: exact, close, or
+related), and its expected paths between constructs, which start the Module 2
+diagram. Lenses (for example sociocultural theory or critical race theory)
+have no fixed constructs; researchers add their own.
 `own` and `exploratory` entries cover a researcher's own framework and
 inductive work with no framework chosen in advance. `citation_status: added`
 marks citations added by maintainers that a reviewer should confirm.
 Frameworks are recorded in a study's HuMeta profile
 (`study.design.frameworks`).
+
+## Who decides which instruments measure which constructs
+
+An instrument record's `construct_ids` (and each dimension's `construct_ids`)
+say which shared constructs it is recorded as measuring, and
+`construct_mapping.status` says whether that mapping has been reviewed. All
+mappings are `provisional` until the HuMeta governance committee approves them
+(`approved`, with `decided_on` and `decided_by`). The same applies to the links
+from a theory's constructs to shared constructs in `frameworks.json`. In
+Module 2, researchers see these mappings as candidates, with their status, and
+decide for themselves whether an instrument fits their construct.
 
 ## Relationship to `catalogs/measure_catalog.json`
 

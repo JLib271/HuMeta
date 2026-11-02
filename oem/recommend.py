@@ -3,10 +3,16 @@
 """Community recommendations for the library: frameworks, instruments, corrections.
 
 Researchers recommend theories, lenses, and frameworks, or instruments for
-measuring concepts, from Module 2 (or through GitHub issue forms). Each
+measuring constructs, from Module 2 (or through GitHub issue forms). Each
 recommendation becomes one JSON file in ``suggestions/<kind>/`` on a pull
-request that maintainers review against ``suggestions/README.md`` before
-adding anything to ``library/``.
+request, reviewed against ``suggestions/README.md`` before anything is added
+to ``library/``.
+
+Recommendations state their alignment explicitly: a framework lists its
+constructs (and, optionally, the shared construct and instruments for each);
+an instrument maps each of its parts (the whole instrument or each subscale)
+to the construct it measures. These are *proposed* mappings. Which instruments
+map to which constructs is decided by the HuMeta governance committee.
 
 The functions here build and check those files. Nothing here imports
 Streamlit.
@@ -26,7 +32,7 @@ FOLDERS = {
     "correction": "suggestions/corrections/",
 }
 FRAMEWORK_KINDS = {
-    "theory": "Theory (with concepts and expected relationships)",
+    "theory": "Theory (with constructs and expected relationships)",
     "conceptual_model": "Conceptual model or framework",
     "lens": "Theoretical lens or perspective",
 }
@@ -65,13 +71,39 @@ def _lines(text: str) -> list[str]:
     return [line.strip(" -•\t") for line in str(text or "").splitlines() if line.strip(" -•\t")]
 
 
-def parse_concepts(text: str) -> list[dict]:
-    """One concept per line, optionally 'Concept: definition'."""
-    concepts = []
-    for line in _lines(text):
-        label, _, definition = line.partition(":")
-        concepts.append({"label": label.strip(), **({"definition": definition.strip()} if definition.strip() else {})})
-    return concepts
+def _cell(value) -> str:
+    if value is None or (isinstance(value, float) and value != value):
+        return ""
+    return str(value).strip()
+
+
+def framework_constructs(rows: list[dict]) -> list[dict]:
+    """Rows of {construct, definition, shared_construct_id, instruments} from the form's table."""
+    out = []
+    for row in rows or []:
+        label = _cell(row.get("construct"))
+        if not label:
+            continue
+        item = {"label": label}
+        for key in ("definition", "shared_construct_id", "instruments"):
+            if _cell(row.get(key)):
+                item[key] = _cell(row.get(key))
+        out.append(item)
+    return out
+
+
+def instrument_alignment(rows: list[dict]) -> list[dict]:
+    """Rows of {part, items, shared_construct_id, other_construct, theory_construct} from the form's table."""
+    out = []
+    for row in rows or []:
+        part = _cell(row.get("part"))
+        if not part and not any(_cell(row.get(k)) for k in ("shared_construct_id", "other_construct")):
+            continue
+        out.append({"part": part, "items": _cell(row.get("items")),
+                    "shared_construct_id": _cell(row.get("shared_construct_id")) or None,
+                    "other_construct": _cell(row.get("other_construct")),
+                    "theory_construct": _cell(row.get("theory_construct"))})
+    return out
 
 
 def parse_relationships(text: str) -> list[dict]:
@@ -87,8 +119,8 @@ def parse_relationships(text: str) -> list[dict]:
 
 # ----------------------------------------------------------- frameworks
 def framework_recommendation(*, name: str, kind: str, description: str, citation: str, doi: str = "",
-                             fields: list[str] | None = None, concepts: str = "", relationships: str = "",
-                             rationale: str = "", submitter_role: str = "") -> dict:
+                             fields: list[str] | None = None, constructs: list[dict] | None = None,
+                             relationships: str = "", rationale: str = "", submitter_role: str = "") -> dict:
     return {
         "recommendation": "framework",
         "format_version": 1,
@@ -99,7 +131,7 @@ def framework_recommendation(*, name: str, kind: str, description: str, citation
         "citation": citation.strip(),
         "doi": clean_doi(doi),
         "fields": list(fields or []),
-        "concepts": parse_concepts(concepts),
+        "constructs": framework_constructs(constructs or []),
         "relationships": parse_relationships(relationships),
         "rationale": rationale.strip(),
         "submitter_role": submitter_role.strip(),
@@ -118,12 +150,16 @@ def framework_problems(rec: dict, lib: Library | None = None) -> list[str]:
         issues.append("Give a key citation, so reviewers can check it.")
     if rec["doi"] and not DOI_PATTERN.match(rec["doi"]):
         issues.append("The DOI should look like 10.xxxx/xxxxx.")
-    if rec["kind"] == "theory" and not rec["concepts"]:
-        issues.append("List the theory's concepts, one per line.")
-    labels = {c["label"].lower() for c in rec["concepts"]}
+    if rec["kind"] == "theory" and not rec["constructs"]:
+        issues.append("List the theory's constructs.")
+    labels = {c["label"].lower() for c in rec["constructs"]}
     for r in rec["relationships"]:
         if r["from"].lower() not in labels or r["to"].lower() not in labels:
-            issues.append(f"Relationship '{r['from']} -> {r['to']}' should use concepts from your list.")
+            issues.append(f"Relationship '{r['from']} -> {r['to']}' should use constructs from your list.")
+    if lib is not None:
+        for c in rec["constructs"]:
+            if c.get("shared_construct_id") and c["shared_construct_id"] not in lib.constructs:
+                issues.append(f"Construct '{c['label']}': unknown shared construct {c['shared_construct_id']!r}.")
     if lib is not None:
         existing = {f["label"].lower() for f in lib.frameworks.values()}
         if rec["name"].lower() in existing:
@@ -132,12 +168,12 @@ def framework_problems(rec: dict, lib: Library | None = None) -> list[str]:
 
 
 # ----------------------------------------------------------- instruments
-def instrument_recommendation(*, name: str, citation: str, construct_ids: list[str], acronym: str = "", doi: str = "",
-                              other_constructs: str = "", subscales: str = "", respondents: str = "",
+def instrument_recommendation(*, name: str, citation: str, alignment: list[dict], acronym: str = "", doi: str = "",
+                              respondents: str = "",
                               populations: str = "", item_count: str = "", response_format: str = "",
                               access: str = "not_sure", access_details: str = "", url: str = "",
                               evidence: str = "", relationship: str = "aware", item_text_permission: bool = False,
-                              concept: str = "", notes: str = "") -> dict:
+                              construct: str = "", notes: str = "") -> dict:
     return {
         "recommendation": "instrument",
         "format_version": 1,
@@ -146,9 +182,7 @@ def instrument_recommendation(*, name: str, citation: str, construct_ids: list[s
         "acronym": acronym.strip(),
         "citation": citation.strip(),
         "doi": clean_doi(doi),
-        "construct_ids": list(construct_ids),
-        "other_constructs": _lines(other_constructs),
-        "subscales": parse_concepts(subscales),
+        "alignment": instrument_alignment(alignment),
         "respondents": respondents.strip(),
         "populations": populations.strip(),
         "item_count": item_count.strip(),
@@ -159,7 +193,7 @@ def instrument_recommendation(*, name: str, citation: str, construct_ids: list[s
         "evidence": evidence.strip(),
         "submitter_relationship": relationship,
         "developer_offers_item_text": bool(item_text_permission and relationship == "developer"),
-        "for_concept": concept.strip(),
+        "for_construct": construct.strip(),
         "notes": notes.strip(),
     }
 
@@ -172,14 +206,20 @@ def instrument_problems(rec: dict, lib: Library | None = None) -> list[str]:
         issues.append("Give the instrument's primary citation.")
     if rec["doi"] and not DOI_PATTERN.match(rec["doi"]):
         issues.append("The DOI should look like 10.xxxx/xxxxx.")
-    if not rec["construct_ids"] and not rec["other_constructs"]:
-        issues.append("Say what it measures: choose constructs, or describe others.")
+    if not rec["alignment"]:
+        issues.append("Fill in the alignment table: for the whole instrument or each subscale, the construct it measures.")
+    for i, row in enumerate(rec["alignment"], start=1):
+        if not row["part"]:
+            issues.append(f"Alignment row {i}: name the part (the whole instrument or a subscale).")
+        if not (row["shared_construct_id"] or row["other_construct"]):
+            issues.append(f"Alignment row {i} ({row['part'] or 'unnamed'}): say which construct it measures.")
     if rec["access"] not in ACCESS_OPTIONS:
         issues.append("Say how researchers can get it.")
     if rec["url"] and not re.match(r"^https?://", rec["url"]):
         issues.append("The link should start with http:// or https://.")
     if lib is not None:
-        unknown = [c for c in rec["construct_ids"] if c not in lib.constructs]
+        unknown = [r["shared_construct_id"] for r in rec["alignment"]
+                   if r["shared_construct_id"] and r["shared_construct_id"] not in lib.constructs]
         if unknown:
             issues.append("Unknown constructs: " + ", ".join(unknown))
         names = {i["name"].lower() for i in lib.instruments.values()} | {
@@ -223,20 +263,28 @@ def pr_description(rec: dict) -> str:
     """Pull request text: what is proposed and the maintainer checklist."""
     if rec["recommendation"] == "framework":
         lines = [f"**Recommended framework:** {rec['name']} ({FRAMEWORK_KINDS.get(rec['kind'], rec['kind'])})",
-                 f"**Citation:** {rec['citation']}" + (f" https://doi.org/{rec['doi']}" if rec["doi"] else ""),
-                 f"**Concepts:** {', '.join(c['label'] for c in rec['concepts']) or 'none listed'}"]
-        checklist = ["Citation checked against the source", "Concepts and relationships match the source",
-                     "Concepts linked to constructs in library/constructs.json where one fits",
+                 f"**Citation:** {rec['citation']}" + (f" https://doi.org/{rec['doi']}" if rec["doi"] else "")]
+        if rec["constructs"]:
+            lines.append("**Proposed constructs** (for governance committee decision)\n\n"
+                         "| Construct | Definition | Shared construct | Instruments that measure it |\n|---|---|---|---|\n"
+                         + "\n".join(f"| {c['label']} | {c.get('definition', '')} | {c.get('shared_construct_id', '')} | "
+                                     f"{c.get('instruments', '')} |" for c in rec["constructs"]))
+        checklist = ["Citation checked against the source", "Constructs and relationships match the source",
+                     "Governance committee decided the links to shared constructs and instruments",
                      "Added to library/frameworks.json (citation_status: verified) and validate_library.py passes"]
     elif rec["recommendation"] == "instrument":
         lines = [f"**Recommended instrument:** {rec['name']}" + (f" ({rec['acronym']})" if rec["acronym"] else ""),
                  f"**Citation:** {rec['citation']}" + (f" https://doi.org/{rec['doi']}" if rec["doi"] else ""),
-                 f"**Measures:** {', '.join(rec['construct_ids'] + rec['other_constructs'])}",
+                 "**Proposed alignment** (for governance committee decision)\n\n"
+                 "| Part | Items | Measures (shared construct) | Measures (other) | Theory construct |\n|---|---|---|---|---|\n"
+                 + "\n".join(f"| {r['part']} | {r['items']} | {r['shared_construct_id'] or ''} | {r['other_construct']} | "
+                             f"{r['theory_construct']} |" for r in rec["alignment"]),
                  f"**Access:** {ACCESS_OPTIONS.get(rec['access'], rec['access'])}",
                  f"**Submitter:** {RELATIONSHIPS.get(rec['submitter_relationship'], '')}"]
         if rec["developer_offers_item_text"]:
             lines.append("**The developer offers to share item text.** Confirm the license in writing before adding items.")
-        checklist = ["Citation and DOI checked", "Constructs and subscales match the source",
+        checklist = ["Citation and DOI checked", "Subscales and items match the source",
+                     "Governance committee decided which constructs each part maps to",
                      "Access and license terms confirmed; no item text added without documented permission",
                      "Added as library/instruments/<id>.json and validate_library.py passes"]
     else:

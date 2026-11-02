@@ -3,8 +3,8 @@
 """Module 2: Framework and Measures.
 
 Theory organizes the module. Choose a framework (a theory, a lens, your own
-framework, or an exploratory approach); the framework supplies concepts; each
-concept gets measures (library instruments, researcher-written questions, or
+framework, or an exploratory approach); the framework supplies constructs; each
+construct gets measures (library instruments, researcher-written questions, or
 codes in a coding scheme); expected relationships come from the framework and
 draw the diagram. The result is the variable plan and its codebook. The plan
 logic lives in ``oem/plan.py``.
@@ -45,10 +45,10 @@ def _base(lib) -> dict:
             design = record["study"]["design"]
             base["frameworks"] = [f for f in design.get("frameworks") or [] if f in lib.frameworks]
             base["framework_description"] = base["framework_description"] or (design.get("framework_description") or "")
-        if base["frameworks"] and not base["concepts"]:
-            base["concepts"] = P.framework_concepts(lib, base["frameworks"])
+        if base["frameworks"] and not base["constructs"]:
+            base["constructs"] = P.framework_constructs(lib, base["frameworks"])
         if not base["relationships"]:
-            base["relationships"] = P.default_relationships(lib, base["frameworks"], {c["id"] for c in base["concepts"]})
+            base["relationships"] = P.default_relationships(lib, base["frameworks"], {c["id"] for c in base["constructs"]})
         st.session_state["m2_base"] = base
         st.session_state["m2_marker"] = marker
         st.session_state["m2_version"] = st.session_state.get("m2_version", 0) + 1
@@ -75,10 +75,10 @@ def _s(value) -> str:
     return str(value).strip()
 
 
-def _concept_label(lib, concept: dict) -> str:
-    fid = concept.get("framework_id")
-    source = lib.frameworks[fid]["label"].split(" (")[0] if fid in lib.frameworks else "your concept"
-    return f"{concept['label']} — {source}"
+def _construct_label(lib, construct: dict) -> str:
+    fid = construct.get("framework_id")
+    source = lib.frameworks[fid]["label"].split(" (")[0] if fid in lib.frameworks else "your construct"
+    return f"{construct['label']} — {source}"
 
 
 def _instrument_options(lib) -> dict[str, tuple[str, str | None, str | None]]:
@@ -107,8 +107,8 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     lib = library()
     st.header("2. Framework and Measures")
     st.caption(
-        "Start from theory. Choose the framework that guides your study, and it supplies the concepts. Give each "
-        "concept a measure (a library instrument, your own questions, or codes in a coding scheme), and the "
+        "Start from theory. Choose the framework that guides your study, and it supplies the constructs. Give each "
+        "construct a measure (a library instrument, your own questions, or codes in a coding scheme), and the "
         "framework's expected relationships draw the diagram. The result is your variable plan and its codebook."
     )
     st.info("**Help grow the shared library.** Know a theory, conceptual model, or instrument that should be here? "
@@ -142,8 +142,8 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
         default=[f for f in base["frameworks"] if f in lib.frameworks],
         format_func=lambda fid: f"{KIND_PREFIX[kinds[fid]]}: {lib.frameworks[fid]['label']}",
         key=f"m2_frameworks_{v}",
-        help="Choose one or more. Pick 'My own conceptual framework' to define your own concepts, or "
-             "'Exploratory or inductive' if concepts will emerge from the data.",
+        help="Choose one or more. Pick 'My own conceptual framework' to define your own constructs, or "
+             "'Exploratory or inductive' if constructs will emerge from the data.",
     )
     for fid in plan["frameworks"]:
         f = lib.frameworks[fid]
@@ -166,60 +166,68 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
                             + ", ".join((item.get("study_metadata") or {}).get("selected_theories", [])))
 
     # ------------------------------------------------------------ Step 2
-    st.subheader("Step 2 · Concepts")
-    st.caption("The framework supplies its concepts. Keep the ones your study addresses and add your own.")
+    st.subheader("Step 2 · Constructs")
+    st.caption("The framework supplies its constructs. Keep the ones your study addresses and add your own. "
+               "Link a construct to the shared construct list when it means the same thing to you; that link is "
+               "how studies find each other and how library instruments are found.")
     base_by_framework: dict[str, list[str]] = {}
-    for c in base["concepts"]:
+    for c in base["constructs"]:
         base_by_framework.setdefault(c.get("framework_id") or "", []).append(c["id"])
-    concepts: list[dict] = []
-    for fid in plan["frameworks"]:
-        available = P.framework_concepts(lib, [fid])
-        if not available:
-            continue
-        labels = {c["id"]: c for c in available}
-        default = [cid for cid in base_by_framework.get(fid, list(labels)) if cid in labels] if fid in base["frameworks"] else list(labels)
-        chosen = st.multiselect(f"Concepts from {lib.frameworks[fid]['label']}", list(labels), default=default,
-                                format_func=lambda cid, labels=labels: labels[cid]["label"] + (
-                                    f"  ·  construct: {lib.constructs[labels[cid]['construct_id']]['label']}"
-                                    if labels[cid].get("construct_id") in lib.constructs else ""),
-                                key=f"m2_fc_{fid}_{v}")
-        concepts += [labels[cid] for cid in chosen]
     construct_labels = {c["label"]: cid for cid, c in sorted(lib.constructs.items(), key=lambda kv: kv[1]["label"])}
     construct_names = {cid: label for label, cid in construct_labels.items()}
-    own_base = [c for c in base["concepts"] if not c.get("framework_id")]
+    constructs: list[dict] = []
+    for fid in plan["frameworks"]:
+        available = P.framework_constructs(lib, [fid])
+        if not available:
+            continue
+        by_key = {c["id"]: c for c in available}
+        default = ([k for k in base_by_framework.get(fid, list(by_key)) if k in by_key]
+                   if fid in base["frameworks"] else list(by_key))
+        chosen = st.multiselect(
+            f"Constructs from {lib.frameworks[fid]['label']}", list(by_key), default=default,
+            format_func=lambda k, by_key=by_key: by_key[k]["label"] + (
+                f"  ·  shared construct: {construct_names[by_key[k]['shared_construct_id']]}"
+                if by_key[k].get("shared_construct_id") in construct_names else ""),
+            key=f"m2_fc_{fid}_{v}")
+        constructs += [by_key[k] for k in chosen]
+    if any(c.get("shared_construct_id") for c in constructs):
+        st.caption("Links from a theory's constructs to the shared construct list are provisional until the HuMeta "
+                   "governance committee reviews them.")
+    own_base = [c for c in base["constructs"] if not c.get("framework_id")]
     own_df = st.data_editor(
-        pd.DataFrame([{"Concept": c["label"], "Definition": c.get("definition", ""),
-                       "Construct (optional)": construct_names.get(c.get("construct_id"))} for c in own_base],
-                     columns=["Concept", "Definition", "Construct (optional)"]),
+        pd.DataFrame([{"Construct": c["label"], "Definition": c.get("definition", ""),
+                       "Shared construct (optional)": construct_names.get(c.get("shared_construct_id"))} for c in own_base],
+                     columns=["Construct", "Definition", "Shared construct (optional)"]),
         num_rows="dynamic", use_container_width=True, key=f"m2_own_{v}",
-        column_config={"Construct (optional)": st.column_config.SelectboxColumn(
-            "Construct (optional)", options=list(construct_labels),
-            help="Link to the shared construct list so Module 3 and searches can use it.")},
+        column_config={"Shared construct (optional)": st.column_config.SelectboxColumn(
+            "Shared construct (optional)", options=list(construct_labels),
+            help="Choose a shared construct only if it means the same thing as your construct.")},
     )
-    st.caption("Your own concepts: for your own framework, a lens's ideas, or concepts emerging from exploratory work.")
-    seen = {c["id"] for c in concepts}
+    st.caption("Your own constructs: for your own framework, a lens, or constructs emerging from exploratory work.")
+    seen = {c["id"] for c in constructs}
     for row in own_df.to_dict(orient="records"):
-        label = _s(row.get("Concept"))
+        label = _s(row.get("Construct"))
         if not label:
             continue
-        cid = P.concept_id(None, label)
-        if cid in seen:
+        key_ = P.construct_key(None, label)
+        if key_ in seen:
             continue
-        seen.add(cid)
-        concepts.append({"id": cid, "label": label, "framework_id": None,
-                         "construct_id": construct_labels.get(_s(row.get("Construct (optional)"))),
-                         "definition": _s(row.get("Definition"))})
-    plan["concepts"] = concepts
-    concept_ids = {c["id"] for c in concepts}
-    concept_display = {_concept_label(lib, c): c["id"] for c in concepts}
-    concept_from_id = {cid: label for label, cid in concept_display.items()}
+        seen.add(key_)
+        constructs.append({"id": key_, "label": label, "framework_id": None,
+                           "shared_construct_id": construct_labels.get(_s(row.get("Shared construct (optional)"))),
+                           "definition": _s(row.get("Definition"))})
+    plan["constructs"] = constructs
+    construct_keys = {c["id"] for c in constructs}
+    construct_display = {_construct_label(lib, c): c["id"] for c in constructs}
+    construct_from_key = {k: label for label, k in construct_display.items()}
 
     # ------------------------------------------------------------ Step 3
     st.subheader("Step 3 · Measures and codes")
     st.caption(
-        "Give each concept at least one measure: a library instrument or subscale, your own questions, or codes in a "
-        "coding scheme (for texts, images, media, or interviews). Variable names are generated from the library and "
-        "the concept, so studies using the same measure share names."
+        "Give each construct at least one measure: a library instrument or subscale, your own questions, or codes in "
+        "a coding scheme (for texts, images, media, or interviews). **You decide whether a measure fits your construct "
+        "as you define it.** Variable names are generated from the library and the construct, so studies using the "
+        "same measure share names."
     )
     instrument_options = _instrument_options(lib)
     scale_labels = {s.label: sid for sid, s in lib.scales.items()}
@@ -227,18 +235,18 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
     kind_labels = {label: kind for kind, label in P.MEASURE_KINDS.items()}
     measures_df = st.data_editor(
         pd.DataFrame([{
-            "Concept": concept_from_id.get(m.get("concept_id")),
+            "Construct": construct_from_key.get(m.get("construct")),
             "Type": P.MEASURE_KINDS.get(m.get("kind")),
             "Library instrument": _instrument_label(instrument_options, m) if m.get("kind") == "instrument" else None,
             "Question, or code definition": m.get("text") or "",
             "Label (code name or item label)": m.get("label") or "",
             "Response scale": scale_names.get(m.get("scale_id")),
             "Variable name (optional)": m.get("name") or "",
-        } for m in base["measures"]], columns=["Concept", "Type", "Library instrument", "Question, or code definition",
+        } for m in base["measures"]], columns=["Construct", "Type", "Library instrument", "Question, or code definition",
                                                "Label (code name or item label)", "Response scale", "Variable name (optional)"]),
         num_rows="dynamic", use_container_width=True, key=f"m2_measures_{v}",
         column_config={
-            "Concept": st.column_config.SelectboxColumn("Concept", options=list(concept_display), required=True),
+            "Construct": st.column_config.SelectboxColumn("Construct", options=list(construct_display), required=True),
             "Type": st.column_config.SelectboxColumn("Type", options=list(kind_labels), required=True),
             "Library instrument": st.column_config.SelectboxColumn("Library instrument", options=list(instrument_options)),
             "Response scale": st.column_config.SelectboxColumn("Response scale", options=list(scale_labels)),
@@ -246,25 +254,45 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
     )
     measures = []
     for row in measures_df.to_dict(orient="records"):
-        if not _s(row.get("Concept")) and not _s(row.get("Type")):
+        if not _s(row.get("Construct")) and not _s(row.get("Type")):
             continue
         iid, vid, did = instrument_options.get(_s(row.get("Library instrument")), (None, None, None))
-        measures.append({"concept_id": concept_display.get(_s(row.get("Concept"))), "kind": kind_labels.get(_s(row.get("Type"))),
+        measures.append({"construct": construct_display.get(_s(row.get("Construct"))), "kind": kind_labels.get(_s(row.get("Type"))),
                          "instrument_id": iid, "version_id": vid, "dimension_id": did,
                          "name": _s(row.get("Variable name (optional)")),
                          "label": _s(row.get("Label (code name or item label)")),
                          "text": _s(row.get("Question, or code definition")),
                          "scale_id": scale_labels.get(_s(row.get("Response scale")))})
     plan["measures"] = measures
-    suggestions = [m for m in P.suggest_measures(lib, concepts)
-                   if (m["concept_id"], m["instrument_id"], m["dimension_id"])
-                   not in {(x["concept_id"], x["instrument_id"], x["dimension_id"]) for x in measures}]
-    if st.button(f"Add {len(suggestions)} library measure(s) for my concepts", disabled=not suggestions,
-                 key=f"m2_add_lib_{v}", help="Instruments and subscales in the library that measure your concepts' constructs."):
-        _rebase({**plan, "measures": measures + suggestions, "relationships": base["relationships"]})
-    st.caption(f"Know an instrument that measures one of your concepts but is not in the library? Recommend it in the "
+
+    in_plan = {(x["construct"], x["instrument_id"], x["dimension_id"]) for x in measures}
+    candidates = [c for c in P.candidate_measures(lib, constructs)
+                  if (c["construct"], c["instrument_id"], c["dimension_id"]) not in in_plan]
+    if candidates:
+        with st.expander(f"Library instruments to consider ({len(candidates)})", expanded=True):
+            st.caption("These library instruments are recorded as measuring the shared construct you linked. Read what "
+                       "each part was developed to measure and decide whether it fits **your** construct. Tick the ones "
+                       "to add. Instrument-to-construct mappings are provisional until the HuMeta governance committee "
+                       "reviews them.")
+            cand_df = st.data_editor(
+                pd.DataFrame([{
+                    "Add": False,
+                    "Your construct": construct_from_key.get(c["construct"]),
+                    "Instrument": lib.instruments[c["instrument_id"]]["name"],
+                    "Part": c["part"],
+                    "Developed to measure": ", ".join(c["measures"]),
+                    "Mapping status": P.MAPPING_STATUS[c["mapping_status"]].split(" (")[0],
+                } for c in candidates]),
+                disabled=["Your construct", "Instrument", "Part", "Developed to measure", "Mapping status"],
+                hide_index=True, use_container_width=True, key=f"m2_candidates_{v}",
+                column_config={"Add": st.column_config.CheckboxColumn("Add", help="Add this measure for your construct")},
+            )
+            picked = [P.as_measure(c) for c, row in zip(candidates, cand_df.to_dict(orient="records")) if row.get("Add") is True]
+            if st.button(f"Add {len(picked)} selected measure(s)", disabled=not picked, key=f"m2_add_lib_{v}"):
+                _rebase({**plan, "measures": measures + picked, "relationships": base["relationships"]})
+    st.caption(f"Know an instrument that measures one of your constructs but is not in the library? Recommend it in the "
                f"**{TABS[2]}** tab.")
-    unmeasured = [c["label"] for c in concepts if c["id"] not in {m["concept_id"] for m in measures}]
+    unmeasured = [c["label"] for c in constructs if c["id"] not in {m["construct"] for m in measures}]
     if unmeasured:
         st.warning("No measure yet for: " + ", ".join(unmeasured))
     used = {m["instrument_id"] for m in measures if m["kind"] == "instrument" and m["instrument_id"]}
@@ -276,29 +304,31 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
                 text_ok = "Item text is in the library" if lib.item_text_allowed(iid) and any(
                     key[0] == iid for key in lib.item_files) else "Item text is not stored here; get it from the source"
                 cite = (inst.get("original_citation") or {}).get("text") or ""
-                st.markdown(f"**{inst['name']}**. {text_ok}. Access: {access.get('terms_summary', access.get('access_type', ''))} {cite}")
+                status = P.MAPPING_STATUS[P.mapping_status(inst)]
+                st.markdown(f"**{inst['name']}**. {text_ok}. Access: {access.get('terms_summary', access.get('access_type', ''))} "
+                            f"{cite} *Construct mapping: {status}.*")
 
     # ------------------------------------------------------------ Step 4
     st.subheader("Step 4 · Relationships and diagram")
-    st.caption("Expected relationships start from the framework. Edit them, add your own, and note hypotheses.")
+    st.caption("Expected relationships between constructs start from the framework. Edit them, add your own, and note hypotheses.")
     rel_df = st.data_editor(
-        pd.DataFrame([{"From": concept_from_id.get(r["from"]), "To": concept_from_id.get(r["to"]),
+        pd.DataFrame([{"From": construct_from_key.get(r["from"]), "To": construct_from_key.get(r["to"]),
                        "Relationship": r.get("relationship", ""), "Hypothesis or rationale": r.get("hypothesis", "")}
-                      for r in base["relationships"] if r["from"] in concept_ids and r["to"] in concept_ids],
+                      for r in base["relationships"] if r["from"] in construct_keys and r["to"] in construct_keys],
                      columns=["From", "To", "Relationship", "Hypothesis or rationale"]),
         num_rows="dynamic", use_container_width=True, key=f"m2_rel_{v}",
-        column_config={"From": st.column_config.SelectboxColumn("From", options=list(concept_display)),
-                       "To": st.column_config.SelectboxColumn("To", options=list(concept_display))},
+        column_config={"From": st.column_config.SelectboxColumn("From", options=list(construct_display)),
+                       "To": st.column_config.SelectboxColumn("To", options=list(construct_display))},
     )
     plan["relationships"] = [
-        {"from": concept_display[_s(r.get("From"))], "to": concept_display[_s(r.get("To"))],
+        {"from": construct_display[_s(r.get("From"))], "to": construct_display[_s(r.get("To"))],
          "relationship": _s(r.get("Relationship")), "hypothesis": _s(r.get("Hypothesis or rationale"))}
-        for r in rel_df.to_dict(orient="records") if _s(r.get("From")) in concept_display and _s(r.get("To")) in concept_display]
-    defaults = [r for r in P.default_relationships(lib, plan["frameworks"], concept_ids)
+        for r in rel_df.to_dict(orient="records") if _s(r.get("From")) in construct_display and _s(r.get("To")) in construct_display]
+    defaults = [r for r in P.default_relationships(lib, plan["frameworks"], construct_keys)
                 if (r["from"], r["to"]) not in {(x["from"], x["to"]) for x in plan["relationships"]}]
     if defaults and st.button(f"Add the framework's {len(defaults)} expected relationship(s)", key=f"m2_paths_{v}"):
         _rebase({**plan, "relationships": plan["relationships"] + defaults})
-    if concepts:
+    if constructs:
         st.graphviz_chart(P.diagram_dot(lib, plan), use_container_width=True)
     plan["narrative"] = st.text_area("Conceptual framework narrative (optional)", base.get("narrative", ""),
                                      key=f"m2_narrative_{v}")
@@ -322,7 +352,9 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
     book = None
     if not issues and plan["measures"]:
         book = P.build_codebook(lib, plan)
-        st.markdown(f"**Codebook:** {len(book)} variables for {len(concepts)} concepts.")
+        st.markdown("**Alignment: construct → measure → variables**")
+        st.dataframe(pd.DataFrame(P.alignment(lib, plan)), use_container_width=True, hide_index=True)
+        st.markdown(f"**Codebook:** {len(book)} variables for {len(constructs)} constructs.")
         st.dataframe(pd.DataFrame(book.to_rows())[["name", "label", "data_type", "values", "question", "construct_ids", "notes"]],
                      use_container_width=True, hide_index=True)
         manifest = P.manifest(lib, plan)
@@ -389,7 +421,7 @@ def _share(lib, plan: dict, book, publish_disabled: bool, publish_hint: str | No
                 "study_id": study_id,
                 "study_title": study.get("study_title") or "Shared study",
                 "context_tags": context_search_terms(" ".join([meta.get("content_domain", ""), *shared["selected_theories"],
-                                                               *[c["label"] for c in plan["concepts"]]])),
+                                                               *[c["label"] for c in plan["constructs"]]])),
                 "study_metadata": {
                     "content_domain": meta.get("content_domain", ""),
                     "time_method": meta.get("time_method", ""),
@@ -400,7 +432,7 @@ def _share(lib, plan: dict, book, publish_disabled: bool, publish_hint: str | No
                 },
                 "published_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             }
-            st.caption("Shares the framework, concepts, and measures, with no item text, data, or participant information.")
+            st.caption("Shares the framework, constructs, and measures, with no item text, data, or participant information.")
             public_submission_warning()
             st.json(summary_record)
             consent = st.checkbox("I confirm this summary contains no participant data or confidential information, I am "
@@ -447,15 +479,22 @@ def _send(rec: dict, issues: list[str]) -> None:
 def _recommend_framework(lib, publish_disabled: bool, publish_hint: str | None) -> None:
     st.subheader("Recommend a theory, conceptual model, or framework")
     st.caption("Theories, lenses, and frameworks recommended here can be added to Step 1 for everyone, with their "
-               "concepts and expected relationships. Check the current list in Step 1 first.")
+               "constructs and expected relationships. Check the current list in Step 1 first. Links you propose from "
+               "its constructs to shared constructs or instruments are decided by the HuMeta governance committee.")
     _submission_notice()
+    construct_labels = {c["label"]: cid for cid, c in sorted(lib.constructs.items(), key=lambda kv: kv[1]["label"])}
     with st.form("m2_recommend_framework", clear_on_submit=False):
         c1, c2 = st.columns(2)
         name = c1.text_input("Name *", placeholder="e.g., Situated Expectancy-Value Theory")
         kind = c2.selectbox("What kind is it? *", list(R.FRAMEWORK_KINDS), format_func=R.FRAMEWORK_KINDS.get)
         description = st.text_area("Describe it in a sentence or two *")
-        concepts = st.text_area("Concepts, one per line (optionally 'Concept: definition') *for theories*",
-                                placeholder="Expectancy: belief about how well one will do\nTask value: ...")
+        st.markdown("**Constructs** (required for theories): one row per construct")
+        constructs_df = st.data_editor(
+            pd.DataFrame([{"Construct": "", "Definition": "", "Same as shared construct (optional)": None,
+                           "Instruments that measure it (optional)": ""}]),
+            num_rows="dynamic", use_container_width=True, key="m2_rec_fw_constructs",
+            column_config={"Same as shared construct (optional)": st.column_config.SelectboxColumn(
+                "Same as shared construct (optional)", options=list(construct_labels))})
         relationships = st.text_area("Expected relationships, one per line, as 'A -> B: relationship' (optional)",
                                      placeholder="Expectancy -> Achievement choices: predicts")
         c1, c2 = st.columns(2)
@@ -467,20 +506,26 @@ def _recommend_framework(lib, publish_disabled: bool, publish_hint: str | None) 
         consent = st.checkbox("I confirm this recommendation contains no confidential information and may be published.")
         submitted = st.form_submit_button("Submit recommendation", type="primary", disabled=publish_disabled, help=publish_hint)
     if submitted:
+        rows = [{"construct": r.get("Construct"), "definition": r.get("Definition"),
+                 "shared_construct_id": construct_labels.get(_s(r.get("Same as shared construct (optional)"))),
+                 "instruments": r.get("Instruments that measure it (optional)")}
+                for r in constructs_df.to_dict(orient="records")]
         rec = R.framework_recommendation(name=name, kind=kind, description=description, citation=citation, doi=doi,
-                                         fields=fields, concepts=concepts, relationships=relationships, rationale=rationale)
+                                         fields=fields, constructs=rows, relationships=relationships, rationale=rationale)
         issues = R.framework_problems(rec, lib) + ([] if consent else ["Tick the confirmation box."])
         _send(rec, issues)
 
 
 def _recommend_instrument(lib, publish_disabled: bool, publish_hint: str | None) -> None:
     st.subheader("Recommend an instrument")
-    st.caption("Instruments recommended here can be added to the library, so Module 2 suggests them for the concepts "
-               "they measure. Do **not** paste item text unless you are the developer and the license allows it; "
-               "maintainers confirm permission before any items are added.")
+    st.caption("Instruments recommended here can be added to the library. Say exactly what each part of the instrument "
+               "measures: the whole instrument, or each subscale and its items. These are proposed mappings; the HuMeta "
+               "governance committee decides which constructs an instrument maps to, and researchers decide whether it "
+               "fits their own construct. Do **not** paste item text unless you are the developer and the license "
+               "allows it.")
     _submission_notice()
     construct_labels = {c["label"]: cid for cid, c in sorted(lib.constructs.items(), key=lambda kv: kv[1]["label"])}
-    plan_concepts = [c["label"] for c in (st.session_state.get("m2_pending") or {}).get("concepts", [])]
+    plan_constructs = [c["label"] for c in (st.session_state.get("m2_pending") or {}).get("constructs", [])]
     with st.form("m2_recommend_instrument", clear_on_submit=False):
         c1, c2, c3 = st.columns([3, 1, 2])
         name = c1.text_input("Instrument name *")
@@ -490,13 +535,18 @@ def _recommend_instrument(lib, publish_disabled: bool, publish_hint: str | None)
         citation = c1.text_area("Primary citation *", height=90)
         doi = c2.text_input("DOI (optional)", placeholder="10.xxxx/xxxxx")
         url = c2.text_input("Link to the instrument or its manual (optional)")
-        constructs = st.multiselect("What does it measure? (constructs) *", list(construct_labels))
-        other = st.text_input("Other constructs it measures, if not listed (comma-separated)")
-        concept = st.selectbox("Concept in your plan that it measures (optional)", ["", *plan_concepts])
-        subscales = st.text_area("Subscales, one per line (optionally 'Subscale: what it measures')")
+        st.markdown("**What does each part measure?** \\* One row for the whole instrument, or one row per subscale.")
+        alignment_df = st.data_editor(
+            pd.DataFrame([{"Part (whole instrument or subscale)": "Whole instrument", "Items (numbers or count)": "",
+                           "Measures (shared construct)": None, "Or a construct not on the list": "",
+                           "Theory construct (optional, e.g., SDT: Competence)": ""}]),
+            num_rows="dynamic", use_container_width=True, key="m2_rec_inst_alignment",
+            column_config={"Measures (shared construct)": st.column_config.SelectboxColumn(
+                "Measures (shared construct)", options=list(construct_labels))})
+        construct = st.selectbox("Construct in your plan that it measures (optional)", ["", *plan_constructs])
         c1, c2, c3 = st.columns(3)
         respondents = c1.text_input("Who responds?", placeholder="e.g., undergraduate students")
-        item_count = c2.text_input("Number of items")
+        item_count = c2.text_input("Total number of items")
         response_format = c3.text_input("Response format", placeholder="e.g., 5-point agreement")
         populations = st.text_input("Populations or settings it has been validated with")
         c1, c2 = st.columns(2)
@@ -510,19 +560,23 @@ def _recommend_instrument(lib, publish_disabled: bool, publish_hint: str | None)
                               "confidential information.")
         submitted = st.form_submit_button("Submit recommendation", type="primary", disabled=publish_disabled, help=publish_hint)
     if submitted:
+        rows = [{"part": r.get("Part (whole instrument or subscale)"), "items": r.get("Items (numbers or count)"),
+                 "shared_construct_id": construct_labels.get(_s(r.get("Measures (shared construct)"))),
+                 "other_construct": r.get("Or a construct not on the list"),
+                 "theory_construct": r.get("Theory construct (optional, e.g., SDT: Competence)")}
+                for r in alignment_df.to_dict(orient="records")]
         rec = R.instrument_recommendation(
-            name=name, acronym=acronym, citation=citation, doi=doi, url=url,
-            construct_ids=[construct_labels[c] for c in constructs], other_constructs="\n".join(other.split(",")),
-            subscales=subscales, respondents=respondents, populations=populations, item_count=item_count,
+            name=name, acronym=acronym, citation=citation, doi=doi, url=url, alignment=rows,
+            respondents=respondents, populations=populations, item_count=item_count,
             response_format=response_format, access=access, access_details=access_details, evidence=evidence,
-            relationship=relationship, item_text_permission=permission, concept=concept, notes=notes)
+            relationship=relationship, item_text_permission=permission, construct=construct, notes=notes)
         issues = R.instrument_problems(rec, lib) + ([] if consent else ["Tick the confirmation box."])
         _send(rec, issues)
 
 
 def _suggest_correction(lib, publish_disabled: bool, publish_hint: str | None) -> None:
     st.subheader("Suggest a correction")
-    st.caption("Fix a citation, add a missing concept or relationship to a theory, link a concept to a different "
+    st.caption("Fix a citation, add a missing construct or relationship to a theory, link a construct to a different "
                "construct, or correct an instrument's details.")
     _submission_notice()
     targets = {f"Framework: {f['label']}": ("framework", fid) for fid, f in sorted(lib.frameworks.items(), key=lambda kv: kv[1]["label"])}

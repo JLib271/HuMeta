@@ -8,8 +8,8 @@ JSON file:
 
 | Folder | What it holds | Where accepted content goes |
 |---|---|---|
-| `frameworks/` | Theories, lenses, conceptual models: name, kind, description, concepts, expected relationships, citation | `library/frameworks.json` |
-| `instruments/` | Instruments: name, citation, constructs and subscales, access and license, evidence, the submitter's relationship to it | `library/instruments/<id>.json` |
+| `frameworks/` | Theories, lenses, conceptual models: name, kind, description, constructs (each with an optional shared construct and instruments that measure it), expected relationships, citation | `library/frameworks.json` |
+| `instruments/` | Instruments: name, citation, an **alignment table** mapping the whole instrument or each subscale (with its items) to the construct it measures, access and license, evidence, the submitter's relationship to it | `library/instruments/<id>.json` |
 | `corrections/` | Changes to an existing framework, instrument, or construct | the file being corrected |
 
 Older free-text suggestions sit directly in this folder.
@@ -18,11 +18,15 @@ Older free-text suggestions sit directly in this folder.
 
 The pull request lists a checklist. In short:
 
-1. **Check the source.** Confirm the citation and DOI, and that the concepts,
-   relationships, constructs, and subscales match the publication.
-2. **Link to constructs.** Map each concept or subscale to
-   `library/constructs.json` where one fits (`construct_match`: exact, close,
-   or related). Add a construct only when none fits.
+1. **Check the source.** Confirm the citation and DOI, and that the
+   constructs, relationships, subscales, and items match the publication.
+2. **Decide the mappings.** Which instruments (and subscales) map to which
+   constructs, and which theory constructs link to shared constructs, is
+   decided by the **HuMeta governance committee**, not by one person. The
+   recommendation's alignment table is a proposal. Record each decision in
+   the instrument's `construct_mapping` (`status`, `decided_on`,
+   `decided_by`). Until the committee is formed, mappings stay
+   `provisional`. Add a shared construct only when none fits.
 3. **Respect licenses.** Never add item text without written permission or a
    documented license (`access.item_text_basis`). When a developer offers item
    text, confirm the license with them before adding items.

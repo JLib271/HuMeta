@@ -10,6 +10,10 @@
   "construct_ids": [
     "sense_of_belonging"
   ],
+  "construct_mapping": {
+    "status": "provisional",
+    "note": "Recorded by maintainers; awaiting governance committee review."
+  },
   "disciplines": [
     "mathematics"
   ],

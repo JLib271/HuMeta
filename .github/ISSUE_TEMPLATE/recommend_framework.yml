@@ -17,7 +17,7 @@ body:
     attributes:
       label: What kind is it?
       options:
-        - Theory (with concepts and expected relationships)
+        - Theory (with constructs and expected relationships)
         - Conceptual model or framework
         - Theoretical lens or perspective
     validations:
@@ -29,9 +29,9 @@ body:
     validations:
       required: true
   - type: textarea
-    id: concepts
+    id: constructs
     attributes:
-      label: 'Concepts (one per line; optionally "Concept: definition")'
+      label: 'Constructs (one per line, as "Construct: definition"; add the shared construct and instruments that measure it if you know them)'
   - type: textarea
     id: relationships
     attributes:

@@ -51,16 +51,16 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     if manifest_upload is not None:
         try:
             imported_manifest = pd.read_csv(manifest_upload)
-            required_manifest_fields = {
-                "Variable_ID", "Variable_Label", "Framework_Source", "Concept_Construct"
-            }
-            if required_manifest_fields.issubset(imported_manifest.columns):
+            required_manifest_fields = {"Variable_ID", "Variable_Label", "Framework_Source"}
+            if required_manifest_fields.issubset(imported_manifest.columns) and (
+                {"Construct", "Concept_Construct"} & set(imported_manifest.columns)
+            ):
                 module2_manifest = imported_manifest.fillna("").to_dict(orient="records")
                 st.success(f"Loaded {len(module2_manifest)} variables from the Module 2 matrix.")
             else:
                 st.error(
                     "The uploaded file is not a variable matrix from Module 2. It must include "
-                    "Variable_ID, Variable_Label, Framework_Source, and Concept_Construct."
+                    "Variable_ID, Variable_Label, Framework_Source, and Construct."
                 )
         except (pd.errors.EmptyDataError, pd.errors.ParserError, UnicodeDecodeError) as matrix_error:
             st.error(f"Could not read the variable matrix: {matrix_error}")
@@ -141,14 +141,14 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
                 if str(row.get("Variable_ID", "")).strip()
                 and (
                     str(row.get("Variable_Label", "")).strip()
-                    or str(row.get("Concept_Construct", "")).strip()
+                    or str(row.get("Construct") or row.get("Concept_Construct") or "").strip()
                 )
             ]
             if module2_variables and analysis_columns:
                 mapping_df = pd.DataFrame([
                     {
                         "Variable_ID": str(row.get("Variable_ID", "")),
-                        "Variable": str(row.get("Variable_Label") or row.get("Concept_Construct") or ""),
+                        "Variable": str(row.get("Variable_Label") or row.get("Construct") or row.get("Concept_Construct") or ""),
                         "Framework / source": str(row.get("Framework_Source", "")),
                         "Dataset columns": [],
                     }
