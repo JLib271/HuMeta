@@ -113,7 +113,7 @@ with st.sidebar:
 
 st.title("🔬 HuMeta Portal")
 st.caption("Built on HuMeta: The Social Science, Humanities, and Education Study Metadata Profile")
-st.caption("Standardized Study Registries and Psychometric Instrument Architects under DCMES, IEEE LOM, and CEDS Standards.")
+st.caption("Study metadata aligned with DataCite, Dublin Core, DDI, schema.org, and ERIC, with an open instrument library.")
 
 if app_mode == "About this app":
     st.header("🔬 Accelerating Research in Education, the Social Sciences, and the Humanities")
