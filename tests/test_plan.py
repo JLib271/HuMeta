@@ -154,4 +154,4 @@ def test_every_draft_framework_names_a_source_and_disciplines():
     for fw in Library.load().frameworks.values():
         if fw.get("status") == "draft":
             assert fw.get("citation") and fw.get("disciplines"), fw["id"]
-            assert fw["kind"] == "lens" or (fw["constructs"] and fw["paths"]), fw["id"]
+            assert fw["kind"] == "lens" or fw["constructs"], fw["id"]  # paths are optional (e.g., TDF lists domains)

@@ -18,7 +18,7 @@ their data with common names and metadata, and sharing data responsibly.
   optional Education module; every field shows its alignments to DataCite, Dublin Core, schema.org and others
 - Module 2's framework library can be browsed by field, kind, and discipline and searched; 27 widely used
   theories and lenses added across sociology, political science, communication, economics, education, and the
-  humanities and arts, marked Draft until reviewed by experts
+  humanities and arts; every theory and lens is marked Draft until reviewed by experts
 - Module 1 starts with the study's fields; new Social Science (DDI-based, linking to the study's DDI record) and
   Arts and Humanities (TaDiRAH) modules, as starting points for researchers in those fields
 

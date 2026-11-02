@@ -1,6 +1,6 @@
 {
   "vocabulary_version": 1,
-  "note": "Theories, theoretical lenses, and framework approaches offered in Module 2. Each theory lists its constructs; a construct links to the shared construct vocabulary (library/constructs.json) where one matches (shared_construct_match: exact, close, or related). Paths are the theory's expected relationships between its constructs. citation_status 'added' marks citations added by maintainers that a reviewer should confirm. 'disciplines' lists the HuMeta discipline terms (standard/humeta/vocabularies.json) where the framework is widely used, for browsing. status 'draft' marks frameworks added as a starting point that still need review by experts in the field.",
+  "note": "Theories, theoretical lenses, and framework approaches offered in Module 2. Each theory lists its constructs; a construct links to the shared construct vocabulary (library/constructs.json) where one matches (shared_construct_match: exact, close, or related). Paths are the theory's expected relationships between its constructs. citation_status 'added' marks citations added by maintainers that a reviewer should confirm. 'disciplines' lists the HuMeta discipline terms (standard/humeta/vocabularies.json) where the framework is widely used, for browsing. status 'draft' marks frameworks whose description, constructs, relationships, and links to shared constructs still need review by experts in the field; every theory and lens is a draft until the governance committee reviews it.",
   "frameworks": [
     {
       "id": "tpb",
@@ -14,6 +14,7 @@
       "citation": "Ajzen, I. (1991). The theory of planned behavior. Organizational Behavior and Human Decision Processes, 50(2), 179-211.",
       "doi": "10.1016/0749-5978(91)90020-T",
       "citation_status": "provided",
+      "status": "draft",
       "constructs": [
         {
           "id": "attitude_toward_the_behavior",
@@ -87,6 +88,7 @@
       "citation": "Ryan, R. M., & Deci, E. L. (2000). Self-determination theory and the facilitation of intrinsic motivation, social development, and well-being. American Psychologist, 55(1), 68-78.",
       "doi": "10.1037/0003-066X.55.1.68",
       "citation_status": "provided",
+      "status": "draft",
       "constructs": [
         {
           "id": "autonomy",
@@ -145,6 +147,7 @@
       "citation": "Wigfield, A., & Eccles, J. S. (2000). Expectancy-value theory of achievement motivation. Contemporary Educational Psychology, 25(1), 68-81.",
       "doi": "10.1006/ceps.1999.1015",
       "citation_status": "added",
+      "status": "draft",
       "constructs": [
         {
           "id": "expectancy_for_success",
@@ -224,6 +227,7 @@
       "citation": "Carlone, H. B., & Johnson, A. (2007). Understanding the science experiences of successful women of color: Science identity as an analytic lens. Journal of Research in Science Teaching, 44(8), 1187-1218.",
       "doi": "10.1002/tea.20237",
       "citation_status": "added",
+      "status": "draft",
       "constructs": [
         {
           "id": "competence",
@@ -280,6 +284,7 @@
       "citation": "Davis, F. D. (1989). Perceived usefulness, perceived ease of use, and user acceptance of information technology. MIS Quarterly, 13(3), 319-340.",
       "doi": "10.2307/249008",
       "citation_status": "added",
+      "status": "draft",
       "constructs": [
         {
           "id": "perceived_usefulness",
@@ -338,6 +343,7 @@
       "citation": "Rosenstock, I. M. (1974). The health belief model and preventive health behavior. Health Education Monographs, 2(4), 354-386.",
       "doi": "10.1177/109019817400200405",
       "citation_status": "provided",
+      "status": "draft",
       "constructs": [
         {
           "id": "perceived_susceptibility",
@@ -426,6 +432,7 @@
       ],
       "citation": "Bandura, A. (1986). Social foundations of thought and action: A social cognitive theory. Prentice-Hall.",
       "citation_status": "added",
+      "status": "draft",
       "constructs": [
         {
           "id": "personal_factors",
@@ -505,6 +512,7 @@
       "citation": "Bandura, A. (1977). Self-efficacy: Toward a unifying theory of behavioral change. Psychological Review, 84(2), 191-215.",
       "doi": "10.1037/0033-295X.84.2.191",
       "citation_status": "provided",
+      "status": "draft",
       "constructs": [
         {
           "id": "self_efficacy",
@@ -566,6 +574,7 @@
       ],
       "citation": "Grimley, D., Prochaska, J. O., Velicer, W. F., Blais, L. M., & DiClemente, C. C. (1994). The transtheoretical model of change. In T. M. Brinthaupt & R. P. Lipka (Eds.), Changing the self: Philosophies, techniques, and experiences (pp. 201-227). SUNY Press.",
       "citation_status": "provided",
+      "status": "draft",
       "constructs": [
         {
           "id": "precontemplation",
@@ -625,6 +634,7 @@
       "citation": "Carver, C. S., & Scheier, M. F. (1982). Control theory: A useful conceptual framework for personality-social, clinical, and health psychology. Psychological Bulletin, 92(1), 111-135.",
       "doi": "10.1037/0033-2909.92.1.111",
       "citation_status": "provided",
+      "status": "draft",
       "constructs": [
         {
           "id": "goal_or_reference_state",
@@ -689,6 +699,7 @@
       "citation": "Michie, S., van Stralen, M. M., & West, R. (2011). The behaviour change wheel: A new method for characterising and designing behaviour change interventions. Implementation Science, 6, 42.",
       "doi": "10.1186/1748-5908-6-42",
       "citation_status": "added",
+      "status": "draft",
       "constructs": [
         {
           "id": "psychological_capability",
@@ -769,6 +780,7 @@
       "citation": "Atkins, L., Francis, J., Islam, R., O'Connor, D., Patey, A., Ivers, N., et al. (2017). A guide to using the Theoretical Domains Framework of behaviour change to investigate implementation problems. Implementation Science, 12, 77.",
       "doi": "10.1186/s13012-017-0605-9",
       "citation_status": "provided",
+      "status": "draft",
       "constructs": [
         {
           "id": "knowledge",
@@ -847,6 +859,7 @@
       ],
       "citation": "Skinner, B. F. (1953). Science and human behavior. Macmillan.",
       "citation_status": "added",
+      "status": "draft",
       "constructs": [
         {
           "id": "positive_reinforcement",
@@ -908,6 +921,7 @@
       ],
       "citation": "Vygotsky, L. S. (1978). Mind in society: The development of higher psychological processes. Harvard University Press.",
       "citation_status": "added",
+      "status": "draft",
       "constructs": [],
       "paths": [],
       "disciplines": [
@@ -927,6 +941,7 @@
       ],
       "citation": "Lave, J., & Wenger, E. (1991). Situated learning: Legitimate peripheral participation. Cambridge University Press.",
       "citation_status": "added",
+      "status": "draft",
       "constructs": [],
       "paths": [],
       "disciplines": [
@@ -947,6 +962,7 @@
       ],
       "citation": "Delgado, R., & Stefancic, J. (2017). Critical race theory: An introduction (3rd ed.). New York University Press.",
       "citation_status": "added",
+      "status": "draft",
       "constructs": [],
       "paths": [],
       "disciplines": [
@@ -967,6 +983,7 @@
       ],
       "citation": "Crenshaw, K. (1989). Demarginalizing the intersection of race and sex. University of Chicago Legal Forum, 1989(1), 139-167.",
       "citation_status": "added",
+      "status": "draft",
       "constructs": [],
       "paths": [],
       "disciplines": [
@@ -985,6 +1002,7 @@
         "humanities",
         "arts"
       ],
+      "status": "draft",
       "constructs": [],
       "paths": [],
       "disciplines": [
@@ -992,7 +1010,9 @@
         "languages_literature",
         "philosophy_religion",
         "history"
-      ]
+      ],
+      "citation": "hooks, b. (1984). Feminist theory: From margin to center. South End Press.",
+      "citation_status": "added"
     },
     {
       "id": "postcolonial_theory",
@@ -1004,13 +1024,16 @@
         "social_sciences",
         "arts"
       ],
+      "status": "draft",
       "constructs": [],
       "paths": [],
       "disciplines": [
         "history",
         "languages_literature",
         "anthropology"
-      ]
+      ],
+      "citation": "Said, E. W. (1978). Orientalism. Pantheon Books.",
+      "citation_status": "added"
     },
     {
       "id": "phenomenology",
@@ -1022,13 +1045,16 @@
         "humanities",
         "education"
       ],
+      "status": "draft",
       "constructs": [],
       "paths": [],
       "disciplines": [
         "philosophy_religion",
         "psychology",
         "education_studies"
-      ]
+      ],
+      "citation": "van Manen, M. (1990). Researching lived experience: Human science for an action sensitive pedagogy. State University of New York Press.",
+      "citation_status": "added"
     },
     {
       "id": "critical_theory",
@@ -1039,12 +1065,15 @@
         "social_sciences",
         "humanities"
       ],
+      "status": "draft",
       "constructs": [],
       "paths": [],
       "disciplines": [
         "philosophy_religion",
         "sociology"
-      ]
+      ],
+      "citation": "Horkheimer, M. (1972). Critical theory: Selected essays (M. J. O'Connell et al., Trans.). Herder and Herder.",
+      "citation_status": "added"
     },
     {
       "id": "new_historicism",
@@ -1055,12 +1084,15 @@
         "humanities",
         "arts"
       ],
+      "status": "draft",
       "constructs": [],
       "paths": [],
       "disciplines": [
         "history",
         "languages_literature"
-      ]
+      ],
+      "citation": "Greenblatt, S. (1980). Renaissance self-fashioning: From More to Shakespeare. University of Chicago Press.",
+      "citation_status": "added"
     },
     {
       "id": "semiotics",
@@ -1072,13 +1104,16 @@
         "arts",
         "social_sciences"
       ],
+      "status": "draft",
       "constructs": [],
       "paths": [],
       "disciplines": [
         "media_communication",
         "visual_arts",
         "languages_literature"
-      ]
+      ],
+      "citation": "Barthes, R. (1977). Image, music, text (S. Heath, Trans.). Hill and Wang.",
+      "citation_status": "added"
     },
     {
       "id": "bourdieu_practice",

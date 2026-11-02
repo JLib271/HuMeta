@@ -159,7 +159,7 @@ def _browse_frameworks(lib, picker_key: str, v: int) -> None:
                  if lib.frameworks[fid]["kind"] in ("theory", "lens")]
         total = sum(1 for fw in lib.frameworks.values() if fw["kind"] in ("theory", "lens"))
         st.caption(f"{len(found)} of {total} theories and lenses. Open one to see its constructs and citation. "
-                   "**Draft** marks frameworks added as a starting point that still need review by experts in the field.")
+                   "**Draft**: every framework still needs review by experts in its field; suggest changes in the correction tab.")
         show_all = len(found) > BROWSE_PAGE and st.toggle(f"Show all {len(found)}", key=f"m2_browse_all_{v}")
         chosen = set(st.session_state.get(picker_key) or [])
         for fid in found if show_all else found[:BROWSE_PAGE]:

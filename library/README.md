@@ -136,9 +136,9 @@ inductive work with no framework chosen in advance. `citation_status: added`
 marks citations added by maintainers that a reviewer should confirm.
 `disciplines` lists the disciplines (HuMeta discipline vocabulary) where a
 framework is widely used, for browsing in Module 2. `status: draft` marks
-frameworks added as a starting point whose constructs and relationships still
-need review by experts in the field; the governance committee removes the
-mark once they are reviewed.
+frameworks whose description, constructs, relationships, and links to shared
+constructs still need review by experts in the field. Every theory and lens is
+a draft for now; the governance committee removes the mark once it is reviewed.
 Frameworks are recorded in a study's HuMeta profile
 (`study.design.frameworks`).
 
