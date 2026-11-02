@@ -224,13 +224,18 @@ def record_form(record: dict) -> dict | None:
                             key=key("end"), help=tip("resource.collection_dates"))
 
         st.subheader("3 · People and place")
+        # Full-width radio buttons: these answers are long and a half-width dropdown cuts them off.
+        part_options = p.ids("human_participants")
+        current_part = s["population"].get("human_participants")
+        participants = st.radio(
+            lab("Do people take part in this study? *", "study.population.human_participants"), part_options,
+            index=part_options.index(current_part) if current_part in part_options else None,
+            format_func=lambda t: p.label("human_participants", t), key=key("participants"),
+            help=tip("study.population.human_participants",
+                     "If no people take part (for example, only texts, artworks, or objects), choose No "
+                     "and describe your sources in the next section."))
         c1, c2 = st.columns(2)
         with c1:
-            participants = single("Do people take part in this study? *", "human_participants",
-                                  s["population"].get("human_participants"), "participants",
-                                  "study.population.human_participants",
-                                  help="If no people take part (for example, only texts, artworks, or objects), choose No "
-                                       "and describe your sources in the next section.")
             roles = multi("Participants (required if people take part)", "participant_role",
                           s["population"].get("participant_roles"), "roles", "study.population.participant_roles")
         with c2:
