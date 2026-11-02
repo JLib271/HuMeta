@@ -1,6 +1,6 @@
 {
   "vocabulary_version": 1,
-  "note": "Theories, theoretical lenses, and framework approaches offered in Module 2. Each theory lists its constructs; a construct links to the shared construct vocabulary (library/constructs.json) where one matches (shared_construct_match: exact, close, or related). Paths are the theory's expected relationships between its constructs. citation_status 'added' marks citations added by maintainers that a reviewer should confirm.",
+  "note": "Theories, theoretical lenses, and framework approaches offered in Module 2. Each theory lists its constructs; a construct links to the shared construct vocabulary (library/constructs.json) where one matches (shared_construct_match: exact, close, or related). Paths are the theory's expected relationships between its constructs. citation_status 'added' marks citations added by maintainers that a reviewer should confirm. 'disciplines' lists the HuMeta discipline terms (standard/humeta/vocabularies.json) where the framework is widely used, for browsing. status 'draft' marks frameworks whose description, constructs, relationships, and links to shared constructs still need review by experts in the field; every theory and lens is a draft until the governance committee reviews it.",
   "frameworks": [
     {
       "id": "tpb",
@@ -14,6 +14,7 @@
       "citation": "Ajzen, I. (1991). The theory of planned behavior. Organizational Behavior and Human Decision Processes, 50(2), 179-211.",
       "doi": "10.1016/0749-5978(91)90020-T",
       "citation_status": "provided",
+      "status": "draft",
       "constructs": [
         {
           "id": "attitude_toward_the_behavior",
@@ -70,6 +71,9 @@
           "to": "behavior",
           "relationship": "May directly predict behavior"
         }
+      ],
+      "disciplines": [
+        "psychology"
       ]
     },
     {
@@ -84,6 +88,7 @@
       "citation": "Ryan, R. M., & Deci, E. L. (2000). Self-determination theory and the facilitation of intrinsic motivation, social development, and well-being. American Psychologist, 55(1), 68-78.",
       "doi": "10.1037/0003-066X.55.1.68",
       "citation_status": "provided",
+      "status": "draft",
       "constructs": [
         {
           "id": "autonomy",
@@ -124,6 +129,10 @@
           "to": "intrinsic_motivation",
           "relationship": "Supports motivation"
         }
+      ],
+      "disciplines": [
+        "psychology",
+        "education_studies"
       ]
     },
     {
@@ -138,6 +147,7 @@
       "citation": "Wigfield, A., & Eccles, J. S. (2000). Expectancy-value theory of achievement motivation. Contemporary Educational Psychology, 25(1), 68-81.",
       "doi": "10.1006/ceps.1999.1015",
       "citation_status": "added",
+      "status": "draft",
       "constructs": [
         {
           "id": "expectancy_for_success",
@@ -200,6 +210,10 @@
           "to": "achievement_related_choices",
           "relationship": "May deter choices"
         }
+      ],
+      "disciplines": [
+        "psychology",
+        "education_studies"
       ]
     },
     {
@@ -213,6 +227,7 @@
       "citation": "Carlone, H. B., & Johnson, A. (2007). Understanding the science experiences of successful women of color: Science identity as an analytic lens. Journal of Research in Science Teaching, 44(8), 1187-1218.",
       "doi": "10.1002/tea.20237",
       "citation_status": "added",
+      "status": "draft",
       "constructs": [
         {
           "id": "competence",
@@ -251,6 +266,10 @@
           "to": "science_identity",
           "relationship": "Contributes to identity"
         }
+      ],
+      "disciplines": [
+        "education_studies",
+        "sociology"
       ]
     },
     {
@@ -265,6 +284,7 @@
       "citation": "Davis, F. D. (1989). Perceived usefulness, perceived ease of use, and user acceptance of information technology. MIS Quarterly, 13(3), 319-340.",
       "doi": "10.2307/249008",
       "citation_status": "added",
+      "status": "draft",
       "constructs": [
         {
           "id": "perceived_usefulness",
@@ -306,6 +326,10 @@
           "to": "actual_system_use",
           "relationship": "Predicts system use"
         }
+      ],
+      "disciplines": [
+        "psychology",
+        "media_communication"
       ]
     },
     {
@@ -319,6 +343,7 @@
       "citation": "Rosenstock, I. M. (1974). The health belief model and preventive health behavior. Health Education Monographs, 2(4), 354-386.",
       "doi": "10.1177/109019817400200405",
       "citation_status": "provided",
+      "status": "draft",
       "constructs": [
         {
           "id": "perceived_susceptibility",
@@ -391,6 +416,9 @@
           "to": "preventive_behavior",
           "relationship": "May support action"
         }
+      ],
+      "disciplines": [
+        "psychology"
       ]
     },
     {
@@ -404,6 +432,7 @@
       ],
       "citation": "Bandura, A. (1986). Social foundations of thought and action: A social cognitive theory. Prentice-Hall.",
       "citation_status": "added",
+      "status": "draft",
       "constructs": [
         {
           "id": "personal_factors",
@@ -465,6 +494,10 @@
           "to": "behavioral_factors",
           "relationship": "Informs behavior"
         }
+      ],
+      "disciplines": [
+        "psychology",
+        "education_studies"
       ]
     },
     {
@@ -479,6 +512,7 @@
       "citation": "Bandura, A. (1977). Self-efficacy: Toward a unifying theory of behavioral change. Psychological Review, 84(2), 191-215.",
       "doi": "10.1037/0033-295X.84.2.191",
       "citation_status": "provided",
+      "status": "draft",
       "constructs": [
         {
           "id": "self_efficacy",
@@ -524,6 +558,10 @@
           "to": "self_efficacy",
           "relationship": "May shape self-efficacy"
         }
+      ],
+      "disciplines": [
+        "psychology",
+        "education_studies"
       ]
     },
     {
@@ -536,6 +574,7 @@
       ],
       "citation": "Grimley, D., Prochaska, J. O., Velicer, W. F., Blais, L. M., & DiClemente, C. C. (1994). The transtheoretical model of change. In T. M. Brinthaupt & R. P. Lipka (Eds.), Changing the self: Philosophies, techniques, and experiences (pp. 201-227). SUNY Press.",
       "citation_status": "provided",
+      "status": "draft",
       "constructs": [
         {
           "id": "precontemplation",
@@ -579,6 +618,9 @@
           "to": "maintenance",
           "relationship": "Stage progression"
         }
+      ],
+      "disciplines": [
+        "psychology"
       ]
     },
     {
@@ -592,6 +634,7 @@
       "citation": "Carver, C. S., & Scheier, M. F. (1982). Control theory: A useful conceptual framework for personality-social, clinical, and health psychology. Psychological Bulletin, 92(1), 111-135.",
       "doi": "10.1037/0033-2909.92.1.111",
       "citation_status": "provided",
+      "status": "draft",
       "constructs": [
         {
           "id": "goal_or_reference_state",
@@ -640,6 +683,9 @@
           "to": "perceived_current_state",
           "relationship": "Updates perception"
         }
+      ],
+      "disciplines": [
+        "psychology"
       ]
     },
     {
@@ -653,6 +699,7 @@
       "citation": "Michie, S., van Stralen, M. M., & West, R. (2011). The behaviour change wheel: A new method for characterising and designing behaviour change interventions. Implementation Science, 6, 42.",
       "doi": "10.1186/1748-5908-6-42",
       "citation_status": "added",
+      "status": "draft",
       "constructs": [
         {
           "id": "psychological_capability",
@@ -716,6 +763,9 @@
           "to": "behavior",
           "relationship": "Contributes to behavior"
         }
+      ],
+      "disciplines": [
+        "psychology"
       ]
     },
     {
@@ -730,6 +780,7 @@
       "citation": "Atkins, L., Francis, J., Islam, R., O'Connor, D., Patey, A., Ivers, N., et al. (2017). A guide to using the Theoretical Domains Framework of behaviour change to investigate implementation problems. Implementation Science, 12, 77.",
       "doi": "10.1186/s13012-017-0605-9",
       "citation_status": "provided",
+      "status": "draft",
       "constructs": [
         {
           "id": "knowledge",
@@ -792,7 +843,10 @@
           "shared_construct_match": "related"
         }
       ],
-      "paths": []
+      "paths": [],
+      "disciplines": [
+        "psychology"
+      ]
     },
     {
       "id": "operant",
@@ -805,6 +859,7 @@
       ],
       "citation": "Skinner, B. F. (1953). Science and human behavior. Macmillan.",
       "citation_status": "added",
+      "status": "draft",
       "constructs": [
         {
           "id": "positive_reinforcement",
@@ -848,6 +903,10 @@
           "to": "behavior",
           "relationship": "Changes behavior"
         }
+      ],
+      "disciplines": [
+        "psychology",
+        "education_studies"
       ]
     },
     {
@@ -862,8 +921,14 @@
       ],
       "citation": "Vygotsky, L. S. (1978). Mind in society: The development of higher psychological processes. Harvard University Press.",
       "citation_status": "added",
+      "status": "draft",
       "constructs": [],
-      "paths": []
+      "paths": [],
+      "disciplines": [
+        "education_studies",
+        "psychology",
+        "anthropology"
+      ]
     },
     {
       "id": "communities_of_practice",
@@ -876,8 +941,14 @@
       ],
       "citation": "Lave, J., & Wenger, E. (1991). Situated learning: Legitimate peripheral participation. Cambridge University Press.",
       "citation_status": "added",
+      "status": "draft",
       "constructs": [],
-      "paths": []
+      "paths": [],
+      "disciplines": [
+        "education_studies",
+        "anthropology",
+        "sociology"
+      ]
     },
     {
       "id": "critical_race_theory",
@@ -891,8 +962,14 @@
       ],
       "citation": "Delgado, R., & Stefancic, J. (2017). Critical race theory: An introduction (3rd ed.). New York University Press.",
       "citation_status": "added",
+      "status": "draft",
       "constructs": [],
-      "paths": []
+      "paths": [],
+      "disciplines": [
+        "law",
+        "sociology",
+        "education_studies"
+      ]
     },
     {
       "id": "intersectionality",
@@ -906,8 +983,14 @@
       ],
       "citation": "Crenshaw, K. (1989). Demarginalizing the intersection of race and sex. University of Chicago Legal Forum, 1989(1), 139-167.",
       "citation_status": "added",
+      "status": "draft",
       "constructs": [],
-      "paths": []
+      "paths": [],
+      "disciplines": [
+        "sociology",
+        "law",
+        "other_humanities"
+      ]
     },
     {
       "id": "feminist_theory",
@@ -919,8 +1002,17 @@
         "humanities",
         "arts"
       ],
+      "status": "draft",
       "constructs": [],
-      "paths": []
+      "paths": [],
+      "disciplines": [
+        "sociology",
+        "languages_literature",
+        "philosophy_religion",
+        "history"
+      ],
+      "citation": "hooks, b. (1984). Feminist theory: From margin to center. South End Press.",
+      "citation_status": "added"
     },
     {
       "id": "postcolonial_theory",
@@ -932,8 +1024,16 @@
         "social_sciences",
         "arts"
       ],
+      "status": "draft",
       "constructs": [],
-      "paths": []
+      "paths": [],
+      "disciplines": [
+        "history",
+        "languages_literature",
+        "anthropology"
+      ],
+      "citation": "Said, E. W. (1978). Orientalism. Pantheon Books.",
+      "citation_status": "added"
     },
     {
       "id": "phenomenology",
@@ -945,8 +1045,16 @@
         "humanities",
         "education"
       ],
+      "status": "draft",
       "constructs": [],
-      "paths": []
+      "paths": [],
+      "disciplines": [
+        "philosophy_religion",
+        "psychology",
+        "education_studies"
+      ],
+      "citation": "van Manen, M. (1990). Researching lived experience: Human science for an action sensitive pedagogy. State University of New York Press.",
+      "citation_status": "added"
     },
     {
       "id": "critical_theory",
@@ -957,8 +1065,15 @@
         "social_sciences",
         "humanities"
       ],
+      "status": "draft",
       "constructs": [],
-      "paths": []
+      "paths": [],
+      "disciplines": [
+        "philosophy_religion",
+        "sociology"
+      ],
+      "citation": "Horkheimer, M. (1972). Critical theory: Selected essays (M. J. O'Connell et al., Trans.). Herder and Herder.",
+      "citation_status": "added"
     },
     {
       "id": "new_historicism",
@@ -969,8 +1084,15 @@
         "humanities",
         "arts"
       ],
+      "status": "draft",
       "constructs": [],
-      "paths": []
+      "paths": [],
+      "disciplines": [
+        "history",
+        "languages_literature"
+      ],
+      "citation": "Greenblatt, S. (1980). Renaissance self-fashioning: From More to Shakespeare. University of Chicago Press.",
+      "citation_status": "added"
     },
     {
       "id": "semiotics",
@@ -982,6 +1104,1144 @@
         "arts",
         "social_sciences"
       ],
+      "status": "draft",
+      "constructs": [],
+      "paths": [],
+      "disciplines": [
+        "media_communication",
+        "visual_arts",
+        "languages_literature"
+      ],
+      "citation": "Barthes, R. (1977). Image, music, text (S. Heath, Trans.). Hill and Wang.",
+      "citation_status": "added"
+    },
+    {
+      "id": "bourdieu_practice",
+      "label": "Bourdieu's Theory of Practice (Capital, Habitus, Field)",
+      "kind": "theory",
+      "description": "Social position and practice arise from the forms of capital people hold, their habitus, and the fields in which they act.",
+      "fields": [
+        "social_sciences",
+        "education",
+        "arts"
+      ],
+      "disciplines": [
+        "sociology",
+        "education_studies",
+        "anthropology"
+      ],
+      "citation": "Bourdieu, P. (1986). The forms of capital. In J. G. Richardson (Ed.), Handbook of theory and research for the sociology of education (pp. 241-258). Greenwood.",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [
+        {
+          "id": "economic_capital",
+          "label": "Economic capital",
+          "definition": "Money and assets that can be directly converted into other resources."
+        },
+        {
+          "id": "cultural_capital",
+          "label": "Cultural capital",
+          "definition": "Knowledge, skills, credentials, and tastes valued in a field."
+        },
+        {
+          "id": "social_capital",
+          "label": "Social capital",
+          "definition": "Resources available through durable networks of relationships."
+        },
+        {
+          "id": "habitus",
+          "label": "Habitus",
+          "definition": "Durable dispositions, learned through social position, that shape perception and action."
+        },
+        {
+          "id": "field",
+          "label": "Field",
+          "definition": "A structured social arena (such as education or art) with its own stakes and rules."
+        },
+        {
+          "id": "practice",
+          "label": "Practice and outcomes",
+          "definition": "What people do and achieve within a field, such as educational attainment."
+        }
+      ],
+      "paths": [
+        {
+          "from": "economic_capital",
+          "to": "practice",
+          "relationship": "Shapes"
+        },
+        {
+          "from": "cultural_capital",
+          "to": "practice",
+          "relationship": "Shapes"
+        },
+        {
+          "from": "social_capital",
+          "to": "practice",
+          "relationship": "Shapes"
+        },
+        {
+          "from": "habitus",
+          "to": "practice",
+          "relationship": "Disposes toward"
+        },
+        {
+          "from": "field",
+          "to": "practice",
+          "relationship": "Sets the stakes for"
+        }
+      ]
+    },
+    {
+      "id": "social_capital_theory",
+      "label": "Social Capital Theory",
+      "kind": "theory",
+      "description": "Networks, trust, and shared norms are resources that make collective action and individual outcomes possible.",
+      "fields": [
+        "social_sciences",
+        "education"
+      ],
+      "disciplines": [
+        "sociology",
+        "political_science",
+        "education_studies",
+        "economics"
+      ],
+      "citation": "Coleman, J. S. (1988). Social capital in the creation of human capital. American Journal of Sociology, 94, S95-S120.",
+      "doi": "10.1086/228943",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [
+        {
+          "id": "social_networks",
+          "label": "Social networks",
+          "definition": "Ties among people, within and across groups."
+        },
+        {
+          "id": "trust",
+          "label": "Trust",
+          "definition": "Confidence that others will act reliably and cooperatively."
+        },
+        {
+          "id": "norms_reciprocity",
+          "label": "Norms and obligations",
+          "definition": "Shared expectations, including reciprocity, that guide behavior."
+        },
+        {
+          "id": "community_ties",
+          "label": "Closure of community ties",
+          "definition": "How densely people's contacts know each other.",
+          "shared_construct_id": "community_connectedness",
+          "shared_construct_match": "related"
+        },
+        {
+          "id": "outcomes",
+          "label": "Collective and individual outcomes",
+          "definition": "For example civic engagement, school completion, or well-being."
+        }
+      ],
+      "paths": [
+        {
+          "from": "social_networks",
+          "to": "trust",
+          "relationship": "Builds"
+        },
+        {
+          "from": "trust",
+          "to": "outcomes",
+          "relationship": "Enables"
+        },
+        {
+          "from": "norms_reciprocity",
+          "to": "outcomes",
+          "relationship": "Enables"
+        },
+        {
+          "from": "community_ties",
+          "to": "norms_reciprocity",
+          "relationship": "Reinforces"
+        }
+      ]
+    },
+    {
+      "id": "symbolic_interactionism",
+      "label": "Symbolic Interactionism",
+      "kind": "lens",
+      "description": "People act toward things on the basis of the meanings those things have for them, meanings that arise in and are modified through social interaction.",
+      "fields": [
+        "social_sciences",
+        "education"
+      ],
+      "disciplines": [
+        "sociology",
+        "psychology",
+        "media_communication"
+      ],
+      "citation": "Blumer, H. (1969). Symbolic interactionism: Perspective and method. Prentice-Hall.",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [],
+      "paths": []
+    },
+    {
+      "id": "institutional_theory",
+      "label": "Institutional Theory (Institutional Isomorphism)",
+      "kind": "theory",
+      "description": "Organizations in the same field become alike through coercive, mimetic, and normative pressures, often in pursuit of legitimacy rather than efficiency.",
+      "fields": [
+        "social_sciences",
+        "education"
+      ],
+      "disciplines": [
+        "sociology",
+        "political_science",
+        "education_studies"
+      ],
+      "citation": "DiMaggio, P. J., & Powell, W. W. (1983). The iron cage revisited: Institutional isomorphism and collective rationality in organizational fields. American Sociological Review, 48(2), 147-160.",
+      "doi": "10.2307/2095101",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [
+        {
+          "id": "coercive_pressure",
+          "label": "Coercive pressure",
+          "definition": "Formal and informal pressure from organizations an organization depends on, such as regulators or funders."
+        },
+        {
+          "id": "mimetic_pressure",
+          "label": "Mimetic pressure",
+          "definition": "Copying organizations seen as successful, especially under uncertainty."
+        },
+        {
+          "id": "normative_pressure",
+          "label": "Normative pressure",
+          "definition": "Pressure from professions, training, and professional networks."
+        },
+        {
+          "id": "isomorphism",
+          "label": "Isomorphism",
+          "definition": "Similarity of structures and practices across organizations in a field."
+        },
+        {
+          "id": "legitimacy",
+          "label": "Legitimacy",
+          "definition": "Being seen as appropriate within the field."
+        }
+      ],
+      "paths": [
+        {
+          "from": "coercive_pressure",
+          "to": "isomorphism",
+          "relationship": "Drives"
+        },
+        {
+          "from": "mimetic_pressure",
+          "to": "isomorphism",
+          "relationship": "Drives"
+        },
+        {
+          "from": "normative_pressure",
+          "to": "isomorphism",
+          "relationship": "Drives"
+        },
+        {
+          "from": "isomorphism",
+          "to": "legitimacy",
+          "relationship": "Confers"
+        }
+      ]
+    },
+    {
+      "id": "social_identity_theory",
+      "label": "Social Identity Theory",
+      "kind": "theory",
+      "description": "Part of the self-concept comes from group memberships; people seek positive distinctiveness for their groups, which shapes intergroup behavior.",
+      "fields": [
+        "social_sciences",
+        "education"
+      ],
+      "disciplines": [
+        "psychology",
+        "sociology",
+        "political_science"
+      ],
+      "citation": "Tajfel, H., & Turner, J. C. (1979). An integrative theory of intergroup conflict. In W. G. Austin & S. Worchel (Eds.), The social psychology of intergroup relations (pp. 33-47). Brooks/Cole.",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [
+        {
+          "id": "social_categorization",
+          "label": "Social categorization",
+          "definition": "Sorting oneself and others into social groups."
+        },
+        {
+          "id": "group_identification",
+          "label": "Group identification",
+          "definition": "How strongly one identifies with a group.",
+          "shared_construct_id": "sense_of_belonging",
+          "shared_construct_match": "related"
+        },
+        {
+          "id": "social_comparison",
+          "label": "Social comparison",
+          "definition": "Comparing one's group with other groups."
+        },
+        {
+          "id": "ingroup_bias",
+          "label": "In-group favoritism",
+          "definition": "Favoring one's own group over others."
+        },
+        {
+          "id": "self_esteem",
+          "label": "Self-esteem",
+          "definition": "Positive self-evaluation derived from group membership."
+        }
+      ],
+      "paths": [
+        {
+          "from": "social_categorization",
+          "to": "group_identification",
+          "relationship": "Enables"
+        },
+        {
+          "from": "group_identification",
+          "to": "social_comparison",
+          "relationship": "Motivates"
+        },
+        {
+          "from": "social_comparison",
+          "to": "ingroup_bias",
+          "relationship": "Leads to"
+        },
+        {
+          "from": "ingroup_bias",
+          "to": "self_esteem",
+          "relationship": "Supports"
+        }
+      ]
+    },
+    {
+      "id": "civic_voluntarism",
+      "label": "Civic Voluntarism Model",
+      "kind": "theory",
+      "description": "People take part in politics when they can (resources), want to (engagement), and are asked (recruitment).",
+      "fields": [
+        "social_sciences"
+      ],
+      "disciplines": [
+        "political_science",
+        "sociology"
+      ],
+      "citation": "Verba, S., Schlozman, K. L., & Brady, H. E. (1995). Voice and equality: Civic voluntarism in American politics. Harvard University Press.",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [
+        {
+          "id": "resources",
+          "label": "Resources",
+          "definition": "Time, money, and civic skills."
+        },
+        {
+          "id": "political_engagement",
+          "label": "Political engagement",
+          "definition": "Interest, efficacy, information, and partisanship."
+        },
+        {
+          "id": "recruitment",
+          "label": "Recruitment",
+          "definition": "Being asked to take part, through networks and institutions."
+        },
+        {
+          "id": "participation",
+          "label": "Political participation",
+          "definition": "Voting, contacting officials, campaigning, protest, and other activity."
+        }
+      ],
+      "paths": [
+        {
+          "from": "resources",
+          "to": "participation",
+          "relationship": "Enables"
+        },
+        {
+          "from": "political_engagement",
+          "to": "participation",
+          "relationship": "Motivates"
+        },
+        {
+          "from": "recruitment",
+          "to": "participation",
+          "relationship": "Prompts"
+        }
+      ]
+    },
+    {
+      "id": "rational_choice",
+      "label": "Rational Choice Theory",
+      "kind": "lens",
+      "description": "Explains political and social outcomes as the result of individuals pursuing their goals given costs, benefits, information, and the choices of others.",
+      "fields": [
+        "social_sciences"
+      ],
+      "disciplines": [
+        "political_science",
+        "economics",
+        "sociology"
+      ],
+      "citation": "Downs, A. (1957). An economic theory of democracy. Harper & Row.",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [],
+      "paths": []
+    },
+    {
+      "id": "framing_theory",
+      "label": "Framing Theory",
+      "kind": "theory",
+      "description": "Communicators select and make salient some aspects of a perceived reality, promoting a particular problem definition, causal interpretation, moral evaluation, or remedy.",
+      "fields": [
+        "social_sciences",
+        "humanities"
+      ],
+      "disciplines": [
+        "media_communication",
+        "political_science",
+        "sociology"
+      ],
+      "citation": "Entman, R. M. (1993). Framing: Toward clarification of a fractured paradigm. Journal of Communication, 43(4), 51-58.",
+      "doi": "10.1111/j.1460-2466.1993.tb01304.x",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [
+        {
+          "id": "frames_in_text",
+          "label": "Frames in the text",
+          "definition": "How a message defines a problem, its causes, its moral evaluation, and remedies."
+        },
+        {
+          "id": "audience_frames",
+          "label": "Audience frames",
+          "definition": "The interpretive schemas audience members bring."
+        },
+        {
+          "id": "interpretation",
+          "label": "Interpretation and attitudes",
+          "definition": "How audiences understand and evaluate the issue."
+        }
+      ],
+      "paths": [
+        {
+          "from": "frames_in_text",
+          "to": "interpretation",
+          "relationship": "Shapes"
+        },
+        {
+          "from": "audience_frames",
+          "to": "interpretation",
+          "relationship": "Shapes"
+        }
+      ]
+    },
+    {
+      "id": "agenda_setting",
+      "label": "Agenda-Setting Theory",
+      "kind": "theory",
+      "description": "The prominence the news media give to issues shapes which issues the public considers important.",
+      "fields": [
+        "social_sciences"
+      ],
+      "disciplines": [
+        "media_communication",
+        "political_science"
+      ],
+      "citation": "McCombs, M. E., & Shaw, D. L. (1972). The agenda-setting function of mass media. Public Opinion Quarterly, 36(2), 176-187.",
+      "doi": "10.1086/267990",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [
+        {
+          "id": "media_salience",
+          "label": "Media agenda (issue salience in media)",
+          "definition": "How much attention and prominence media give an issue."
+        },
+        {
+          "id": "need_for_orientation",
+          "label": "Need for orientation",
+          "definition": "An audience member's need for guidance on an issue."
+        },
+        {
+          "id": "public_salience",
+          "label": "Public agenda (perceived issue importance)",
+          "definition": "How important the public considers an issue."
+        }
+      ],
+      "paths": [
+        {
+          "from": "media_salience",
+          "to": "public_salience",
+          "relationship": "Raises"
+        },
+        {
+          "from": "need_for_orientation",
+          "to": "public_salience",
+          "relationship": "Strengthens the effect on"
+        }
+      ]
+    },
+    {
+      "id": "uses_gratifications",
+      "label": "Uses and Gratifications",
+      "kind": "theory",
+      "description": "Audiences actively choose media to satisfy needs; the gratifications they seek shape media use and its effects.",
+      "fields": [
+        "social_sciences"
+      ],
+      "disciplines": [
+        "media_communication",
+        "psychology"
+      ],
+      "citation": "Katz, E., Blumler, J. G., & Gurevitch, M. (1973). Uses and gratifications research. Public Opinion Quarterly, 37(4), 509-523.",
+      "doi": "10.1086/268109",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [
+        {
+          "id": "needs",
+          "label": "Social and psychological needs",
+          "definition": "Needs such as information, identity, social connection, and diversion."
+        },
+        {
+          "id": "gratifications_sought",
+          "label": "Gratifications sought",
+          "definition": "What people expect to get from a medium."
+        },
+        {
+          "id": "media_use",
+          "label": "Media use",
+          "definition": "Choice and amount of media and content."
+        },
+        {
+          "id": "gratifications_obtained",
+          "label": "Gratifications obtained",
+          "definition": "What people report actually getting."
+        }
+      ],
+      "paths": [
+        {
+          "from": "needs",
+          "to": "gratifications_sought",
+          "relationship": "Give rise to"
+        },
+        {
+          "from": "gratifications_sought",
+          "to": "media_use",
+          "relationship": "Guides"
+        },
+        {
+          "from": "media_use",
+          "to": "gratifications_obtained",
+          "relationship": "Produces"
+        }
+      ]
+    },
+    {
+      "id": "diffusion_of_innovations",
+      "label": "Diffusion of Innovations",
+      "kind": "theory",
+      "description": "New ideas, practices, and technologies spread through social systems over time; perceived attributes of an innovation shape how quickly it is adopted.",
+      "fields": [
+        "social_sciences",
+        "education"
+      ],
+      "disciplines": [
+        "sociology",
+        "media_communication",
+        "education_studies",
+        "economics"
+      ],
+      "citation": "Rogers, E. M. (2003). Diffusion of innovations (5th ed.). Free Press.",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [
+        {
+          "id": "relative_advantage",
+          "label": "Relative advantage",
+          "definition": "How much better the innovation seems than what it replaces."
+        },
+        {
+          "id": "compatibility",
+          "label": "Compatibility",
+          "definition": "Fit with existing values, experience, and needs."
+        },
+        {
+          "id": "complexity",
+          "label": "Complexity",
+          "definition": "How difficult the innovation seems to understand and use."
+        },
+        {
+          "id": "trialability",
+          "label": "Trialability",
+          "definition": "How easily it can be tried on a limited basis."
+        },
+        {
+          "id": "observability",
+          "label": "Observability",
+          "definition": "How visible its results are to others."
+        },
+        {
+          "id": "adoption",
+          "label": "Adoption",
+          "definition": "The decision to make full use of the innovation.",
+          "shared_construct_id": "behavioral_intention",
+          "shared_construct_match": "related"
+        }
+      ],
+      "paths": [
+        {
+          "from": "relative_advantage",
+          "to": "adoption",
+          "relationship": "Speeds"
+        },
+        {
+          "from": "compatibility",
+          "to": "adoption",
+          "relationship": "Speeds"
+        },
+        {
+          "from": "complexity",
+          "to": "adoption",
+          "relationship": "Slows"
+        },
+        {
+          "from": "trialability",
+          "to": "adoption",
+          "relationship": "Speeds"
+        },
+        {
+          "from": "observability",
+          "to": "adoption",
+          "relationship": "Speeds"
+        }
+      ]
+    },
+    {
+      "id": "human_capital",
+      "label": "Human Capital Theory",
+      "kind": "theory",
+      "description": "Education and training are investments that raise productivity and, in turn, earnings.",
+      "fields": [
+        "social_sciences",
+        "education"
+      ],
+      "disciplines": [
+        "economics",
+        "education_studies",
+        "sociology"
+      ],
+      "citation": "Becker, G. S. (1964). Human capital: A theoretical and empirical analysis, with special reference to education. National Bureau of Economic Research; Columbia University Press.",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [
+        {
+          "id": "education_investment",
+          "label": "Investment in education and training",
+          "definition": "Years and kinds of schooling, training, and experience."
+        },
+        {
+          "id": "skills",
+          "label": "Skills and knowledge",
+          "definition": "Productive capacities acquired through investment.",
+          "shared_construct_id": "content_knowledge",
+          "shared_construct_match": "related"
+        },
+        {
+          "id": "productivity",
+          "label": "Productivity",
+          "definition": "Output per unit of work."
+        },
+        {
+          "id": "earnings",
+          "label": "Earnings",
+          "definition": "Wages and income."
+        }
+      ],
+      "paths": [
+        {
+          "from": "education_investment",
+          "to": "skills",
+          "relationship": "Builds"
+        },
+        {
+          "from": "skills",
+          "to": "productivity",
+          "relationship": "Raises"
+        },
+        {
+          "from": "productivity",
+          "to": "earnings",
+          "relationship": "Raises"
+        }
+      ]
+    },
+    {
+      "id": "ecological_systems",
+      "label": "Ecological Systems Theory",
+      "kind": "theory",
+      "description": "Development happens within nested systems, from immediate settings such as family and school to the wider culture, and through their interactions over time.",
+      "fields": [
+        "education",
+        "social_sciences"
+      ],
+      "disciplines": [
+        "psychology",
+        "education_studies",
+        "sociology"
+      ],
+      "citation": "Bronfenbrenner, U. (1979). The ecology of human development: Experiments by nature and design. Harvard University Press.",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [
+        {
+          "id": "microsystem",
+          "label": "Microsystem",
+          "definition": "Immediate settings such as family, classroom, and peers.",
+          "shared_construct_id": "learning_environment",
+          "shared_construct_match": "related"
+        },
+        {
+          "id": "mesosystem",
+          "label": "Mesosystem",
+          "definition": "Links between immediate settings, such as home and school."
+        },
+        {
+          "id": "exosystem",
+          "label": "Exosystem",
+          "definition": "Settings that affect the person indirectly, such as a parent's workplace."
+        },
+        {
+          "id": "macrosystem",
+          "label": "Macrosystem",
+          "definition": "Cultural values, laws, and economic conditions."
+        },
+        {
+          "id": "chronosystem",
+          "label": "Chronosystem",
+          "definition": "Change over time, in the person and the environment."
+        },
+        {
+          "id": "development",
+          "label": "Development",
+          "definition": "The outcomes of interest, such as learning or well-being."
+        }
+      ],
+      "paths": [
+        {
+          "from": "microsystem",
+          "to": "development",
+          "relationship": "Shapes"
+        },
+        {
+          "from": "mesosystem",
+          "to": "development",
+          "relationship": "Shapes"
+        },
+        {
+          "from": "exosystem",
+          "to": "microsystem",
+          "relationship": "Influences"
+        },
+        {
+          "from": "macrosystem",
+          "to": "exosystem",
+          "relationship": "Influences"
+        },
+        {
+          "from": "chronosystem",
+          "to": "development",
+          "relationship": "Shapes"
+        }
+      ]
+    },
+    {
+      "id": "constructivism",
+      "label": "Constructivism",
+      "kind": "lens",
+      "description": "Learners actively build knowledge by connecting new experience to what they already know, rather than receiving it ready-made.",
+      "fields": [
+        "education",
+        "social_sciences"
+      ],
+      "disciplines": [
+        "education_studies",
+        "psychology"
+      ],
+      "citation": "Piaget, J. (1952). The origins of intelligence in children (M. Cook, Trans.). International Universities Press.",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [],
+      "paths": []
+    },
+    {
+      "id": "cognitive_load",
+      "label": "Cognitive Load Theory",
+      "kind": "theory",
+      "description": "Working memory is limited; instruction that reduces unnecessary (extraneous) load frees capacity for building schemas.",
+      "fields": [
+        "education"
+      ],
+      "disciplines": [
+        "education_studies",
+        "psychology"
+      ],
+      "citation": "Sweller, J. (1988). Cognitive load during problem solving: Effects on learning. Cognitive Science, 12(2), 257-285.",
+      "doi": "10.1207/s15516709cog1202_4",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [
+        {
+          "id": "intrinsic_load",
+          "label": "Intrinsic load",
+          "definition": "Load from the inherent complexity of the material for this learner."
+        },
+        {
+          "id": "extraneous_load",
+          "label": "Extraneous load",
+          "definition": "Load from how information is presented, not needed for learning."
+        },
+        {
+          "id": "germane_load",
+          "label": "Germane load",
+          "definition": "Effort devoted to building schemas."
+        },
+        {
+          "id": "instructional_design",
+          "label": "Instructional design",
+          "definition": "For example worked examples, integrated formats, or goal-free problems.",
+          "shared_construct_id": "teaching_practices",
+          "shared_construct_match": "related"
+        },
+        {
+          "id": "learning",
+          "label": "Learning and transfer",
+          "definition": "Schema acquisition and later problem-solving performance.",
+          "shared_construct_id": "problem_solving",
+          "shared_construct_match": "related"
+        }
+      ],
+      "paths": [
+        {
+          "from": "instructional_design",
+          "to": "extraneous_load",
+          "relationship": "Reduces or adds"
+        },
+        {
+          "from": "extraneous_load",
+          "to": "learning",
+          "relationship": "Hinders"
+        },
+        {
+          "from": "intrinsic_load",
+          "to": "learning",
+          "relationship": "Limits"
+        },
+        {
+          "from": "germane_load",
+          "to": "learning",
+          "relationship": "Supports"
+        }
+      ]
+    },
+    {
+      "id": "community_of_inquiry",
+      "label": "Community of Inquiry",
+      "kind": "theory",
+      "description": "Deep learning in online and blended courses emerges from the interplay of social, cognitive, and teaching presence.",
+      "fields": [
+        "education"
+      ],
+      "disciplines": [
+        "education_studies"
+      ],
+      "citation": "Garrison, D. R., Anderson, T., & Archer, W. (1999). Critical inquiry in a text-based environment: Computer conferencing in higher education. The Internet and Higher Education, 2(2-3), 87-105.",
+      "doi": "10.1016/S1096-7516(00)00016-6",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [
+        {
+          "id": "social_presence",
+          "label": "Social presence",
+          "definition": "Participants' ability to project themselves socially and emotionally."
+        },
+        {
+          "id": "teaching_presence",
+          "label": "Teaching presence",
+          "definition": "Design, facilitation, and direct instruction.",
+          "shared_construct_id": "teaching_practices",
+          "shared_construct_match": "related"
+        },
+        {
+          "id": "cognitive_presence",
+          "label": "Cognitive presence",
+          "definition": "Constructing meaning through sustained reflection and discourse.",
+          "shared_construct_id": "critical_thinking",
+          "shared_construct_match": "related"
+        },
+        {
+          "id": "educational_experience",
+          "label": "Educational experience",
+          "definition": "The quality of learning in the community."
+        }
+      ],
+      "paths": [
+        {
+          "from": "social_presence",
+          "to": "cognitive_presence",
+          "relationship": "Supports"
+        },
+        {
+          "from": "teaching_presence",
+          "to": "cognitive_presence",
+          "relationship": "Supports"
+        },
+        {
+          "from": "teaching_presence",
+          "to": "social_presence",
+          "relationship": "Supports"
+        },
+        {
+          "from": "cognitive_presence",
+          "to": "educational_experience",
+          "relationship": "Constitutes"
+        }
+      ]
+    },
+    {
+      "id": "culturally_relevant_pedagogy",
+      "label": "Culturally Relevant Pedagogy",
+      "kind": "lens",
+      "description": "Teaching that supports students' academic success, cultural competence, and critical consciousness.",
+      "fields": [
+        "education"
+      ],
+      "disciplines": [
+        "education_studies"
+      ],
+      "citation": "Ladson-Billings, G. (1995). Toward a theory of culturally relevant pedagogy. American Educational Research Journal, 32(3), 465-491.",
+      "doi": "10.3102/00028312032003465",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [],
+      "paths": []
+    },
+    {
+      "id": "funds_of_knowledge",
+      "label": "Funds of Knowledge",
+      "kind": "lens",
+      "description": "Households and communities hold historically accumulated knowledge and skills that teachers can learn about and build on.",
+      "fields": [
+        "education",
+        "social_sciences"
+      ],
+      "disciplines": [
+        "education_studies",
+        "anthropology"
+      ],
+      "citation": "Moll, L. C., Amanti, C., Neff, D., & Gonzalez, N. (1992). Funds of knowledge for teaching: Using a qualitative approach to connect homes and classrooms. Theory Into Practice, 31(2), 132-141.",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [],
+      "paths": []
+    },
+    {
+      "id": "hermeneutics",
+      "label": "Hermeneutics",
+      "kind": "lens",
+      "description": "Understanding as interpretation: meaning emerges in a dialogue between the interpreter's horizon and that of the text or work.",
+      "fields": [
+        "humanities",
+        "arts",
+        "social_sciences"
+      ],
+      "disciplines": [
+        "philosophy_religion",
+        "languages_literature",
+        "history"
+      ],
+      "citation": "Gadamer, H.-G. (2004). Truth and method (2nd rev. ed., J. Weinsheimer & D. G. Marshall, Trans.). Continuum. (Original work published 1960)",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [],
+      "paths": []
+    },
+    {
+      "id": "foucauldian_discourse",
+      "label": "Foucauldian Discourse Analysis",
+      "kind": "lens",
+      "description": "Examines how discourses, the rules governing what can be said and known, produce knowledge, subjects, and relations of power.",
+      "fields": [
+        "humanities",
+        "social_sciences",
+        "education"
+      ],
+      "disciplines": [
+        "philosophy_religion",
+        "history",
+        "sociology",
+        "languages_literature"
+      ],
+      "citation": "Foucault, M. (1972). The archaeology of knowledge (A. M. Sheridan Smith, Trans.). Pantheon.",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [],
+      "paths": []
+    },
+    {
+      "id": "narratology",
+      "label": "Narratology",
+      "kind": "lens",
+      "description": "Analyzes how narratives work: order, duration, voice, and focalization, and how they shape meaning.",
+      "fields": [
+        "humanities",
+        "arts"
+      ],
+      "disciplines": [
+        "languages_literature",
+        "media_communication",
+        "performing_arts"
+      ],
+      "citation": "Genette, G. (1980). Narrative discourse: An essay in method (J. E. Lewin, Trans.). Cornell University Press.",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [],
+      "paths": []
+    },
+    {
+      "id": "reception_theory",
+      "label": "Reception Theory and Reader-Response",
+      "kind": "lens",
+      "description": "Meaning is realized in the encounter between a work and its readers or audiences, whose expectations change over time.",
+      "fields": [
+        "humanities",
+        "arts"
+      ],
+      "disciplines": [
+        "languages_literature",
+        "history",
+        "visual_arts",
+        "performing_arts"
+      ],
+      "citation": "Jauss, H. R. (1982). Toward an aesthetic of reception (T. Bahti, Trans.). University of Minnesota Press.",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [],
+      "paths": []
+    },
+    {
+      "id": "queer_theory",
+      "label": "Queer Theory",
+      "kind": "lens",
+      "description": "Questions fixed categories of gender and sexuality and examines how they are produced and performed.",
+      "fields": [
+        "humanities",
+        "social_sciences",
+        "arts"
+      ],
+      "disciplines": [
+        "languages_literature",
+        "sociology",
+        "philosophy_religion",
+        "performing_arts"
+      ],
+      "citation": "Butler, J. (1990). Gender trouble: Feminism and the subversion of identity. Routledge.",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [],
+      "paths": []
+    },
+    {
+      "id": "ecocriticism",
+      "label": "Ecocriticism",
+      "kind": "lens",
+      "description": "Studies the relationship between literature, culture, and the physical environment.",
+      "fields": [
+        "humanities",
+        "arts"
+      ],
+      "disciplines": [
+        "languages_literature",
+        "history",
+        "visual_arts"
+      ],
+      "citation": "Glotfelty, C., & Fromm, H. (Eds.). (1996). The ecocriticism reader: Landmarks in literary ecology. University of Georgia Press.",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [],
+      "paths": []
+    },
+    {
+      "id": "marxist_criticism",
+      "label": "Marxist Criticism",
+      "kind": "lens",
+      "description": "Reads cultural works in relation to the economic and class relations of the society that produced them.",
+      "fields": [
+        "humanities",
+        "arts",
+        "social_sciences"
+      ],
+      "disciplines": [
+        "languages_literature",
+        "history",
+        "sociology",
+        "visual_arts"
+      ],
+      "citation": "Eagleton, T. (1976). Marxism and literary criticism. University of California Press.",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [],
+      "paths": []
+    },
+    {
+      "id": "material_culture",
+      "label": "Material Culture Studies",
+      "kind": "lens",
+      "description": "Studies objects as evidence of the beliefs, values, and practices of the people who made and used them.",
+      "fields": [
+        "humanities",
+        "arts",
+        "social_sciences"
+      ],
+      "disciplines": [
+        "history",
+        "archaeology",
+        "anthropology",
+        "visual_arts"
+      ],
+      "citation": "Prown, J. D. (1982). Mind in matter: An introduction to material culture theory and method. Winterthur Portfolio, 17(1), 1-19.",
+      "doi": "10.1086/496065",
+      "citation_status": "added",
+      "status": "draft",
+      "constructs": [],
+      "paths": []
+    },
+    {
+      "id": "arts_based_research",
+      "label": "Arts-Based Research",
+      "kind": "lens",
+      "description": "Uses artistic processes and forms (writing, image, performance, music) as ways of inquiring and of representing what is learned.",
+      "fields": [
+        "arts",
+        "education",
+        "social_sciences"
+      ],
+      "disciplines": [
+        "visual_arts",
+        "performing_arts",
+        "education_studies"
+      ],
+      "citation": "Barone, T., & Eisner, E. W. (2012). Arts based research. SAGE.",
+      "citation_status": "added",
+      "status": "draft",
       "constructs": [],
       "paths": []
     },
@@ -997,7 +2257,8 @@
         "arts"
       ],
       "constructs": [],
-      "paths": []
+      "paths": [],
+      "disciplines": []
     },
     {
       "id": "exploratory",
@@ -1011,7 +2272,8 @@
         "arts"
       ],
       "constructs": [],
-      "paths": []
+      "paths": [],
+      "disciplines": []
     }
   ]
 }

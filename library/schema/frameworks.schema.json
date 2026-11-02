@@ -134,6 +134,49 @@
                 }
               }
             }
+          },
+          "disciplines": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "biology",
+                "chemistry",
+                "physics",
+                "geoscience",
+                "climate_science",
+                "astronomy",
+                "mathematics",
+                "computer_science",
+                "engineering",
+                "general_stem",
+                "psychology",
+                "economics",
+                "education_studies",
+                "sociology",
+                "anthropology",
+                "law",
+                "political_science",
+                "human_geography",
+                "media_communication",
+                "history",
+                "archaeology",
+                "languages_literature",
+                "philosophy_religion",
+                "visual_arts",
+                "performing_arts",
+                "other_humanities",
+                "other_social_science",
+                "other_discipline"
+              ]
+            },
+            "description": "Disciplines (HuMeta discipline vocabulary) where the framework is widely used; for browsing."
+          },
+          "status": {
+            "enum": [
+              "draft"
+            ],
+            "description": "draft: added as a starting point; needs review by experts in the field."
           }
         }
       }

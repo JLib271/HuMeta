@@ -19,6 +19,7 @@ import pandas as pd
 import streamlit as st
 
 from oem import plan as P
+from oem import profile
 from oem import recommend as R
 from oem.app.common import (APP_DIR, context_search_terms, current_project,
                             load_published_summaries, open_review_pull_request, public_submission_warning,
@@ -124,6 +125,70 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
         _suggest_correction(lib, publish_disabled, publish_hint)
 
 
+FIELD_FILTERS = {"": "All fields", "education": "Education", "social_sciences": "Social sciences",
+                 "humanities": "Humanities", "arts": "Arts"}
+KIND_FILTERS = {"": "All kinds", "theory": "Theories (with constructs and relationships)",
+                "lens": "Lenses (interpretive perspectives)"}
+BROWSE_PAGE = 12
+
+
+def _add_framework(picker_key: str, fid: str) -> None:
+    chosen = list(st.session_state.get(picker_key) or [])
+    if fid not in chosen:
+        st.session_state[picker_key] = chosen + [fid]
+
+
+def _browse_frameworks(lib, picker_key: str, v: int) -> None:
+    """Browse the framework library by field, kind, discipline, and search; preview and add."""
+    record = current_record() or {}
+    saved_fields = [f for f in ((record.get("study") or {}).get("fields") or []) if f in FIELD_FILTERS]
+    disciplines = {t["id"]: t["label"] for t in profile.load().vocab("discipline")}
+    with st.container(border=True):
+        st.markdown("**Browse the framework library**")
+        c1, c2, c3, c4 = st.columns([1, 1.3, 1.2, 1.5])
+        field = c1.selectbox("Field", list(FIELD_FILTERS), format_func=FIELD_FILTERS.get, key=f"m2_browse_field_{v}",
+                             index=list(FIELD_FILTERS).index(saved_fields[0]) if len(saved_fields) == 1 else 0,
+                             help="Starts from the research field in your Module 1 study profile.")
+        kind = c2.selectbox("Kind", list(KIND_FILTERS), format_func=KIND_FILTERS.get, key=f"m2_browse_kind_{v}")
+        in_field = sorted({d for fw in lib.frameworks.values() if not field or field in fw.get("fields", [])
+                           for d in fw.get("disciplines", [])}, key=lambda d: disciplines.get(d, d))
+        discipline = c3.selectbox("Discipline", [""] + in_field, key=f"m2_browse_disc_{v}",
+                                  format_func=lambda d: disciplines.get(d, d) if d else "All disciplines")
+        query = c4.text_input("Search", key=f"m2_browse_q_{v}", placeholder="name, idea, construct, or author")
+        found = [fid for fid in P.browse_frameworks(lib, field or None, kind or None, discipline or None, query)
+                 if lib.frameworks[fid]["kind"] in ("theory", "lens")]
+        total = sum(1 for fw in lib.frameworks.values() if fw["kind"] in ("theory", "lens"))
+        st.caption(f"{len(found)} of {total} theories and lenses. Open one to see its constructs and citation. "
+                   "**Draft**: every framework still needs review by experts in its field; suggest changes in the correction tab.")
+        show_all = len(found) > BROWSE_PAGE and st.toggle(f"Show all {len(found)}", key=f"m2_browse_all_{v}")
+        chosen = set(st.session_state.get(picker_key) or [])
+        for fid in found if show_all else found[:BROWSE_PAGE]:
+            fw = lib.frameworks[fid]
+            title = f"{fw['label']}  ·  {KIND_PREFIX[fw['kind']]}" + ("  ·  Draft" if fw.get("status") == "draft" else "") \
+                + ("  ·  ✓ in your plan" if fid in chosen else "")
+            with st.expander(title):
+                st.markdown(fw["description"])
+                if fw.get("constructs"):
+                    st.markdown("**Constructs:** " + ", ".join(c["label"] for c in fw["constructs"])
+                                + (f"  \n**Expected relationships:** {len(fw.get('paths', []))}" if fw.get("paths") else ""))
+                else:
+                    st.caption("A lens: you describe the constructs and ideas you draw from it in Step 2.")
+                if fw.get("disciplines"):
+                    st.caption("Used in: " + ", ".join(disciplines.get(d, d) for d in fw["disciplines"]))
+                cite = fw.get("citation") or ""
+                if fw.get("doi"):
+                    cite += f" [doi:{fw['doi']}](https://doi.org/{fw['doi']})"
+                if cite:
+                    st.caption(f"Key source: {cite}")
+                if fw.get("status") == "draft":
+                    st.caption("Draft: please check the constructs and relationships, and suggest changes in the "
+                               f"**{TABS[3]}** tab.")
+                st.button("✓ In your plan" if fid in chosen else "Add to my plan", key=f"m2_add_{fid}_{v}",
+                          disabled=fid in chosen, on_click=_add_framework, args=(picker_key, fid))
+        if not found:
+            st.info(f"No match. Try another field or search, or recommend it in the **{TABS[1]}** tab.")
+
+
 def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
     base = _base(lib)
     v = st.session_state["m2_version"]
@@ -136,21 +201,22 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
     # ------------------------------------------------------------ Step 1
     st.subheader("Step 1 · Framework")
     kinds = {fid: f["kind"] for fid, f in lib.frameworks.items()}
-    options = sorted(lib.frameworks, key=lambda fid: (KIND_ORDER.index(kinds[fid]), lib.frameworks[fid]["label"]))
+    picker_key = f"m2_frameworks_{v}"
+    if picker_key not in st.session_state:
+        st.session_state[picker_key] = [f for f in base["frameworks"] if f in lib.frameworks]
+    _browse_frameworks(lib, picker_key, v)
+    options = P.browse_frameworks(lib)
     plan["frameworks"] = st.multiselect(
-        "Theory, lens, or approach that guides your study *", options,
-        default=[f for f in base["frameworks"] if f in lib.frameworks],
+        "Your framework(s) *", options, key=picker_key,
         format_func=lambda fid: f"{KIND_PREFIX[kinds[fid]]}: {lib.frameworks[fid]['label']}",
-        key=f"m2_frameworks_{v}",
-        help="Choose one or more. Pick 'My own conceptual framework' to define your own constructs, or "
-             "'Exploratory or inductive' if constructs will emerge from the data.",
+        help="Add frameworks from the list above, or type a name here. Choose 'My own conceptual framework' to "
+             "define your own constructs, or 'Exploratory or inductive' if constructs will emerge from the data.",
     )
     for fid in plan["frameworks"]:
-        f = lib.frameworks[fid]
-        cite = f.get("citation") or "Cite the specific work you draw on."
-        if f.get("doi"):
-            cite += f" https://doi.org/{f['doi']}"
-        st.caption(f"**{f['label']}.** {f['description']} *{cite}*")
+        fw = lib.frameworks[fid]
+        if fw["kind"] in ("theory", "lens"):
+            st.caption(f"**{fw['label']}.** {fw['description']} *{fw.get('citation') or 'Cite the specific work you draw on.'}*"
+                       + (" (Draft: needs expert check.)" if fw.get("status") == "draft" else ""))
     plan["framework_description"] = st.text_area(
         "How does the framework guide your study?" + (" *" if {"own", "lens"} & {kinds[f] for f in plan["frameworks"]} else ""),
         base["framework_description"], key=f"m2_fdesc_{v}",

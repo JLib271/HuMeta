@@ -95,6 +95,37 @@ def construct_key(framework_id: str | None, label_or_id: str) -> str:
     return f"{framework_id or OWN_PREFIX}.{local}"
 
 
+FRAMEWORK_KIND_ORDER = ("theory", "lens", "own", "exploratory")
+
+
+def browse_frameworks(lib: Library, field: str | None = None, kind: str | None = None, discipline: str | None = None,
+                      query: str = "") -> list[str]:
+    """Framework ids matching the filters (any filter left as None or "" is ignored), theories first.
+
+    The search matches the name, description, citation (so authors' names work), and construct names.
+    'My own framework' and 'Exploratory' are kept whatever the filters, because they suit every study.
+    """
+    words = [w for w in re.split(r"\s+", (query or "").lower()) if w]
+    out = []
+    for fid, fw in lib.frameworks.items():
+        always = fw["kind"] in ("own", "exploratory")
+        if not always:
+            if field and field not in fw.get("fields", []):
+                continue
+            if kind and fw["kind"] != kind:
+                continue
+            if discipline and discipline not in fw.get("disciplines", []):
+                continue
+            if words:
+                text = " ".join([fw["label"], fw.get("description", ""), fw.get("citation", "")]
+                                + [c["label"] for c in fw.get("constructs", [])]).lower()
+                if not all(w in text for w in words):
+                    continue
+        out.append(fid)
+    return sorted(out, key=lambda fid: (FRAMEWORK_KIND_ORDER.index(lib.frameworks[fid]["kind"]),
+                                        lib.frameworks[fid]["label"].lower()))
+
+
 def framework_constructs(lib: Library, framework_ids: list[str]) -> list[dict]:
     """Constructs supplied by the chosen frameworks, in framework order."""
     constructs = []
