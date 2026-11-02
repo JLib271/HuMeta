@@ -18,8 +18,8 @@ from oem import profile
 from oem.app.common import current_project
 from oem.library import Library
 
-SPEC_URL = "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md"
-ISSUES_URL = "https://github.com/JLib271/OpenEdMetadata/issues"
+SPEC_URL = "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md"
+ISSUES_URL = "https://github.com/JLib271/HuMeta/issues"
 CARE_URL = "https://www.gida-global.org/care"
 LOCAL_CONTEXTS_URL = "https://localcontexts.org/"
 LICENSES = {
@@ -79,8 +79,8 @@ def record_form(record: dict) -> dict | None:
         return f"profile_{name}_{v}"
 
     def lab(text: str, element_id: str) -> str:
-        """Field label followed by its standard alignments."""
-        return f"{text}  {profile.alignment_badges(element_id, p)}"
+        """Field label. Standard alignments are in the field's (?) tooltip, not the label."""
+        return text
 
     def tip(element_id: str, extra: str | None = None) -> str:
         return profile.alignment_help(element_id, p) + (f"\n\n{extra}" if extra else "")
@@ -100,11 +100,10 @@ def record_form(record: dict) -> dict | None:
 
     with st.expander("How fields align with metadata standards", expanded=False):
         st.markdown(
-            "Each field shows the standards it corresponds to, so records stay compatible with tools "
-            "that already use them. `HuMeta` marks fields defined by this profile; no "
-            "general-purpose standard covers them. **≈** = close match, **~** = related; no mark = exact match. "
-            f"**{profile.SEEKING_INPUT_BADGE}** marks alignments we are not yet sure of. If you know the standard, "
-            f"please comment on [GitHub]({ISSUES_URL})."
+            "Hover over the **?** next to any field to see its definition and the standards it matches "
+            "(exact, close, or related match), so records stay compatible with tools that already use them. "
+            "Fields with no match are defined by the HuMeta profile. Some matches are marked as seeking "
+            f"expert input; if you know the standard, please comment on [GitHub]({ISSUES_URL})."
         )
         st.markdown("\n".join(f"- **{std['short']}**: [{std['name']}]({std['url']})"
                                  for std in p.definition["standards"].values()))
@@ -133,7 +132,7 @@ def record_form(record: dict) -> dict | None:
             lab("What are you describing? *", "resource.resource_type"), type_options,
             index=type_options.index(res.get("resource_type") or "Dataset"), key=key("rtype"),
             help=tip("resource.resource_type", "Dataset: data from a study. Instrument: a measure. StudyRegistration: a preregistered plan."))
-        st.markdown(f"**Study team** {profile.alignment_badges('resource.creators', p)}",
+        st.markdown("**Study team**",
                     help=tip("resource.creators"))
         creators_df = st.data_editor(
             pd.DataFrame(res.get("creators") or [{"name": "", "orcid": None, "affiliation": None}],

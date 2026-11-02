@@ -74,5 +74,5 @@ def test_csv_and_json_exports(lib):
     assert rows[0]["name"] == "consent_share"
     assert rows[0]["values"] == "0=No; 1=Yes"
     doc = json.loads(book.to_json())
-    assert doc["format"] == "openedmetadata-codebook"
+    assert doc["format"] == "humeta-codebook"
     assert [v["name"] for v in doc["variables"]][:2] == ["consent_share", "ccci_q05_a"]

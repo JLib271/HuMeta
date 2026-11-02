@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/JLib271/OpenEdMetadata/library/schema/constructs.schema.json",
+  "$id": "https://github.com/JLib271/HuMeta/library/schema/constructs.schema.json",
   "title": "Construct vocabulary",
   "type": "object",
   "additionalProperties": false,

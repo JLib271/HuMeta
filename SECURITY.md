@@ -1,6 +1,6 @@
 # Security and Privacy Policy
 
-OpenEdMetadata supports human-subjects research, so we treat **privacy
+HuMeta supports human-subjects research, so we treat **privacy
 exposures** (for example, identifiable participant information appearing in a
 published dataset or in the repository's history) as security issues, in
 addition to ordinary software vulnerabilities.

@@ -325,7 +325,7 @@ of the library. Code implementing it is AGPL-3.0-or-later. Cite as:
 
 > Libarkin, J. C., & HuMeta contributors. (2026). *HuMeta:
 > Social Science, Humanities, and Education Study Metadata Profile* (Version
-> 1.0.0-draft.1). https://github.com/JLib271/OpenEdMetadata/tree/main/standard/humeta
+> 1.0.0-draft.1). https://github.com/JLib271/HuMeta/tree/main/standard/humeta
 
 A DOI will be registered for version 1.0.0 (DataCite resourceTypeGeneral
 `Standard`).

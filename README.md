@@ -4,7 +4,7 @@ An open-source, community-driven web app that helps researchers in the **social 
 
 ## 🤝 Community
 
-The project (repository: OpenEdMetadata) is open source and welcomes contributors: researchers drafting field modules or adding instruments, librarians and data curators, and developers.
+The project is open source and welcomes contributors: researchers drafting field modules or adding instruments, librarians and data curators, and developers.
 Start with [CONTRIBUTING.md](CONTRIBUTING.md) and the [ROADMAP.md](ROADMAP.md). We follow a [Code of Conduct](CODE_OF_CONDUCT.md);
 see [GOVERNANCE.md](GOVERNANCE.md) for how decisions are made and [SECURITY.md](SECURITY.md) to report security or privacy problems.
 To cite the project, use [CITATION.cff](CITATION.cff).
@@ -123,8 +123,8 @@ In Streamlit Community Cloud, open the app's **Settings → Secrets** and add:
 # Fine-grained GitHub token limited to this repository:
 # Contents: Read and write; Pull requests: Read and write
 GITHUB_PAT = "your-fine-grained-token"
-# Optional; defaults to JLib271/OpenEdMetadata
-GITHUB_REPO = "JLib271/OpenEdMetadata"
+# Optional; defaults to JLib271/HuMeta
+GITHUB_REPO = "JLib271/HuMeta"
 
 [auth]
 redirect_uri = "https://<your-app>.streamlit.app/oauth2callback"
@@ -147,8 +147,8 @@ Supabase is no longer used: remove `SUPABASE_URL`, `SUPABASE_KEY`, and
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/JLib271/OpenEdMetadata.git
-   cd OpenEdMetadata
+   git clone https://github.com/JLib271/HuMeta.git
+   cd HuMeta
    ```
 
 2. **Install Dependencies:**

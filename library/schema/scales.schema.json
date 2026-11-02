@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/JLib271/OpenEdMetadata/library/schema/scales.schema.json",
+  "$id": "https://github.com/JLib271/HuMeta/library/schema/scales.schema.json",
   "title": "Response scales",
   "description": "Shared response scales (code lists). Items and variables point to a scale_id instead of restating labels, so every study codes the same scale the same way.",
   "type": "object",

@@ -108,7 +108,7 @@ with st.sidebar:
     st.divider()
     st.caption(
         "Free software under the [GNU AGPL v3](https://www.gnu.org/licenses/agpl-3.0.html). "
-        "[Source code](https://github.com/JLib271/OpenEdMetadata)"
+        "[Source code](https://github.com/JLib271/HuMeta)"
     )
 
 st.title("🔬 HuMeta Portal")

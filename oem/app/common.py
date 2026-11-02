@@ -13,7 +13,7 @@ import time
 import uuid
 from pathlib import Path
 from github import Github
-from oem.vocab import (APP_DIR, DEFAULT_GITHUB_REPO, PROJECT_FILE_FORMAT, PUBLISHED_DATASETS_DIR, PUBLISHED_SUMMARIES_DIR, THEORY_CITATIONS)
+from oem.vocab import (APP_DIR, DEFAULT_GITHUB_REPO, LEGACY_PROJECT_FILE_FORMATS, PROJECT_FILE_FORMAT, PUBLISHED_DATASETS_DIR, PUBLISHED_SUMMARIES_DIR, THEORY_CITATIONS)
 
 
 # Storage model (no database):
@@ -73,7 +73,7 @@ def current_project() -> dict:
 
 def parse_project_file(raw_bytes: bytes) -> dict:
     project = json.loads(raw_bytes.decode("utf-8"))
-    if not isinstance(project, dict) or project.get("format") != PROJECT_FILE_FORMAT:
+    if not isinstance(project, dict) or project.get("format") not in (PROJECT_FILE_FORMAT, *LEGACY_PROJECT_FILE_FORMATS):
         raise ValueError("This is not a HuMeta Portal project file.")
     study = project.get("study")
     if study is not None and (not isinstance(study, dict) or not study.get("id")):

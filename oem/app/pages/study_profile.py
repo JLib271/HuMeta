@@ -82,7 +82,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
                 "**HuMeta profile change proposal**\n\n"
                 f"**Profile version:** {p.version}\n\n**Element / vocabulary:** {target}\n\n"
                 f"### Proposed change and rationale\n```text\n{details}\n```\n\n"
-                "---\n*Submitted from OpenEdMetadata Module 1.*"
+                "---\n*Submitted from HuMeta Portal Module 1.*"
             )
             if st.button("Submit proposal as a pull request", key="module1_proposal_submit",
                          disabled=publish_disabled, help=publish_hint):

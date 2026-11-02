@@ -1,6 +1,6 @@
 # Governance
 
-OpenEdMetadata is an early-stage open-source project. This document describes
+HuMeta is an early-stage open-source project. This document describes
 how decisions are made today and how governance is expected to grow as the
 community does. It will be revised with contributors' input.
 

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/JLib271/OpenEdMetadata/library/schema/instrument.schema.json",
+  "$id": "https://github.com/JLib271/HuMeta/library/schema/instrument.schema.json",
   "title": "Instrument record",
   "description": "One measurement instrument (survey, concept inventory, observation protocol, rubric, ...). Describes the instrument; never stores item text unless access.item_text_shareable is true.",
   "type": "object",

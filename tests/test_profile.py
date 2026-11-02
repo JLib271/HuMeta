@@ -322,3 +322,10 @@ def test_vocabulary_mappings_point_to_known_codes(p):
                     assert t["ddi"]["code"] in ddi_codes[t["ddi"]["cv"]], t["id"]
             if "rs" in t:
                 assert t["rs"] in {"InC", "NoC-US", "CNE", "UND", "NKC"}
+
+
+def test_tooltips_carry_the_alignments(p):
+    text = profile.alignment_help("resource.title", p)
+    assert text.startswith(profile.element("resource.title", p)["definition"])
+    assert "**Matches in other standards**" in text and "`titles.title`" in text and "`titl`" in text
+    assert "answer options are defined by the HuMeta profile" in profile.alignment_help("study.population.human_participants", p)

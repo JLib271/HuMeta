@@ -32,9 +32,9 @@ from oem.library import Library
 
 ROOT = Path(__file__).resolve().parent.parent
 PROFILE_DIR = ROOT / "standard" / "humeta"
-CONSTRUCTS_URI = "https://github.com/JLib271/OpenEdMetadata/blob/main/library/constructs.json#"
-VOCAB_URI = "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#"
-LIBRARY_RECORD_URI = "https://github.com/JLib271/OpenEdMetadata/blob/main/library/instruments/"
+CONSTRUCTS_URI = "https://github.com/JLib271/HuMeta/blob/main/library/constructs.json#"
+VOCAB_URI = "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#"
+LIBRARY_RECORD_URI = "https://github.com/JLib271/HuMeta/blob/main/library/instruments/"
 DATACITE_NS = "http://datacite.org/schema/kernel-4"
 DATACITE_XSD = "http://schema.datacite.org/meta/kernel-4.7/metadata.xsd"
 ERIC_SCHEME = "ERIC Thesaurus"
@@ -200,7 +200,7 @@ def json_schema(profile: Profile | None = None) -> dict:
     education["description"] = "Education module. Null or absent when the study is not in an education setting."
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "$id": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/schema/humeta-record.schema.json",
+        "$id": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/schema/humeta-record.schema.json",
         "title": f"HuMeta profile record ({p.version})",
         "description": "Generated from standard/humeta/profile.json and vocabularies.json by scripts/build_profile_artifacts.py. Do not edit by hand.",
         "type": "object",
@@ -839,19 +839,25 @@ def alignment_badges(element_id: str, profile: Profile | None = None) -> str:
 
 
 def alignment_help(element_id: str, profile: Profile | None = None) -> str:
-    """Full-sentence alignment notes for tooltips."""
+    """Tooltip text: the element's definition, then the standards it aligns with."""
     p = profile or load()
     e = element(element_id, p)
+    own = [a for a in e.get("alignments", []) if a["standard"] == "humeta"]
+    others = [a for a in e.get("alignments", []) if a["standard"] != "humeta"]
     lines = [e["definition"]]
-    for a in e.get("alignments", []):
-        std = p.definition["standards"][a["standard"]]
-        if a["standard"] == "humeta":
-            lines.append(f"Defined by the HuMeta profile: {a['term']} (no equivalent in general-purpose metadata standards).")
-        else:
-            line = f"{a['match'].capitalize()} match: {std['name']} — {a['term']}."
+    if others:
+        bullets = []
+        for a in others:
+            std = p.definition["standards"][a["standard"]]
+            line = f"- {a['match'].capitalize()} match: {std['name']} — `{a['term']}`."
             if a.get("status") == "seeking_input":
-                line += f" {p.definition['alignment_status']['seeking_input']}"
+                line += f" *{p.definition['alignment_status']['seeking_input']}*"
             if a.get("note"):
                 line += f" {a['note']}"
-            lines.append(line)
+            bullets.append(line)
+        lines.append("**Matches in other standards**\n" + "\n".join(bullets))
+    if own and not others:
+        lines.append("Defined by the HuMeta profile; no general-purpose metadata standard has an equivalent.")
+    elif own and e.get("vocabulary"):
+        lines.append("The answer options are defined by the HuMeta profile.")
     return "\n\n".join(lines)

@@ -36,92 +36,92 @@
     {
       "subject": "Conceptual understanding",
       "subjectScheme": "HuMeta Constructs",
-      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/library/constructs.json",
-      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/library/constructs.json#conceptual_understanding"
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/library/constructs.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/library/constructs.json#conceptual_understanding"
     },
     {
       "subject": "Climate and environmental science",
       "subjectScheme": "HuMeta Disciplines",
-      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#discipline.climate_science"
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#discipline.climate_science"
     },
     {
       "subject": "Geoscience / Earth science",
       "subjectScheme": "HuMeta Disciplines",
-      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#discipline.geoscience"
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#discipline.geoscience"
     },
     {
       "subject": "Students / learners",
       "subjectScheme": "HuMeta Participant Roles",
-      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#participant_role.students"
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#participant_role.students"
     },
     {
       "subject": "City (NCES 11–13)",
       "subjectScheme": "HuMeta Locales",
-      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#locale.city"
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#locale.city"
     },
     {
       "subject": "Quasi-experimental",
       "subjectScheme": "HuMeta Study Designs",
-      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#study_design.quasi_experimental"
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#study_design.quasi_experimental"
     },
     {
       "subject": "Pre/post measurement around an intervention",
       "subjectScheme": "HuMeta Study Designs",
-      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#study_design.pre_post"
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#study_design.pre_post"
     },
     {
       "subject": "Individual (person)",
       "subjectScheme": "HuMeta Units of Analysis",
-      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#unit_of_analysis.individual"
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#unit_of_analysis.individual"
     },
     {
       "subject": "Non-probability: availability / convenience (including volunteers)",
       "subjectScheme": "HuMeta Sampling Procedures",
-      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#sampling_procedure.convenience"
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#sampling_procedure.convenience"
     },
     {
       "subject": "Reliability / precision",
       "subjectScheme": "HuMeta Measurement Evidence",
-      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#measurement_evidence.reliability"
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#measurement_evidence.reliability"
     },
     {
       "subject": "Test or assessment",
       "subjectScheme": "HuMeta Data Collection Methods",
-      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#data_collection_method.assessment"
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#data_collection_method.assessment"
     },
     {
       "subject": "Survey or questionnaire",
       "subjectScheme": "HuMeta Data Collection Methods",
-      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#data_collection_method.survey"
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#data_collection_method.survey"
     },
     {
       "subject": "Statistical or quantitative analysis",
       "subjectScheme": "HuMeta Analysis Methods",
-      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#analysis_method.statistical"
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#analysis_method.statistical"
     },
     {
       "subject": "Psychometric or measurement modeling (e.g., factor analysis, IRT)",
       "subjectScheme": "HuMeta Analysis Methods",
-      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#analysis_method.psychometric"
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#analysis_method.psychometric"
     },
     {
       "subject": "Bachelor's or equivalent (ISCED 6)",
       "subjectScheme": "HuMeta Education Levels",
-      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#education_level.bachelors"
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#education_level.bachelors"
     },
     {
       "subject": "ISCED level 6: Bachelor's or equivalent level",
@@ -131,32 +131,32 @@
     {
       "subject": "Introductory / first-year",
       "subjectScheme": "HuMeta Undergraduate Levels",
-      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#undergraduate_level.introductory"
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#undergraduate_level.introductory"
     },
     {
       "subject": "Research university",
       "subjectScheme": "HuMeta Institution Types",
-      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#institution_type.research_university"
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#institution_type.research_university"
     },
     {
       "subject": "In person",
       "subjectScheme": "HuMeta Modalities",
-      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#modality.in_person"
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#modality.in_person"
     },
     {
       "subject": "Large lecture class",
       "subjectScheme": "HuMeta Learning Environments",
-      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#learning_environment.large_lecture"
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#learning_environment.large_lecture"
     },
     {
       "subject": "Active learning",
       "subjectScheme": "HuMeta Instructional Approaches",
-      "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#pedagogy.active_learning"
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#pedagogy.active_learning"
     },
     {
       "subject": "FOS: Educational sciences",
@@ -330,7 +330,7 @@
   ],
   "relatedIdentifiers": [
     {
-      "relatedIdentifier": "https://github.com/JLib271/OpenEdMetadata/blob/main/library/instruments/climate-change-concept-inventory.json",
+      "relatedIdentifier": "https://github.com/JLib271/HuMeta/blob/main/library/instruments/climate-change-concept-inventory.json",
       "relatedIdentifierType": "URL",
       "relationType": "IsCollectedBy"
     },

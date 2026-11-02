@@ -1,6 +1,6 @@
 # Instrument Library content license
 
-The OpenEdMetadata application code is under the GNU AGPL v3.0 (see `/LICENSE`).
+The HuMeta Portal application code is under the GNU AGPL v3.0 (see `/LICENSE`).
 The contents of this `library/` folder are licensed separately, as follows.
 
 ## 1. Library records: CC BY-SA 4.0
@@ -13,7 +13,7 @@ You may reuse and adapt them, including commercially, if you credit the
 library and release adapted material under the same license.
 
 Suggested attribution: *HuMeta Instrument Library, HuMeta Portal
-(https://github.com/JLib271/OpenEdMetadata).*
+(https://github.com/JLib271/HuMeta).*
 
 The JSON Schemas in `library/schema/` are part of the library content and
 are also CC BY-SA 4.0, so others can adopt the record format. The validator in

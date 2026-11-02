@@ -55,124 +55,124 @@ resource.geography,core,Geographic coverage,DDI-C,DDI-Codebook 2.5 (Data Documen
 resource.related,core,Related resources,DataCite,DataCite Metadata Schema 4.7,relatedIdentifiers,exact,,,https://schema.datacite.org/
 resource.related,core,Related resources,DC,Dublin Core (DCMI Metadata Terms),relation,close,,,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
 resource.related,core,Related resources,schema.org,schema.org Dataset,citation,related,,,https://schema.org/Dataset
-study.fields,core,Research field,HuMeta,HuMeta profile (element or vocabulary defined by this profile),research_field vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.fields,core,Research field,HuMeta,HuMeta profile (element or vocabulary defined by this profile),research_field vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.fields,core,Research field,OECD FOS,"OECD Fields of Science and Technology (FOS), as used by DataCite",category,exact,,,http://www.oecd.org/science/inno/38235147.pdf
 study.fields,core,Research field,DataCite,DataCite Metadata Schema 4.7,subject (FOS scheme),exact,,,https://schema.datacite.org/
 study.fields,core,Research field,DDI-C,DDI-Codebook 2.5 (Data Documentation Initiative),topcClas,close,,,https://ddialliance.org/Specification/DDI-Codebook/2.5/
-study.design.topic,core,Topic / content domain,HuMeta,HuMeta profile (element or vocabulary defined by this profile),design.topic,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.design.topic,core,Topic / content domain,HuMeta,HuMeta profile (element or vocabulary defined by this profile),design.topic,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.design.topic,core,Topic / content domain,DataCite,DataCite Metadata Schema 4.7,subject,close,,,https://schema.datacite.org/
 study.design.topic,core,Topic / content domain,DC,Dublin Core (DCMI Metadata Terms),subject,close,,,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
 study.design.topic,core,Topic / content domain,schema.org,schema.org Dataset,about,close,,,https://schema.org/Dataset
-study.design.research_questions,core,Research questions and aims,HuMeta,HuMeta profile (element or vocabulary defined by this profile),design.research_questions,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.design.research_questions,core,Research questions and aims,HuMeta,HuMeta profile (element or vocabulary defined by this profile),design.research_questions,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.design.research_questions,core,Research questions and aims,DataCite,DataCite Metadata Schema 4.7,description (Methods),close,,,https://schema.datacite.org/
 study.design.research_questions,core,Research questions and aims,DC,Dublin Core (DCMI Metadata Terms),description,related,,,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
-study.design.unit_of_analysis,core,Unit of analysis,HuMeta,HuMeta profile (element or vocabulary defined by this profile),unit_of_analysis vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.design.unit_of_analysis,core,Unit of analysis,HuMeta,HuMeta profile (element or vocabulary defined by this profile),unit_of_analysis vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.design.unit_of_analysis,core,Unit of analysis,DDI CV,DDI Alliance Controlled Vocabularies (CC BY 4.0),AnalysisUnit 2.1.3,exact,,,https://rdf-vocabulary.ddialliance.org/
 study.design.unit_of_analysis,core,Unit of analysis,DDI-C,DDI-Codebook 2.5 (Data Documentation Initiative),anlyUnit,exact,,,https://ddialliance.org/Specification/DDI-Codebook/2.5/
 study.design.unit_of_analysis,core,Unit of analysis,DataCite,DataCite Metadata Schema 4.7,subject (scheme),close,,,https://schema.datacite.org/
-study.design.sampling_procedure,core,Sampling procedure,HuMeta,HuMeta profile (element or vocabulary defined by this profile),sampling_procedure vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.design.sampling_procedure,core,Sampling procedure,HuMeta,HuMeta profile (element or vocabulary defined by this profile),sampling_procedure vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.design.sampling_procedure,core,Sampling procedure,DDI CV,DDI Alliance Controlled Vocabularies (CC BY 4.0),SamplingProcedure 2.0.2,exact,,,https://rdf-vocabulary.ddialliance.org/
 study.design.sampling_procedure,core,Sampling procedure,DDI-C,DDI-Codebook 2.5 (Data Documentation Initiative),sampProc,exact,,,https://ddialliance.org/Specification/DDI-Codebook/2.5/
 study.design.sampling_procedure,core,Sampling procedure,DataCite,DataCite Metadata Schema 4.7,subject (scheme),close,,,https://schema.datacite.org/
-study.constructs,core,Constructs measured,HuMeta,HuMeta profile (element or vocabulary defined by this profile),construct vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.constructs,core,Constructs measured,HuMeta,HuMeta profile (element or vocabulary defined by this profile),construct vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.constructs,core,Constructs measured,ERIC,ERIC Thesaurus,descriptors,close,,,https://eric.ed.gov/?ti=all
 study.constructs,core,Constructs measured,schema.org,schema.org Dataset,variableMeasured,close,,,https://schema.org/Dataset
 study.constructs,core,Constructs measured,DataCite,DataCite Metadata Schema 4.7,subject (scheme),close,,,https://schema.datacite.org/
-study.discipline,core,Discipline or subject area,HuMeta,HuMeta profile (element or vocabulary defined by this profile),discipline vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.discipline,core,Discipline or subject area,HuMeta,HuMeta profile (element or vocabulary defined by this profile),discipline vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.discipline,core,Discipline or subject area,OECD FOS,"OECD Fields of Science and Technology (FOS), as used by DataCite",subcategory (per term),close,,,http://www.oecd.org/science/inno/38235147.pdf
 study.discipline,core,Discipline or subject area,ERIC,ERIC Thesaurus,descriptors,close,,,https://eric.ed.gov/?ti=all
 study.discipline,core,Discipline or subject area,DC,Dublin Core (DCMI Metadata Terms),subject,close,,,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
 study.discipline,core,Discipline or subject area,DataCite,DataCite Metadata Schema 4.7,subject (scheme),close,,,https://schema.datacite.org/
-study.population.human_participants,core,Human participants,HuMeta,HuMeta profile (element or vocabulary defined by this profile),human_participants vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.population.human_participants,core,Human participants,HuMeta,HuMeta profile (element or vocabulary defined by this profile),human_participants vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.population.human_participants,core,Human participants,Common Rule,US Common Rule for human-subjects research (45 CFR 46),"""human subject"" definition",related,,,https://www.hhs.gov/ohrp/regulations-and-policy/regulations/45-cfr-46/
-study.population.participant_roles,core,Participant population,HuMeta,HuMeta profile (element or vocabulary defined by this profile),participant_role vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.population.participant_roles,core,Participant population,HuMeta,HuMeta profile (element or vocabulary defined by this profile),participant_role vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.population.participant_roles,core,Participant population,DataCite,DataCite Metadata Schema 4.7,subject (scheme),close,,,https://schema.datacite.org/
-education.education_levels,education,Education level,HuMeta,HuMeta profile (element or vocabulary defined by this profile),education_level vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+education.education_levels,education,Education level,HuMeta,HuMeta profile (element or vocabulary defined by this profile),education_level vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 education.education_levels,education,Education level,ISCED,UNESCO International Standard Classification of Education (ISCED 2011),levels of education 0–8,exact,,Options 0–8 are the ISCED 2011 levels; adult and informal learning are HuMeta additions outside ISCED.,https://uis.unesco.org/sites/default/files/documents/international-standard-classification-of-education-isced-2011-en.pdf
 education.education_levels,education,Education level,ERIC,ERIC Thesaurus,education level descriptors,close,,,https://eric.ed.gov/?ti=all
 education.education_levels,education,Education level,DC,Dublin Core (DCMI Metadata Terms),educationLevel,close,seeking_input,Dublin Core's educationLevel describes the audience a resource is intended for; this element describes the participants studied.,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
 education.education_levels,education,Education level,schema.org,schema.org Dataset,educationalLevel,close,seeking_input,schema.org's educationalLevel describes the level a resource is designed for; this element describes the participants studied.,https://schema.org/Dataset
-education.undergraduate_levels,education,Undergraduate course level,HuMeta,HuMeta profile (element or vocabulary defined by this profile),undergraduate_level vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+education.undergraduate_levels,education,Undergraduate course level,HuMeta,HuMeta profile (element or vocabulary defined by this profile),undergraduate_level vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 education.undergraduate_levels,education,Undergraduate course level,DataCite,DataCite Metadata Schema 4.7,subject (scheme),close,,,https://schema.datacite.org/
-study.population.description,core,Population description,HuMeta,HuMeta profile (element or vocabulary defined by this profile),population.description,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.population.description,core,Population description,HuMeta,HuMeta profile (element or vocabulary defined by this profile),population.description,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.population.description,core,Population description,DataCite,DataCite Metadata Schema 4.7,description (Methods),close,,,https://schema.datacite.org/
 study.population.description,core,Population description,DDI-C,DDI-Codebook 2.5 (Data Documentation Initiative),universe,close,,,https://ddialliance.org/Specification/DDI-Codebook/2.5/
-study.population.sample_size,core,Sample size,HuMeta,HuMeta profile (element or vocabulary defined by this profile),population.sample_size,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.population.sample_size,core,Sample size,HuMeta,HuMeta profile (element or vocabulary defined by this profile),population.sample_size,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.population.sample_size,core,Sample size,DataCite,DataCite Metadata Schema 4.7,sizes,close,,,https://schema.datacite.org/
-education.institution_types,education,Institution type,HuMeta,HuMeta profile (element or vocabulary defined by this profile),institution_type vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+education.institution_types,education,Institution type,HuMeta,HuMeta profile (element or vocabulary defined by this profile),institution_type vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 education.institution_types,education,Institution type,ERIC,ERIC Thesaurus,descriptors,close,,,https://eric.ed.gov/?ti=all
-study.context.locale,core,Locale,HuMeta,HuMeta profile (element or vocabulary defined by this profile),locale vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.context.locale,core,Locale,HuMeta,HuMeta profile (element or vocabulary defined by this profile),locale vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.context.locale,core,Locale,NCES,"NCES locale classification (locale types City, Suburb, Town, Rural)",locale type,exact,,,https://nces.ed.gov/programs/edge/Geographic/LocaleBoundaries
 study.context.locale,core,Locale,ERIC,ERIC Thesaurus,descriptors,close,,,https://eric.ed.gov/?ti=all
-education.modality,education,Instructional modality,HuMeta,HuMeta profile (element or vocabulary defined by this profile),modality vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+education.modality,education,Instructional modality,HuMeta,HuMeta profile (element or vocabulary defined by this profile),modality vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 education.modality,education,Instructional modality,ERIC,ERIC Thesaurus,descriptors,close,,,https://eric.ed.gov/?ti=all
-education.learning_environments,education,Learning environment,HuMeta,HuMeta profile (element or vocabulary defined by this profile),learning_environment vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+education.learning_environments,education,Learning environment,HuMeta,HuMeta profile (element or vocabulary defined by this profile),learning_environment vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 education.learning_environments,education,Learning environment,ERIC,ERIC Thesaurus,descriptors,close,,,https://eric.ed.gov/?ti=all
-education.pedagogy,education,Instructional approach,HuMeta,HuMeta profile (element or vocabulary defined by this profile),pedagogy vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+education.pedagogy,education,Instructional approach,HuMeta,HuMeta profile (element or vocabulary defined by this profile),pedagogy vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 education.pedagogy,education,Instructional approach,ERIC,ERIC Thesaurus,descriptors,close,,,https://eric.ed.gov/?ti=all
 education.pedagogy,education,Instructional approach,DC,Dublin Core (DCMI Metadata Terms),instructionalMethod,close,seeking_input,Dublin Core's instructionalMethod describes the teaching method a resource is designed to support; this element describes the approach used or studied in the research.,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
-study.evidence.study_designs,core,Study design,HuMeta,HuMeta profile (element or vocabulary defined by this profile),study_design vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.evidence.study_designs,core,Study design,HuMeta,HuMeta profile (element or vocabulary defined by this profile),study_design vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.evidence.study_designs,core,Study design,ERIC,ERIC Thesaurus,descriptors,close,,,https://eric.ed.gov/?ti=all
 study.evidence.study_designs,core,Study design,DataCite,DataCite Metadata Schema 4.7,description (Methods),close,,,https://schema.datacite.org/
 study.evidence.study_designs,core,Study design,DDI CV,DDI Alliance Controlled Vocabularies (CC BY 4.0),TimeMethod 1.2.3 (time-related designs),related,,,https://rdf-vocabulary.ddialliance.org/
 study.evidence.study_designs,core,Study design,DDI-C,DDI-Codebook 2.5 (Data Documentation Initiative),timeMeth,related,,,https://ddialliance.org/Specification/DDI-Codebook/2.5/
-study.evidence.measurement_evidence,core,Measurement evidence,HuMeta,HuMeta profile (element or vocabulary defined by this profile),measurement_evidence vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.evidence.measurement_evidence,core,Measurement evidence,HuMeta,HuMeta profile (element or vocabulary defined by this profile),measurement_evidence vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.evidence.measurement_evidence,core,Measurement evidence,AERA/APA/NCME,Standards for Educational and Psychological Testing (2014),sources of validity evidence,close,,,https://www.testingstandards.net/
 study.evidence.measurement_evidence,core,Measurement evidence,ERIC,ERIC Thesaurus,descriptors,close,,,https://eric.ed.gov/?ti=all
-study.evidence.data_collection_methods,core,Data collection method,HuMeta,HuMeta profile (element or vocabulary defined by this profile),data_collection_method vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.evidence.data_collection_methods,core,Data collection method,HuMeta,HuMeta profile (element or vocabulary defined by this profile),data_collection_method vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.evidence.data_collection_methods,core,Data collection method,DDI CV,DDI Alliance Controlled Vocabularies (CC BY 4.0),ModeOfCollection 5.0.1,close,,,https://rdf-vocabulary.ddialliance.org/
 study.evidence.data_collection_methods,core,Data collection method,DDI-C,DDI-Codebook 2.5 (Data Documentation Initiative),collMode,exact,,,https://ddialliance.org/Specification/DDI-Codebook/2.5/
 study.evidence.data_collection_methods,core,Data collection method,ERIC,ERIC Thesaurus,descriptors,close,,,https://eric.ed.gov/?ti=all
 study.evidence.data_collection_methods,core,Data collection method,schema.org,schema.org Dataset,measurementTechnique,close,,,https://schema.org/Dataset
-study.evidence.analysis_methods,core,Analysis method,HuMeta,HuMeta profile (element or vocabulary defined by this profile),analysis_method vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.evidence.analysis_methods,core,Analysis method,HuMeta,HuMeta profile (element or vocabulary defined by this profile),analysis_method vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.evidence.analysis_methods,core,Analysis method,DataCite,DataCite Metadata Schema 4.7,description (Methods),close,,,https://schema.datacite.org/
 study.evidence.analysis_methods,core,Analysis method,ERIC,ERIC Thesaurus,descriptors,close,,,https://eric.ed.gov/?ti=all
-study.sources.types,core,Source type,HuMeta,HuMeta profile (element or vocabulary defined by this profile),source_type vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.sources.types,core,Source type,HuMeta,HuMeta profile (element or vocabulary defined by this profile),source_type vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.sources.types,core,Source type,DDI CV,DDI Alliance Controlled Vocabularies (CC BY 4.0),GeneralDataFormat 2.0.3 / DataSourceType 1.0.2,close,,,https://rdf-vocabulary.ddialliance.org/
 study.sources.types,core,Source type,DDI-C,DDI-Codebook 2.5 (Data Documentation Initiative),dataKind,related,,,https://ddialliance.org/Specification/DDI-Codebook/2.5/
 study.sources.types,core,Source type,DC,Dublin Core (DCMI Metadata Terms),type,close,,,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
-study.sources.description,core,Sources description,HuMeta,HuMeta profile (element or vocabulary defined by this profile),sources.description,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.sources.description,core,Sources description,HuMeta,HuMeta profile (element or vocabulary defined by this profile),sources.description,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.sources.description,core,Sources description,DDI-C,DDI-Codebook 2.5 (Data Documentation Initiative),dataSrc,close,,,https://ddialliance.org/Specification/DDI-Codebook/2.5/
 study.sources.description,core,Sources description,DC,Dublin Core (DCMI Metadata Terms),source,related,,,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
 study.sources.description,core,Sources description,DataCite,DataCite Metadata Schema 4.7,description (Methods),close,,,https://schema.datacite.org/
-study.sources.holdings,core,Holding institutions or platforms,HuMeta,HuMeta profile (element or vocabulary defined by this profile),sources.holdings,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.sources.holdings,core,Holding institutions or platforms,HuMeta,HuMeta profile (element or vocabulary defined by this profile),sources.holdings,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.sources.holdings,core,Holding institutions or platforms,DDI-C,DDI-Codebook 2.5 (Data Documentation Initiative),srcOrig,related,,,https://ddialliance.org/Specification/DDI-Codebook/2.5/
-study.sources.time_period,core,Time period of sources,HuMeta,HuMeta profile (element or vocabulary defined by this profile),sources.time_period,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.sources.time_period,core,Time period of sources,HuMeta,HuMeta profile (element or vocabulary defined by this profile),sources.time_period,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.sources.time_period,core,Time period of sources,DC,Dublin Core (DCMI Metadata Terms),temporal,exact,,,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
 study.sources.time_period,core,Time period of sources,DDI-C,DDI-Codebook 2.5 (Data Documentation Initiative),timePrd,exact,,,https://ddialliance.org/Specification/DDI-Codebook/2.5/
 study.sources.time_period,core,Time period of sources,schema.org,schema.org Dataset,temporalCoverage,exact,,,https://schema.org/Dataset
 study.sources.time_period,core,Time period of sources,DataCite,DataCite Metadata Schema 4.7,date (Coverage),exact,,,https://schema.datacite.org/
-study.sources.rights,core,Rights status of sources,HuMeta,HuMeta profile (element or vocabulary defined by this profile),source_rights vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.sources.rights,core,Rights status of sources,HuMeta,HuMeta profile (element or vocabulary defined by this profile),source_rights vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.sources.rights,core,Rights status of sources,RightsStatements,RightsStatements.org rights statements,rights statement,related,,,https://rightsstatements.org/
 study.sources.rights,core,Rights status of sources,DC,Dublin Core (DCMI Metadata Terms),rights,close,,,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
 study.sources.rights,core,Rights status of sources,DataCite,DataCite Metadata Schema 4.7,rightsList,related,,,https://schema.datacite.org/
-study.ethics.human_subjects_review,core,Human-subjects review,HuMeta,HuMeta profile (element or vocabulary defined by this profile),human_subjects_review vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.ethics.human_subjects_review,core,Human-subjects review,HuMeta,HuMeta profile (element or vocabulary defined by this profile),human_subjects_review vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.ethics.human_subjects_review,core,Human-subjects review,Common Rule,US Common Rule for human-subjects research (45 CFR 46),IRB review / exemption,related,,,https://www.hhs.gov/ohrp/regulations-and-policy/regulations/45-cfr-46/
-study.ethics.consent,core,Participation consent,HuMeta,HuMeta profile (element or vocabulary defined by this profile),consent vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.ethics.consent,core,Participation consent,HuMeta,HuMeta profile (element or vocabulary defined by this profile),consent vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.ethics.consent,core,Participation consent,Common Rule,US Common Rule for human-subjects research (45 CFR 46),informed consent / waiver,related,,,https://www.hhs.gov/ohrp/regulations-and-policy/regulations/45-cfr-46/
-study.ethics.consent_for_sharing,core,Consent for data sharing,HuMeta,HuMeta profile (element or vocabulary defined by this profile),consent_for_sharing vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.ethics.consent_for_sharing,core,Consent for data sharing,HuMeta,HuMeta profile (element or vocabulary defined by this profile),consent_for_sharing vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.ethics.consent_for_sharing,core,Consent for data sharing,schema.org,schema.org Dataset,conditionsOfAccess,related,,,https://schema.org/Dataset
 study.ethics.consent_for_sharing,core,Consent for data sharing,DataCite,DataCite Metadata Schema 4.7,rightsList,related,,,https://schema.datacite.org/
-study.ethics.identifiability,core,Identifiability,HuMeta,HuMeta profile (element or vocabulary defined by this profile),identifiability vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.ethics.identifiability,core,Identifiability,HuMeta,HuMeta profile (element or vocabulary defined by this profile),identifiability vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.ethics.identifiability,core,Identifiability,FERPA,Family Educational Rights and Privacy Act (34 CFR Part 99),de-identified records,related,,,https://studentprivacy.ed.gov/
 study.ethics.identifiability,core,Identifiability,DDI-C,DDI-Codebook 2.5 (Data Documentation Initiative),confDec,related,,,https://ddialliance.org/Specification/DDI-Codebook/2.5/
-study.ethics.sensitivity_flags,core,Sensitivity flags,HuMeta,HuMeta profile (element or vocabulary defined by this profile),sensitivity_flag vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.ethics.sensitivity_flags,core,Sensitivity flags,HuMeta,HuMeta profile (element or vocabulary defined by this profile),sensitivity_flag vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.ethics.sensitivity_flags,core,Sensitivity flags,FERPA,Family Educational Rights and Privacy Act (34 CFR Part 99),education records,close,,,https://studentprivacy.ed.gov/
-study.ethics.online_data,core,Online data practices,HuMeta,HuMeta profile (element or vocabulary defined by this profile),online_data_practice vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.ethics.online_data,core,Online data practices,HuMeta,HuMeta profile (element or vocabulary defined by this profile),online_data_practice vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.ethics.online_data,core,Online data practices,AoIR IRE 3.0,"Association of Internet Researchers, Internet Research: Ethical Guidelines 3.0 (2019)",ethical guidance,related,,,https://aoir.org/reports/ethics3.pdf
-study.ethics.access_level,core,Access level,HuMeta,HuMeta profile (element or vocabulary defined by this profile),access_level vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.ethics.access_level,core,Access level,HuMeta,HuMeta profile (element or vocabulary defined by this profile),access_level vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.ethics.access_level,core,Access level,DC,Dublin Core (DCMI Metadata Terms),accessRights,close,,,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
 study.ethics.access_level,core,Access level,schema.org,schema.org Dataset,conditionsOfAccess,close,,,https://schema.org/Dataset
 study.ethics.access_level,core,Access level,DataCite,DataCite Metadata Schema 4.7,rightsList,close,,,https://schema.datacite.org/
 study.ethics.access_level,core,Access level,DDI-C,DDI-Codebook 2.5 (Data Documentation Initiative),restrctn,close,,,https://ddialliance.org/Specification/DDI-Codebook/2.5/
-study.ethics.governance_notes,core,Governance notes,HuMeta,HuMeta profile (element or vocabulary defined by this profile),ethics.governance_notes,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.ethics.governance_notes,core,Governance notes,HuMeta,HuMeta profile (element or vocabulary defined by this profile),ethics.governance_notes,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.ethics.governance_notes,core,Governance notes,DC,Dublin Core (DCMI Metadata Terms),accessRights,related,,,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
 study.ethics.governance_notes,core,Governance notes,DataCite,DataCite Metadata Schema 4.7,description (Other),close,,,https://schema.datacite.org/
-study.care.indigenous_data,core,Indigenous data,HuMeta,HuMeta profile (element or vocabulary defined by this profile),indigenous_data vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.care.indigenous_data,core,Indigenous data,HuMeta,HuMeta profile (element or vocabulary defined by this profile),indigenous_data vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.care.indigenous_data,core,Indigenous data,CARE,CARE Principles for Indigenous Data Governance,scope: Indigenous data,close,,,https://www.gida-global.org/care
-study.care.governance,core,Indigenous data governance,HuMeta,HuMeta profile (element or vocabulary defined by this profile),indigenous_governance vocabulary,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.care.governance,core,Indigenous data governance,HuMeta,HuMeta profile (element or vocabulary defined by this profile),indigenous_governance vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.care.governance,core,Indigenous data governance,CARE,CARE Principles for Indigenous Data Governance,Authority to control,close,,,https://www.gida-global.org/care
-study.care.statement,core,CARE statement,HuMeta,HuMeta profile (element or vocabulary defined by this profile),care.statement,exact,,,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md
+study.care.statement,core,CARE statement,HuMeta,HuMeta profile (element or vocabulary defined by this profile),care.statement,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
 study.care.statement,core,CARE statement,CARE,CARE Principles for Indigenous Data Governance,Collective benefit; Responsibility; Ethics,close,,,https://www.gida-global.org/care
 study.care.statement,core,CARE statement,DataCite,DataCite Metadata Schema 4.7,description (Other),close,,,https://schema.datacite.org/
 study.care.local_contexts_project,core,Local Contexts project,Local Contexts,Local Contexts Traditional Knowledge and Biocultural Labels and Notices,Hub project,exact,,,https://localcontexts.org/

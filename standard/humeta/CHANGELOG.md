@@ -71,7 +71,7 @@ First public draft for community comment.
   data governance to declared access levels.
 * Crosswalks to DataCite Metadata Schema 4.7 (validated against the official
   XML Schema) and the ERIC Thesaurus (with per-descriptor verification status).
-* Reference implementation in OpenEdMetadata: Module 1 collects the profile, Module 3 adds constructs, checks
+* Reference implementation in the HuMeta Portal: Module 1 collects the profile, Module 3 adds constructs, checks
   rules, and exports (`oem/profile.py`).
 
 ### Before 1.0.0

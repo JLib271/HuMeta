@@ -6,7 +6,7 @@
       "label": "Study participant ID",
       "data_type": "identifier",
       "sensitivity": "quasi_identifier",
-      "source": "OpenEdMetadata convention",
+      "source": "HuMeta convention",
       "notes": "A random study code assigned by the research team. Never use a student ID number, email, or name. Keep the linking key separately from the data, and replace these codes with new random codes before sharing."
     },
     {
@@ -14,7 +14,7 @@
       "label": "Data collection timepoint",
       "data_type": "categorical",
       "sensitivity": "none",
-      "source": "OpenEdMetadata convention",
+      "source": "HuMeta convention",
       "options": [
         { "code": 1, "label": "Pre / time 1" },
         { "code": 2, "label": "Post / time 2" },
@@ -30,7 +30,7 @@
       "unit": "years",
       "valid_range": { "min": 0, "max": 120 },
       "sensitivity": "quasi_identifier",
-      "source": "OpenEdMetadata convention",
+      "source": "HuMeta convention",
       "notes": "Consider collecting or sharing age in ranges, and top-coding older ages, to reduce re-identification risk."
     },
     {
@@ -52,14 +52,14 @@
         { "code": 7, "label": "White", "suffix": "white" },
         { "code": 8, "label": "Prefer not to answer", "suffix": "pna" }
       ],
-      "notes": "Each option is stored as its own 0/1 variable (race_eth_aian, race_eth_asian, ...). SPD 15 also calls for detailed categories and write-in fields under each minimum category; add those as study-specific variables when collected. 'Prefer not to answer' is an OpenEdMetadata addition, not an SPD 15 category. Small groups can identify individuals: check cell sizes before sharing."
+      "notes": "Each option is stored as its own 0/1 variable (race_eth_aian, race_eth_asian, ...). SPD 15 also calls for detailed categories and write-in fields under each minimum category; add those as study-specific variables when collected. 'Prefer not to answer' is a HuMeta addition, not an SPD 15 category. Small groups can identify individuals: check cell sizes before sharing."
     },
     {
       "name": "course_level",
       "label": "Course level",
       "data_type": "categorical",
       "sensitivity": "none",
-      "source": "OpenEdMetadata convention",
+      "source": "HuMeta convention",
       "options": [
         { "code": 1, "label": "Introductory / lower-division undergraduate" },
         { "code": 2, "label": "Upper-division undergraduate" },
@@ -75,7 +75,7 @@
       "data_type": "categorical",
       "scale_id": "yes_no",
       "sensitivity": "none",
-      "source": "OpenEdMetadata convention",
+      "source": "HuMeta convention",
       "notes": "Only participants coded 1 may be included in any shared dataset. Wording must match the IRB-approved consent form."
     }
   ]
