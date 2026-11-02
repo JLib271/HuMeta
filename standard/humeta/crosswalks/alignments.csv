@@ -183,3 +183,19 @@ study.care.statement,core,CARE statement,DataCite,DataCite Metadata Schema 4.7,d
 study.care.local_contexts_project,core,Local Contexts project,Local Contexts,Local Contexts Traditional Knowledge and Biocultural Labels and Notices,Hub project,exact,,,https://localcontexts.org/
 study.care.local_contexts_project,core,Local Contexts project,DataCite,DataCite Metadata Schema 4.7,relatedIdentifier,close,,,https://schema.datacite.org/
 study.care.local_contexts_labels,core,Local Contexts Labels and Notices,Local Contexts,Local Contexts Traditional Knowledge and Biocultural Labels and Notices,TK/BC Labels and Notices,exact,,,https://localcontexts.org/
+social_science.kind_of_data,social_science,Kind of data,DDI CV,DDI Alliance Controlled Vocabularies (CC BY 4.0),KindOfData 1.0.0,exact,,,https://rdf-vocabulary.ddialliance.org/
+social_science.kind_of_data,social_science,Kind of data,DDI-C,DDI-Codebook 2.5 (Data Documentation Initiative),dataKind,exact,,,https://ddialliance.org/Specification/DDI-Codebook/2.5/
+social_science.universe,social_science,Universe,DDI-C,DDI-Codebook 2.5 (Data Documentation Initiative),universe,exact,,,https://ddialliance.org/Specification/DDI-Codebook/2.5/
+social_science.geographic_unit,social_science,Smallest geographic unit,DDI-C,DDI-Codebook 2.5 (Data Documentation Initiative),geogUnit,exact,,,https://ddialliance.org/Specification/DDI-Codebook/2.5/
+social_science.response_rate,social_science,Response rate,DDI-C,DDI-Codebook 2.5 (Data Documentation Initiative),respRate,exact,,,https://ddialliance.org/Specification/DDI-Codebook/2.5/
+social_science.weighting,social_science,Weighting,DDI-C,DDI-Codebook 2.5 (Data Documentation Initiative),weight,exact,,,https://ddialliance.org/Specification/DDI-Codebook/2.5/
+social_science.ddi_record,social_science,Full DDI documentation,DDI-C,DDI-Codebook 2.5 (Data Documentation Initiative),codeBook (the study's DDI record),related,,,https://ddialliance.org/Specification/DDI-Codebook/2.5/
+social_science.ddi_record,social_science,Full DDI documentation,DataCite,DataCite Metadata Schema 4.7,relatedIdentifier,close,,,https://schema.datacite.org/
+humanities.research_activities,humanities,Research activities,TaDiRAH,"TaDiRAH 2.0.3: Taxonomy of Digital Research Activities in the Humanities (DARIAH, CC0)",concepts (version 2.0.3),exact,,,https://vocabs.dariah.eu/tadirah/
+humanities.research_activities,humanities,Research activities,DataCite,DataCite Metadata Schema 4.7,subject (scheme),close,,,https://schema.datacite.org/
+humanities.objects_of_study,humanities,"Works, creators, or objects studied",DC,Dublin Core (DCMI Metadata Terms),subject,close,,,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+humanities.objects_of_study,humanities,"Works, creators, or objects studied",schema.org,schema.org Dataset,about,close,,,https://schema.org/Dataset
+humanities.objects_of_study,humanities,"Works, creators, or objects studied",DataCite,DataCite Metadata Schema 4.7,subject,close,,,https://schema.datacite.org/
+humanities.source_languages,humanities,Languages of the sources,DC,Dublin Core (DCMI Metadata Terms),language (of the sources),related,,,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/
+humanities.source_languages,humanities,Languages of the sources,ISO 639,ISO 639 language codes (as used in BCP 47),language code,exact,,,https://www.loc.gov/standards/iso639-2/php/code_list.php
+humanities.editorial_standards,humanities,Editorial or encoding standards,TEI,TEI P5 Guidelines (Text Encoding Initiative),encodingDesc / editorialDecl,close,,,https://tei-c.org/guidelines/p5/

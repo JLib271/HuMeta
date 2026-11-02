@@ -20,6 +20,13 @@ from oem.library import Library
 
 SPEC_URL = "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md"
 ISSUES_URL = "https://github.com/JLib271/HuMeta/issues"
+DDI_URL = "https://ddialliance.org/"
+TADIRAH_URL = "https://vocabs.dariah.eu/tadirah/"
+#: starting choice in Module 1: field module -> button label, and the research field it adds
+FIELD_START = {"education": "Education", "social_science": "Social science", "humanities": "Arts and humanities"}
+FIELD_FOR_MODULE = {"education": "education", "social_science": "social_sciences", "humanities": "humanities"}
+#: research field -> OECD FOS prefix used to narrow the discipline list
+FIELD_FOS = {"social_sciences": "5", "humanities": "6", "arts": "6"}
 CARE_URL = "https://www.gida-global.org/care"
 LOCAL_CONTEXTS_URL = "https://localcontexts.org/"
 LICENSES = {
@@ -72,7 +79,11 @@ def record_form(record: dict) -> dict | None:
     p = profile.load()
     res, s = record["resource"], record["study"]
     edu = record.get("education") or {}
+    social = record.get("social_science") or {}
+    hum = record.get("humanities") or {}
     with_education = profile.uses(record, "education")
+    with_social = profile.uses(record, "social_science")
+    with_humanities = profile.uses(record, "humanities")
     v = st.session_state.get("profile_form_version", 0)
 
     def key(name: str) -> str:
@@ -107,21 +118,32 @@ def record_form(record: dict) -> dict | None:
         )
         st.markdown("\n".join(f"- **{std['short']}**: [{std['name']}]({std['url']})"
                                  for std in p.definition["standards"].values()))
-    st.markdown("**Field modules**")
-    wanted = st.toggle(
-        "Education module: learners' education levels, institutions and instructional settings",
-        value=with_education, key=key("module_education"),
-        help="Use for studies in education settings. Turning it off clears the module's fields.")
-    if wanted != with_education:
+    st.markdown("**Start here: what field is your study in?**")
+    st.caption("Choose all that apply. Each choice adds a short section for that field to the form below, and every "
+               "study also gets the shared core. Another field? Skip this step. Removing a field clears its section.")
+    active = [m for m in FIELD_START if profile.uses(record, m)]
+    chosen = list(st.pills("Field", list(FIELD_START), selection_mode="multi", default=active,
+                           format_func=FIELD_START.get, key=key("start_fields"), label_visibility="collapsed") or [])
+    if set(chosen) != set(active):
         changed = profile.migrate(record, p)
-        changed["education"] = profile.empty_record(p, modules=("education",))["education"] if wanted else None
+        fields_now = list(changed["study"].get("fields") or [])
+        for module in FIELD_START:
+            if module in chosen and module not in active:
+                changed[module] = profile.empty_record(p, modules=(module,))[module]
+                if FIELD_FOR_MODULE[module] not in fields_now:
+                    fields_now.append(FIELD_FOR_MODULE[module])
+            elif module not in chosen and module in active:
+                changed[module] = None
+        changed["study"]["fields"] = fields_now
         store_record(changed, reset_widgets=True)
         st.rerun()
-    if "education" in (s.get("fields") or []) and not with_education:
-        st.info("You chose Education as a research field. Turn on the Education module above to record education "
-                "levels and instructional settings.")
-    st.caption("Modules for other fields, starting with social science and humanities, are being developed with the "
-               f"community. [Suggest one on GitHub]({ISSUES_URL}).")
+    missing = [FIELD_START[m] for m, fid in FIELD_FOR_MODULE.items()
+               if (fid in (s.get("fields") or []) or (m == "humanities" and "arts" in (s.get("fields") or [])))
+               and m not in active]
+    if missing:
+        st.info(f"Your research fields include {', '.join(missing)}. Choose it above to add that field's section.")
+    st.caption("Field sections are starting points, to be developed with researchers in each field. "
+               f"[Suggest changes on GitHub]({ISSUES_URL}).")
     with st.form(key=f"profile_form_{v}"):
         st.subheader("1 · The study")
         c1, c2 = st.columns([3, 1])
@@ -177,9 +199,21 @@ def record_form(record: dict) -> dict | None:
         c1, c2 = st.columns(2)
         with c1:
             fields = multi("Research field *", "research_field", s.get("fields"), "fields", "study.fields",
-                           help="Choose all that apply. Shared across fields so studies can be found and compared across disciplines.")
+                           help="Choose all that apply. Your choices under Start here are filled in; add Arts or other fields here. "
+                                "Shared across fields so studies can be found and compared across disciplines.")
         with c2:
-            disciplines = multi("Discipline or subject area", "discipline", s.get("discipline"), "discipline", "study.discipline")
+            # Narrow the subject list to the chosen fields (education studies can be about any subject).
+            current_fields = set(s.get("fields") or [])
+            prefixes = {FIELD_FOS[f] for f in current_fields if f in FIELD_FOS}
+            all_subjects = p.ids("discipline")
+            narrowed = bool(prefixes) and not current_fields & {"education", "other_field"}
+            subject_ids = [d for d in all_subjects if not narrowed or d in (s.get("discipline") or [])
+                           or any(str(p.term("discipline", d).get("fos", "")).startswith(x) for x in prefixes)]
+            disciplines = st.multiselect(
+                lab("Discipline or subject area", "study.discipline"), subject_ids,
+                default=[d for d in s.get("discipline") or [] if d in subject_ids],
+                format_func=lambda t: p.label("discipline", t), key=key("discipline"),
+                help=tip("study.discipline", "Showing subjects in your saved research fields." if narrowed else None))
 
         st.subheader("2 · Study design")
         design = s.get("design") or {}
@@ -275,9 +309,9 @@ def record_form(record: dict) -> dict | None:
 
         number = 5
         if with_education:
-            st.subheader("5 · Education module")
-            st.caption("Learners, institutions and instructional settings. Turn the module off above if this study "
-                       "is not in an education setting.")
+            st.subheader(f"{number} · Education")
+            st.caption("Learners, institutions and instructional settings. Remove Education under Start here if this "
+                       "study is not in an education setting.")
             c1, c2, c3 = st.columns(3)
             with c1:
                 levels = multi("Education level *", "education_level", edu.get("education_levels"), "levels",
@@ -292,7 +326,59 @@ def record_form(record: dict) -> dict | None:
                 environments = multi("Learning environment", "learning_environment", edu.get("learning_environments"), "env",
                                      "education.learning_environments")
                 pedagogy = multi("Instructional approach", "pedagogy", edu.get("pedagogy"), "pedagogy", "education.pedagogy")
-            number = 6
+            number += 1
+
+        if with_social:
+            st.subheader(f"{number} · Social science")
+            st.info(
+                f"The social sciences already have a full metadata standard: [DDI, the Data Documentation Initiative]({DDI_URL}). "
+                "ICPSR, CESSDA archives, the UK Data Service, and Dataverse all use it. If you deposit with ICPSR, ICPSR "
+                "creates the study's DDI record for you; link it below once it is published. Module 3 can also export "
+                "this profile and your Module 2 variable plan as a DDI-Codebook file to give your archive at deposit. "
+                "The fields here use DDI's own elements, so they stay consistent with that record. What HuMeta adds is "
+                "how your constructs and measures connect to theory (Module 2)."
+            )
+            c1, c2 = st.columns(2)
+            with c1:
+                kind_of_data = single("Kind of data", "kind_of_data", social.get("kind_of_data"), "kinddata",
+                                      "social_science.kind_of_data")
+                geographic_unit = st.text_input(lab("Smallest geographic unit", "social_science.geographic_unit"),
+                                                social.get("geographic_unit") or "", key=key("geogunit"),
+                                                placeholder="e.g., county, school district, census tract",
+                                                help=tip("social_science.geographic_unit"))
+                response_rate = st.text_input(lab("Response rate", "social_science.response_rate"),
+                                              social.get("response_rate") or "", key=key("resprate"),
+                                              placeholder="e.g., AAPOR RR3 = 41%", help=tip("social_science.response_rate"))
+            with c2:
+                universe = st.text_area(lab("Universe", "social_science.universe"), social.get("universe") or "",
+                                        key=key("universe"), help=tip("social_science.universe"), height=100)
+                weighting = st.text_input(lab("Weighting", "social_science.weighting"), social.get("weighting") or "",
+                                          key=key("weight"), help=tip("social_science.weighting"))
+            ddi_record = st.text_input(lab("Full DDI documentation (URL)", "social_science.ddi_record"),
+                                       social.get("ddi_record") or "", key=key("ddirecord"),
+                                       placeholder="e.g., the study's page at ICPSR (after deposit), the CESSDA Data Catalogue, or a Dataverse",
+                                       help=tip("social_science.ddi_record"))
+            number += 1
+
+        if with_humanities:
+            st.subheader(f"{number} · Arts and humanities")
+            st.caption(f"Research activities come from [TaDiRAH]({TADIRAH_URL}), the Taxonomy of Digital Research "
+                       "Activities in the Humanities. Sources, their time period, holdings, and rights are in section 4.")
+            c1, c2 = st.columns(2)
+            with c1:
+                activities = multi("Research activities", "tadirah_activity", hum.get("research_activities"), "tadirah",
+                                   "humanities.research_activities")
+                source_languages = st.text_input(lab("Languages of the sources (codes, comma-separated)", "humanities.source_languages"),
+                                                 ", ".join(hum.get("source_languages") or []), key=key("srclang"),
+                                                 placeholder="e.g., en, fr, la", help=tip("humanities.source_languages"))
+            with c2:
+                objects_of_study = st.text_area(lab("Works, creators, or objects studied", "humanities.objects_of_study"),
+                                                hum.get("objects_of_study") or "", key=key("objects"),
+                                                help=tip("humanities.objects_of_study"), height=100)
+            editorial = st.text_input(lab("Editorial or encoding standards", "humanities.editorial_standards"),
+                                      hum.get("editorial_standards") or "", key=key("editorial"),
+                                      placeholder="e.g., TEI P5, IIIF", help=tip("humanities.editorial_standards"))
+            number += 1
 
         st.subheader(f"{number} · Ethics, consent, and access")
         c1, c2, c3 = st.columns(3)
@@ -353,7 +439,7 @@ def record_form(record: dict) -> dict | None:
             creators.append({"name": str(row["name"]).strip(), "orcid": orcid.group(0) if orcid else None,
                              "affiliation": _blank(str(row.get("affiliation") or ""))})
     doi_match = re.search(r"10\.\d{4,9}/\S+", doi or "")
-    new = profile.empty_record(p, modules=("education",) if with_education else ())
+    new = profile.empty_record(p, modules=tuple(m for m in profile.MODULES if profile.uses(record, m)))
     new["resource"].update({
         "title": title.strip(), "creators": creators, "publisher": publisher.strip(),
         "publication_year": int(publication_year), "resource_type": resource_type,
@@ -383,6 +469,14 @@ def record_form(record: dict) -> dict | None:
         new["education"].update({"education_levels": levels, "undergraduate_levels": ug_levels,
                                  "institution_types": institutions, "modality": modality,
                                  "learning_environments": environments, "pedagogy": pedagogy})
+    if with_social:
+        new["social_science"].update({"kind_of_data": kind_of_data, "universe": _blank(universe),
+                                      "geographic_unit": _blank(geographic_unit), "response_rate": _blank(response_rate),
+                                      "weighting": _blank(weighting), "ddi_record": _blank(ddi_record)})
+    if with_humanities:
+        new["humanities"].update({"research_activities": activities, "objects_of_study": _blank(objects_of_study),
+                                  "source_languages": [c.strip() for c in source_languages.split(",") if c.strip()],
+                                  "editorial_standards": _blank(editorial)})
     ns["evidence"].update({"study_designs": designs, "measurement_evidence": measurement, "data_collection_methods": methods,
                            "analysis_methods": analysis})
     ns["sources"].update({"types": source_types, "rights": source_rights, "holdings": _blank(holdings),

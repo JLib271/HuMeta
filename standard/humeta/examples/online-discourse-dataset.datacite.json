@@ -121,6 +121,24 @@
       "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#source_type.social_media"
     },
     {
+      "subject": "Capturing: Gathering",
+      "subjectScheme": "TaDiRAH",
+      "schemeUri": "https://vocabs.dariah.eu/tadirah/",
+      "valueUri": "https://vocabs.dariah.eu/tadirah/gathering"
+    },
+    {
+      "subject": "Analyzing: Content Analysis",
+      "subjectScheme": "TaDiRAH",
+      "schemeUri": "https://vocabs.dariah.eu/tadirah/",
+      "valueUri": "https://vocabs.dariah.eu/tadirah/contentAnalysis"
+    },
+    {
+      "subject": "Analyzing: Network Analysis",
+      "subjectScheme": "TaDiRAH",
+      "schemeUri": "https://vocabs.dariah.eu/tadirah/",
+      "valueUri": "https://vocabs.dariah.eu/tadirah/networkAnalysis"
+    },
+    {
       "subject": "FOS: Social sciences",
       "subjectScheme": "Fields of Science and Technology (FOS)",
       "schemeUri": "http://www.oecd.org/science/inno/38235147.pdf",
@@ -161,7 +179,7 @@
       "descriptionType": "Abstract"
     },
     {
-      "description": "Study design: Qualitative; Time series. Research questions: How do people describe climate anxiety in public posts, and how has this changed since 2018? Theoretical framework: Semiotics and Visual Rhetoric. Sampling: Non-probability: purposive / criterion-based. Data collection: Web or platform data collection (API, scraping, data donation); Assembling a corpus of texts, images, or media (e.g., published works, news). Analysis: Discourse or conversation analysis; Content analysis; Computational text or media analysis (e.g., text mining, NLP, image recognition). Sources: Social media and online platform content. Sources: About 12,000 public posts in English selected by keyword, with replies. Held at: Two public social media platforms (collected through their research APIs) Period covered: 2018-2023 Participants: Authors of public posts that mention climate anxiety; no authors were contacted.",
+      "description": "Study design: Qualitative; Time series. Research questions: How do people describe climate anxiety in public posts, and how has this changed since 2018? Theoretical framework: Semiotics and Visual Rhetoric. Sampling: Non-probability: purposive / criterion-based. Data collection: Web or platform data collection (API, scraping, data donation); Assembling a corpus of texts, images, or media (e.g., published works, news). Analysis: Discourse or conversation analysis; Content analysis; Computational text or media analysis (e.g., text mining, NLP, image recognition). Sources: Social media and online platform content. Sources: About 12,000 public posts in English selected by keyword, with replies. Held at: Two public social media platforms (collected through their research APIs) Period covered: 2018-2023 Participants: Authors of public posts that mention climate anxiety; no authors were contacted. Kind of data (DDI): Mixed. Universe: Public English-language posts about climate anxiety on two social platforms, 2018-2023; excludes private and deleted posts. Weighting: No weights; the corpus is a purposive keyword sample, not a probability sample. Languages of the sources: en.",
       "descriptionType": "Methods"
     },
     {

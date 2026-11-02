@@ -106,5 +106,20 @@
     },
     "constructs": []
   },
-  "education": null
+  "education": null,
+  "social_science": null,
+  "humanities": {
+    "research_activities": [
+      "transcribing",
+      "imaging",
+      "contextualizing",
+      "content_analysis"
+    ],
+    "objects_of_study": "Letters between a rural schoolteacher and pupils' families, school reports, and pupils' drawings (fictional collection).",
+    "source_languages": [
+      "en",
+      "de"
+    ],
+    "editorial_standards": "Diplomatic transcriptions encoded in TEI P5; drawings imaged to IIIF Image API conventions."
+  }
 }

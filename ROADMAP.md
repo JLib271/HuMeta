@@ -16,14 +16,18 @@ their data with common names and metadata, and sharing data responsibly.
   and Module 3 checks and exports
 - Renamed the profile to the HuMeta profile (`standard/humeta/`) and split it into a core plus an
   optional Education module; every field shows its alignments to DataCite, Dublin Core, schema.org and others
+- Module 1 starts with the study's fields; new Social Science (DDI-based, linking to the study's DDI record) and
+  Arts and Humanities (TaDiRAH) modules, as starting points for researchers in those fields
 
 ## Next
 
 0. **HuMeta profile 1.0.** Public comment (including CARE review by Indigenous data governance experts),
    confirm remaining ERIC descriptors, persistent term URIs, DOI, and society endorsements
    (see `standard/humeta/endorsement/`).
-0b. **Field modules and a broader core.** Working groups for the Social Science module (DDI-Codebook export
-   for ICPSR, Dataverse and the UK Data Service; ELSST topics) and the Humanities module. Broaden core
+0b. **Field modules and a broader core.** Working groups for the Social Science module (done: DDI-based
+   fields, a link to the study's DDI record, and DDI-Codebook 2.5 export; next: ELSST topics, and a
+   DDI-Lifecycle export so construct-to-question links travel as DDI concepts, ideally with the DDI
+   Alliance) and the Arts and Humanities module. Broaden core
    vocabularies (disciplines, data collection methods such as archival research, ethnography, content and
    discourse analysis), add a section for non-human sources (texts, artworks, media, platform data), and
    revisit rules that assume measured constructs or human participants.
