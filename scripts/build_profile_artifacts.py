@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # Copyright (C) 2026 Julie C. Libarkin
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Generate the STEMEd+ profile's derived files from its two sources.
+"""Generate the SHE profile's derived files from its two sources.
 
-Sources (edit these):   standard/stemed-ap/profile.json, vocabularies.json,
+Sources (edit these):   standard/she/profile.json, vocabularies.json,
                         library/constructs.json
-Generated (don't edit): schema/stemed-ap-record.schema.json, elements.md,
+Generated (don't edit): schema/she-record.schema.json, elements.md,
                         crosswalks/datacite-4.7.csv, crosswalks/eric.csv,
                         crosswalks/alignments.csv,
                         examples/*.datacite.json, examples/*.datacite.xml
@@ -28,7 +28,7 @@ sys.path.insert(0, str(ROOT))
 from oem import profile  # noqa: E402
 from oem.library import Library  # noqa: E402
 
-BASE = ROOT / "standard" / "stemed-ap"
+BASE = ROOT / "standard" / "she"
 
 
 def csv_text(rows: list[list[str]]) -> str:
@@ -43,19 +43,19 @@ def build() -> dict[Path, str]:
     verified = p.verified_eric()
     files: dict[Path, str] = {}
 
-    files[BASE / "schema" / "stemed-ap-record.schema.json"] = json.dumps(profile.json_schema(p), indent=2, ensure_ascii=False) + "\n"
+    files[BASE / "schema" / "she-record.schema.json"] = json.dumps(profile.json_schema(p), indent=2, ensure_ascii=False) + "\n"
 
-    rows = [["element", "label", "obligation", "cardinality", "vocabulary", "datacite_4_7"]]
+    rows = [["element", "module", "label", "obligation", "cardinality", "vocabulary", "datacite_4_7"]]
     for e in p.definition["elements"]:
-        rows.append([e["id"], e["label"], e["obligation"], e["cardinality"], e.get("vocabulary", ""), e["datacite"]])
+        rows.append([e["id"], e["module"], e["label"], e["obligation"], e["cardinality"], e.get("vocabulary", ""), e["datacite"]])
     files[BASE / "crosswalks" / "datacite-4.7.csv"] = csv_text(rows)
 
     standards = p.definition["standards"]
-    rows = [["element", "label", "standard", "standard_name", "term", "match", "status", "note", "standard_url"]]
+    rows = [["element", "module", "label", "standard", "standard_name", "term", "match", "status", "note", "standard_url"]]
     for e in p.definition["elements"]:
         for a in e.get("alignments", []):
             std = standards[a["standard"]]
-            rows.append([e["id"], e["label"], std["short"], std["name"], a["term"], a["match"],
+            rows.append([e["id"], e["module"], e["label"], std["short"], std["name"], a["term"], a["match"],
                          a.get("status", ""), a.get("note", ""), std["url"]])
     files[BASE / "crosswalks" / "alignments.csv"] = csv_text(rows)
 
@@ -72,30 +72,39 @@ def build() -> dict[Path, str]:
     lines = [
         f"# {p.definition['title']}: elements and vocabularies",
         "",
+        f"*{p.definition['full_title']}*",
+        "",
         f"Version {p.version} ({p.definition['status']}). Generated from `profile.json` and "
         "`vocabularies.json` by `scripts/build_profile_artifacts.py`; do not edit by hand.",
         "",
         "Obligations: " + "; ".join(f"**{k}** = {v}" for k, v in p.definition["obligations"].items()),
         "",
         "Alignments: each element lists the standards it corresponds to. No mark = exact match; "
-        "**≈** = close match; **~** = related. `STEMEd+` = defined by this profile, with no equivalent in a "
+        "**≈** = close match; **~** = related. `SHE` = defined by this profile, with no equivalent in a "
         "general-purpose standard. "
         f"*{profile.SEEKING_INPUT_BADGE}* = {p.definition['alignment_status']['seeking_input'].lower()} "
         "Full list, with notes, in [`crosswalks/alignments.csv`](crosswalks/alignments.csv).",
         "",
         "Standards: " + "; ".join(f"[{s['short']}]({s['url']}) = {s['name']}" for s in p.definition["standards"].values()),
         "",
-        "## Elements",
+        "Modules: the **core** applies to every record; a field module (such as **Education**) applies only "
+        "when a record includes it, and its mandatory elements are mandatory only then.",
         "",
-        "| Element | Obligation | Cardinality | Definition | Aligned with | DataCite 4.7 mapping |",
-        "|---|---|---|---|---|---|",
     ]
-    for e in p.definition["elements"]:
-        definition = e["definition"] + (f" *{e['condition']}*" if e.get("condition") else "")
-        vocab = f" Vocabulary: [{e['vocabulary']}](#{e['vocabulary']})." if e.get("vocabulary") else ""
-        lines.append(f"| <a id=\"{e['id']}\"></a>`{e['id']}` | {e['obligation']} | {e['cardinality']} | {definition}{vocab} | "
+    for module_id, module in p.definition["modules"].items():
+        lines += [f"## {'Core elements' if module_id == 'core' else module['label'] + ' module'}", "",
+                  module["definition"], "",
+                  "| Element | Obligation | Cardinality | Definition | Aligned with | DataCite 4.7 mapping |",
+                  "|---|---|---|---|---|---|"]
+        for e in p.definition["elements"]:
+            if e["module"] != module_id:
+                continue
+            definition = e["definition"] + (f" *{e['condition']}*" if e.get("condition") else "")
+            vocab = f" Vocabulary: [{e['vocabulary']}](#{e['vocabulary']})." if e.get("vocabulary") else ""
+            lines.append(f"| <a id=\"{e['id']}\"></a>`{e['id']}` | {e['obligation']} | {e['cardinality']} | {definition}{vocab} | "
                      f"{profile.alignment_badges(e['id'], p).replace('` `', '`, `')} | {e['datacite']} |")
-    lines += ["", "## Rules", "", "| Rule | Severity | Requirement |", "|---|---|---|"]
+        lines.append("")
+    lines += ["## Rules", "", "| Rule | Severity | Requirement |", "|---|---|---|"]
     for r in p.definition["rules"]:
         lines.append(f"| {r['id']} | {r['severity']} | {r['message']} |")
     lines += ["", "## Vocabularies", ""]

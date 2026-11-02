@@ -1,8 +1,9 @@
 # Copyright (C) 2026 Julie C. Libarkin
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""The STEMEd+ Metadata Application Profile.
+"""The SHE Study Metadata Profile (Social Science, Humanities, and Education).
 
-The profile itself is data in ``standard/stemed-ap/`` (``profile.json`` and
+A core for any study, plus optional field modules (currently: Education).
+The profile itself is data in ``standard/she/`` (``profile.json`` and
 ``vocabularies.json``); this module loads it and works with records:
 
 * :func:`empty_record` creates a record; :func:`suggest_constructs` proposes
@@ -30,9 +31,9 @@ from xml.etree import ElementTree as ET
 from oem.library import Library
 
 ROOT = Path(__file__).resolve().parent.parent
-PROFILE_DIR = ROOT / "standard" / "stemed-ap"
+PROFILE_DIR = ROOT / "standard" / "she"
 CONSTRUCTS_URI = "https://github.com/JLib271/OpenEdMetadata/blob/main/library/constructs.json#"
-VOCAB_URI = "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json#"
+VOCAB_URI = "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json#"
 LIBRARY_RECORD_URI = "https://github.com/JLib271/OpenEdMetadata/blob/main/library/instruments/"
 DATACITE_NS = "http://datacite.org/schema/kernel-4"
 DATACITE_XSD = "http://schema.datacite.org/meta/kernel-4.7/metadata.xsd"
@@ -47,34 +48,38 @@ ISCED_LEVELS = {"0": "Early childhood education", "1": "Primary education", "2":
                 "7": "Master's or equivalent level", "8": "Doctoral or equivalent level"}
 SEEKING_INPUT_BADGE = "(expert input wanted)"
 
-#: record path -> (vocabulary id, DataCite subjectScheme label)
-VOCAB_FIELDS: dict[tuple[str, ...], tuple[str, str]] = {
-    ("discipline",): ("discipline", "STEMEd+ Disciplines"),
-    ("population", "participant_roles"): ("participant_role", "STEMEd+ Participant Roles"),
-    ("population", "education_levels"): ("education_level", "STEMEd+ Education Levels"),
-    ("population", "undergraduate_levels"): ("undergraduate_level", "STEMEd+ Undergraduate Levels"),
-    ("context", "institution_types"): ("institution_type", "STEMEd+ Institution Types"),
-    ("context", "locale"): ("locale", "STEMEd+ Locales"),
-    ("setting", "modality"): ("modality", "STEMEd+ Modalities"),
-    ("setting", "learning_environments"): ("learning_environment", "STEMEd+ Learning Environments"),
-    ("setting", "pedagogy"): ("pedagogy", "STEMEd+ Instructional Approaches"),
-    ("evidence", "study_designs"): ("study_design", "STEMEd+ Study Designs"),
-    ("design", "unit_of_analysis"): ("unit_of_analysis", "STEMEd+ Units of Analysis"),
-    ("design", "sampling_procedure"): ("sampling_procedure", "STEMEd+ Sampling Procedures"),
-    ("evidence", "measurement_evidence"): ("measurement_evidence", "STEMEd+ Measurement Evidence"),
-    ("evidence", "data_collection_methods"): ("data_collection_method", "STEMEd+ Data Collection Methods"),
-    ("ethics", "sensitivity_flags"): ("sensitivity_flag", None),
+#: record path (from the record root) -> (vocabulary id, DataCite subjectScheme label)
+VOCAB_FIELDS: dict[tuple[str, ...], tuple[str, str | None]] = {
+    ("study", "discipline"): ("discipline", "SHE Disciplines"),
+    ("study", "population", "participant_roles"): ("participant_role", "SHE Participant Roles"),
+    ("study", "context", "locale"): ("locale", "SHE Locales"),
+    ("study", "evidence", "study_designs"): ("study_design", "SHE Study Designs"),
+    ("study", "design", "unit_of_analysis"): ("unit_of_analysis", "SHE Units of Analysis"),
+    ("study", "design", "sampling_procedure"): ("sampling_procedure", "SHE Sampling Procedures"),
+    ("study", "evidence", "measurement_evidence"): ("measurement_evidence", "SHE Measurement Evidence"),
+    ("study", "evidence", "data_collection_methods"): ("data_collection_method", "SHE Data Collection Methods"),
+    ("study", "ethics", "sensitivity_flags"): ("sensitivity_flag", None),
+    # Education module
+    ("education", "education_levels"): ("education_level", "SHE Education Levels"),
+    ("education", "undergraduate_levels"): ("undergraduate_level", "SHE Undergraduate Levels"),
+    ("education", "institution_types"): ("institution_type", "SHE Institution Types"),
+    ("education", "modality"): ("modality", "SHE Modalities"),
+    ("education", "learning_environments"): ("learning_environment", "SHE Learning Environments"),
+    ("education", "pedagogy"): ("pedagogy", "SHE Instructional Approaches"),
 }
 #: single-valued vocabulary fields
 VOCAB_SINGLE: dict[tuple[str, ...], str] = {
-    ("ethics", "human_subjects_review"): "human_subjects_review",
-    ("ethics", "consent"): "consent",
-    ("ethics", "consent_for_sharing"): "consent_for_sharing",
-    ("ethics", "identifiability"): "identifiability",
-    ("ethics", "access_level"): "access_level",
-    ("care", "indigenous_data"): "indigenous_data",
-    ("care", "governance"): "indigenous_governance",
+    ("study", "ethics", "human_subjects_review"): "human_subjects_review",
+    ("study", "ethics", "consent"): "consent",
+    ("study", "ethics", "consent_for_sharing"): "consent_for_sharing",
+    ("study", "ethics", "identifiability"): "identifiability",
+    ("study", "ethics", "access_level"): "access_level",
+    ("study", "care", "indigenous_data"): "indigenous_data",
+    ("study", "care", "governance"): "indigenous_governance",
 }
+#: optional field modules: record key -> label
+MODULES = {"education": "Education"}
+PROFILE_ID = "she"
 RESOURCE_TYPES = ("Dataset", "Instrument", "StudyRegistration", "Text", "Software", "Collection", "Other")
 
 
@@ -119,7 +124,7 @@ def load(profile_dir: str | None = None) -> Profile:
 
 # ---------------------------------------------------------------- JSON Schema
 def json_schema(profile: Profile | None = None) -> dict:
-    """JSON Schema for a STEMEd+ record, generated from the profile definition."""
+    """JSON Schema for a SHE record, generated from the profile definition."""
     p = profile or load()
 
     def enum_array(vocab_id: str) -> dict:
@@ -128,31 +133,31 @@ def json_schema(profile: Profile | None = None) -> dict:
     def enum_single(vocab_id: str) -> dict:
         return {"enum": p.ids(vocab_id) + [None]}
 
-    stemed_sections: dict[str, dict] = {}
+    def obj() -> dict:
+        return {"type": "object", "additionalProperties": False, "properties": {}}
+
+    root: dict[str, dict] = {"study": obj(), "education": obj()}
+
+    def put(path: tuple[str, ...], schema: dict) -> None:
+        node = root[path[0]]
+        for key in path[1:-1]:
+            node = node["properties"].setdefault(key, obj())
+        node["properties"][path[-1]] = schema
+
     for path, (vocab_id, _) in VOCAB_FIELDS.items():
-        if len(path) == 1:
-            stemed_sections[path[0]] = enum_array(vocab_id)
-        else:
-            stemed_sections.setdefault(path[0], {"type": "object", "additionalProperties": False, "properties": {}})
-            stemed_sections[path[0]]["properties"][path[1]] = enum_array(vocab_id)
+        put(path, enum_array(vocab_id))
     for path, vocab_id in VOCAB_SINGLE.items():
-        stemed_sections.setdefault(path[0], {"type": "object", "additionalProperties": False, "properties": {}})
-        stemed_sections[path[0]]["properties"][path[1]] = enum_single(vocab_id)
-    stemed_sections["population"]["properties"].update({
-        "description": {"type": ["string", "null"]},
-        "sample_size": {"type": ["integer", "null"], "minimum": 0},
-    })
-    stemed_sections["design"]["properties"].update({
-        "topic": {"type": ["string", "null"]},
-        "research_questions": {"type": ["string", "null"]},
-    })
-    stemed_sections["ethics"]["properties"]["governance_notes"] = {"type": ["string", "null"]}
-    stemed_sections["care"]["properties"].update({
-        "statement": {"type": ["string", "null"]},
-        "local_contexts_project": {"type": ["string", "null"], "format": "uri"},
-        "local_contexts_labels": {"type": "array", "items": {"type": "string"}},
-    })
-    stemed_sections["constructs"] = {
+        put(path, enum_single(vocab_id))
+    text = {"type": ["string", "null"]}
+    put(("study", "population", "description"), text)
+    put(("study", "population", "sample_size"), {"type": ["integer", "null"], "minimum": 0})
+    put(("study", "design", "topic"), text)
+    put(("study", "design", "research_questions"), text)
+    put(("study", "ethics", "governance_notes"), text)
+    put(("study", "care", "statement"), text)
+    put(("study", "care", "local_contexts_project"), {"type": ["string", "null"], "format": "uri"})
+    put(("study", "care", "local_contexts_labels"), {"type": "array", "items": {"type": "string"}})
+    put(("study", "constructs"), {
         "type": "array",
         "items": {
             "type": "object", "additionalProperties": False, "required": ["construct_id"],
@@ -163,17 +168,20 @@ def json_schema(profile: Profile | None = None) -> dict:
                 "dimension_id": {"type": ["string", "null"]},
             },
         },
-    }
+    })
+    education = root["education"]
+    education["type"] = ["object", "null"]
+    education["description"] = "Education module. Null or absent when the study is not in an education setting."
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "$id": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/schema/stemed-ap-record.schema.json",
-        "title": f"STEMEd+ Metadata Application Profile record ({p.version})",
-        "description": "Generated from standard/stemed-ap/profile.json and vocabularies.json by scripts/build_profile_artifacts.py. Do not edit by hand.",
+        "$id": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/schema/she-record.schema.json",
+        "title": f"SHE Study Metadata Profile record ({p.version})",
+        "description": "Generated from standard/she/profile.json and vocabularies.json by scripts/build_profile_artifacts.py. Do not edit by hand.",
         "type": "object",
         "additionalProperties": False,
-        "required": ["profile", "profile_version", "resource", "stemed"],
+        "required": ["profile", "profile_version", "resource", "study"],
         "properties": {
-            "profile": {"const": "stemed-ap"},
+            "profile": {"const": PROFILE_ID},
             "profile_version": {"type": "string"},
             "resource": {
                 "type": "object", "additionalProperties": False,
@@ -211,47 +219,62 @@ def json_schema(profile: Profile | None = None) -> dict:
                             "relation": {"type": "string"}}}},
                 },
             },
-            "stemed": {"type": "object", "additionalProperties": False, "properties": stemed_sections},
+            "study": root["study"],
+            "education": education,
         },
     }
 
 
 # ------------------------------------------------------------------- records
-def empty_record(profile: Profile | None = None) -> dict:
-    p = profile or load()
-    stemed: dict[str, Any] = {"constructs": []}
+def _empty_section(section: str) -> dict:
+    out: dict[str, Any] = {}
+
+    def put(path: tuple[str, ...], value: Any) -> None:
+        node = out
+        for key in path[1:-1]:
+            node = node.setdefault(key, {})
+        node[path[-1]] = value
+
     for path in VOCAB_FIELDS:
-        if len(path) == 1:
-            stemed[path[0]] = []
-        else:
-            stemed.setdefault(path[0], {})[path[1]] = []
+        if path[0] == section:
+            put(path, [])
     for path in VOCAB_SINGLE:
-        stemed.setdefault(path[0], {})[path[1]] = None
-    stemed["population"].update({"description": None, "sample_size": None})
-    stemed["design"].update({"topic": None, "research_questions": None})
-    stemed["ethics"]["governance_notes"] = None
-    stemed["care"].update({"statement": None, "local_contexts_project": None, "local_contexts_labels": []})
-    return {
-        "profile": "stemed-ap",
+        if path[0] == section:
+            put(path, None)
+    if section == "study":
+        out["constructs"] = []
+        out["population"].update({"description": None, "sample_size": None})
+        out["design"].update({"topic": None, "research_questions": None})
+        out["ethics"]["governance_notes"] = None
+        out["care"].update({"statement": None, "local_contexts_project": None, "local_contexts_labels": []})
+    return out
+
+
+def empty_record(profile: Profile | None = None, modules: tuple[str, ...] = ()) -> dict:
+    """A new record. ``modules`` lists the field modules to include, e.g. ("education",)."""
+    p = profile or load()
+    record = {
+        "profile": PROFILE_ID,
         "profile_version": p.version,
         "resource": {"title": "", "creators": [], "publisher": "", "publication_year": None,
                      "resource_type": "Dataset", "keywords": [], "funding": [], "related": []},
-        "stemed": stemed,
+        "study": _empty_section("study"),
     }
+    for module in MODULES:
+        record[module] = _empty_section(module) if module in modules else None
+    return record
+
+
+def uses(record: dict, module: str) -> bool:
+    """True if the record includes the given field module."""
+    return isinstance(record.get(module), dict)
 
 
 def get(record: dict, path: tuple[str, ...]) -> Any:
-    node: Any = record["stemed"]
+    node: Any = record
     for key in path:
         node = (node or {}).get(key)
     return node
-
-
-def _set(record: dict, path: tuple[str, ...], value: Any) -> None:
-    node = record["stemed"]
-    for key in path[:-1]:
-        node = node.setdefault(key, {})
-    node[path[-1]] = value
 
 
 def suggest_constructs(lib: Library, plan: dict) -> list[str]:
@@ -274,7 +297,7 @@ def suggest_constructs(lib: Library, plan: dict) -> list[str]:
 
 def migrate(record: dict, profile: Profile | None = None) -> dict:
     """Fill any keys missing from an older or partial record with defaults."""
-    base = empty_record(profile)
+    base = empty_record(profile, modules=tuple(m for m in MODULES if uses(record, m)))
 
     def merge(default: Any, actual: Any) -> Any:
         if isinstance(default, dict) and isinstance(actual, dict):
@@ -308,21 +331,25 @@ def validate(record: dict, lib: Library | None = None, profile: Profile | None =
         return issues
     record = migrate(record, p)
 
-    res, s = record["resource"], record["stemed"]
+    res, s = record["resource"], record["study"]
+    edu = record.get("education") or {}
     rtype = res["resource_type"]
-    for path, vocab_id in [(("population", "participant_roles"), "participant_role"),
-                           (("population", "education_levels"), "education_level")]:
+    required_lists = [(("study", "population", "participant_roles"), "participant_role")]
+    if uses(record, "education"):
+        required_lists.append((("education", "education_levels"), "education_level"))
+    for path, vocab_id in required_lists:
         if not get(record, path):
-            issues.append(Issue("error", "stemed." + ".".join(path), f"Select at least one {p.vocabularies[vocab_id]['label'].lower()}."))
-    for path in [("ethics", "human_subjects_review"), ("ethics", "consent_for_sharing"),
-                 ("ethics", "identifiability"), ("ethics", "access_level"), ("care", "indigenous_data")]:
+            issues.append(Issue("error", ".".join(path), f"Select at least one {p.vocabularies[vocab_id]['label'].lower()}."))
+    for path in [("study", "ethics", "human_subjects_review"), ("study", "ethics", "consent_for_sharing"),
+                 ("study", "ethics", "identifiability"), ("study", "ethics", "access_level"),
+                 ("study", "care", "indigenous_data")]:
         if not get(record, path):
-            issues.append(Issue("error", "stemed." + ".".join(path), "Required."))
+            issues.append(Issue("error", ".".join(path), "Required."))
     for c in s.get("constructs", []):
         if c["construct_id"] not in lib.constructs:
-            issues.append(Issue("error", "stemed.constructs", f"Unknown construct {c['construct_id']!r}."))
+            issues.append(Issue("error", "study.constructs", f"Unknown construct {c['construct_id']!r}."))
         if c.get("instrument_id") and c["instrument_id"] not in lib.instruments:
-            issues.append(Issue("error", "stemed.constructs", f"Unknown instrument {c['instrument_id']!r}."))
+            issues.append(Issue("error", "study.constructs", f"Unknown instrument {c['instrument_id']!r}."))
 
     rules = {r["check"]: r for r in p.definition["rules"]}
 
@@ -333,33 +360,33 @@ def validate(record: dict, lib: Library | None = None, profile: Profile | None =
     ethics, care = s["ethics"], s["care"]
     access = ethics.get("access_level")
     if rtype in ("Dataset", "Instrument") and not s.get("constructs"):
-        flag("constructs_required", "stemed.constructs")
+        flag("constructs_required", "study.constructs")
     if rtype in ("Dataset", "StudyRegistration") and not s["evidence"].get("study_designs"):
-        flag("design_required", "stemed.evidence.study_designs")
+        flag("design_required", "study.evidence.study_designs")
     if rtype == "Instrument" and not s["evidence"].get("measurement_evidence"):
-        flag("measurement_evidence_required", "stemed.evidence.measurement_evidence")
+        flag("measurement_evidence_required", "study.evidence.measurement_evidence")
     if access == "open" and ethics.get("identifiability") not in (None, "deidentified", "anonymous", "aggregate_only", "synthetic", "not_applicable"):
-        flag("open_requires_deidentified", "stemed.ethics.identifiability")
+        flag("open_requires_deidentified", "study.ethics.identifiability")
     if access == "open" and ethics.get("consent_for_sharing") not in (None, "broad_sharing", "not_applicable"):
-        flag("open_requires_sharing_consent", "stemed.ethics.consent_for_sharing")
+        flag("open_requires_sharing_consent", "study.ethics.consent_for_sharing")
     if access in ("open", "registered") and ethics.get("human_subjects_review") in ("not_assessed", "pending"):
-        flag("sharing_requires_review", "stemed.ethics.human_subjects_review")
+        flag("sharing_requires_review", "study.ethics.human_subjects_review")
     if care.get("indigenous_data") == "yes":
         if care.get("governance") in (None, "none", "not_applicable") or not (care.get("statement") or "").strip():
-            flag("care_requires_governance", "stemed.care.governance")
+            flag("care_requires_governance", "study.care.governance")
         if access == "open" and care.get("governance") not in ("community_agreement", "tribal_review"):
-            flag("care_open_requires_agreement", "stemed.ethics.access_level")
+            flag("care_open_requires_agreement", "study.ethics.access_level")
     if "education_records" in (ethics.get("sensitivity_flags") or []) and access not in (None, "closed", "metadata_only"):
-        flag("education_records_review", "stemed.ethics.sensitivity_flags")
+        flag("education_records_review", "study.ethics.sensitivity_flags")
     if care.get("indigenous_data") == "unknown":
-        flag("care_unknown", "stemed.care.indigenous_data")
+        flag("care_unknown", "study.care.indigenous_data")
     if care.get("indigenous_data") != "yes" and (
         "specific_community" in s["population"].get("participant_roles", [])
-        or "tribal_college" in s["context"].get("institution_types", [])
+        or "tribal_college" in (edu.get("institution_types") or [])
     ):
-        flag("care_prompt", "stemed.care.indigenous_data")
+        flag("care_prompt", "study.care.indigenous_data")
     if "direct_identifiers" in (ethics.get("sensitivity_flags") or []) and access not in (None, "closed", "metadata_only"):
-        flag("identifiers_not_shared", "stemed.ethics.sensitivity_flags")
+        flag("identifiers_not_shared", "study.ethics.sensitivity_flags")
     return issues
 
 
@@ -375,7 +402,7 @@ def eric_descriptors(record: dict, lib: Library | None = None, profile: Profile 
     lib = lib or Library.load()
     record = migrate(record, p)
     terms: list[str] = []
-    for c in record["stemed"].get("constructs", []):
+    for c in record["study"].get("constructs", []):
         terms += lib.constructs.get(c["construct_id"], {}).get("eric", [])
     for path, (vocab_id, _) in VOCAB_FIELDS.items():
         for term_id in get(record, path) or []:
@@ -391,7 +418,7 @@ def eric_descriptors(record: dict, lib: Library | None = None, profile: Profile 
 
 # ------------------------------------------------------------------- DataCite
 def _ethics_text(record: dict, p: Profile) -> str:
-    e = record["stemed"]["ethics"]
+    e = record["study"]["ethics"]
     parts = []
     for key, vocab_id, label in [
         ("human_subjects_review", "human_subjects_review", "Human-subjects review"),
@@ -407,11 +434,11 @@ def _ethics_text(record: dict, p: Profile) -> str:
         parts.append("Sensitivity: " + "; ".join(flags) + ".")
     if (e.get("governance_notes") or "").strip():
         parts.append(e["governance_notes"].strip())
-    return "Ethics and access (STEMEd+ AP). " + " ".join(parts)
+    return "Ethics and access (SHE Study Metadata Profile). " + " ".join(parts)
 
 
 def _care_text(record: dict, p: Profile) -> str | None:
-    care = record["stemed"]["care"]
+    care = record["study"]["care"]
     if not care.get("indigenous_data"):
         return None
     parts = [f"Indigenous data: {p.label('indigenous_data', care['indigenous_data'])}."]
@@ -421,11 +448,11 @@ def _care_text(record: dict, p: Profile) -> str | None:
         parts.append("Local Contexts Labels/Notices: " + "; ".join(care["local_contexts_labels"]) + ".")
     if (care.get("statement") or "").strip():
         parts.append(care["statement"].strip())
-    return "CARE statement (STEMEd+ AP). " + " ".join(parts)
+    return "CARE statement (SHE Study Metadata Profile). " + " ".join(parts)
 
 
 def _methods_text(record: dict, p: Profile) -> str | None:
-    s = record["stemed"]
+    s = record["study"]
     parts = []
     designs = [p.label("study_design", d) for d in s["evidence"].get("study_designs") or []]
     if designs:
@@ -448,9 +475,9 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
     p = profile or load()
     lib = lib or Library.load()
     record = migrate(record, p)
-    res, s = record["resource"], record["stemed"]
+    res, s = record["resource"], record["study"]
     out: dict[str, Any] = {
-        "types": {"resourceTypeGeneral": res["resource_type"], "resourceType": f"STEMEd+ {res['resource_type']}"},
+        "types": {"resourceTypeGeneral": res["resource_type"], "resourceType": f"SHE {res['resource_type']}"},
         "titles": [{"title": res["title"]}],
         "creators": [],
         "publisher": {"name": res["publisher"]},
@@ -477,7 +504,7 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
     for c in s.get("constructs", []):
         construct = lib.constructs.get(c["construct_id"])
         if construct:
-            subjects.append({"subject": construct["label"], "subjectScheme": "STEMEd+ Constructs",
+            subjects.append({"subject": construct["label"], "subjectScheme": "SHE Constructs",
                              "schemeUri": CONSTRUCTS_URI.rstrip("#"), "valueUri": CONSTRUCTS_URI + construct["id"]})
     for path, (vocab_id, scheme) in VOCAB_FIELDS.items():
         if not scheme:
@@ -632,16 +659,17 @@ def _labels(p: Profile, vocab_id: str, ids: list[str] | None) -> list[str]:
 def to_study_record(record: dict, existing: dict | None = None, profile: Profile | None = None) -> dict:
     """Derive the study record that Module 2 and later modules read.
 
-    The STEMEd+ record is the source of truth; this is a read-only view of it in
+    The SHE record is the source of truth; this is a read-only view of it in
     the shape those modules expect. (A follow-up can switch them to read the
-    STEMEd+ record directly and remove this.)
+    SHE record directly and remove this.)
     """
     import time
     import uuid
 
     p = profile or load()
     existing = existing or {}
-    res, s = record["resource"], record["stemed"]
+    res, s = record["resource"], record["study"]
+    edu = record.get("education") or {}
 
     def first(vocab_id: str, value: str | list[str] | None) -> str:
         values = value if isinstance(value, list) else ([value] if value else [])
@@ -669,10 +697,10 @@ def to_study_record(record: dict, existing: dict | None = None, profile: Profile
         "state_origin": states[0] if len(states) == 1 else ("National/Multi-State" if states else ""),
         "locale_setting": first("locale", s["context"].get("locale")),
         "participant_populations": _labels(p, "participant_role", s["population"].get("participant_roles")),
-        "study_settings": _labels(p, "learning_environment", s["setting"].get("learning_environments")),
-        "grade_level": _labels(p, "education_level", s["population"].get("education_levels")),
-        "undergraduate_level": _labels(p, "undergraduate_level", s["population"].get("undergraduate_levels")),
-        "program_type": _labels(p, "institution_type", s["context"].get("institution_types")),
+        "study_settings": _labels(p, "learning_environment", edu.get("learning_environments")),
+        "grade_level": _labels(p, "education_level", edu.get("education_levels")),
+        "undergraduate_level": _labels(p, "undergraduate_level", edu.get("undergraduate_levels")),
+        "program_type": _labels(p, "institution_type", edu.get("institution_types")),
         "content_domain": s["design"].get("topic") or "",
         "ethics_review_status": first("human_subjects_review", s["ethics"].get("human_subjects_review")),
         "consent_or_authorization": first("consent", s["ethics"].get("consent")),
@@ -707,13 +735,13 @@ def element(element_id: str, profile: Profile | None = None) -> dict:
 def alignment_badges(element_id: str, profile: Profile | None = None) -> str:
     """Short, label-ready summary of an element's alignments, e.g.
     "`DataCite: titles.title` `DC: title` `schema.org: name`" (≈ close, ~ related).
-    STEMEd+-specific elements start with `STEMEd+`."""
+    Elements defined by this profile start with `SHE`."""
     p = profile or load()
     parts = []
     for a in element(element_id, p).get("alignments", []):
         short = p.definition["standards"][a["standard"]]["short"]
-        if a["standard"] == "stemed":
-            parts.append("`STEMEd+`")
+        if a["standard"] == "she":
+            parts.append("`SHE`")
         else:
             badge = f"`{MATCH_MARK[a['match']]}{short}: {a['term']}`"
             if a.get("status") == "seeking_input":
@@ -729,8 +757,8 @@ def alignment_help(element_id: str, profile: Profile | None = None) -> str:
     lines = [e["definition"]]
     for a in e.get("alignments", []):
         std = p.definition["standards"][a["standard"]]
-        if a["standard"] == "stemed":
-            lines.append(f"STEMEd+ extension: {a['term']} (no equivalent in general-purpose metadata standards).")
+        if a["standard"] == "she":
+            lines.append(f"Defined by the SHE profile: {a['term']} (no equivalent in general-purpose metadata standards).")
         else:
             line = f"{a['match'].capitalize()} match: {std['name']} — {a['term']}."
             if a.get("status") == "seeking_input":

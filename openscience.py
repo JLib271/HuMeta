@@ -1,6 +1,6 @@
 # Copyright (C) 2026 Julie C. Libarkin
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Open Educational Metadata Portal: Streamlit entry point.
+"""SHE Study Metadata Portal: Streamlit entry point.
 
 Run with ``streamlit run openscience.py``. Page code lives in ``oem/app/pages/``;
 shared helpers in ``oem/app/common.py``; Streamlit-free logic in ``oem/``.
@@ -29,7 +29,7 @@ from oem.app.pages import (
 #   only after a maintainer merges, and the deployed app reads them from disk.
 
 # App configuration and session setup
-st.set_page_config(page_title="Open Educational Metadata Engine", layout="wide")
+st.set_page_config(page_title="SHE Study Metadata Portal", layout="wide")
 if "session_instruments" not in st.session_state:
     st.session_state.session_instruments = []
 
@@ -111,7 +111,8 @@ with st.sidebar:
         "[Source code](https://github.com/JLib271/OpenEdMetadata)"
     )
 
-st.title("🔬 Open Educational Metadata Portal")
+st.title("🔬 SHE Study Metadata Portal")
+st.caption("Social Science, Humanities, and Education Study Metadata")
 st.caption("Standardized Study Registries and Psychometric Instrument Architects under DCMES, IEEE LOM, and CEDS Standards.")
 
 if app_mode == "About this app":

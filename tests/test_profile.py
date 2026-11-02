@@ -11,7 +11,7 @@ from oem import profile
 from oem.library import Library
 
 ROOT = Path(__file__).resolve().parent.parent
-BASE = ROOT / "standard" / "stemed-ap"
+BASE = ROOT / "standard" / "she"
 EXAMPLE = json.loads((BASE / "examples" / "climate-inventory-dataset.json").read_text())
 
 
@@ -34,7 +34,7 @@ def test_example_is_valid(lib):
 
 
 def test_generated_schema_is_in_sync(p):
-    on_disk = json.loads((BASE / "schema" / "stemed-ap-record.schema.json").read_text())
+    on_disk = json.loads((BASE / "schema" / "she-record.schema.json").read_text())
     assert on_disk == profile.json_schema(p), "run python scripts/build_profile_artifacts.py"
 
 
@@ -67,41 +67,41 @@ def test_eric_export_skips_unverified(lib):
 ])
 def test_open_access_rules(lib, change, rule):
     record = copy.deepcopy(EXAMPLE)
-    record["stemed"]["ethics"].update(change)
+    record["study"]["ethics"].update(change)
     assert rule in rules_fired(record, lib)
 
 
 def test_constructs_and_design_required_for_datasets(lib):
     record = copy.deepcopy(EXAMPLE)
-    record["stemed"]["constructs"] = []
-    record["stemed"]["evidence"]["study_designs"] = []
+    record["study"]["constructs"] = []
+    record["study"]["evidence"]["study_designs"] = []
     assert {"R1", "R2"} <= rules_fired(record, lib)
 
 
 def test_instrument_needs_measurement_evidence(lib):
     record = copy.deepcopy(EXAMPLE)
     record["resource"]["resource_type"] = "Instrument"
-    record["stemed"]["evidence"]["measurement_evidence"] = []
+    record["study"]["evidence"]["measurement_evidence"] = []
     assert "R3" in rules_fired(record, lib)
 
 
 def test_care_rules(lib):
     record = copy.deepcopy(EXAMPLE)
-    record["stemed"]["care"].update({"indigenous_data": "yes", "governance": "none", "statement": None})
+    record["study"]["care"].update({"indigenous_data": "yes", "governance": "none", "statement": None})
     assert {"R7", "R8"} <= rules_fired(record, lib)
-    record["stemed"]["care"].update({"governance": "community_agreement", "statement": "Co-designed with the Nation's education department."})
+    record["study"]["care"].update({"governance": "community_agreement", "statement": "Co-designed with the Nation's education department."})
     assert not {"R7", "R8"} & rules_fired(record, lib)
 
 
 def test_care_prompt_for_tribal_college(lib):
     record = copy.deepcopy(EXAMPLE)
-    record["stemed"]["context"]["institution_types"] = ["tribal_college"]
+    record["education"]["institution_types"] = ["tribal_college"]
     assert "R11" in rules_fired(record, lib)
 
 
 def test_education_records_warning_is_not_an_error(lib):
     record = copy.deepcopy(EXAMPLE)
-    record["stemed"]["ethics"]["sensitivity_flags"] = ["education_records"]
+    record["study"]["ethics"]["sensitivity_flags"] = ["education_records"]
     issues = profile.validate(record, lib)
     assert [i.rule for i in issues] == ["R9"] and issues[0].severity == "warning"
 
@@ -111,7 +111,7 @@ def test_datacite_json_has_mandatory_properties(lib):
     for key in ("doi", "types", "titles", "creators", "publisher", "publicationYear"):
         assert data.get(key)
     schemes = {s.get("subjectScheme") for s in data["subjects"]}
-    assert {"STEMEd+ Constructs", "ERIC Thesaurus", "STEMEd+ Education Levels"} <= schemes
+    assert {"SHE Constructs", "ERIC Thesaurus", "SHE Education Levels"} <= schemes
     assert {"relationType": "IsCollectedBy"}.items() <= data["relatedIdentifiers"][0].items()
 
 
@@ -165,13 +165,16 @@ def test_datacite_xml_validates_against_official_schema(lib, tmp_path):
 
 def test_migrate_keeps_complete_records_and_fills_partial_ones(p):
     assert profile.migrate(EXAMPLE, p) == EXAMPLE
-    partial = {"profile": "stemed-ap", "profile_version": "1.0.0-draft.1",
-               "resource": {"title": "T"}, "stemed": {"ethics": {"access_level": "closed"}}}
+    partial = {"profile": "she", "profile_version": "1.0.0-draft.1",
+               "resource": {"title": "T"}, "study": {"ethics": {"access_level": "closed"}}}
     filled = profile.migrate(partial, p)
     assert filled["resource"]["title"] == "T"
-    assert filled["stemed"]["ethics"]["access_level"] == "closed"
-    assert filled["stemed"]["population"]["education_levels"] == []
-    assert filled["stemed"]["care"]["local_contexts_labels"] == []
+    assert filled["study"]["ethics"]["access_level"] == "closed"
+    assert filled["study"]["care"]["local_contexts_labels"] == []
+    assert filled["education"] is None  # module not used
+    with_module = profile.migrate({**partial, "education": {"pedagogy": ["flipped"]}}, p)
+    assert with_module["education"]["pedagogy"] == ["flipped"]
+    assert with_module["education"]["education_levels"] == []
 
 
 def test_suggest_constructs_from_module2_plan(lib):
@@ -184,7 +187,7 @@ def test_study_record_view_for_later_modules(p):
     study = profile.to_study_record(EXAMPLE, profile=p)
     meta = json.loads(study["study_description"])["metadata"]
     assert study["study_title"] == EXAMPLE["resource"]["title"]
-    assert meta["content_domain"] == EXAMPLE["stemed"]["design"]["topic"]
+    assert meta["content_domain"] == EXAMPLE["study"]["design"]["topic"]
     assert meta["unit_of_analysis"] == "Individual (person / participant)"
     assert meta["sampling_procedure"] == "Convenience sample"
     assert meta["participant_populations"] == ["Students / learners"]
@@ -210,7 +213,7 @@ def test_every_element_has_alignments_to_known_standards(p):
 def test_alignment_badges(p):
     assert profile.alignment_badges("resource.title", p) == "`DataCite: titles.title` `DC: title` `schema.org: name`"
     assert profile.alignment_badges("resource.publication_year", p).count("≈") == 2
-    assert profile.alignment_badges("stemed.constructs", p).startswith("`STEMEd+`")
+    assert profile.alignment_badges("study.constructs", p).startswith("`SHE`")
     assert "Close match: Dublin Core" in profile.alignment_help("resource.publication_year", p)
 
 
@@ -219,19 +222,38 @@ def test_alignment_status_and_notes():
     for e in p.definition["elements"]:
         for a in e["alignments"]:
             assert a.get("status", "seeking_input") in p.definition["alignment_status"], (e["id"], a)
-    badges = profile.alignment_badges("stemed.population.education_levels")
+    badges = profile.alignment_badges("education.education_levels")
     assert "`ISCED: levels of education 0–8`" in badges
     assert f"`≈DC: educationLevel` {profile.SEEKING_INPUT_BADGE}" in badges
-    assert profile.SEEKING_INPUT_BADGE in profile.alignment_badges("stemed.setting.pedagogy")
-    assert "seeking expert input" in profile.alignment_help("stemed.setting.pedagogy")
+    assert profile.SEEKING_INPUT_BADGE in profile.alignment_badges("education.pedagogy")
+    assert "seeking expert input" in profile.alignment_help("education.pedagogy")
 
 
 def test_education_levels_follow_isced_and_export_as_subjects():
     p = profile.load()
     codes = [t.get("isced") for t in p.vocab("education_level")]
     assert [c for c in codes if c is not None] == [str(i) for i in range(9)]
-    record = profile.empty_record()
-    record["stemed"]["population"]["education_levels"] = ["short_cycle_tertiary", "informal_learning"]
+    record = profile.empty_record(modules=("education",))
+    record["education"]["education_levels"] = ["short_cycle_tertiary", "informal_learning"]
     subjects = profile.to_datacite_json(record, Library.load(), p)["subjects"]
     isced = [s for s in subjects if s.get("subjectScheme") == profile.ISCED_SCHEME]
     assert [s["subject"] for s in isced] == ["ISCED level 5: Short-cycle tertiary education"]
+
+
+def test_education_module_is_optional(lib, p):
+    record = copy.deepcopy(EXAMPLE)
+    record["education"] = None
+    assert profile.is_valid(record, lib, p)
+    assert not any(s.get("subjectScheme") == "SHE Education Levels"
+                   for s in profile.to_datacite_json(record, lib, p)["subjects"])
+    record["education"] = profile.empty_record(p, modules=("education",))["education"]
+    issues = profile.validate(record, lib, p)
+    assert any(i.element == "education.education_levels" and i.severity == "error" for i in issues)
+
+
+def test_every_element_belongs_to_a_known_module(p):
+    for e in p.definition["elements"]:
+        assert e["module"] in p.definition["modules"], e["id"]
+        prefix = e["id"].split(".")[0]
+        expected = ("resource", "study") if e["module"] == "core" else (e["module"],)
+        assert prefix in expected, e["id"]

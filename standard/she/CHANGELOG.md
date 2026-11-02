@@ -1,6 +1,19 @@
-# Changelog: STEMEd+ Metadata Application Profile
+# Changelog: SHE Study Metadata Profile
 
 ## Unreleased
+
+* **Renamed** from the STEMEd+ Metadata Application Profile to the SHE Study
+  Metadata Profile (Social Science, Humanities, and Education Study Metadata
+  Profile), to serve the social sciences and humanities as well as education.
+  Folder `standard/stemed-ap/` is now `standard/she/`; the record's `profile`
+  value is `she`; DataCite subject schemes are named "SHE …".
+* **Core and modules.** The record's `stemed` section is now `study` (the
+  core). Education-specific elements moved to an optional **Education module**
+  under the record key `education`: `education_levels`,
+  `undergraduate_levels`, `institution_types` (from `context`), and
+  `modality`, `learning_environments`, `pedagogy` (from `setting`). Education
+  level is mandatory only when the module is used. Rule R11 (tribal college
+  prompt) now reads the module's institution types.
 
 * Every element now lists its alignments to DataCite, Dublin Core, schema.org,
   ERIC and other standards, with match type (exact, close, related);

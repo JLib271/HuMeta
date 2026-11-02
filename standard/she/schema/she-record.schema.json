@@ -1,19 +1,19 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/schema/stemed-ap-record.schema.json",
-  "title": "STEMEd+ Metadata Application Profile record (1.0.0-draft.1)",
-  "description": "Generated from standard/stemed-ap/profile.json and vocabularies.json by scripts/build_profile_artifacts.py. Do not edit by hand.",
+  "$id": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/schema/she-record.schema.json",
+  "title": "SHE Study Metadata Profile record (1.0.0-draft.1)",
+  "description": "Generated from standard/she/profile.json and vocabularies.json by scripts/build_profile_artifacts.py. Do not edit by hand.",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "profile",
     "profile_version",
     "resource",
-    "stemed"
+    "study"
   ],
   "properties": {
     "profile": {
-      "const": "stemed-ap"
+      "const": "she"
     },
     "profile_version": {
       "type": "string"
@@ -243,7 +243,7 @@
         }
       }
     },
-    "stemed": {
+    "study": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -288,37 +288,6 @@
                 ]
               }
             },
-            "education_levels": {
-              "type": "array",
-              "uniqueItems": true,
-              "items": {
-                "enum": [
-                  "early_childhood",
-                  "primary",
-                  "lower_secondary",
-                  "upper_secondary",
-                  "postsecondary_non_tertiary",
-                  "short_cycle_tertiary",
-                  "bachelors",
-                  "masters",
-                  "doctoral",
-                  "adult_education",
-                  "informal_learning"
-                ]
-              }
-            },
-            "undergraduate_levels": {
-              "type": "array",
-              "uniqueItems": true,
-              "items": {
-                "enum": [
-                  "introductory",
-                  "intermediate",
-                  "advanced",
-                  "capstone"
-                ]
-              }
-            },
             "description": {
               "type": [
                 "string",
@@ -338,26 +307,6 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "institution_types": {
-              "type": "array",
-              "uniqueItems": true,
-              "items": {
-                "enum": [
-                  "k12_public",
-                  "k12_private",
-                  "two_year_college",
-                  "four_year_college",
-                  "research_university",
-                  "minority_serving",
-                  "hbcu",
-                  "tribal_college",
-                  "museum_science_center",
-                  "community_organization",
-                  "online_provider",
-                  "other_institution"
-                ]
-              }
-            },
             "locale": {
               "type": "array",
               "uniqueItems": true,
@@ -367,62 +316,6 @@
                   "suburb",
                   "town",
                   "rural"
-                ]
-              }
-            }
-          }
-        },
-        "setting": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "modality": {
-              "type": "array",
-              "uniqueItems": true,
-              "items": {
-                "enum": [
-                  "in_person",
-                  "online_synchronous",
-                  "online_asynchronous",
-                  "hybrid",
-                  "not_instructional"
-                ]
-              }
-            },
-            "learning_environments": {
-              "type": "array",
-              "uniqueItems": true,
-              "items": {
-                "enum": [
-                  "large_lecture",
-                  "small_class",
-                  "laboratory",
-                  "field",
-                  "online_course",
-                  "museum_exhibit",
-                  "out_of_school_program",
-                  "community_or_public_space",
-                  "home_family",
-                  "workplace",
-                  "k12_classroom",
-                  "postsecondary_classroom",
-                  "other_environment"
-                ]
-              }
-            },
-            "pedagogy": {
-              "type": "array",
-              "uniqueItems": true,
-              "items": {
-                "enum": [
-                  "lecture_based",
-                  "active_learning",
-                  "inquiry_based",
-                  "problem_project_based",
-                  "flipped",
-                  "student_centered",
-                  "research_experience",
-                  "other_pedagogy"
                 ]
               }
             }
@@ -701,6 +594,117 @@
           }
         }
       }
+    },
+    "education": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "education_levels": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "early_childhood",
+              "primary",
+              "lower_secondary",
+              "upper_secondary",
+              "postsecondary_non_tertiary",
+              "short_cycle_tertiary",
+              "bachelors",
+              "masters",
+              "doctoral",
+              "adult_education",
+              "informal_learning"
+            ]
+          }
+        },
+        "undergraduate_levels": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "introductory",
+              "intermediate",
+              "advanced",
+              "capstone"
+            ]
+          }
+        },
+        "institution_types": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "k12_public",
+              "k12_private",
+              "two_year_college",
+              "four_year_college",
+              "research_university",
+              "minority_serving",
+              "hbcu",
+              "tribal_college",
+              "museum_science_center",
+              "community_organization",
+              "online_provider",
+              "other_institution"
+            ]
+          }
+        },
+        "modality": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "in_person",
+              "online_synchronous",
+              "online_asynchronous",
+              "hybrid",
+              "not_instructional"
+            ]
+          }
+        },
+        "learning_environments": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "large_lecture",
+              "small_class",
+              "laboratory",
+              "field",
+              "online_course",
+              "museum_exhibit",
+              "out_of_school_program",
+              "community_or_public_space",
+              "home_family",
+              "workplace",
+              "k12_classroom",
+              "postsecondary_classroom",
+              "other_environment"
+            ]
+          }
+        },
+        "pedagogy": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "lecture_based",
+              "active_learning",
+              "inquiry_based",
+              "problem_project_based",
+              "flipped",
+              "student_centered",
+              "research_experience",
+              "other_pedagogy"
+            ]
+          }
+        }
+      },
+      "description": "Education module. Null or absent when the study is not in an education setting."
     }
   }
 }

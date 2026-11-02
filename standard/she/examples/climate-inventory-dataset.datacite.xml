@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource xmlns="http://datacite.org/schema/kernel-4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4.7/metadata.xsd">
+  <identifier identifierType="DOI">10.5072/example-she-1</identifier>
+  <creators>
+    <creator>
+      <creatorName nameType="Personal">Example Researcher</creatorName>
+      <affiliation>Example State University</affiliation>
+    </creator>
+  </creators>
+  <titles>
+    <title>Example: Pre/post climate change understanding in an introductory Earth science course</title>
+  </titles>
+  <publisher>Example State University</publisher>
+  <publicationYear>2027</publicationYear>
+  <resourceType resourceTypeGeneral="Dataset">SHE Dataset</resourceType>
+  <subjects>
+    <subject>climate change</subject>
+    <subject>concept inventory</subject>
+    <subject>Climate change understanding in introductory Earth science</subject>
+    <subject subjectScheme="SHE Constructs" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/library/constructs.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/library/constructs.json#conceptual_understanding">Conceptual understanding</subject>
+    <subject subjectScheme="SHE Disciplines" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json#discipline.climate_science">Climate and environmental science</subject>
+    <subject subjectScheme="SHE Disciplines" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json#discipline.geoscience">Geoscience / Earth science</subject>
+    <subject subjectScheme="SHE Participant Roles" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json#participant_role.students">Students / learners</subject>
+    <subject subjectScheme="SHE Locales" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json#locale.city">City (NCES 11–13)</subject>
+    <subject subjectScheme="SHE Study Designs" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json#study_design.quasi_experimental">Quasi-experimental</subject>
+    <subject subjectScheme="SHE Study Designs" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json#study_design.pre_post">Pre/post measurement around an intervention</subject>
+    <subject subjectScheme="SHE Units of Analysis" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json#unit_of_analysis.individual">Individual (person / participant)</subject>
+    <subject subjectScheme="SHE Sampling Procedures" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json#sampling_procedure.convenience">Convenience sample</subject>
+    <subject subjectScheme="SHE Measurement Evidence" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json#measurement_evidence.reliability">Reliability / precision</subject>
+    <subject subjectScheme="SHE Data Collection Methods" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json#data_collection_method.assessment">Test or assessment</subject>
+    <subject subjectScheme="SHE Data Collection Methods" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json#data_collection_method.survey">Survey or questionnaire</subject>
+    <subject subjectScheme="SHE Education Levels" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json#education_level.bachelors">Bachelor's or equivalent (ISCED 6)</subject>
+    <subject subjectScheme="ISCED 2011" schemeURI="https://uis.unesco.org/sites/default/files/documents/international-standard-classification-of-education-isced-2011-en.pdf">ISCED level 6: Bachelor's or equivalent level</subject>
+    <subject subjectScheme="SHE Undergraduate Levels" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json#undergraduate_level.introductory">Introductory / first-year</subject>
+    <subject subjectScheme="SHE Institution Types" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json#institution_type.research_university">Research university</subject>
+    <subject subjectScheme="SHE Modalities" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json#modality.in_person">In person</subject>
+    <subject subjectScheme="SHE Learning Environments" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json#learning_environment.large_lecture">Large lecture class</subject>
+    <subject subjectScheme="SHE Instructional Approaches" schemeURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json" valueURI="https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json#pedagogy.active_learning">Active learning</subject>
+    <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Scientific Concepts</subject>
+    <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Misconceptions</subject>
+    <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Concept Formation</subject>
+    <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Climate</subject>
+    <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Earth Science</subject>
+    <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Geology</subject>
+    <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Urban Areas</subject>
+    <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Quasiexperimental Design</subject>
+    <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Test Reliability</subject>
+    <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Tests</subject>
+    <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Questionnaires</subject>
+    <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Higher Education</subject>
+    <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Postsecondary Education</subject>
+    <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Undergraduate Students</subject>
+    <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Research Universities</subject>
+    <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Large Group Instruction</subject>
+    <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Lecture Method</subject>
+    <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Active Learning</subject>
+    <subject subjectScheme="ERIC Thesaurus" schemeURI="https://eric.ed.gov/?ti=all">Informed Consent</subject>
+  </subjects>
+  <dates>
+    <date dateType="Collected">2026-08-25/2026-12-12</date>
+  </dates>
+  <language>en</language>
+  <relatedIdentifiers>
+    <relatedIdentifier relatedIdentifierType="URL" relationType="IsCollectedBy">https://github.com/JLib271/OpenEdMetadata/blob/main/library/instruments/climate-change-concept-inventory.json</relatedIdentifier>
+    <relatedIdentifier relatedIdentifierType="DOI" relationType="References">10.1007/s10584-018-2279-y</relatedIdentifier>
+  </relatedIdentifiers>
+  <sizes>
+    <size>N = 212 participants</size>
+  </sizes>
+  <rightsList>
+    <rights rightsURI="https://creativecommons.org/licenses/by/4.0/" rightsIdentifier="CC-BY-4.0" rightsIdentifierScheme="SPDX" schemeURI="https://spdx.org/licenses/">Creative Commons Attribution 4.0 International</rights>
+    <rights>Access: Open (public)</rights>
+  </rightsList>
+  <descriptions>
+    <description descriptionType="Abstract">Illustrative record (fictional study) showing how a dataset collected with the Climate Change Concept Inventory is described with the SHE Study Metadata Profile, including its Education module.</description>
+    <description descriptionType="Methods">Study design: Quasi-experimental; Pre/post measurement around an intervention. Research questions: How does students' understanding of basic climate change processes change over a semester of active-learning instruction? Sampling: Convenience sample. Data collection: Test or assessment; Survey or questionnaire. Participants: Students enrolled in two sections of an introductory Earth science course.</description>
+    <description descriptionType="Other">Ethics and access (SHE Study Metadata Profile). Human-subjects review: Exempt determination. Participation consent: Informed consent. Consent for data sharing: Broad sharing of de-identified data consented. Identifiability: De-identified. Access level: Open (public).</description>
+    <description descriptionType="Other">CARE statement (SHE Study Metadata Profile). Indigenous data: No. Governance: Not applicable.</description>
+  </descriptions>
+  <geoLocations>
+    <geoLocation>
+      <geoLocationPlace>MI, United States</geoLocationPlace>
+    </geoLocation>
+  </geoLocations>
+</resource>

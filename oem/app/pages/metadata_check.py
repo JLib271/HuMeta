@@ -3,7 +3,7 @@
 """Module 3: Check & Export Metadata.
 
 Add the constructs measured (suggested from the Module 2 plan), check the
-STEMEd+ record against the profile's rules, and export STEMEd+ JSON, DataCite
+SHE record against the profile's rules, and export SHE JSON, DataCite
 4.7 JSON/XML, and ERIC descriptors. Logic lives in oem/profile.py.
 """
 
@@ -25,7 +25,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     p = profile.load()
     lib = library()
     st.caption(
-        f"Complete your [STEMEd+]({SPEC_URL}) record with the constructs you measure, check it against the "
+        f"Complete your [SHE profile]({SPEC_URL}) record with the constructs you measure, check it against the "
         "profile's responsible-sharing rules, and export metadata that DataCite (DOIs) and ERIC understand."
     )
     record = current_record()
@@ -41,26 +41,26 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     instrument_names = {iid: label for label, iid in instrument_labels.items()}
 
     st.subheader("Constructs measured")
-    st.markdown(profile.alignment_badges("stemed.constructs"), help=profile.alignment_help("stemed.constructs"))
+    st.markdown(profile.alignment_badges("study.constructs"), help=profile.alignment_help("study.constructs"))
     plan = current_project().get("module2_plan") or {}
     suggestions = [c for c in profile.suggest_constructs(lib, plan)
-                   if c not in {x["construct_id"] for x in record["stemed"]["constructs"]}]
+                   if c not in {x["construct_id"] for x in record["study"]["constructs"]}]
     if suggestions:
         st.caption("From your Module 2 plan: " + ", ".join(construct_names[c] for c in suggestions))
         if st.button("Add these constructs", key="m3_add_suggestions"):
-            record["stemed"]["constructs"] += [{"construct_id": c, "instrument_id": None, "version_id": None,
+            record["study"]["constructs"] += [{"construct_id": c, "instrument_id": None, "version_id": None,
                                                 "dimension_id": None} for c in suggestions]
             store_record(record, reset_widgets=True)
             st.rerun()
     elif not plan:
         st.caption("Plan variables in Module 2 to get construct suggestions, or pick constructs below.")
 
-    v = st.session_state.get("stemed_form_version", 0)
+    v = st.session_state.get("profile_form_version", 0)
     with st.form(key=f"m3_constructs_{v}"):
         table = st.data_editor(
             pd.DataFrame(
                 [{"construct": construct_names.get(c["construct_id"]), "instrument": instrument_names.get(c.get("instrument_id"))}
-                 for c in record["stemed"]["constructs"]] or [{"construct": None, "instrument": None}],
+                 for c in record["study"]["constructs"]] or [{"construct": None, "instrument": None}],
                 columns=["construct", "instrument"]),
             num_rows="dynamic", use_container_width=True, key=f"m3_constructs_table_{v}",
             column_config={
@@ -76,7 +76,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
                 if cid and all(c["construct_id"] != cid for c in constructs):
                     constructs.append({"construct_id": cid, "instrument_id": instrument_labels.get(row.get("instrument")),
                                        "version_id": None, "dimension_id": None})
-            record["stemed"]["constructs"] = constructs
+            record["study"]["constructs"] = constructs
             store_record(record)
             st.success("Constructs saved to your project.")
 
@@ -88,8 +88,8 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
 
     st.subheader("Export")
     slug = re.sub(r"[^a-z0-9]+", "-", (record["resource"].get("title") or "record").lower()).strip("-")[:50] or "record"
-    st.download_button("STEMEd+ record (JSON)", json.dumps(record, ensure_ascii=False, indent=2).encode("utf-8"),
-                       file_name=f"{slug}.stemed-ap.json", mime="application/json", key="m3_dl_record",
+    st.download_button("SHE record (JSON)", json.dumps(record, ensure_ascii=False, indent=2).encode("utf-8"),
+                       file_name=f"{slug}.she.json", mime="application/json", key="m3_dl_record",
                        use_container_width=True)
     if any(i.severity == "error" for i in issues):
         st.info("Fix the items above to enable the DataCite and ERIC exports.")

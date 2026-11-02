@@ -1,0 +1,46 @@
+element,module,label,obligation,cardinality,vocabulary,datacite_4_7
+resource.title,core,Title,M,1,,titles.title
+resource.creators,core,Creators,M,1..n,,creators (nameIdentifier with nameIdentifierScheme ORCID; affiliation)
+resource.publisher,core,Publisher,M,1,,publisher
+resource.publication_year,core,Publication year,M,1,,publicationYear
+resource.resource_type,core,Resource type,M,1,,types.resourceTypeGeneral; types.resourceType = 'SHE <type>'
+resource.identifier,core,Identifier,O,0..1,,identifiers (DOI) or alternateIdentifiers
+resource.description,core,Description,R,0..1,,descriptions (descriptionType Abstract)
+resource.keywords,core,Keywords,O,0..n,,subjects (no scheme)
+resource.language,core,Language,R,0..1,,language
+resource.license,core,License,R,0..1,,"rightsList (rightsIdentifier, rightsIdentifierScheme SPDX)"
+resource.funding,core,Funding,O,0..n,,fundingReferences
+resource.collection_dates,core,Data collection dates,R,0..1,,"dates (dateType Collected, as start/end)"
+resource.geography,core,Geographic coverage,R,0..1,,geoLocations (geoLocationPlace)
+resource.related,core,Related resources,O,0..n,,relatedIdentifiers
+study.design.topic,core,Topic / content domain,R,0..1,,subjects (no scheme)
+study.design.research_questions,core,Research questions and aims,R,0..1,,descriptions (descriptionType Methods)
+study.design.unit_of_analysis,core,Unit of analysis,O,0..n,unit_of_analysis,subjects (subjectScheme 'SHE Units of Analysis')
+study.design.sampling_procedure,core,Sampling procedure,O,0..n,sampling_procedure,subjects (subjectScheme 'SHE Sampling Procedures'); descriptions (Methods)
+study.constructs,core,Constructs measured,MA,0..n,,"subjects (subjectScheme 'SHE Constructs', valueURI per construct); for datasets, relatedIdentifiers to the instrument's library record (URL, relationType IsCollectedBy) and its publication (DOI, relationType References); ERIC descriptors as additional subjects"
+study.discipline,core,Discipline,R,0..n,discipline,subjects (subjectScheme 'SHE Disciplines')
+study.population.participant_roles,core,Participant population,M,1..n,participant_role,subjects (subjectScheme 'SHE Participant Roles')
+education.education_levels,education,Education level,M,1..n,education_level,subjects (subjectScheme 'SHE Education Levels'); ISCED 2011 level as an additional subject (subjectScheme 'ISCED 2011')
+education.undergraduate_levels,education,Undergraduate course level,O,0..n,undergraduate_level,subjects (subjectScheme 'SHE Undergraduate Levels')
+study.population.description,core,Population description,R,0..1,,descriptions (descriptionType Methods)
+study.population.sample_size,core,Sample size,R,0..1,,sizes ('N = <n> participants')
+education.institution_types,education,Institution type,R,0..n,institution_type,subjects (subjectScheme 'SHE Institution Types')
+study.context.locale,core,Locale,R,0..n,locale,subjects (subjectScheme 'SHE Locales')
+education.modality,education,Instructional modality,R,0..n,modality,subjects (subjectScheme 'SHE Modalities')
+education.learning_environments,education,Learning environment,R,0..n,learning_environment,subjects (subjectScheme 'SHE Learning Environments')
+education.pedagogy,education,Instructional approach,O,0..n,pedagogy,subjects (subjectScheme 'SHE Instructional Approaches')
+study.evidence.study_designs,core,Study design,MA,0..n,study_design,subjects (subjectScheme 'SHE Study Designs'); descriptions (Methods)
+study.evidence.measurement_evidence,core,Measurement evidence,MA,0..n,measurement_evidence,subjects (subjectScheme 'SHE Measurement Evidence')
+study.evidence.data_collection_methods,core,Data collection method,R,0..n,data_collection_method,subjects (subjectScheme 'SHE Data Collection Methods')
+study.ethics.human_subjects_review,core,Human-subjects review,M,1,human_subjects_review,"descriptions (descriptionType Other, 'Ethics and access')"
+study.ethics.consent,core,Participation consent,R,0..1,consent,"descriptions (Other, 'Ethics and access')"
+study.ethics.consent_for_sharing,core,Consent for data sharing,M,1,consent_for_sharing,"descriptions (Other, 'Ethics and access'); rightsList"
+study.ethics.identifiability,core,Identifiability,M,1,identifiability,"descriptions (Other, 'Ethics and access')"
+study.ethics.sensitivity_flags,core,Sensitivity flags,R,0..n,sensitivity_flag,"descriptions (Other, 'Ethics and access')"
+study.ethics.access_level,core,Access level,M,1,access_level,rightsList (access statement)
+study.ethics.governance_notes,core,Governance notes,O,0..1,,"descriptions (Other, 'Ethics and access')"
+study.care.indigenous_data,core,Indigenous data,M,1,indigenous_data,"descriptions (Other, 'CARE statement')"
+study.care.governance,core,Indigenous data governance,MA,0..1,indigenous_governance,"descriptions (Other, 'CARE statement'); rightsList"
+study.care.statement,core,CARE statement,MA,0..1,,"descriptions (Other, 'CARE statement')"
+study.care.local_contexts_project,core,Local Contexts project,O,0..1,,"relatedIdentifiers (relatedIdentifierType URL, relationType IsDescribedBy)"
+study.care.local_contexts_labels,core,Local Contexts Labels and Notices,O,0..n,,"descriptions (Other, 'CARE statement')"

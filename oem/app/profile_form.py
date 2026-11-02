@@ -1,6 +1,6 @@
 # Copyright (C) 2026 Julie C. Libarkin
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Streamlit widgets for editing a STEMEd+ profile record.
+"""Streamlit widgets for editing a SHE Study Metadata Profile record.
 
 Used by Module 1 (the study profile form) and Module 3 (constructs, checks,
 and exports). The record format and all rules live in ``oem/profile.py``.
@@ -18,7 +18,7 @@ from oem import profile
 from oem.app.common import current_project
 from oem.library import Library
 
-SPEC_URL = "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md"
+SPEC_URL = "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/README.md"
 ISSUES_URL = "https://github.com/JLib271/OpenEdMetadata/issues"
 CARE_URL = "https://www.gida-global.org/care"
 LOCAL_CONTEXTS_URL = "https://localcontexts.org/"
@@ -46,20 +46,20 @@ def library() -> Library:
 
 
 def current_record() -> dict | None:
-    """The project's STEMEd+ record, filled out to the current profile shape."""
-    record = st.session_state.get("stemed_record") or current_project().get("stemed_record")
+    """The project's SHE profile record, filled out to the current profile shape."""
+    record = st.session_state.get("profile_record") or current_project().get("profile_record")
     return profile.migrate(record) if record else None
 
 
 def store_record(record: dict, reset_widgets: bool = False) -> None:
     """Save the record to the session and project, and refresh the derived study view."""
     project = current_project()
-    project["stemed_record"] = record
+    project["profile_record"] = record
     project["study"] = profile.to_study_record(record, existing=project.get("study"))
     st.session_state["project"] = project
-    st.session_state["stemed_record"] = record
+    st.session_state["profile_record"] = record
     if reset_widgets:
-        st.session_state["stemed_form_version"] = st.session_state.get("stemed_form_version", 0) + 1
+        st.session_state["profile_form_version"] = st.session_state.get("profile_form_version", 0) + 1
 
 
 def _blank(value: str | None) -> str | None:
@@ -70,11 +70,13 @@ def _blank(value: str | None) -> str | None:
 def record_form(record: dict) -> dict | None:
     """Render the profile form (everything except constructs). Returns the new record on submit."""
     p = profile.load()
-    res, s = record["resource"], record["stemed"]
-    v = st.session_state.get("stemed_form_version", 0)
+    res, s = record["resource"], record["study"]
+    edu = record.get("education") or {}
+    with_education = profile.uses(record, "education")
+    v = st.session_state.get("profile_form_version", 0)
 
     def key(name: str) -> str:
-        return f"stemed_{name}_{v}"
+        return f"profile_{name}_{v}"
 
     def lab(text: str, element_id: str) -> str:
         """Field label followed by its standard alignments."""
@@ -99,14 +101,26 @@ def record_form(record: dict) -> dict | None:
     with st.expander("How fields align with metadata standards", expanded=False):
         st.markdown(
             "Each field shows the standards it corresponds to, so records stay compatible with tools "
-            "that already use them. `STEMEd+` marks fields that are specific to this profile; no "
+            "that already use them. `SHE` marks fields defined by this profile; no "
             "general-purpose standard covers them. **≈** = close match, **~** = related; no mark = exact match. "
             f"**{profile.SEEKING_INPUT_BADGE}** marks alignments we are not yet sure of. If you know the standard, "
             f"please comment on [GitHub]({ISSUES_URL})."
         )
         st.markdown("\n".join(f"- **{std['short']}**: [{std['name']}]({std['url']})"
                                  for std in p.definition["standards"].values()))
-    with st.form(key=f"stemed_form_{v}"):
+    st.markdown("**Field modules**")
+    wanted = st.toggle(
+        "Education module: learners' education levels, institutions and instructional settings",
+        value=with_education, key=key("module_education"),
+        help="Use for studies in education settings. Turning it off clears the module's fields.")
+    if wanted != with_education:
+        changed = profile.migrate(record, p)
+        changed["education"] = profile.empty_record(p, modules=("education",))["education"] if wanted else None
+        store_record(changed, reset_widgets=True)
+        st.rerun()
+    st.caption("Modules for other fields, starting with social science and humanities, are being developed with the "
+               f"community. [Suggest one on GitHub]({ISSUES_URL}).")
+    with st.form(key=f"profile_form_{v}"):
         st.subheader("1 · The study")
         c1, c2 = st.columns([3, 1])
         title = c1.text_input(lab("Title *", "resource.title"), res.get("title") or "", key=key("title"),
@@ -159,23 +173,23 @@ def record_form(record: dict) -> dict | None:
 
         st.subheader("2 · Study design")
         design = s.get("design") or {}
-        topic = st.text_input(lab("Topic / content domain", "stemed.design.topic"), design.get("topic") or "", key=key("topic"),
-                              help=tip("stemed.design.topic", "Used by Module 2 to find related studies."))
-        research_questions = st.text_area(lab("Research questions and aims", "stemed.design.research_questions"),
+        topic = st.text_input(lab("Topic / content domain", "study.design.topic"), design.get("topic") or "", key=key("topic"),
+                              help=tip("study.design.topic", "Used by Module 2 to find related studies."))
+        research_questions = st.text_area(lab("Research questions and aims", "study.design.research_questions"),
                                           design.get("research_questions") or "", key=key("rq"),
-                                          help=tip("stemed.design.research_questions"))
+                                          help=tip("study.design.research_questions"))
         c1, c2 = st.columns(2)
         with c1:
-            designs = multi("Study design", "study_design", s["evidence"].get("study_designs"), "designs", "stemed.evidence.study_designs",
+            designs = multi("Study design", "study_design", s["evidence"].get("study_designs"), "designs", "study.evidence.study_designs",
                             help="Required for datasets and study registrations.")
-            units = multi("Unit of analysis", "unit_of_analysis", design.get("unit_of_analysis"), "units", "stemed.design.unit_of_analysis")
+            units = multi("Unit of analysis", "unit_of_analysis", design.get("unit_of_analysis"), "units", "study.design.unit_of_analysis")
             methods = multi("Data collection method", "data_collection_method", s["evidence"].get("data_collection_methods"), "methods",
-                            "stemed.evidence.data_collection_methods")
+                            "study.evidence.data_collection_methods")
         with c2:
             sampling = multi("Sampling procedure", "sampling_procedure", design.get("sampling_procedure"), "sampling",
-                             "stemed.design.sampling_procedure")
+                             "study.design.sampling_procedure")
             measurement = multi("Measurement evidence (for instruments)", "measurement_evidence",
-                                s["evidence"].get("measurement_evidence"), "measurement", "stemed.evidence.measurement_evidence",
+                                s["evidence"].get("measurement_evidence"), "measurement", "study.evidence.measurement_evidence",
                                 help="Required for instruments. Sources of validity evidence follow the Standards for Educational and Psychological Testing.")
         dates = res.get("collection_dates") or {}
         c1, c2 = st.columns(2)
@@ -188,17 +202,11 @@ def record_form(record: dict) -> dict | None:
         c1, c2 = st.columns(2)
         with c1:
             roles = multi("Participants *", "participant_role", s["population"].get("participant_roles"), "roles",
-                          "stemed.population.participant_roles")
-            levels = multi("Education level *", "education_level", s["population"].get("education_levels"), "levels",
-                           "stemed.population.education_levels")
-            ug_levels = multi("Undergraduate course level", "undergraduate_level", s["population"].get("undergraduate_levels"), "ug",
-                              "stemed.population.undergraduate_levels")
-            disciplines = multi("Discipline", "discipline", s.get("discipline"), "discipline", "stemed.discipline")
+                          "study.population.participant_roles")
+            disciplines = multi("Discipline", "discipline", s.get("discipline"), "discipline", "study.discipline")
         with c2:
-            institutions = multi("Institution type", "institution_type", s["context"].get("institution_types"), "inst",
-                                 "stemed.context.institution_types")
-            locale = multi("Locale", "locale", s["context"].get("locale"), "locale", "stemed.context.locale",
-                           help="NCES locale types. Fully online study? Leave blank and set Modality.")
+            locale = multi("Locale", "locale", s["context"].get("locale"), "locale", "study.context.locale",
+                           help="NCES locale types. Fully online study? Leave blank.")
             geo = res.get("geography") or {}
             states = st.multiselect(lab("US states", "resource.geography"), US_STATES, help=tip("resource.geography", "USPS state codes."), default=[x for x in geo.get("us_states") or [] if x in US_STATES],
                                     key=key("states"))
@@ -206,44 +214,55 @@ def record_form(record: dict) -> dict | None:
                                       value=
                                       ", ".join(geo.get("countries") or (["US"] if states else [])), key=key("countries"))
         c1, c2 = st.columns([3, 1])
-        population_description = c1.text_area(lab("Population description (no identifying details)", "stemed.population.description"),
-                                              help=tip("stemed.population.description"), value=
+        population_description = c1.text_area(lab("Population description (no identifying details)", "study.population.description"),
+                                              help=tip("study.population.description"), value=
                                               s["population"].get("description") or "", key=key("popdesc"))
-        sample_size = c2.number_input(lab("Sample size (N)", "stemed.population.sample_size"), min_value=0, step=1,
+        sample_size = c2.number_input(lab("Sample size (N)", "study.population.sample_size"), min_value=0, step=1,
                                       value=int(s["population"].get("sample_size") or 0), key=key("n"),
-                                      help=tip("stemed.population.sample_size", "Planned or actual. Leave 0 if not known."))
+                                      help=tip("study.population.sample_size", "Planned or actual. Leave 0 if not known."))
 
-        st.subheader("4 · Instructional setting")
-        c1, c2, c3 = st.columns(3)
-        with c1:
-            modality = multi("Modality", "modality", s["setting"].get("modality"), "modality", "stemed.setting.modality")
-        with c2:
-            environments = multi("Learning environment", "learning_environment", s["setting"].get("learning_environments"), "env",
-                                 "stemed.setting.learning_environments")
-        with c3:
-            pedagogy = multi("Instructional approach", "pedagogy", s["setting"].get("pedagogy"), "pedagogy", "stemed.setting.pedagogy")
+        number = 4
+        if with_education:
+            st.subheader("4 · Education module")
+            st.caption("Learners, institutions and instructional settings. Turn the module off above if this study "
+                       "is not in an education setting.")
+            c1, c2, c3 = st.columns(3)
+            with c1:
+                levels = multi("Education level *", "education_level", edu.get("education_levels"), "levels",
+                               "education.education_levels")
+                ug_levels = multi("Undergraduate course level", "undergraduate_level", edu.get("undergraduate_levels"), "ug",
+                                  "education.undergraduate_levels")
+            with c2:
+                institutions = multi("Institution type", "institution_type", edu.get("institution_types"), "inst",
+                                     "education.institution_types")
+                modality = multi("Modality", "modality", edu.get("modality"), "modality", "education.modality")
+            with c3:
+                environments = multi("Learning environment", "learning_environment", edu.get("learning_environments"), "env",
+                                     "education.learning_environments")
+                pedagogy = multi("Instructional approach", "pedagogy", edu.get("pedagogy"), "pedagogy", "education.pedagogy")
+            number = 5
 
-        st.subheader("5 · Ethics, consent, and access")
+        st.subheader(f"{number} · Ethics, consent, and access")
         c1, c2, c3 = st.columns(3)
         with c1:
             review = single("Human-subjects review *", "human_subjects_review", s["ethics"].get("human_subjects_review"), "review",
-                            "stemed.ethics.human_subjects_review")
-            consent = single("Participation consent", "consent", s["ethics"].get("consent"), "consent", "stemed.ethics.consent")
+                            "study.ethics.human_subjects_review")
+            consent = single("Participation consent", "consent", s["ethics"].get("consent"), "consent", "study.ethics.consent")
         with c2:
             sharing = single("Consent for data sharing *", "consent_for_sharing", s["ethics"].get("consent_for_sharing"), "sharing",
-                             "stemed.ethics.consent_for_sharing",
+                             "study.ethics.consent_for_sharing",
                              help="What participants agreed to about sharing beyond your team. Plan this before you collect data.")
             identifiability = single("Identifiability *", "identifiability", s["ethics"].get("identifiability"), "ident",
-                                     "stemed.ethics.identifiability")
+                                     "study.ethics.identifiability")
         with c3:
-            access = single("Access level *", "access_level", s["ethics"].get("access_level"), "access", "stemed.ethics.access_level")
+            access = single("Access level *", "access_level", s["ethics"].get("access_level"), "access", "study.ethics.access_level")
             flags = multi("Sensitivity flags", "sensitivity_flag", s["ethics"].get("sensitivity_flags"), "flags",
-                          "stemed.ethics.sensitivity_flags")
+                          "study.ethics.sensitivity_flags")
         governance_notes = st.text_area(lab("Governance notes (approval references, data-use restrictions; nothing confidential)",
-                                            "stemed.ethics.governance_notes"), help=tip("stemed.ethics.governance_notes"), value=
+                                            "study.ethics.governance_notes"), help=tip("study.ethics.governance_notes"), value=
                                         s["ethics"].get("governance_notes") or "", key=key("govnotes"))
 
-        st.subheader("6 · Indigenous data governance (CARE)")
+        st.subheader(f"{number + 1} · Indigenous data governance (CARE)")
         st.caption(
             f"The [CARE Principles]({CARE_URL}) (Collective benefit, Authority to control, Responsibility, Ethics) "
             "guide work with data about Indigenous Peoples, nations, communities, lands, and knowledges. Communities may "
@@ -253,19 +272,19 @@ def record_form(record: dict) -> dict | None:
         c1, c2 = st.columns(2)
         with c1:
             indigenous = single("Does this study involve Indigenous data? *", "indigenous_data", care.get("indigenous_data"), "indigenous",
-                                "stemed.care.indigenous_data")
+                                "study.care.indigenous_data")
             governance = single("Governance arrangement (required if yes)", "indigenous_governance", care.get("governance"), "governance",
-                                "stemed.care.governance")
+                                "study.care.governance")
         with c2:
-            lc_project = st.text_input(lab("Local Contexts Hub project URL", "stemed.care.local_contexts_project"),
+            lc_project = st.text_input(lab("Local Contexts Hub project URL", "study.care.local_contexts_project"),
                                        care.get("local_contexts_project") or "", key=key("lcproj"),
-                                       help=tip("stemed.care.local_contexts_project"))
-            lc_labels = st.text_input(lab("Local Contexts Labels / Notices (comma-separated)", "stemed.care.local_contexts_labels"),
-                                      help=tip("stemed.care.local_contexts_labels"), value=
+                                       help=tip("study.care.local_contexts_project"))
+            lc_labels = st.text_input(lab("Local Contexts Labels / Notices (comma-separated)", "study.care.local_contexts_labels"),
+                                      help=tip("study.care.local_contexts_labels"), value=
                                       ", ".join(care.get("local_contexts_labels") or []), key=key("lclabels"))
         care_statement = st.text_area(
-            lab("CARE statement (required if yes)", "stemed.care.statement"), care.get("statement") or "", key=key("care"),
-            help=tip("stemed.care.statement", "Describe collective benefit to the communities involved, how their authority "
+            lab("CARE statement (required if yes)", "study.care.statement"), care.get("statement") or "", key=key("care"),
+            help=tip("study.care.statement", "Describe collective benefit to the communities involved, how their authority "
                      "to control the data is respected, and your responsibility and ethics commitments."))
 
         submitted = st.form_submit_button("Save study profile", type="primary", use_container_width=True)
@@ -279,7 +298,7 @@ def record_form(record: dict) -> dict | None:
             creators.append({"name": str(row["name"]).strip(), "orcid": orcid.group(0) if orcid else None,
                              "affiliation": _blank(str(row.get("affiliation") or ""))})
     doi_match = re.search(r"10\.\d{4,9}/\S+", doi or "")
-    new = profile.empty_record(p)
+    new = profile.empty_record(p, modules=("education",) if with_education else ())
     new["resource"].update({
         "title": title.strip(), "creators": creators, "publisher": publisher.strip(),
         "publication_year": int(publication_year), "resource_type": resource_type,
@@ -294,16 +313,18 @@ def record_form(record: dict) -> dict | None:
         if (countries.strip() or states) else None,
         "related": res.get("related") or [],
     })
-    ns = new["stemed"]
+    ns = new["study"]
     ns["constructs"] = s.get("constructs") or []  # edited in Module 3
     ns["discipline"] = disciplines
     ns["design"].update({"topic": _blank(topic), "research_questions": _blank(research_questions),
                          "unit_of_analysis": units, "sampling_procedure": sampling})
-    ns["population"].update({"participant_roles": roles, "education_levels": levels, "undergraduate_levels": ug_levels,
-                             "description": _blank(population_description),
+    ns["population"].update({"participant_roles": roles, "description": _blank(population_description),
                              "sample_size": int(sample_size) if sample_size else None})
-    ns["context"].update({"institution_types": institutions, "locale": locale})
-    ns["setting"].update({"modality": modality, "learning_environments": environments, "pedagogy": pedagogy})
+    ns["context"].update({"locale": locale})
+    if with_education:
+        new["education"].update({"education_levels": levels, "undergraduate_levels": ug_levels,
+                                 "institution_types": institutions, "modality": modality,
+                                 "learning_environments": environments, "pedagogy": pedagogy})
     ns["evidence"].update({"study_designs": designs, "measurement_evidence": measurement, "data_collection_methods": methods})
     ns["ethics"].update({"human_subjects_review": review, "consent": consent, "consent_for_sharing": sharing,
                          "identifiability": identifiability, "sensitivity_flags": flags, "access_level": access,
@@ -318,7 +339,7 @@ def show_issues(issues: list[profile.Issue]) -> None:
     errors = [i for i in issues if i.severity == "error"]
     warnings = [i for i in issues if i.severity == "warning"]
     if not issues:
-        st.success("This record meets every requirement of the STEMEd+ profile.")
+        st.success("This record meets every requirement of the SHE profile.")
     for issue in errors:
         st.error(f"**{issue.element}**: {issue.message}" + (f" ({issue.rule})" if issue.rule else ""))
     for issue in warnings:

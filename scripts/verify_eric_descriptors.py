@@ -14,7 +14,7 @@ parentheses, e.g. "Climate Change (2004)"; those do not match because the
 entry text differs.
 
 With --update, newly confirmed descriptors move from "unverified" to
-"verified" in standard/stemed-ap/crosswalks/eric_descriptor_status.json.
+"verified" in standard/she/crosswalks/eric_descriptor_status.json.
 Descriptors that are not found are reported; fix their mappings by hand.
 """
 from __future__ import annotations
@@ -29,7 +29,7 @@ from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-STATUS = ROOT / "standard" / "stemed-ap" / "crosswalks" / "eric_descriptor_status.json"
+STATUS = ROOT / "standard" / "she" / "crosswalks" / "eric_descriptor_status.json"
 
 
 def entries_from_text(text: str) -> set[str]:

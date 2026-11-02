@@ -37,5 +37,5 @@ jobs:
         run: python -m pytest -v
       - name: Validate instrument library
         run: python scripts/validate_library.py
-      - name: STEMEd+ profile artifacts are up to date
+      - name: SHE profile artifacts are up to date
         run: python scripts/build_profile_artifacts.py --check

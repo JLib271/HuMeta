@@ -1,10 +1,12 @@
 {
-  "profile": "stemed-ap",
-  "title": "STEMEd+ Metadata Application Profile",
+  "profile": "she",
+  "title": "SHE Study Metadata Profile",
+  "full_title": "Social Science, Humanities, and Education Study Metadata Profile",
+  "short_name": "SHE",
   "profile_version": "1.0.0-draft.1",
   "status": "draft",
-  "namespace": "stemed",
-  "namespace_uri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/elements.md#",
+  "namespace": "she",
+  "namespace_uri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/elements.md#",
   "datacite_schema": "4.7",
   "obligations": {
     "M": "Mandatory: every record must have it.",
@@ -13,10 +15,10 @@
     "O": "Optional."
   },
   "standards": {
-    "stemed": {
-      "short": "STEMEd+",
-      "name": "STEMEd+ Metadata Application Profile (extension element or vocabulary)",
-      "url": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md"
+    "she": {
+      "short": "SHE",
+      "name": "SHE Study Metadata Profile (element or vocabulary defined by this profile)",
+      "url": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/README.md"
     },
     "datacite": {
       "short": "DataCite",
@@ -99,6 +101,17 @@
       "url": "https://localcontexts.org/"
     }
   },
+  "modules": {
+    "core": {
+      "label": "Core",
+      "definition": "Elements for any study in the social sciences, humanities, or education."
+    },
+    "education": {
+      "label": "Education",
+      "definition": "Optional module for studies in education settings: learners' education levels, institutions and instructional settings. Its mandatory elements apply only when a record includes the module.",
+      "record_key": "education"
+    }
+  },
   "elements": [
     {
       "id": "resource.title",
@@ -124,7 +137,8 @@
           "term": "name",
           "match": "exact"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
       "id": "resource.creators",
@@ -155,7 +169,8 @@
           "term": "ORCID iD (nameIdentifier)",
           "match": "exact"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
       "id": "resource.publisher",
@@ -181,7 +196,8 @@
           "term": "publisher",
           "match": "exact"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
       "id": "resource.publication_year",
@@ -207,7 +223,8 @@
           "term": "datePublished",
           "match": "close"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
       "id": "resource.resource_type",
@@ -225,7 +242,7 @@
         "Other"
       ],
       "definition": "General type of the resource, using DataCite resourceTypeGeneral values.",
-      "datacite": "types.resourceTypeGeneral; types.resourceType = 'STEMEd+ <type>'",
+      "datacite": "types.resourceTypeGeneral; types.resourceType = 'SHE <type>'",
       "alignments": [
         {
           "standard": "datacite",
@@ -242,7 +259,8 @@
           "term": "@type",
           "match": "close"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
       "id": "resource.identifier",
@@ -268,7 +286,8 @@
           "term": "identifier",
           "match": "exact"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
       "id": "resource.description",
@@ -294,7 +313,8 @@
           "term": "description",
           "match": "exact"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
       "id": "resource.keywords",
@@ -320,7 +340,8 @@
           "term": "keywords",
           "match": "exact"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
       "id": "resource.language",
@@ -351,7 +372,8 @@
           "term": "language tag",
           "match": "exact"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
       "id": "resource.license",
@@ -382,7 +404,8 @@
           "term": "license identifier",
           "match": "exact"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
       "id": "resource.funding",
@@ -403,7 +426,8 @@
           "term": "funder",
           "match": "close"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
       "id": "resource.collection_dates",
@@ -434,7 +458,8 @@
           "term": "temporalCoverage",
           "match": "related"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
       "id": "resource.geography",
@@ -465,7 +490,8 @@
           "term": "spatialCoverage",
           "match": "close"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
       "id": "resource.related",
@@ -491,10 +517,11 @@
           "term": "citation",
           "match": "related"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.design.topic",
+      "id": "study.design.topic",
       "label": "Topic / content domain",
       "obligation": "R",
       "cardinality": "0..1",
@@ -503,7 +530,7 @@
       "datacite": "subjects (no scheme)",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "design.topic",
           "match": "exact"
         },
@@ -522,10 +549,11 @@
           "term": "about",
           "match": "close"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.design.research_questions",
+      "id": "study.design.research_questions",
       "label": "Research questions and aims",
       "obligation": "R",
       "cardinality": "0..1",
@@ -534,7 +562,7 @@
       "datacite": "descriptions (descriptionType Methods)",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "design.research_questions",
           "match": "exact"
         },
@@ -548,20 +576,21 @@
           "term": "description",
           "match": "related"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.design.unit_of_analysis",
+      "id": "study.design.unit_of_analysis",
       "label": "Unit of analysis",
       "obligation": "O",
       "cardinality": "0..n",
       "type": "vocab",
       "vocabulary": "unit_of_analysis",
       "definition": "The unit(s) the analysis is about.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Units of Analysis')",
+      "datacite": "subjects (subjectScheme 'SHE Units of Analysis')",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "unit_of_analysis vocabulary",
           "match": "exact"
         },
@@ -570,20 +599,21 @@
           "term": "subject (scheme)",
           "match": "close"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.design.sampling_procedure",
+      "id": "study.design.sampling_procedure",
       "label": "Sampling procedure",
       "obligation": "O",
       "cardinality": "0..n",
       "type": "vocab",
       "vocabulary": "sampling_procedure",
       "definition": "How participants or units were selected.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Sampling Procedures'); descriptions (Methods)",
+      "datacite": "subjects (subjectScheme 'SHE Sampling Procedures'); descriptions (Methods)",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "sampling_procedure vocabulary",
           "match": "exact"
         },
@@ -592,21 +622,22 @@
           "term": "subject (scheme)",
           "match": "close"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.constructs",
+      "id": "study.constructs",
       "label": "Constructs measured",
       "obligation": "MA",
       "cardinality": "0..n",
       "type": "construct",
       "condition": "Mandatory when resource_type is Dataset or Instrument.",
-      "definition": "Constructs measured, from the STEMEd+ construct vocabulary (library/constructs.json), optionally with the instrument, version and subscale used.",
+      "definition": "Constructs measured, from the SHE construct vocabulary (library/constructs.json), optionally with the instrument, version and subscale used.",
       "vocabulary_file": "library/constructs.json",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Constructs', valueURI per construct); for datasets, relatedIdentifiers to the instrument's library record (URL, relationType IsCollectedBy) and its publication (DOI, relationType References); ERIC descriptors as additional subjects",
+      "datacite": "subjects (subjectScheme 'SHE Constructs', valueURI per construct); for datasets, relatedIdentifiers to the instrument's library record (URL, relationType IsCollectedBy) and its publication (DOI, relationType References); ERIC descriptors as additional subjects",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "construct vocabulary",
           "match": "exact"
         },
@@ -625,20 +656,21 @@
           "term": "subject (scheme)",
           "match": "close"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.discipline",
+      "id": "study.discipline",
       "label": "Discipline",
       "obligation": "R",
       "cardinality": "0..n",
       "type": "vocab",
       "vocabulary": "discipline",
       "definition": "STEM discipline(s) of the learning or research.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Disciplines')",
+      "datacite": "subjects (subjectScheme 'SHE Disciplines')",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "discipline vocabulary",
           "match": "exact"
         },
@@ -657,20 +689,21 @@
           "term": "subject (scheme)",
           "match": "close"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.population.participant_roles",
+      "id": "study.population.participant_roles",
       "label": "Participant population",
       "obligation": "M",
       "cardinality": "1..n",
       "type": "vocab",
       "vocabulary": "participant_role",
       "definition": "Who the participants are.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Participant Roles')",
+      "datacite": "subjects (subjectScheme 'SHE Participant Roles')",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "participant_role vocabulary",
           "match": "exact"
         },
@@ -679,20 +712,21 @@
           "term": "subject (scheme)",
           "match": "close"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.population.education_levels",
+      "id": "education.education_levels",
       "label": "Education level",
       "obligation": "M",
       "cardinality": "1..n",
       "type": "vocab",
       "vocabulary": "education_level",
       "definition": "Education level(s) of the participants.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Education Levels'); ISCED 2011 level as an additional subject (subjectScheme 'ISCED 2011')",
+      "datacite": "subjects (subjectScheme 'SHE Education Levels'); ISCED 2011 level as an additional subject (subjectScheme 'ISCED 2011')",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "education_level vocabulary",
           "match": "exact"
         },
@@ -700,7 +734,7 @@
           "standard": "isced",
           "term": "levels of education 0–8",
           "match": "exact",
-          "note": "Options 0–8 are the ISCED 2011 levels; adult and informal learning are STEMEd+ additions outside ISCED."
+          "note": "Options 0–8 are the ISCED 2011 levels; adult and informal learning are SHE additions outside ISCED."
         },
         {
           "standard": "eric",
@@ -721,20 +755,21 @@
           "status": "seeking_input",
           "note": "schema.org's educationalLevel describes the level a resource is designed for; this element describes the participants studied."
         }
-      ]
+      ],
+      "module": "education"
     },
     {
-      "id": "stemed.population.undergraduate_levels",
+      "id": "education.undergraduate_levels",
       "label": "Undergraduate course level",
       "obligation": "O",
       "cardinality": "0..n",
       "type": "vocab",
       "vocabulary": "undergraduate_level",
       "definition": "Course level(s) for undergraduate studies.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Undergraduate Levels')",
+      "datacite": "subjects (subjectScheme 'SHE Undergraduate Levels')",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "undergraduate_level vocabulary",
           "match": "exact"
         },
@@ -743,10 +778,11 @@
           "term": "subject (scheme)",
           "match": "close"
         }
-      ]
+      ],
+      "module": "education"
     },
     {
-      "id": "stemed.population.description",
+      "id": "study.population.description",
       "label": "Population description",
       "obligation": "R",
       "cardinality": "0..1",
@@ -755,7 +791,7 @@
       "datacite": "descriptions (descriptionType Methods)",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "population.description",
           "match": "exact"
         },
@@ -764,10 +800,11 @@
           "term": "description (Methods)",
           "match": "close"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.population.sample_size",
+      "id": "study.population.sample_size",
       "label": "Sample size",
       "obligation": "R",
       "cardinality": "0..1",
@@ -776,7 +813,7 @@
       "datacite": "sizes ('N = <n> participants')",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "population.sample_size",
           "match": "exact"
         },
@@ -785,20 +822,21 @@
           "term": "sizes",
           "match": "close"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.context.institution_types",
+      "id": "education.institution_types",
       "label": "Institution type",
       "obligation": "R",
       "cardinality": "0..n",
       "type": "vocab",
       "vocabulary": "institution_type",
       "definition": "Type(s) of institution or organization.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Institution Types')",
+      "datacite": "subjects (subjectScheme 'SHE Institution Types')",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "institution_type vocabulary",
           "match": "exact"
         },
@@ -807,20 +845,21 @@
           "term": "descriptors",
           "match": "close"
         }
-      ]
+      ],
+      "module": "education"
     },
     {
-      "id": "stemed.context.locale",
+      "id": "study.context.locale",
       "label": "Locale",
       "obligation": "R",
       "cardinality": "0..n",
       "type": "vocab",
       "vocabulary": "locale",
       "definition": "Community type(s) where the study took place.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Locales')",
+      "datacite": "subjects (subjectScheme 'SHE Locales')",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "locale vocabulary",
           "match": "exact"
         },
@@ -834,20 +873,21 @@
           "term": "descriptors",
           "match": "close"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.setting.modality",
+      "id": "education.modality",
       "label": "Instructional modality",
       "obligation": "R",
       "cardinality": "0..n",
       "type": "vocab",
       "vocabulary": "modality",
       "definition": "How instruction or participation was delivered.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Modalities')",
+      "datacite": "subjects (subjectScheme 'SHE Modalities')",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "modality vocabulary",
           "match": "exact"
         },
@@ -856,20 +896,21 @@
           "term": "descriptors",
           "match": "close"
         }
-      ]
+      ],
+      "module": "education"
     },
     {
-      "id": "stemed.setting.learning_environments",
+      "id": "education.learning_environments",
       "label": "Learning environment",
       "obligation": "R",
       "cardinality": "0..n",
       "type": "vocab",
       "vocabulary": "learning_environment",
       "definition": "Instructional setting(s).",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Learning Environments')",
+      "datacite": "subjects (subjectScheme 'SHE Learning Environments')",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "learning_environment vocabulary",
           "match": "exact"
         },
@@ -878,20 +919,21 @@
           "term": "descriptors",
           "match": "close"
         }
-      ]
+      ],
+      "module": "education"
     },
     {
-      "id": "stemed.setting.pedagogy",
+      "id": "education.pedagogy",
       "label": "Instructional approach",
       "obligation": "O",
       "cardinality": "0..n",
       "type": "vocab",
       "vocabulary": "pedagogy",
       "definition": "Instructional approach(es) used or studied.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Instructional Approaches')",
+      "datacite": "subjects (subjectScheme 'SHE Instructional Approaches')",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "pedagogy vocabulary",
           "match": "exact"
         },
@@ -907,10 +949,11 @@
           "status": "seeking_input",
           "note": "Dublin Core's instructionalMethod describes the teaching method a resource is designed to support; this element describes the approach used or studied in the research."
         }
-      ]
+      ],
+      "module": "education"
     },
     {
-      "id": "stemed.evidence.study_designs",
+      "id": "study.evidence.study_designs",
       "label": "Study design",
       "obligation": "MA",
       "cardinality": "0..n",
@@ -918,10 +961,10 @@
       "vocabulary": "study_design",
       "condition": "Mandatory when resource_type is Dataset or StudyRegistration.",
       "definition": "Design(s) that produced the evidence.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Study Designs'); descriptions (Methods)",
+      "datacite": "subjects (subjectScheme 'SHE Study Designs'); descriptions (Methods)",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "study_design vocabulary",
           "match": "exact"
         },
@@ -935,10 +978,11 @@
           "term": "description (Methods)",
           "match": "close"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.evidence.measurement_evidence",
+      "id": "study.evidence.measurement_evidence",
       "label": "Measurement evidence",
       "obligation": "MA",
       "cardinality": "0..n",
@@ -946,10 +990,10 @@
       "vocabulary": "measurement_evidence",
       "condition": "Mandatory when resource_type is Instrument.",
       "definition": "Kinds of reliability and validity evidence the resource provides.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Measurement Evidence')",
+      "datacite": "subjects (subjectScheme 'SHE Measurement Evidence')",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "measurement_evidence vocabulary",
           "match": "exact"
         },
@@ -963,20 +1007,21 @@
           "term": "descriptors",
           "match": "close"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.evidence.data_collection_methods",
+      "id": "study.evidence.data_collection_methods",
       "label": "Data collection method",
       "obligation": "R",
       "cardinality": "0..n",
       "type": "vocab",
       "vocabulary": "data_collection_method",
       "definition": "How data were collected.",
-      "datacite": "subjects (subjectScheme 'STEMEd+ Data Collection Methods')",
+      "datacite": "subjects (subjectScheme 'SHE Data Collection Methods')",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "data_collection_method vocabulary",
           "match": "exact"
         },
@@ -990,10 +1035,11 @@
           "term": "measurementTechnique",
           "match": "close"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.ethics.human_subjects_review",
+      "id": "study.ethics.human_subjects_review",
       "label": "Human-subjects review",
       "obligation": "M",
       "cardinality": "1",
@@ -1003,7 +1049,7 @@
       "datacite": "descriptions (descriptionType Other, 'Ethics and access')",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "human_subjects_review vocabulary",
           "match": "exact"
         },
@@ -1012,10 +1058,11 @@
           "term": "IRB review / exemption",
           "match": "related"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.ethics.consent",
+      "id": "study.ethics.consent",
       "label": "Participation consent",
       "obligation": "R",
       "cardinality": "0..1",
@@ -1025,7 +1072,7 @@
       "datacite": "descriptions (Other, 'Ethics and access')",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "consent vocabulary",
           "match": "exact"
         },
@@ -1034,10 +1081,11 @@
           "term": "informed consent / waiver",
           "match": "related"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.ethics.consent_for_sharing",
+      "id": "study.ethics.consent_for_sharing",
       "label": "Consent for data sharing",
       "obligation": "M",
       "cardinality": "1",
@@ -1047,7 +1095,7 @@
       "datacite": "descriptions (Other, 'Ethics and access'); rightsList",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "consent_for_sharing vocabulary",
           "match": "exact"
         },
@@ -1061,10 +1109,11 @@
           "term": "rightsList",
           "match": "related"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.ethics.identifiability",
+      "id": "study.ethics.identifiability",
       "label": "Identifiability",
       "obligation": "M",
       "cardinality": "1",
@@ -1074,7 +1123,7 @@
       "datacite": "descriptions (Other, 'Ethics and access')",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "identifiability vocabulary",
           "match": "exact"
         },
@@ -1083,10 +1132,11 @@
           "term": "de-identified records",
           "match": "related"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.ethics.sensitivity_flags",
+      "id": "study.ethics.sensitivity_flags",
       "label": "Sensitivity flags",
       "obligation": "R",
       "cardinality": "0..n",
@@ -1096,7 +1146,7 @@
       "datacite": "descriptions (Other, 'Ethics and access')",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "sensitivity_flag vocabulary",
           "match": "exact"
         },
@@ -1105,10 +1155,11 @@
           "term": "education records",
           "match": "close"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.ethics.access_level",
+      "id": "study.ethics.access_level",
       "label": "Access level",
       "obligation": "M",
       "cardinality": "1",
@@ -1118,7 +1169,7 @@
       "datacite": "rightsList (access statement)",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "access_level vocabulary",
           "match": "exact"
         },
@@ -1137,10 +1188,11 @@
           "term": "rightsList",
           "match": "close"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.ethics.governance_notes",
+      "id": "study.ethics.governance_notes",
       "label": "Governance notes",
       "obligation": "O",
       "cardinality": "0..1",
@@ -1149,7 +1201,7 @@
       "datacite": "descriptions (Other, 'Ethics and access')",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "ethics.governance_notes",
           "match": "exact"
         },
@@ -1163,10 +1215,11 @@
           "term": "description (Other)",
           "match": "close"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.care.indigenous_data",
+      "id": "study.care.indigenous_data",
       "label": "Indigenous data",
       "obligation": "M",
       "cardinality": "1",
@@ -1176,7 +1229,7 @@
       "datacite": "descriptions (Other, 'CARE statement')",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "indigenous_data vocabulary",
           "match": "exact"
         },
@@ -1185,10 +1238,11 @@
           "term": "scope: Indigenous data",
           "match": "close"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.care.governance",
+      "id": "study.care.governance",
       "label": "Indigenous data governance",
       "obligation": "MA",
       "cardinality": "0..1",
@@ -1199,7 +1253,7 @@
       "datacite": "descriptions (Other, 'CARE statement'); rightsList",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "indigenous_governance vocabulary",
           "match": "exact"
         },
@@ -1208,10 +1262,11 @@
           "term": "Authority to control",
           "match": "close"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.care.statement",
+      "id": "study.care.statement",
       "label": "CARE statement",
       "obligation": "MA",
       "cardinality": "0..1",
@@ -1221,7 +1276,7 @@
       "datacite": "descriptions (Other, 'CARE statement')",
       "alignments": [
         {
-          "standard": "stemed",
+          "standard": "she",
           "term": "care.statement",
           "match": "exact"
         },
@@ -1235,10 +1290,11 @@
           "term": "description (Other)",
           "match": "close"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.care.local_contexts_project",
+      "id": "study.care.local_contexts_project",
       "label": "Local Contexts project",
       "obligation": "O",
       "cardinality": "0..1",
@@ -1256,10 +1312,11 @@
           "term": "relatedIdentifier",
           "match": "close"
         }
-      ]
+      ],
+      "module": "core"
     },
     {
-      "id": "stemed.care.local_contexts_labels",
+      "id": "study.care.local_contexts_labels",
       "label": "Local Contexts Labels and Notices",
       "obligation": "O",
       "cardinality": "0..n",
@@ -1272,7 +1329,8 @@
           "term": "TK/BC Labels and Notices",
           "match": "exact"
         }
-      ]
+      ],
+      "module": "core"
     }
   ],
   "rules": [
