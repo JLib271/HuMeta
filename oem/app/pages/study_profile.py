@@ -29,13 +29,13 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     )
 
     record = current_record()
-    with st.expander("Import a saved HuMeta record", expanded=False):
-        uploaded = st.file_uploader("HuMeta record (.json)", type=["json"], key="module1_import")
-        if uploaded is not None and st.button("Use this record", key="module1_import_go"):
+    with st.expander("Import a saved study profile (HuMeta JSON file)", expanded=False):
+        uploaded = st.file_uploader("Study profile (.humeta.json)", type=["json"], key="module1_import")
+        if uploaded is not None and st.button("Use this study profile", key="module1_import_go"):
             try:
                 loaded = json.loads(uploaded.getvalue().decode("utf-8"))
                 if loaded.get("profile") != profile.PROFILE_ID:
-                    raise ValueError("This file is not a HuMeta profile record.")
+                    raise ValueError("This file is not a HuMeta study profile.")
                 store_record(profile.migrate(loaded, p), reset_widgets=True)
                 st.rerun()
             except (ValueError, json.JSONDecodeError, UnicodeDecodeError) as error:

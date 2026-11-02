@@ -27,7 +27,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     
     st.subheader("Study context (optional)")
     st.caption(
-        "Uses the study in your current project (saved in Module 1 or opened from a "
+        "Uses the study profile in your current project (saved in Module 1 or opened from a "
         "project file in the sidebar). Theory and measurement planning happens here."
     )
 
@@ -47,7 +47,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
         except (TypeError, json.JSONDecodeError):
             st.warning("This study's saved metadata could not be read as structured JSON.")
             study_metadata = {}
-        with st.expander("Study context from Module 1"):
+        with st.expander("Study profile from Module 1"):
             st.write(f"**Study:** {selected_study.get('study_title') or 'Untitled study'}")
             st.write(f"**Persistent identifier:** {study_metadata.get('study_doi_or_persistent_identifier') or 'Not provided'}")
             st.write(f"**Unit of analysis:** {study_metadata.get('unit_of_analysis') or 'Not specified'}")
@@ -56,8 +56,8 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
             st.write(f"**Study period:** {study_metadata.get('study_start_date') or 'Not specified'} to {study_metadata.get('study_end_date') or 'Not specified'}")
     else:
         st.info(
-            "No study in your current project. You can still build a standalone theory and "
-            "measurement draft, or save a study in Module 1 / open a project file first."
+            "No study profile in your current project. You can still build a standalone theory and "
+            "measurement draft, or save a study profile in Module 1 or open a project file first."
         )
     repository_id = study_metadata.get("study_doi_or_persistent_identifier", "")
     unit_of_analysis = study_metadata.get("unit_of_analysis", "Not specified")
@@ -1537,7 +1537,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
             "narrative": conceptual_framework_description.strip(),
         }
         if st.button(
-            "Save Module 2 plan to project",
+            "Save variable plan to project",
             key=f"module2_save_plan_{flow_identity}",
         ):
             project = current_project()
@@ -1546,7 +1546,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
             st.session_state["module2_saved_notice"] = True
         if st.session_state.get("module2_saved_notice"):
             st.success(
-                "Plan saved to your project. Download the project file to keep it — "
+                "Variable plan saved to your project. Download the project file to keep it; "
                 "the app does not store a copy."
             )
             render_project_download(key=f"module2_project_download_{flow_identity}")

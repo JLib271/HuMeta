@@ -55,14 +55,14 @@ with st.sidebar:
     st.divider()
     st.subheader("📁 Project file")
     st.caption(
-        "Your study record and Module 2 plan are kept in a project file on your own "
-        "computer. The app never stores them."
+        "Your study profile (Module 1) and variable plan (Module 2) are kept in a project "
+        "file on your own computer. The app never stores them."
     )
     project_upload = st.file_uploader(
         "Open a project file",
         type=["json"],
         key="project_file_upload",
-        help="Open a .oem-project.json file you downloaded earlier.",
+        help="Open a .humeta-project.json file you downloaded earlier.",
     )
     if project_upload is not None:
         upload_marker = (project_upload.name, project_upload.size)
@@ -83,7 +83,7 @@ with st.sidebar:
             st.session_state.pop("loaded_project_marker", None)
             st.rerun()
     else:
-        st.caption("No study yet — save one in Module 1, or open a project file.")
+        st.caption("No study profile yet. Save one in Module 1, or open a project file.")
 
     st.divider()
     st.subheader("🔐 Researcher sign-in")

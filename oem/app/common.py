@@ -77,13 +77,13 @@ def parse_project_file(raw_bytes: bytes) -> dict:
         raise ValueError("This is not a HuMeta Portal project file.")
     study = project.get("study")
     if study is not None and (not isinstance(study, dict) or not study.get("id")):
-        raise ValueError("The project file's study record is missing or malformed.")
+        raise ValueError("The project file's study profile is missing or malformed.")
     plan = project.get("module2_plan") or {}
     if not isinstance(plan, dict):
-        raise ValueError("The project file's Module 2 plan is malformed.")
+        raise ValueError("The project file's variable plan (Module 2) is malformed.")
     profile_record = project.get("profile_record")
     if profile_record is not None and not isinstance(profile_record, dict):
-        raise ValueError("The project file's HuMeta metadata record is malformed.")
+        raise ValueError("The project file's study profile is malformed.")
     loaded = empty_project()
     loaded.update({"study": study, "module2_plan": plan, "profile_record": profile_record})
     return loaded
@@ -98,7 +98,7 @@ def project_file_bytes() -> bytes:
 def project_file_name() -> str:
     study = current_project().get("study") or {}
     slug = re.sub(r"[^a-z0-9]+", "_", str(study.get("study_title") or "study").lower()).strip("_")
-    return f"{(slug or 'study')[:60]}.oem-project.json"
+    return f"{(slug or 'study')[:60]}.humeta-project.json"
 
 
 def render_project_download(key: str, label: str = "Download project file") -> None:
@@ -293,11 +293,11 @@ value_propositions = [
     (
         "3. Check & Export Metadata",
         "🏷️ Standards-Ready Metadata",
-        "Completes the HuMeta record with the constructs you measure, checks it against the profile's "
+        "Completes your study profile with the constructs you measure, checks it against the profile's "
         "responsible-sharing rules, and exports metadata that DOI registration and education indexes use.",
         "3. Check & Export Metadata",
         [
-            "Add constructs measured, suggested from your Module 2 plan.",
+            "Add constructs measured, suggested from your variable plan (Module 2).",
             "See what to fix before sharing: consent, de-identification, review, CARE.",
             "Export HuMeta JSON, DataCite 4.7 (JSON/XML), and ERIC descriptors.",
         ],

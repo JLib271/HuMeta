@@ -381,7 +381,7 @@ def show_issues(issues: list[profile.Issue]) -> None:
     errors = [i for i in issues if i.severity == "error"]
     warnings = [i for i in issues if i.severity == "warning"]
     if not issues:
-        st.success("This record meets every requirement of the HuMeta profile.")
+        st.success("This study profile meets every requirement of HuMeta.")
     for issue in errors:
         st.error(f"**{issue.element}**: {issue.message}" + (f" ({issue.rule})" if issue.rule else ""))
     for issue in warnings:
