@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this software or its instrument library, please cite it as below."
-title: "SHE Study Metadata Portal and Profile (Social Science, Humanities, and Education Study Metadata Profile)"
+title: "HuMeta: Social Science, Humanities, and Education Study Metadata Profile, and the HuMeta Portal"
 type: software
 authors:
   - family-names: Libarkin

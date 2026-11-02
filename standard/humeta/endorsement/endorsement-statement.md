@@ -4,10 +4,10 @@
 
 ---
 
-**[Society] endorses the SHE Study Metadata Profile, version 1.0, and its [module] module.**
+**[Society] endorses the HuMeta profile, version 1.0, and its [module] module.**
 
-[Society] recognizes the SHE Study Metadata Profile (Social Science,
-Humanities, and Education Study Metadata Profile; version 1.0, [DOI]) as a
+[Society] recognizes HuMeta, the Social Science,
+Humanities, and Education Study Metadata Profile ( version 1.0, [DOI]) as a
 community standard for describing research data, instruments, and studies in
 [field]. The profile records the constructs measured, the population and
 context, field-specific details through its [module] module, the type of

@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Module 1: Study Metadata Profile.
 
-The study is described directly with the SHE Study Metadata
+The study is described directly with the HuMeta
 Profile. Constructs are added in Module 3 after Module 2's variable plan.
 """
 
@@ -23,19 +23,19 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     st.header("1. Study Metadata Profile")
     p = profile.load()
     st.caption(
-        f"Describe your study with the [SHE Study Metadata Profile]({SPEC_URL}) (Social Science, Humanities, and Education) (version {p.version}): "
+        f"Describe your study with the [HuMeta]({SPEC_URL}), the Social Science, Humanities, and Education Study Metadata Profile (version {p.version}): "
         "the study and team, design, population and context, instructional setting, ethics and consent, and "
         "Indigenous data governance (CARE). Everything is saved to your project file; the app keeps no copy."
     )
 
     record = current_record()
-    with st.expander("Import a saved SHE record", expanded=False):
-        uploaded = st.file_uploader("SHE record (.json)", type=["json"], key="module1_import")
+    with st.expander("Import a saved HuMeta record", expanded=False):
+        uploaded = st.file_uploader("HuMeta record (.json)", type=["json"], key="module1_import")
         if uploaded is not None and st.button("Use this record", key="module1_import_go"):
             try:
                 loaded = json.loads(uploaded.getvalue().decode("utf-8"))
                 if loaded.get("profile") != profile.PROFILE_ID:
-                    raise ValueError("This file is not a SHE profile record.")
+                    raise ValueError("This file is not a HuMeta profile record.")
                 store_record(profile.migrate(loaded, p), reset_widgets=True)
                 st.rerun()
             except (ValueError, json.JSONDecodeError, UnicodeDecodeError) as error:
@@ -70,7 +70,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     render_project_download(key="module1_project_download")
 
     st.markdown("---")
-    st.markdown("### Propose a change to the SHE profile")
+    st.markdown("### Propose a change to the HuMeta profile")
     st.caption("Suggest a new element, a vocabulary term, or a clearer definition. Proposals are reviewed publicly "
                "(see GOVERNANCE.md); do not include confidential study details.")
     with st.expander("Draft a proposal"):
@@ -79,7 +79,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
         details = st.text_area("Proposed change and rationale", key="module1_proposal_text")
         if target and details:
             payload = (
-                "**SHE Study Metadata Profile change proposal**\n\n"
+                "**HuMeta profile change proposal**\n\n"
                 f"**Profile version:** {p.version}\n\n**Element / vocabulary:** {target}\n\n"
                 f"### Proposed change and rationale\n```text\n{details}\n```\n\n"
                 "---\n*Submitted from OpenEdMetadata Module 1.*"
@@ -90,8 +90,8 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
                     safe_name = "".join(ch if ch.isalnum() else "_" for ch in target.lower())[:60]
                     result = automate_github_pull_request(
                         suggestion_type="Metadata",
-                        file_name=f"she_profile_proposal_{safe_name}.txt",
+                        file_name=f"humeta_profile_proposal_{safe_name}.txt",
                         file_content=payload,
-                        title_summary=f"SHE profile proposal: {target}",
+                        title_summary=f"HuMeta profile proposal: {target}",
                     )
                 (st.error if "❌" in result else st.success)(result)

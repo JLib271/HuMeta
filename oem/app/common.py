@@ -74,7 +74,7 @@ def current_project() -> dict:
 def parse_project_file(raw_bytes: bytes) -> dict:
     project = json.loads(raw_bytes.decode("utf-8"))
     if not isinstance(project, dict) or project.get("format") != PROJECT_FILE_FORMAT:
-        raise ValueError("This is not a SHE Study Metadata Portal project file.")
+        raise ValueError("This is not a HuMeta Portal project file.")
     study = project.get("study")
     if study is not None and (not isinstance(study, dict) or not study.get("id")):
         raise ValueError("The project file's study record is missing or malformed.")
@@ -83,7 +83,7 @@ def parse_project_file(raw_bytes: bytes) -> dict:
         raise ValueError("The project file's Module 2 plan is malformed.")
     profile_record = project.get("profile_record")
     if profile_record is not None and not isinstance(profile_record, dict):
-        raise ValueError("The project file's SHE metadata record is malformed.")
+        raise ValueError("The project file's HuMeta metadata record is malformed.")
     loaded = empty_project()
     loaded.update({"study": study, "module2_plan": plan, "profile_record": profile_record})
     return loaded
@@ -268,7 +268,7 @@ value_propositions = [
     (
         "1. Study Metadata Profile",
         "📐 One Shared Metadata Standard",
-        "Describes every study with the SHE Study Metadata Profile (Social Science, Humanities, and Education), so studies across "
+        "Describes every study with HuMeta, the Social Science, Humanities, and Education Study Metadata Profile, so studies across "
         "institutions use the same fields and vocabularies and stay searchable and comparable.",
         "1. Study Metadata Profile",
         [
@@ -293,13 +293,13 @@ value_propositions = [
     (
         "3. Check & Export Metadata",
         "🏷️ Standards-Ready Metadata",
-        "Completes the SHE record with the constructs you measure, checks it against the profile's "
+        "Completes the HuMeta record with the constructs you measure, checks it against the profile's "
         "responsible-sharing rules, and exports metadata that DOI registration and education indexes use.",
         "3. Check & Export Metadata",
         [
             "Add constructs measured, suggested from your Module 2 plan.",
             "See what to fix before sharing: consent, de-identification, review, CARE.",
-            "Export SHE JSON, DataCite 4.7 (JSON/XML), and ERIC descriptors.",
+            "Export HuMeta JSON, DataCite 4.7 (JSON/XML), and ERIC descriptors.",
         ],
     ),
     (

@@ -1,7 +1,7 @@
 {
-  "profile": "she",
+  "profile": "humeta",
   "profile_version": "1.0.0-draft.1",
-  "note": "Controlled vocabularies of the SHE Study Metadata Profile. 'eric' lists ERIC Thesaurus descriptors for the term (see crosswalks/eric_descriptor_status.json for verification). Term codes are permanent: never change or reuse a code; deprecate it instead.",
+  "note": "Controlled vocabularies of the HuMeta profile. 'eric' lists ERIC Thesaurus descriptors for the term (see crosswalks/eric_descriptor_status.json for verification). Term codes are permanent: never change or reuse a code; deprecate it instead.",
   "vocabularies": {
     "discipline": {
       "label": "STEM discipline",
@@ -89,7 +89,7 @@
     },
     "education_level": {
       "label": "Education level",
-      "definition": "Education level(s) of the participants. Levels 0–8 are the UNESCO ISCED 2011 levels of education; the last two options are SHE additions outside ISCED.",
+      "definition": "Education level(s) of the participants. Levels 0–8 are the UNESCO ISCED 2011 levels of education; the last two options are HuMeta additions outside ISCED.",
       "terms": [
         {
           "id": "early_childhood",

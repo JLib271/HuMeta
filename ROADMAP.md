@@ -14,14 +14,14 @@ their data with common names and metadata, and sharing data responsibly.
 - App split into testable modules; CI with unit tests and page smoke tests
 - Metadata profile 1.0.0-draft.1 with DataCite 4.7 and ERIC crosswalks; Module 1 is now the profile form
   and Module 3 checks and exports
-- Renamed the profile to the SHE Study Metadata Profile (`standard/she/`) and split it into a core plus an
+- Renamed the profile to the HuMeta profile (`standard/humeta/`) and split it into a core plus an
   optional Education module; every field shows its alignments to DataCite, Dublin Core, schema.org and others
 
 ## Next
 
-0. **SHE profile 1.0.** Public comment (including CARE review by Indigenous data governance experts),
+0. **HuMeta profile 1.0.** Public comment (including CARE review by Indigenous data governance experts),
    confirm remaining ERIC descriptors, persistent term URIs, DOI, and society endorsements
-   (see `standard/she/endorsement/`).
+   (see `standard/humeta/endorsement/`).
 0b. **Field modules and a broader core.** Working groups for the Social Science module (DDI-Codebook export
    for ICPSR, Dataverse and the UK Data Service; ELSST topics) and the Humanities module. Broaden core
    vocabularies (disciplines, data collection methods such as archival research, ethnography, content and

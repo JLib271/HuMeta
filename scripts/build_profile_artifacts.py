@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # Copyright (C) 2026 Julie C. Libarkin
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Generate the SHE profile's derived files from its two sources.
+"""Generate the HuMeta profile's derived files from its two sources.
 
-Sources (edit these):   standard/she/profile.json, vocabularies.json,
+Sources (edit these):   standard/humeta/profile.json, vocabularies.json,
                         library/constructs.json
-Generated (don't edit): schema/she-record.schema.json, elements.md,
+Generated (don't edit): schema/humeta-record.schema.json, elements.md,
                         crosswalks/datacite-4.7.csv, crosswalks/eric.csv,
                         crosswalks/alignments.csv,
                         examples/*.datacite.json, examples/*.datacite.xml
@@ -28,7 +28,7 @@ sys.path.insert(0, str(ROOT))
 from oem import profile  # noqa: E402
 from oem.library import Library  # noqa: E402
 
-BASE = ROOT / "standard" / "she"
+BASE = ROOT / "standard" / "humeta"
 
 
 def csv_text(rows: list[list[str]]) -> str:
@@ -43,7 +43,7 @@ def build() -> dict[Path, str]:
     verified = p.verified_eric()
     files: dict[Path, str] = {}
 
-    files[BASE / "schema" / "she-record.schema.json"] = json.dumps(profile.json_schema(p), indent=2, ensure_ascii=False) + "\n"
+    files[BASE / "schema" / "humeta-record.schema.json"] = json.dumps(profile.json_schema(p), indent=2, ensure_ascii=False) + "\n"
 
     rows = [["element", "module", "label", "obligation", "cardinality", "vocabulary", "datacite_4_7"]]
     for e in p.definition["elements"]:
@@ -80,7 +80,7 @@ def build() -> dict[Path, str]:
         "Obligations: " + "; ".join(f"**{k}** = {v}" for k, v in p.definition["obligations"].items()),
         "",
         "Alignments: each element lists the standards it corresponds to. No mark = exact match; "
-        "**≈** = close match; **~** = related. `SHE` = defined by this profile, with no equivalent in a "
+        "**≈** = close match; **~** = related. `HuMeta` = defined by this profile, with no equivalent in a "
         "general-purpose standard. "
         f"*{profile.SEEKING_INPUT_BADGE}* = {p.definition['alignment_status']['seeking_input'].lower()} "
         "Full list, with notes, in [`crosswalks/alignments.csv`](crosswalks/alignments.csv).",

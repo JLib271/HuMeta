@@ -1,9 +1,9 @@
 # Copyright (C) 2026 Julie C. Libarkin
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""The SHE Study Metadata Profile (Social Science, Humanities, and Education).
+"""HuMeta: the Social Science, Humanities, and Education Study Metadata Profile.
 
 A core for any study, plus optional field modules (currently: Education).
-The profile itself is data in ``standard/she/`` (``profile.json`` and
+The profile itself is data in ``standard/humeta/`` (``profile.json`` and
 ``vocabularies.json``); this module loads it and works with records:
 
 * :func:`empty_record` creates a record; :func:`suggest_constructs` proposes
@@ -31,9 +31,9 @@ from xml.etree import ElementTree as ET
 from oem.library import Library
 
 ROOT = Path(__file__).resolve().parent.parent
-PROFILE_DIR = ROOT / "standard" / "she"
+PROFILE_DIR = ROOT / "standard" / "humeta"
 CONSTRUCTS_URI = "https://github.com/JLib271/OpenEdMetadata/blob/main/library/constructs.json#"
-VOCAB_URI = "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/vocabularies.json#"
+VOCAB_URI = "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#"
 LIBRARY_RECORD_URI = "https://github.com/JLib271/OpenEdMetadata/blob/main/library/instruments/"
 DATACITE_NS = "http://datacite.org/schema/kernel-4"
 DATACITE_XSD = "http://schema.datacite.org/meta/kernel-4.7/metadata.xsd"
@@ -50,22 +50,22 @@ SEEKING_INPUT_BADGE = "(expert input wanted)"
 
 #: record path (from the record root) -> (vocabulary id, DataCite subjectScheme label)
 VOCAB_FIELDS: dict[tuple[str, ...], tuple[str, str | None]] = {
-    ("study", "discipline"): ("discipline", "SHE Disciplines"),
-    ("study", "population", "participant_roles"): ("participant_role", "SHE Participant Roles"),
-    ("study", "context", "locale"): ("locale", "SHE Locales"),
-    ("study", "evidence", "study_designs"): ("study_design", "SHE Study Designs"),
-    ("study", "design", "unit_of_analysis"): ("unit_of_analysis", "SHE Units of Analysis"),
-    ("study", "design", "sampling_procedure"): ("sampling_procedure", "SHE Sampling Procedures"),
-    ("study", "evidence", "measurement_evidence"): ("measurement_evidence", "SHE Measurement Evidence"),
-    ("study", "evidence", "data_collection_methods"): ("data_collection_method", "SHE Data Collection Methods"),
+    ("study", "discipline"): ("discipline", "HuMeta Disciplines"),
+    ("study", "population", "participant_roles"): ("participant_role", "HuMeta Participant Roles"),
+    ("study", "context", "locale"): ("locale", "HuMeta Locales"),
+    ("study", "evidence", "study_designs"): ("study_design", "HuMeta Study Designs"),
+    ("study", "design", "unit_of_analysis"): ("unit_of_analysis", "HuMeta Units of Analysis"),
+    ("study", "design", "sampling_procedure"): ("sampling_procedure", "HuMeta Sampling Procedures"),
+    ("study", "evidence", "measurement_evidence"): ("measurement_evidence", "HuMeta Measurement Evidence"),
+    ("study", "evidence", "data_collection_methods"): ("data_collection_method", "HuMeta Data Collection Methods"),
     ("study", "ethics", "sensitivity_flags"): ("sensitivity_flag", None),
     # Education module
-    ("education", "education_levels"): ("education_level", "SHE Education Levels"),
-    ("education", "undergraduate_levels"): ("undergraduate_level", "SHE Undergraduate Levels"),
-    ("education", "institution_types"): ("institution_type", "SHE Institution Types"),
-    ("education", "modality"): ("modality", "SHE Modalities"),
-    ("education", "learning_environments"): ("learning_environment", "SHE Learning Environments"),
-    ("education", "pedagogy"): ("pedagogy", "SHE Instructional Approaches"),
+    ("education", "education_levels"): ("education_level", "HuMeta Education Levels"),
+    ("education", "undergraduate_levels"): ("undergraduate_level", "HuMeta Undergraduate Levels"),
+    ("education", "institution_types"): ("institution_type", "HuMeta Institution Types"),
+    ("education", "modality"): ("modality", "HuMeta Modalities"),
+    ("education", "learning_environments"): ("learning_environment", "HuMeta Learning Environments"),
+    ("education", "pedagogy"): ("pedagogy", "HuMeta Instructional Approaches"),
 }
 #: single-valued vocabulary fields
 VOCAB_SINGLE: dict[tuple[str, ...], str] = {
@@ -79,7 +79,7 @@ VOCAB_SINGLE: dict[tuple[str, ...], str] = {
 }
 #: optional field modules: record key -> label
 MODULES = {"education": "Education"}
-PROFILE_ID = "she"
+PROFILE_ID = "humeta"
 RESOURCE_TYPES = ("Dataset", "Instrument", "StudyRegistration", "Text", "Software", "Collection", "Other")
 
 
@@ -124,7 +124,7 @@ def load(profile_dir: str | None = None) -> Profile:
 
 # ---------------------------------------------------------------- JSON Schema
 def json_schema(profile: Profile | None = None) -> dict:
-    """JSON Schema for a SHE record, generated from the profile definition."""
+    """JSON Schema for a HuMeta record, generated from the profile definition."""
     p = profile or load()
 
     def enum_array(vocab_id: str) -> dict:
@@ -174,9 +174,9 @@ def json_schema(profile: Profile | None = None) -> dict:
     education["description"] = "Education module. Null or absent when the study is not in an education setting."
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "$id": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/schema/she-record.schema.json",
-        "title": f"SHE Study Metadata Profile record ({p.version})",
-        "description": "Generated from standard/she/profile.json and vocabularies.json by scripts/build_profile_artifacts.py. Do not edit by hand.",
+        "$id": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/schema/humeta-record.schema.json",
+        "title": f"HuMeta profile record ({p.version})",
+        "description": "Generated from standard/humeta/profile.json and vocabularies.json by scripts/build_profile_artifacts.py. Do not edit by hand.",
         "type": "object",
         "additionalProperties": False,
         "required": ["profile", "profile_version", "resource", "study"],
@@ -434,7 +434,7 @@ def _ethics_text(record: dict, p: Profile) -> str:
         parts.append("Sensitivity: " + "; ".join(flags) + ".")
     if (e.get("governance_notes") or "").strip():
         parts.append(e["governance_notes"].strip())
-    return "Ethics and access (SHE Study Metadata Profile). " + " ".join(parts)
+    return "Ethics and access (HuMeta profile). " + " ".join(parts)
 
 
 def _care_text(record: dict, p: Profile) -> str | None:
@@ -448,7 +448,7 @@ def _care_text(record: dict, p: Profile) -> str | None:
         parts.append("Local Contexts Labels/Notices: " + "; ".join(care["local_contexts_labels"]) + ".")
     if (care.get("statement") or "").strip():
         parts.append(care["statement"].strip())
-    return "CARE statement (SHE Study Metadata Profile). " + " ".join(parts)
+    return "CARE statement (HuMeta profile). " + " ".join(parts)
 
 
 def _methods_text(record: dict, p: Profile) -> str | None:
@@ -477,7 +477,7 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
     record = migrate(record, p)
     res, s = record["resource"], record["study"]
     out: dict[str, Any] = {
-        "types": {"resourceTypeGeneral": res["resource_type"], "resourceType": f"SHE {res['resource_type']}"},
+        "types": {"resourceTypeGeneral": res["resource_type"], "resourceType": f"HuMeta {res['resource_type']}"},
         "titles": [{"title": res["title"]}],
         "creators": [],
         "publisher": {"name": res["publisher"]},
@@ -504,7 +504,7 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
     for c in s.get("constructs", []):
         construct = lib.constructs.get(c["construct_id"])
         if construct:
-            subjects.append({"subject": construct["label"], "subjectScheme": "SHE Constructs",
+            subjects.append({"subject": construct["label"], "subjectScheme": "HuMeta Constructs",
                              "schemeUri": CONSTRUCTS_URI.rstrip("#"), "valueUri": CONSTRUCTS_URI + construct["id"]})
     for path, (vocab_id, scheme) in VOCAB_FIELDS.items():
         if not scheme:
@@ -659,9 +659,9 @@ def _labels(p: Profile, vocab_id: str, ids: list[str] | None) -> list[str]:
 def to_study_record(record: dict, existing: dict | None = None, profile: Profile | None = None) -> dict:
     """Derive the study record that Module 2 and later modules read.
 
-    The SHE record is the source of truth; this is a read-only view of it in
+    The HuMeta record is the source of truth; this is a read-only view of it in
     the shape those modules expect. (A follow-up can switch them to read the
-    SHE record directly and remove this.)
+    HuMeta record directly and remove this.)
     """
     import time
     import uuid
@@ -735,13 +735,13 @@ def element(element_id: str, profile: Profile | None = None) -> dict:
 def alignment_badges(element_id: str, profile: Profile | None = None) -> str:
     """Short, label-ready summary of an element's alignments, e.g.
     "`DataCite: titles.title` `DC: title` `schema.org: name`" (≈ close, ~ related).
-    Elements defined by this profile start with `SHE`."""
+    Elements defined by this profile start with `HuMeta`."""
     p = profile or load()
     parts = []
     for a in element(element_id, p).get("alignments", []):
         short = p.definition["standards"][a["standard"]]["short"]
-        if a["standard"] == "she":
-            parts.append("`SHE`")
+        if a["standard"] == "humeta":
+            parts.append("`HuMeta`")
         else:
             badge = f"`{MATCH_MARK[a['match']]}{short}: {a['term']}`"
             if a.get("status") == "seeking_input":
@@ -757,8 +757,8 @@ def alignment_help(element_id: str, profile: Profile | None = None) -> str:
     lines = [e["definition"]]
     for a in e.get("alignments", []):
         std = p.definition["standards"][a["standard"]]
-        if a["standard"] == "she":
-            lines.append(f"Defined by the SHE profile: {a['term']} (no equivalent in general-purpose metadata standards).")
+        if a["standard"] == "humeta":
+            lines.append(f"Defined by the HuMeta profile: {a['term']} (no equivalent in general-purpose metadata standards).")
         else:
             line = f"{a['match'].capitalize()} match: {std['name']} — {a['term']}."
             if a.get("status") == "seeking_input":

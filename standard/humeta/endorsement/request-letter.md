@@ -6,13 +6,13 @@ own email, with the specification's link and a one-page summary attached.*
 
 ---
 
-**Subject:** Request for [Society] endorsement of the SHE Study Metadata Profile 1.0
+**Subject:** Request for [Society] endorsement of the HuMeta profile 1.0
 
 Dear [Name],
 
 I am writing to ask whether [Society] would consider endorsing version 1.0 of
-the **SHE Study Metadata Profile** (Social Science, Humanities, and Education
-Study Metadata Profile), an open metadata standard for describing research
+**HuMeta: the Social Science, Humanities, and Education Study Metadata
+Profile**, an open metadata standard for describing research
 studies and their data and instruments. It has a shared core and field
 modules; [Society] is asked to endorse the core and the [Education / Social
 Science / Humanities] module.
@@ -24,7 +24,7 @@ consented to regarding sharing. The profile adds these elements, along with
 fields for Indigenous data governance based on the CARE Principles, and maps
 everything to DataCite (used for DOIs) and the ERIC Thesaurus so it works
 with the tools people already use. It is free and openly licensed (CC BY-SA
-4.0), and it is implemented in the SHE Study Metadata Portal, an open-source app that helps
+4.0), and it is implemented in the HuMeta Portal, an open-source app that helps
 researchers fill it in.
 
 Version 1.0 was finalized after a public comment period that included

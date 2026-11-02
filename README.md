@@ -1,6 +1,6 @@
-# SHE Study Metadata Portal 🔬🌐
+# HuMeta Portal 🔬🌐
 
-An open-source, community-driven web app that helps researchers in the **social sciences, humanities, and education** describe, align, and share study metadata using one open standard, the **SHE Study Metadata Profile** (Social Science, Humanities, and Education Study Metadata Profile). It runs on Streamlit Community Cloud with **no database**: private work stays with the researcher, and public records live in this GitHub repository after maintainer review.
+An open-source, community-driven web app that helps researchers in the **social sciences, humanities, and education** describe, align, and share study metadata using one open standard, **HuMeta**, the Social Science, Humanities, and Education Study Metadata Profile. It runs on Streamlit Community Cloud with **no database**: private work stays with the researcher, and public records live in this GitHub repository after maintainer review.
 
 ## 🤝 Community
 
@@ -11,17 +11,17 @@ To cite the project, use [CITATION.cff](CITATION.cff).
 
 ## 🔗 Live Application Access
 The platform is deployed on Streamlit Community Cloud.
-👉 **SHE Study Metadata Portal:** _link to be added — replace this line with the app's `*.streamlit.app` URL._
+👉 **HuMeta Portal:** _link to be added — replace this line with the app's `*.streamlit.app` URL._
 
 ---
 
 ## 🛠️ Key Architectural Layout (Modules 1–6)
 
-The modules follow a study from design to sharing. Study metadata uses one standard throughout: the [SHE Study Metadata Profile](standard/she/README.md). It has a core for every study plus optional field modules. The Education module is available now; Social Science and Humanities modules are in development with researchers from those fields.
+The modules follow a study from design to sharing. Study metadata uses one standard throughout: the [HuMeta profile](standard/humeta/README.md). It has a core for every study plus optional field modules. The Education module is available now; Social Science and Humanities modules are in development with researchers from those fields.
 
-1. **Study Metadata Profile (Module 1):** Describe the study with the SHE profile: title and team (with ORCID iDs), design (topic, research questions, study design, unit of analysis, sampling, data collection), population and context, the optional Education module (education level, institution type, instructional setting), ethics review, consent for participation and for data sharing, identifiability and access, and Indigenous data governance (CARE). Answers use the profile's controlled vocabularies. Saving puts the record into a **project file** the researcher downloads and keeps; governance fields are researcher-reported and are not approval or sharing determinations.
+1. **Study Metadata Profile (Module 1):** Describe the study with the HuMeta profile: title and team (with ORCID iDs), design (topic, research questions, study design, unit of analysis, sampling, data collection), population and context, the optional Education module (education level, institution type, instructional setting), ethics review, consent for participation and for data sharing, identifiability and access, and Indigenous data governance (CARE). Answers use the profile's controlled vocabularies. Saving puts the record into a **project file** the researcher downloads and keeps; governance fields are researcher-reported and are not approval or sharing determinations.
 2. **Variable Instrument Architect (Module 2):** Starts with **Find previously shared studies with related context**, which searches study summaries other researchers have published (study-design and variable/measurement metadata, never item text or participant data). The query is populated from the Module 1 content domain when available. Step 1 captures broad study context; a target behavior and timeframe are optional, and the app does not presume behavior is the study outcome. Step 2 uses a multi-select to choose framework variables, followed by the **Included theory-derived, demographic, and contextual variables** metadata editor, including a context-personalized TPB questionnaire example (app-generated examples, not a validated measure). Step 3 adds or imports custom variables with item text/source type, response scale, language, scoring, citation/URL, adaptation notes, and validity/reliability evidence. Step 4 builds a conceptual diagram; Step 5 reviews variables and downloads the matrices and draft survey. The plan is saved into the project file. Researchers can opt in to **submit a limited study summary for public listing**, which opens a pull request for maintainer review.
-3. **Check & Export Metadata (Module 3):** Add the constructs measured (suggested from the Module 2 plan, linked to library instruments), check the record against the profile's responsible-sharing rules (consent, de-identification, review status, CARE), and export SHE JSON, DataCite 4.7 JSON/XML, and ERIC Thesaurus descriptors.
+3. **Check & Export Metadata (Module 3):** Add the constructs measured (suggested from the Module 2 plan, linked to library instruments), check the record against the profile's responsible-sharing rules (consent, de-identification, review status, CARE), and export HuMeta JSON, DataCite 4.7 JSON/XML, and ERIC Thesaurus descriptors.
 4. **Community Data Repository Sync (Module 4):** Browse and download published public datasets, or submit a de-identified dataset for public release after permission, identifier, and disclosure-risk confirmations. Submissions open a pull request and are listed only after a maintainer merges them. **Private datasets are never stored.**
 5. **Descriptive & Scale Analytics (Module 5):** Upload a private dataset (held in memory for the browser session only and never saved), pick a published dataset, or use synthetic sample data; map columns to Module 2 variables; inspect distributions and descriptive statistics; review composite scores, reliability, and correlations; and download a PDF report. Numeric mappings support composite scores and Cronbach's alpha for multi-item mappings; categorical mappings show response counts.
 6. **Published Repository Viewer (Module 6):** Browse the published study summaries, the public dataset catalog, and the research measure catalog, and download any of them as CSV.
@@ -182,12 +182,12 @@ oem/                      Core logic with no Streamlit dependency
   library.py              Load instruments, items, constructs, scales, standard variables
   naming.py               Shared variable-naming rules
   codebook.py             Build and export codebooks (CSV / JSON)
-  profile.py              SHE profile: records, validation, DataCite and ERIC exports
+  profile.py              HuMeta profile: records, validation, DataCite and ERIC exports
   vocab.py                Controlled vocabularies used by the forms
   app/common.py           Streamlit helpers shared by all pages
   app/pages/              One file per module, each with render()
 library/                  Instrument library (CC BY-SA 4.0 content; see library/README.md)
-standard/she/             SHE Study Metadata Profile: spec, vocabularies, crosswalks
+standard/humeta/             HuMeta profile: spec, vocabularies, crosswalks
 tests/                    pytest suite, including an app smoke test
 scripts/validate_library.py   Library validator (also runs in CI)
 published/, suggestions/  Reviewed public records submitted through the app

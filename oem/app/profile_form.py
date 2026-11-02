@@ -1,6 +1,6 @@
 # Copyright (C) 2026 Julie C. Libarkin
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Streamlit widgets for editing a SHE Study Metadata Profile record.
+"""Streamlit widgets for editing a HuMeta profile record.
 
 Used by Module 1 (the study profile form) and Module 3 (constructs, checks,
 and exports). The record format and all rules live in ``oem/profile.py``.
@@ -18,7 +18,7 @@ from oem import profile
 from oem.app.common import current_project
 from oem.library import Library
 
-SPEC_URL = "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/README.md"
+SPEC_URL = "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md"
 ISSUES_URL = "https://github.com/JLib271/OpenEdMetadata/issues"
 CARE_URL = "https://www.gida-global.org/care"
 LOCAL_CONTEXTS_URL = "https://localcontexts.org/"
@@ -46,7 +46,7 @@ def library() -> Library:
 
 
 def current_record() -> dict | None:
-    """The project's SHE profile record, filled out to the current profile shape."""
+    """The project's HuMeta profile record, filled out to the current profile shape."""
     record = st.session_state.get("profile_record") or current_project().get("profile_record")
     return profile.migrate(record) if record else None
 
@@ -101,7 +101,7 @@ def record_form(record: dict) -> dict | None:
     with st.expander("How fields align with metadata standards", expanded=False):
         st.markdown(
             "Each field shows the standards it corresponds to, so records stay compatible with tools "
-            "that already use them. `SHE` marks fields defined by this profile; no "
+            "that already use them. `HuMeta` marks fields defined by this profile; no "
             "general-purpose standard covers them. **≈** = close match, **~** = related; no mark = exact match. "
             f"**{profile.SEEKING_INPUT_BADGE}** marks alignments we are not yet sure of. If you know the standard, "
             f"please comment on [GitHub]({ISSUES_URL})."
@@ -339,7 +339,7 @@ def show_issues(issues: list[profile.Issue]) -> None:
     errors = [i for i in issues if i.severity == "error"]
     warnings = [i for i in issues if i.severity == "warning"]
     if not issues:
-        st.success("This record meets every requirement of the SHE profile.")
+        st.success("This record meets every requirement of the HuMeta profile.")
     for issue in errors:
         st.error(f"**{issue.element}**: {issue.message}" + (f" ({issue.rule})" if issue.rule else ""))
     for issue in warnings:

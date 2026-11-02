@@ -1,10 +1,10 @@
-# SHE Study Metadata Profile
+# HuMeta
 
 **Social Science, Humanities, and Education Study Metadata Profile**
 
-**Version:** 1.0.0-draft.1 · **Status:** Draft for community comment · **Namespace prefix:** `she`
+**Version:** 1.0.0-draft.1 · **Status:** Draft for community comment · **Namespace prefix:** `humeta`
 
-The SHE Study Metadata Profile is a shared way to describe research studies
+The HuMeta profile is a shared way to describe research studies
 and the data, instruments, and records they produce across the social
 sciences, the humanities, and education. Researchers fill it in themselves,
 from study design onward. It adds what general-purpose repository metadata
@@ -45,7 +45,7 @@ module.
 | `vocabularies.json` | **Source.** Controlled vocabularies with permanent term codes and ERIC mappings |
 | `../../library/constructs.json` | **Source.** The construct vocabulary (shared with the instrument library) |
 | [`elements.md`](elements.md) | Readable reference for every element, rule, and vocabulary (generated) |
-| `schema/she-record.schema.json` | JSON Schema for records (generated) |
+| `schema/humeta-record.schema.json` | JSON Schema for records (generated) |
 | `crosswalks/datacite-4.7.csv` | Element-to-DataCite crosswalk (generated) |
 | `crosswalks/alignments.csv` | Every element's alignment to DataCite, Dublin Core, schema.org, ERIC and other standards, with match type (generated) |
 | `crosswalks/eric.csv` | Vocabulary-to-ERIC descriptor crosswalk with verification status (generated) |
@@ -74,7 +74,7 @@ broadened with reviewers from the social sciences and humanities.
 
 ## 2. Record structure and conformance
 
-A SHE record is a JSON object with these parts:
+A HuMeta record is a JSON object with these parts:
 
 * `resource`: citation metadata aligned with DataCite (title, creators with
   ORCID iDs, publisher, publication year, resource type, identifier,
@@ -88,7 +88,7 @@ A SHE record is a JSON object with these parts:
   absent when the module is not used.
 
 A record **conforms** to version 1.0 of the profile when it (1) validates
-against `schema/she-record.schema.json`, (2) includes every mandatory
+against `schema/humeta-record.schema.json`, (2) includes every mandatory
 (M) element and every mandatory-if-applicable (MA) element whose condition
 holds, and (3) triggers no rule of severity *error*. A module's mandatory
 elements are mandatory only in records that include that module. Warnings do not prevent
@@ -186,7 +186,7 @@ Vocabularies are in `vocabularies.json` and the construct vocabulary is in
 Every element in `profile.json` lists the standards it corresponds to, under
 `alignments`, each with a match type: **exact** (same meaning), **close**
 (≈, similar enough to map with care) or **related** (~, overlapping but not
-interchangeable). Elements marked `SHE` are defined by this profile and
+interchangeable). Elements marked `HuMeta` are defined by this profile and
 have no equivalent in a general-purpose standard. The standards are listed in
 the `standards` block of `profile.json`. The OpenEdMetadata app shows these
 alignments beside each field, `elements.md` shows them per element, and
@@ -201,13 +201,13 @@ profile they describe the participants or approach *studied*. Please comment
 through a GitHub issue.
 
 Education level uses the UNESCO ISCED 2011 levels of education (0–8), plus
-two SHE additions: adult, continuing or workforce education, and informal
+two HuMeta additions: adult, continuing or workforce education, and informal
 learning. Exports add the ISCED level as a DataCite subject.
 
 ### DataCite Metadata Schema 4.7
 
 Resource elements map directly to DataCite properties. Profile vocabularies
-map to `subjects` with a `subjectScheme` (e.g. "SHE Constructs") and a
+map to `subjects` with a `subjectScheme` (e.g. "HuMeta Constructs") and a
 `valueURI` for each term; ERIC descriptors are added as subjects with
 `subjectScheme` "ERIC Thesaurus". Study designs, methods, and population
 descriptions become a `Methods` description. Ethics, access, and CARE
@@ -237,7 +237,7 @@ data, adding a crosswalk does not change the profile.
 
 ## 7. Implementations
 
-* **SHE Study Metadata Portal** (this repository's app): Module 1 is the
+* **HuMeta Portal** (this repository's app): Module 1 is the
   profile form for a study, with the Education module switched on or off; Module 3
   adds the constructs measured (suggested from the Module 2 variable plan),
   checks the rules, and exports DataCite and ERIC metadata.
@@ -262,9 +262,9 @@ The profile (this folder and the construct vocabulary) is licensed under
 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), like the rest
 of the library. Code implementing it is AGPL-3.0-or-later. Cite as:
 
-> Libarkin, J. C., & SHE contributors. (2026). *SHE Study Metadata Profile:
+> Libarkin, J. C., & HuMeta contributors. (2026). *HuMeta:
 > Social Science, Humanities, and Education Study Metadata Profile* (Version
-> 1.0.0-draft.1). https://github.com/JLib271/OpenEdMetadata/tree/main/standard/she
+> 1.0.0-draft.1). https://github.com/JLib271/OpenEdMetadata/tree/main/standard/humeta
 
 A DOI will be registered for version 1.0.0 (DataCite resourceTypeGeneral
 `Standard`).

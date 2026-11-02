@@ -1,4 +1,4 @@
-# SHE Instrument Library
+# HuMeta Instrument Library
 
 A community-curated, version-controlled library of research instruments,
 starting with STEM education research and growing with the social sciences

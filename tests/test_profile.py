@@ -11,7 +11,7 @@ from oem import profile
 from oem.library import Library
 
 ROOT = Path(__file__).resolve().parent.parent
-BASE = ROOT / "standard" / "she"
+BASE = ROOT / "standard" / "humeta"
 EXAMPLE = json.loads((BASE / "examples" / "climate-inventory-dataset.json").read_text())
 
 
@@ -34,7 +34,7 @@ def test_example_is_valid(lib):
 
 
 def test_generated_schema_is_in_sync(p):
-    on_disk = json.loads((BASE / "schema" / "she-record.schema.json").read_text())
+    on_disk = json.loads((BASE / "schema" / "humeta-record.schema.json").read_text())
     assert on_disk == profile.json_schema(p), "run python scripts/build_profile_artifacts.py"
 
 
@@ -111,7 +111,7 @@ def test_datacite_json_has_mandatory_properties(lib):
     for key in ("doi", "types", "titles", "creators", "publisher", "publicationYear"):
         assert data.get(key)
     schemes = {s.get("subjectScheme") for s in data["subjects"]}
-    assert {"SHE Constructs", "ERIC Thesaurus", "SHE Education Levels"} <= schemes
+    assert {"HuMeta Constructs", "ERIC Thesaurus", "HuMeta Education Levels"} <= schemes
     assert {"relationType": "IsCollectedBy"}.items() <= data["relatedIdentifiers"][0].items()
 
 
@@ -165,7 +165,7 @@ def test_datacite_xml_validates_against_official_schema(lib, tmp_path):
 
 def test_migrate_keeps_complete_records_and_fills_partial_ones(p):
     assert profile.migrate(EXAMPLE, p) == EXAMPLE
-    partial = {"profile": "she", "profile_version": "1.0.0-draft.1",
+    partial = {"profile": "humeta", "profile_version": "1.0.0-draft.1",
                "resource": {"title": "T"}, "study": {"ethics": {"access_level": "closed"}}}
     filled = profile.migrate(partial, p)
     assert filled["resource"]["title"] == "T"
@@ -213,7 +213,7 @@ def test_every_element_has_alignments_to_known_standards(p):
 def test_alignment_badges(p):
     assert profile.alignment_badges("resource.title", p) == "`DataCite: titles.title` `DC: title` `schema.org: name`"
     assert profile.alignment_badges("resource.publication_year", p).count("≈") == 2
-    assert profile.alignment_badges("study.constructs", p).startswith("`SHE`")
+    assert profile.alignment_badges("study.constructs", p).startswith("`HuMeta`")
     assert "Close match: Dublin Core" in profile.alignment_help("resource.publication_year", p)
 
 
@@ -244,7 +244,7 @@ def test_education_module_is_optional(lib, p):
     record = copy.deepcopy(EXAMPLE)
     record["education"] = None
     assert profile.is_valid(record, lib, p)
-    assert not any(s.get("subjectScheme") == "SHE Education Levels"
+    assert not any(s.get("subjectScheme") == "HuMeta Education Levels"
                    for s in profile.to_datacite_json(record, lib, p)["subjects"])
     record["education"] = profile.empty_record(p, modules=("education",))["education"]
     issues = profile.validate(record, lib, p)

@@ -1,4 +1,4 @@
-# Endorsing the SHE Study Metadata Profile
+# Endorsing the HuMeta profile
 
 Version 1.0.0 of the profile will be submitted to scientific and professional
 societies for formal endorsement. Endorsement turns a project specification
@@ -11,7 +11,7 @@ Science, or Humanities) that serves its members. Endorsements are listed in the 
 
 An endorsing organization states that it:
 
-1. Recommends the SHE Study Metadata Profile (version 1.0) and its [module]
+1. Recommends the HuMeta profile (version 1.0) and its [module]
    module to its members for describing research data, instruments, and
    studies when depositing or sharing them; and
 2. May name a liaison to the profile's governance, to bring members' needs to

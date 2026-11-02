@@ -1,12 +1,11 @@
-# Changelog: SHE Study Metadata Profile
+# Changelog: HuMeta profile
 
 ## Unreleased
 
-* **Renamed** from the STEMEd+ Metadata Application Profile to the SHE Study
-  Metadata Profile (Social Science, Humanities, and Education Study Metadata
-  Profile), to serve the social sciences and humanities as well as education.
-  Folder `standard/stemed-ap/` is now `standard/she/`; the record's `profile`
-  value is `she`; DataCite subject schemes are named "SHE …".
+* **Renamed** from the STEMEd+ Metadata Application Profile to **HuMeta**, the
+  Social Science, Humanities, and Education Study Metadata Profile, to serve the social sciences and humanities as well as education.
+  Folder `standard/stemed-ap/` is now `standard/humeta/`; the record's `profile`
+  value is `humeta`; DataCite subject schemes are named "HuMeta …".
 * **Core and modules.** The record's `stemed` section is now `study` (the
   core). Education-specific elements moved to an optional **Education module**
   under the record key `education`: `education_levels`,

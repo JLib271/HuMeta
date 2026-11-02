@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/she/schema/she-record.schema.json",
-  "title": "SHE Study Metadata Profile record (1.0.0-draft.1)",
-  "description": "Generated from standard/she/profile.json and vocabularies.json by scripts/build_profile_artifacts.py. Do not edit by hand.",
+  "$id": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/schema/humeta-record.schema.json",
+  "title": "HuMeta profile record (1.0.0-draft.1)",
+  "description": "Generated from standard/humeta/profile.json and vocabularies.json by scripts/build_profile_artifacts.py. Do not edit by hand.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -13,7 +13,7 @@
   ],
   "properties": {
     "profile": {
-      "const": "she"
+      "const": "humeta"
     },
     "profile_version": {
       "type": "string"

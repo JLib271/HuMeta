@@ -1,5 +1,5 @@
 {
-  "profile": "she",
+  "profile": "humeta",
   "profile_version": "1.0.0-draft.1",
   "resource": {
     "title": "Example: Pre/post climate change understanding in an introductory Earth science course",
@@ -14,10 +14,10 @@
     "publication_year": 2027,
     "resource_type": "Dataset",
     "identifier": {
-      "value": "10.5072/example-she-1",
+      "value": "10.5072/example-humeta-1",
       "type": "DOI"
     },
-    "description": "Illustrative record (fictional study) showing how a dataset collected with the Climate Change Concept Inventory is described with the SHE Study Metadata Profile, including its Education module.",
+    "description": "Illustrative record (fictional study) showing how a dataset collected with the Climate Change Concept Inventory is described with the HuMeta profile, including its Education module.",
     "keywords": [
       "climate change",
       "concept inventory"

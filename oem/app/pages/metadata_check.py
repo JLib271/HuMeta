@@ -3,7 +3,7 @@
 """Module 3: Check & Export Metadata.
 
 Add the constructs measured (suggested from the Module 2 plan), check the
-SHE record against the profile's rules, and export SHE JSON, DataCite
+HuMeta record against the profile's rules, and export HuMeta JSON, DataCite
 4.7 JSON/XML, and ERIC descriptors. Logic lives in oem/profile.py.
 """
 
@@ -25,7 +25,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     p = profile.load()
     lib = library()
     st.caption(
-        f"Complete your [SHE profile]({SPEC_URL}) record with the constructs you measure, check it against the "
+        f"Complete your [HuMeta profile]({SPEC_URL}) record with the constructs you measure, check it against the "
         "profile's responsible-sharing rules, and export metadata that DataCite (DOIs) and ERIC understand."
     )
     record = current_record()
@@ -88,8 +88,8 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
 
     st.subheader("Export")
     slug = re.sub(r"[^a-z0-9]+", "-", (record["resource"].get("title") or "record").lower()).strip("-")[:50] or "record"
-    st.download_button("SHE record (JSON)", json.dumps(record, ensure_ascii=False, indent=2).encode("utf-8"),
-                       file_name=f"{slug}.she.json", mime="application/json", key="m3_dl_record",
+    st.download_button("HuMeta record (JSON)", json.dumps(record, ensure_ascii=False, indent=2).encode("utf-8"),
+                       file_name=f"{slug}.humeta.json", mime="application/json", key="m3_dl_record",
                        use_container_width=True)
     if any(i.severity == "error" for i in issues):
         st.info("Fix the items above to enable the DataCite and ERIC exports.")
