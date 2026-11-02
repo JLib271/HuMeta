@@ -56,6 +56,17 @@ construct,teaching_beliefs,Instructor beliefs about teaching,Beliefs,verified
 construct,learning_environment,Learning environment perceptions,Classroom Environment,verified
 construct,learning_environment,Learning environment perceptions,Educational Environment,verified
 research_field,education,Education,Educational Research,verified
+discipline,anzsrc_31,Biological sciences (all),Biology,verified
+discipline,anzsrc_34,Chemical sciences (all),Chemistry,verified
+discipline,anzsrc_37,Earth sciences (all),Earth Science,verified
+discipline,anzsrc_37,Earth sciences (all),Geology,verified
+discipline,anzsrc_3702,Climate change science,Climate,verified
+discipline,anzsrc_3702,Climate change science,Earth Science,verified
+discipline,anzsrc_40,Engineering (all),Engineering Education,verified
+discipline,anzsrc_46,Information and computing sciences (all),Computer Science Education,verified
+discipline,anzsrc_49,Mathematical sciences (all),Mathematics Education,verified
+discipline,anzsrc_51,Physical sciences (all),Physics,verified
+discipline,anzsrc_5101,Astronomical sciences,Astronomy,verified
 discipline,biology,Biology and life sciences,Biology,verified
 discipline,chemistry,Chemistry,Chemistry,verified
 discipline,physics,Physics,Physics,verified

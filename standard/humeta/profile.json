@@ -139,6 +139,11 @@
       "short": "ISO 639",
       "name": "ISO 639 language codes (as used in BCP 47)",
       "url": "https://www.loc.gov/standards/iso639-2/php/code_list.php"
+    },
+    "anzsrc": {
+      "short": "ANZSRC FoR",
+      "name": "Australian and New Zealand Standard Research Classification 2020: Fields of Research (ABS and Stats NZ)",
+      "url": "https://linked.data.gov.au/def/anzsrc-for/2020"
     }
   },
   "modules": {
@@ -868,12 +873,12 @@
       "cardinality": "0..n",
       "type": "vocab",
       "vocabulary": "discipline",
-      "definition": "Discipline(s) or subject area(s) of the study; for education studies, the subject taught or learned.",
-      "datacite": "subjects (subjectScheme 'HuMeta Disciplines'; plus 'Fields of Science and Technology (FOS)' with each term's FOS code)",
+      "definition": "Discipline(s) or subject area(s) the study is about; for education studies, also the subject taught or learned. Chosen from the ANZSRC 2020 Fields of Research (divisions and groups).",
+      "datacite": "subjects (subjectScheme 'ANZSRC Fields of Research', valueURI and classificationCode per term), plus the corresponding OECD Fields of Science subject (subjectScheme 'Fields of Science and Technology (FOS)')",
       "alignments": [
         {
-          "standard": "humeta",
-          "term": "discipline vocabulary",
+          "standard": "anzsrc",
+          "term": "Fields of Research 2020 (divisions and groups)",
           "match": "exact"
         },
         {

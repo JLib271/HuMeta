@@ -138,11 +138,19 @@ def _add_framework(picker_key: str, fid: str) -> None:
         st.session_state[picker_key] = chosen + [fid]
 
 
+def _discipline_label(prof, term_id: str) -> str:
+    """'Human society › Sociology' for a group, 'Human society (all)' for a division."""
+    term = prof.term("discipline", term_id)
+    division = term.get("division")
+    return f"{prof.label('discipline', division).removesuffix(' (all)')} › {term['label']}" if division else term["label"]
+
+
 def _browse_frameworks(lib, picker_key: str, v: int) -> None:
     """Browse the framework library by field, kind, discipline, and search; preview and add."""
     record = current_record() or {}
     saved_fields = [f for f in ((record.get("study") or {}).get("fields") or []) if f in FIELD_FILTERS]
-    disciplines = {t["id"]: t["label"] for t in profile.load().vocab("discipline")}
+    prof = profile.load()
+    disciplines = {d: _discipline_label(prof, d) for d in prof.active_ids("discipline")}
     with st.container(border=True):
         st.markdown("**Browse the framework library**")
         c1, c2, c3, c4 = st.columns([1, 1.3, 1.2, 1.5])
@@ -150,10 +158,13 @@ def _browse_frameworks(lib, picker_key: str, v: int) -> None:
                              index=list(FIELD_FILTERS).index(saved_fields[0]) if len(saved_fields) == 1 else 0,
                              help="Starts from the research field in your Module 1 study profile.")
         kind = c2.selectbox("Kind", list(KIND_FILTERS), format_func=KIND_FILTERS.get, key=f"m2_browse_kind_{v}")
-        in_field = sorted({d for fw in lib.frameworks.values() if not field or field in fw.get("fields", [])
-                           for d in fw.get("disciplines", [])}, key=lambda d: disciplines.get(d, d))
-        discipline = c3.selectbox("Discipline", [""] + in_field, key=f"m2_browse_disc_{v}",
-                                  format_func=lambda d: disciplines.get(d, d) if d else "All disciplines")
+        fos_prefix = {"education": "5.3", "social_sciences": "5", "humanities": "6", "arts": "6.4"}.get(field, "")
+        in_field = [d for d in disciplines if str(prof.term("discipline", d).get("fos", "")).startswith(fos_prefix)]
+        counts = {d: len(P.browse_frameworks(lib, field or None, kind or None, d)) - 2 for d in in_field}  # minus own/exploratory
+        discipline = c3.selectbox("Discipline (ANZSRC)", [""] + in_field, key=f"m2_browse_disc_{v}",
+                                  format_func=lambda d: f"{disciplines[d]} ({counts[d]})" if d else "All disciplines",
+                                  help="Disciplines follow the ANZSRC 2020 Fields of Research. The number is how many "
+                                       "frameworks in the library are tagged with it.")
         query = c4.text_input("Search", key=f"m2_browse_q_{v}", placeholder="name, idea, construct, or author")
         found = [fid for fid in P.browse_frameworks(lib, field or None, kind or None, discipline or None, query)
                  if lib.frameworks[fid]["kind"] in ("theory", "lens")]

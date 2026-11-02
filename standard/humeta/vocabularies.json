@@ -42,14 +42,1903 @@
     },
     "discipline": {
       "label": "Discipline or subject area",
-      "definition": "Discipline(s) or subject area(s) the study is about. For education studies, the subject taught or learned. Each term carries its OECD Fields of Science (FOS) code.",
+      "definition": "Discipline(s) or subject area(s) the study is about; for education studies, also the subject taught or learned. Terms are the Divisions (broad) and Groups of the Australian and New Zealand Standard Research Classification (ANZSRC) 2020 Fields of Research. Based on Australian Bureau of Statistics and Stats NZ material, (c) Commonwealth of Australia and Crown Copyright New Zealand 2020, used under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/); HuMeta added the OECD FOS mapping and '(all)' division labels (see THIRD_PARTY_NOTICES.md). 'anzsrc' is the FoR code (concept URI https://linked.data.gov.au/def/anzsrc-for/2020/<code>); 'fos' is the corresponding OECD Fields of Science code used for DataCite. Terms marked deprecated are the profile's earlier discipline list; records using them are moved to the terms in replaced_by.",
       "terms": [
+        {
+          "id": "anzsrc_30",
+          "label": "Agricultural, veterinary and food sciences (all)",
+          "anzsrc": "30",
+          "fos": "4",
+          "eric": []
+        },
+        {
+          "id": "anzsrc_3001",
+          "label": "Agricultural biotechnology",
+          "anzsrc": "3001",
+          "fos": "4.4",
+          "eric": [],
+          "division": "anzsrc_30"
+        },
+        {
+          "id": "anzsrc_3002",
+          "label": "Agriculture, land and farm management",
+          "anzsrc": "3002",
+          "fos": "4.1",
+          "eric": [],
+          "division": "anzsrc_30"
+        },
+        {
+          "id": "anzsrc_3003",
+          "label": "Animal production",
+          "anzsrc": "3003",
+          "fos": "4.2",
+          "eric": [],
+          "division": "anzsrc_30"
+        },
+        {
+          "id": "anzsrc_3004",
+          "label": "Crop and pasture production",
+          "anzsrc": "3004",
+          "fos": "4.1",
+          "eric": [],
+          "division": "anzsrc_30"
+        },
+        {
+          "id": "anzsrc_3005",
+          "label": "Fisheries sciences",
+          "anzsrc": "3005",
+          "fos": "4.1",
+          "eric": [],
+          "division": "anzsrc_30"
+        },
+        {
+          "id": "anzsrc_3006",
+          "label": "Food sciences",
+          "anzsrc": "3006",
+          "fos": "4.5",
+          "eric": [],
+          "division": "anzsrc_30"
+        },
+        {
+          "id": "anzsrc_3007",
+          "label": "Forestry sciences",
+          "anzsrc": "3007",
+          "fos": "4.1",
+          "eric": [],
+          "division": "anzsrc_30"
+        },
+        {
+          "id": "anzsrc_3008",
+          "label": "Horticultural production",
+          "anzsrc": "3008",
+          "fos": "4.1",
+          "eric": [],
+          "division": "anzsrc_30"
+        },
+        {
+          "id": "anzsrc_3009",
+          "label": "Veterinary sciences",
+          "anzsrc": "3009",
+          "fos": "4.3",
+          "eric": [],
+          "division": "anzsrc_30"
+        },
+        {
+          "id": "anzsrc_3099",
+          "label": "Other agricultural, veterinary and food sciences",
+          "anzsrc": "3099",
+          "fos": "4.5",
+          "eric": [],
+          "division": "anzsrc_30"
+        },
+        {
+          "id": "anzsrc_31",
+          "label": "Biological sciences (all)",
+          "anzsrc": "31",
+          "fos": "1.6",
+          "eric": [
+            "Biology"
+          ]
+        },
+        {
+          "id": "anzsrc_3101",
+          "label": "Biochemistry and cell biology",
+          "anzsrc": "3101",
+          "fos": "1.6",
+          "eric": [],
+          "division": "anzsrc_31"
+        },
+        {
+          "id": "anzsrc_3102",
+          "label": "Bioinformatics and computational biology",
+          "anzsrc": "3102",
+          "fos": "1.6",
+          "eric": [],
+          "division": "anzsrc_31"
+        },
+        {
+          "id": "anzsrc_3103",
+          "label": "Ecology",
+          "anzsrc": "3103",
+          "fos": "1.6",
+          "eric": [],
+          "division": "anzsrc_31"
+        },
+        {
+          "id": "anzsrc_3104",
+          "label": "Evolutionary biology",
+          "anzsrc": "3104",
+          "fos": "1.6",
+          "eric": [],
+          "division": "anzsrc_31"
+        },
+        {
+          "id": "anzsrc_3105",
+          "label": "Genetics",
+          "anzsrc": "3105",
+          "fos": "1.6",
+          "eric": [],
+          "division": "anzsrc_31"
+        },
+        {
+          "id": "anzsrc_3106",
+          "label": "Industrial biotechnology",
+          "anzsrc": "3106",
+          "fos": "2.9",
+          "eric": [],
+          "division": "anzsrc_31"
+        },
+        {
+          "id": "anzsrc_3107",
+          "label": "Microbiology",
+          "anzsrc": "3107",
+          "fos": "1.6",
+          "eric": [],
+          "division": "anzsrc_31"
+        },
+        {
+          "id": "anzsrc_3108",
+          "label": "Plant biology",
+          "anzsrc": "3108",
+          "fos": "1.6",
+          "eric": [],
+          "division": "anzsrc_31"
+        },
+        {
+          "id": "anzsrc_3109",
+          "label": "Zoology",
+          "anzsrc": "3109",
+          "fos": "1.6",
+          "eric": [],
+          "division": "anzsrc_31"
+        },
+        {
+          "id": "anzsrc_3199",
+          "label": "Other biological sciences",
+          "anzsrc": "3199",
+          "fos": "1.6",
+          "eric": [],
+          "division": "anzsrc_31"
+        },
+        {
+          "id": "anzsrc_32",
+          "label": "Biomedical and clinical sciences (all)",
+          "anzsrc": "32",
+          "fos": "3.2",
+          "eric": []
+        },
+        {
+          "id": "anzsrc_3201",
+          "label": "Cardiovascular medicine and haematology",
+          "anzsrc": "3201",
+          "fos": "3.2",
+          "eric": [],
+          "division": "anzsrc_32"
+        },
+        {
+          "id": "anzsrc_3202",
+          "label": "Clinical sciences",
+          "anzsrc": "3202",
+          "fos": "3.2",
+          "eric": [],
+          "division": "anzsrc_32"
+        },
+        {
+          "id": "anzsrc_3203",
+          "label": "Dentistry",
+          "anzsrc": "3203",
+          "fos": "3.2",
+          "eric": [],
+          "division": "anzsrc_32"
+        },
+        {
+          "id": "anzsrc_3204",
+          "label": "Immunology",
+          "anzsrc": "3204",
+          "fos": "3.1",
+          "eric": [],
+          "division": "anzsrc_32"
+        },
+        {
+          "id": "anzsrc_3205",
+          "label": "Medical biochemistry and metabolomics",
+          "anzsrc": "3205",
+          "fos": "3.1",
+          "eric": [],
+          "division": "anzsrc_32"
+        },
+        {
+          "id": "anzsrc_3206",
+          "label": "Medical biotechnology",
+          "anzsrc": "3206",
+          "fos": "3.4",
+          "eric": [],
+          "division": "anzsrc_32"
+        },
+        {
+          "id": "anzsrc_3207",
+          "label": "Medical microbiology",
+          "anzsrc": "3207",
+          "fos": "3.1",
+          "eric": [],
+          "division": "anzsrc_32"
+        },
+        {
+          "id": "anzsrc_3208",
+          "label": "Medical physiology",
+          "anzsrc": "3208",
+          "fos": "3.1",
+          "eric": [],
+          "division": "anzsrc_32"
+        },
+        {
+          "id": "anzsrc_3209",
+          "label": "Neurosciences",
+          "anzsrc": "3209",
+          "fos": "3.1",
+          "eric": [],
+          "division": "anzsrc_32"
+        },
+        {
+          "id": "anzsrc_3210",
+          "label": "Nutrition and dietetics",
+          "anzsrc": "3210",
+          "fos": "3.3",
+          "eric": [],
+          "division": "anzsrc_32"
+        },
+        {
+          "id": "anzsrc_3211",
+          "label": "Oncology and carcinogenesis",
+          "anzsrc": "3211",
+          "fos": "3.2",
+          "eric": [],
+          "division": "anzsrc_32"
+        },
+        {
+          "id": "anzsrc_3212",
+          "label": "Ophthalmology and optometry",
+          "anzsrc": "3212",
+          "fos": "3.2",
+          "eric": [],
+          "division": "anzsrc_32"
+        },
+        {
+          "id": "anzsrc_3213",
+          "label": "Paediatrics",
+          "anzsrc": "3213",
+          "fos": "3.2",
+          "eric": [],
+          "division": "anzsrc_32"
+        },
+        {
+          "id": "anzsrc_3214",
+          "label": "Pharmacology and pharmaceutical sciences",
+          "anzsrc": "3214",
+          "fos": "3.1",
+          "eric": [],
+          "division": "anzsrc_32"
+        },
+        {
+          "id": "anzsrc_3215",
+          "label": "Reproductive medicine",
+          "anzsrc": "3215",
+          "fos": "3.2",
+          "eric": [],
+          "division": "anzsrc_32"
+        },
+        {
+          "id": "anzsrc_3299",
+          "label": "Other biomedical and clinical sciences",
+          "anzsrc": "3299",
+          "fos": "3.2",
+          "eric": [],
+          "division": "anzsrc_32"
+        },
+        {
+          "id": "anzsrc_33",
+          "label": "Built environment and design (all)",
+          "anzsrc": "33",
+          "fos": "2.1",
+          "eric": []
+        },
+        {
+          "id": "anzsrc_3301",
+          "label": "Architecture",
+          "anzsrc": "3301",
+          "fos": "6.4",
+          "eric": [],
+          "division": "anzsrc_33"
+        },
+        {
+          "id": "anzsrc_3302",
+          "label": "Building",
+          "anzsrc": "3302",
+          "fos": "2.1",
+          "eric": [],
+          "division": "anzsrc_33"
+        },
+        {
+          "id": "anzsrc_3303",
+          "label": "Design",
+          "anzsrc": "3303",
+          "fos": "6.4",
+          "eric": [],
+          "division": "anzsrc_33"
+        },
+        {
+          "id": "anzsrc_3304",
+          "label": "Urban and regional planning",
+          "anzsrc": "3304",
+          "fos": "5.7",
+          "eric": [],
+          "division": "anzsrc_33"
+        },
+        {
+          "id": "anzsrc_3399",
+          "label": "Other built environment and design",
+          "anzsrc": "3399",
+          "fos": "2.11",
+          "eric": [],
+          "division": "anzsrc_33"
+        },
+        {
+          "id": "anzsrc_34",
+          "label": "Chemical sciences (all)",
+          "anzsrc": "34",
+          "fos": "1.4",
+          "eric": [
+            "Chemistry"
+          ]
+        },
+        {
+          "id": "anzsrc_3401",
+          "label": "Analytical chemistry",
+          "anzsrc": "3401",
+          "fos": "1.4",
+          "eric": [],
+          "division": "anzsrc_34"
+        },
+        {
+          "id": "anzsrc_3402",
+          "label": "Inorganic chemistry",
+          "anzsrc": "3402",
+          "fos": "1.4",
+          "eric": [],
+          "division": "anzsrc_34"
+        },
+        {
+          "id": "anzsrc_3403",
+          "label": "Macromolecular and materials chemistry",
+          "anzsrc": "3403",
+          "fos": "1.4",
+          "eric": [],
+          "division": "anzsrc_34"
+        },
+        {
+          "id": "anzsrc_3404",
+          "label": "Medicinal and biomolecular chemistry",
+          "anzsrc": "3404",
+          "fos": "1.4",
+          "eric": [],
+          "division": "anzsrc_34"
+        },
+        {
+          "id": "anzsrc_3405",
+          "label": "Organic chemistry",
+          "anzsrc": "3405",
+          "fos": "1.4",
+          "eric": [],
+          "division": "anzsrc_34"
+        },
+        {
+          "id": "anzsrc_3406",
+          "label": "Physical chemistry",
+          "anzsrc": "3406",
+          "fos": "1.4",
+          "eric": [],
+          "division": "anzsrc_34"
+        },
+        {
+          "id": "anzsrc_3407",
+          "label": "Theoretical and computational chemistry",
+          "anzsrc": "3407",
+          "fos": "1.4",
+          "eric": [],
+          "division": "anzsrc_34"
+        },
+        {
+          "id": "anzsrc_3499",
+          "label": "Other chemical sciences",
+          "anzsrc": "3499",
+          "fos": "1.4",
+          "eric": [],
+          "division": "anzsrc_34"
+        },
+        {
+          "id": "anzsrc_35",
+          "label": "Commerce, management, tourism and services (all)",
+          "anzsrc": "35",
+          "fos": "5.2",
+          "eric": []
+        },
+        {
+          "id": "anzsrc_3501",
+          "label": "Accounting, auditing and accountability",
+          "anzsrc": "3501",
+          "fos": "5.2",
+          "eric": [],
+          "division": "anzsrc_35"
+        },
+        {
+          "id": "anzsrc_3502",
+          "label": "Banking, finance and investment",
+          "anzsrc": "3502",
+          "fos": "5.2",
+          "eric": [],
+          "division": "anzsrc_35"
+        },
+        {
+          "id": "anzsrc_3503",
+          "label": "Business systems in context",
+          "anzsrc": "3503",
+          "fos": "5.2",
+          "eric": [],
+          "division": "anzsrc_35"
+        },
+        {
+          "id": "anzsrc_3504",
+          "label": "Commercial services",
+          "anzsrc": "3504",
+          "fos": "5.2",
+          "eric": [],
+          "division": "anzsrc_35"
+        },
+        {
+          "id": "anzsrc_3505",
+          "label": "Human resources and industrial relations",
+          "anzsrc": "3505",
+          "fos": "5.2",
+          "eric": [],
+          "division": "anzsrc_35"
+        },
+        {
+          "id": "anzsrc_3506",
+          "label": "Marketing",
+          "anzsrc": "3506",
+          "fos": "5.2",
+          "eric": [],
+          "division": "anzsrc_35"
+        },
+        {
+          "id": "anzsrc_3507",
+          "label": "Strategy, management and organisational behaviour",
+          "anzsrc": "3507",
+          "fos": "5.2",
+          "eric": [],
+          "division": "anzsrc_35"
+        },
+        {
+          "id": "anzsrc_3508",
+          "label": "Tourism",
+          "anzsrc": "3508",
+          "fos": "5.2",
+          "eric": [],
+          "division": "anzsrc_35"
+        },
+        {
+          "id": "anzsrc_3509",
+          "label": "Transportation, logistics and supply chains",
+          "anzsrc": "3509",
+          "fos": "5.2",
+          "eric": [],
+          "division": "anzsrc_35"
+        },
+        {
+          "id": "anzsrc_3599",
+          "label": "Other commerce, management, tourism and services",
+          "anzsrc": "3599",
+          "fos": "5.2",
+          "eric": [],
+          "division": "anzsrc_35"
+        },
+        {
+          "id": "anzsrc_36",
+          "label": "Creative arts and writing (all)",
+          "anzsrc": "36",
+          "fos": "6.4",
+          "eric": []
+        },
+        {
+          "id": "anzsrc_3601",
+          "label": "Art history, theory and criticism",
+          "anzsrc": "3601",
+          "fos": "6.4",
+          "eric": [],
+          "division": "anzsrc_36"
+        },
+        {
+          "id": "anzsrc_3602",
+          "label": "Creative and professional writing",
+          "anzsrc": "3602",
+          "fos": "6.2",
+          "eric": [],
+          "division": "anzsrc_36"
+        },
+        {
+          "id": "anzsrc_3603",
+          "label": "Music",
+          "anzsrc": "3603",
+          "fos": "6.4",
+          "eric": [],
+          "division": "anzsrc_36"
+        },
+        {
+          "id": "anzsrc_3604",
+          "label": "Performing arts",
+          "anzsrc": "3604",
+          "fos": "6.4",
+          "eric": [],
+          "division": "anzsrc_36"
+        },
+        {
+          "id": "anzsrc_3605",
+          "label": "Screen and digital media",
+          "anzsrc": "3605",
+          "fos": "6.4",
+          "eric": [],
+          "division": "anzsrc_36"
+        },
+        {
+          "id": "anzsrc_3606",
+          "label": "Visual arts",
+          "anzsrc": "3606",
+          "fos": "6.4",
+          "eric": [],
+          "division": "anzsrc_36"
+        },
+        {
+          "id": "anzsrc_3699",
+          "label": "Other creative arts and writing",
+          "anzsrc": "3699",
+          "fos": "6.4",
+          "eric": [],
+          "division": "anzsrc_36"
+        },
+        {
+          "id": "anzsrc_37",
+          "label": "Earth sciences (all)",
+          "anzsrc": "37",
+          "fos": "1.5",
+          "eric": [
+            "Earth Science",
+            "Geology"
+          ]
+        },
+        {
+          "id": "anzsrc_3701",
+          "label": "Atmospheric sciences",
+          "anzsrc": "3701",
+          "fos": "1.5",
+          "eric": [],
+          "division": "anzsrc_37"
+        },
+        {
+          "id": "anzsrc_3702",
+          "label": "Climate change science",
+          "anzsrc": "3702",
+          "fos": "1.5",
+          "eric": [
+            "Climate",
+            "Earth Science"
+          ],
+          "division": "anzsrc_37"
+        },
+        {
+          "id": "anzsrc_3703",
+          "label": "Geochemistry",
+          "anzsrc": "3703",
+          "fos": "1.5",
+          "eric": [],
+          "division": "anzsrc_37"
+        },
+        {
+          "id": "anzsrc_3704",
+          "label": "Geoinformatics",
+          "anzsrc": "3704",
+          "fos": "1.5",
+          "eric": [],
+          "division": "anzsrc_37"
+        },
+        {
+          "id": "anzsrc_3705",
+          "label": "Geology",
+          "anzsrc": "3705",
+          "fos": "1.5",
+          "eric": [],
+          "division": "anzsrc_37"
+        },
+        {
+          "id": "anzsrc_3706",
+          "label": "Geophysics",
+          "anzsrc": "3706",
+          "fos": "1.5",
+          "eric": [],
+          "division": "anzsrc_37"
+        },
+        {
+          "id": "anzsrc_3707",
+          "label": "Hydrology",
+          "anzsrc": "3707",
+          "fos": "1.5",
+          "eric": [],
+          "division": "anzsrc_37"
+        },
+        {
+          "id": "anzsrc_3708",
+          "label": "Oceanography",
+          "anzsrc": "3708",
+          "fos": "1.5",
+          "eric": [],
+          "division": "anzsrc_37"
+        },
+        {
+          "id": "anzsrc_3709",
+          "label": "Physical geography and environmental geoscience",
+          "anzsrc": "3709",
+          "fos": "1.5",
+          "eric": [],
+          "division": "anzsrc_37"
+        },
+        {
+          "id": "anzsrc_3799",
+          "label": "Other earth sciences",
+          "anzsrc": "3799",
+          "fos": "1.5",
+          "eric": [],
+          "division": "anzsrc_37"
+        },
+        {
+          "id": "anzsrc_38",
+          "label": "Economics (all)",
+          "anzsrc": "38",
+          "fos": "5.2",
+          "eric": []
+        },
+        {
+          "id": "anzsrc_3801",
+          "label": "Applied economics",
+          "anzsrc": "3801",
+          "fos": "5.2",
+          "eric": [],
+          "division": "anzsrc_38"
+        },
+        {
+          "id": "anzsrc_3802",
+          "label": "Econometrics",
+          "anzsrc": "3802",
+          "fos": "5.2",
+          "eric": [],
+          "division": "anzsrc_38"
+        },
+        {
+          "id": "anzsrc_3803",
+          "label": "Economic theory",
+          "anzsrc": "3803",
+          "fos": "5.2",
+          "eric": [],
+          "division": "anzsrc_38"
+        },
+        {
+          "id": "anzsrc_3899",
+          "label": "Other economics",
+          "anzsrc": "3899",
+          "fos": "5.2",
+          "eric": [],
+          "division": "anzsrc_38"
+        },
+        {
+          "id": "anzsrc_39",
+          "label": "Education (all)",
+          "anzsrc": "39",
+          "fos": "5.3",
+          "eric": []
+        },
+        {
+          "id": "anzsrc_3901",
+          "label": "Curriculum and pedagogy",
+          "anzsrc": "3901",
+          "fos": "5.3",
+          "eric": [],
+          "division": "anzsrc_39"
+        },
+        {
+          "id": "anzsrc_3902",
+          "label": "Education policy, sociology and philosophy",
+          "anzsrc": "3902",
+          "fos": "5.3",
+          "eric": [],
+          "division": "anzsrc_39"
+        },
+        {
+          "id": "anzsrc_3903",
+          "label": "Education systems",
+          "anzsrc": "3903",
+          "fos": "5.3",
+          "eric": [],
+          "division": "anzsrc_39"
+        },
+        {
+          "id": "anzsrc_3904",
+          "label": "Specialist studies in education",
+          "anzsrc": "3904",
+          "fos": "5.3",
+          "eric": [],
+          "division": "anzsrc_39"
+        },
+        {
+          "id": "anzsrc_3999",
+          "label": "Other Education",
+          "anzsrc": "3999",
+          "fos": "5.3",
+          "eric": [],
+          "division": "anzsrc_39"
+        },
+        {
+          "id": "anzsrc_40",
+          "label": "Engineering (all)",
+          "anzsrc": "40",
+          "fos": "2",
+          "eric": [
+            "Engineering Education"
+          ]
+        },
+        {
+          "id": "anzsrc_4001",
+          "label": "Aerospace engineering",
+          "anzsrc": "4001",
+          "fos": "2.3",
+          "eric": [],
+          "division": "anzsrc_40"
+        },
+        {
+          "id": "anzsrc_4002",
+          "label": "Automotive engineering",
+          "anzsrc": "4002",
+          "fos": "2.3",
+          "eric": [],
+          "division": "anzsrc_40"
+        },
+        {
+          "id": "anzsrc_4003",
+          "label": "Biomedical engineering",
+          "anzsrc": "4003",
+          "fos": "2.6",
+          "eric": [],
+          "division": "anzsrc_40"
+        },
+        {
+          "id": "anzsrc_4004",
+          "label": "Chemical engineering",
+          "anzsrc": "4004",
+          "fos": "2.4",
+          "eric": [],
+          "division": "anzsrc_40"
+        },
+        {
+          "id": "anzsrc_4005",
+          "label": "Civil engineering",
+          "anzsrc": "4005",
+          "fos": "2.1",
+          "eric": [],
+          "division": "anzsrc_40"
+        },
+        {
+          "id": "anzsrc_4006",
+          "label": "Communications engineering",
+          "anzsrc": "4006",
+          "fos": "2.2",
+          "eric": [],
+          "division": "anzsrc_40"
+        },
+        {
+          "id": "anzsrc_4007",
+          "label": "Control engineering, mechatronics and robotics",
+          "anzsrc": "4007",
+          "fos": "2.2",
+          "eric": [],
+          "division": "anzsrc_40"
+        },
+        {
+          "id": "anzsrc_4008",
+          "label": "Electrical engineering",
+          "anzsrc": "4008",
+          "fos": "2.2",
+          "eric": [],
+          "division": "anzsrc_40"
+        },
+        {
+          "id": "anzsrc_4009",
+          "label": "Electronics, sensors and digital hardware",
+          "anzsrc": "4009",
+          "fos": "2.2",
+          "eric": [],
+          "division": "anzsrc_40"
+        },
+        {
+          "id": "anzsrc_4010",
+          "label": "Engineering practice and education",
+          "anzsrc": "4010",
+          "fos": "2.11",
+          "eric": [],
+          "division": "anzsrc_40"
+        },
+        {
+          "id": "anzsrc_4011",
+          "label": "Environmental engineering",
+          "anzsrc": "4011",
+          "fos": "2.7",
+          "eric": [],
+          "division": "anzsrc_40"
+        },
+        {
+          "id": "anzsrc_4012",
+          "label": "Fluid mechanics and thermal engineering",
+          "anzsrc": "4012",
+          "fos": "2.3",
+          "eric": [],
+          "division": "anzsrc_40"
+        },
+        {
+          "id": "anzsrc_4013",
+          "label": "Geomatic engineering",
+          "anzsrc": "4013",
+          "fos": "2.1",
+          "eric": [],
+          "division": "anzsrc_40"
+        },
+        {
+          "id": "anzsrc_4014",
+          "label": "Manufacturing engineering",
+          "anzsrc": "4014",
+          "fos": "2.3",
+          "eric": [],
+          "division": "anzsrc_40"
+        },
+        {
+          "id": "anzsrc_4015",
+          "label": "Maritime engineering",
+          "anzsrc": "4015",
+          "fos": "2.3",
+          "eric": [],
+          "division": "anzsrc_40"
+        },
+        {
+          "id": "anzsrc_4016",
+          "label": "Materials engineering",
+          "anzsrc": "4016",
+          "fos": "2.5",
+          "eric": [],
+          "division": "anzsrc_40"
+        },
+        {
+          "id": "anzsrc_4017",
+          "label": "Mechanical engineering",
+          "anzsrc": "4017",
+          "fos": "2.3",
+          "eric": [],
+          "division": "anzsrc_40"
+        },
+        {
+          "id": "anzsrc_4018",
+          "label": "Nanotechnology",
+          "anzsrc": "4018",
+          "fos": "2.10",
+          "eric": [],
+          "division": "anzsrc_40"
+        },
+        {
+          "id": "anzsrc_4019",
+          "label": "Resources engineering and extractive metallurgy",
+          "anzsrc": "4019",
+          "fos": "2.11",
+          "eric": [],
+          "division": "anzsrc_40"
+        },
+        {
+          "id": "anzsrc_4099",
+          "label": "Other engineering",
+          "anzsrc": "4099",
+          "fos": "2.11",
+          "eric": [],
+          "division": "anzsrc_40"
+        },
+        {
+          "id": "anzsrc_41",
+          "label": "Environmental sciences (all)",
+          "anzsrc": "41",
+          "fos": "1.5",
+          "eric": []
+        },
+        {
+          "id": "anzsrc_4101",
+          "label": "Climate change impacts and adaptation",
+          "anzsrc": "4101",
+          "fos": "1.5",
+          "eric": [],
+          "division": "anzsrc_41"
+        },
+        {
+          "id": "anzsrc_4102",
+          "label": "Ecological applications",
+          "anzsrc": "4102",
+          "fos": "1.5",
+          "eric": [],
+          "division": "anzsrc_41"
+        },
+        {
+          "id": "anzsrc_4103",
+          "label": "Environmental biotechnology",
+          "anzsrc": "4103",
+          "fos": "2.8",
+          "eric": [],
+          "division": "anzsrc_41"
+        },
+        {
+          "id": "anzsrc_4104",
+          "label": "Environmental management",
+          "anzsrc": "4104",
+          "fos": "1.5",
+          "eric": [],
+          "division": "anzsrc_41"
+        },
+        {
+          "id": "anzsrc_4105",
+          "label": "Pollution and contamination",
+          "anzsrc": "4105",
+          "fos": "1.5",
+          "eric": [],
+          "division": "anzsrc_41"
+        },
+        {
+          "id": "anzsrc_4106",
+          "label": "Soil sciences",
+          "anzsrc": "4106",
+          "fos": "4.1",
+          "eric": [],
+          "division": "anzsrc_41"
+        },
+        {
+          "id": "anzsrc_4199",
+          "label": "Other environmental sciences",
+          "anzsrc": "4199",
+          "fos": "1.5",
+          "eric": [],
+          "division": "anzsrc_41"
+        },
+        {
+          "id": "anzsrc_42",
+          "label": "Health sciences (all)",
+          "anzsrc": "42",
+          "fos": "3.3",
+          "eric": []
+        },
+        {
+          "id": "anzsrc_4201",
+          "label": "Allied health and rehabilitation science",
+          "anzsrc": "4201",
+          "fos": "3.3",
+          "eric": [],
+          "division": "anzsrc_42"
+        },
+        {
+          "id": "anzsrc_4202",
+          "label": "Epidemiology",
+          "anzsrc": "4202",
+          "fos": "3.3",
+          "eric": [],
+          "division": "anzsrc_42"
+        },
+        {
+          "id": "anzsrc_4203",
+          "label": "Health services and systems",
+          "anzsrc": "4203",
+          "fos": "3.3",
+          "eric": [],
+          "division": "anzsrc_42"
+        },
+        {
+          "id": "anzsrc_4204",
+          "label": "Midwifery",
+          "anzsrc": "4204",
+          "fos": "3.3",
+          "eric": [],
+          "division": "anzsrc_42"
+        },
+        {
+          "id": "anzsrc_4205",
+          "label": "Nursing",
+          "anzsrc": "4205",
+          "fos": "3.3",
+          "eric": [],
+          "division": "anzsrc_42"
+        },
+        {
+          "id": "anzsrc_4206",
+          "label": "Public health",
+          "anzsrc": "4206",
+          "fos": "3.3",
+          "eric": [],
+          "division": "anzsrc_42"
+        },
+        {
+          "id": "anzsrc_4207",
+          "label": "Sports science and exercise",
+          "anzsrc": "4207",
+          "fos": "3.3",
+          "eric": [],
+          "division": "anzsrc_42"
+        },
+        {
+          "id": "anzsrc_4208",
+          "label": "Traditional, complementary and integrative medicine",
+          "anzsrc": "4208",
+          "fos": "3.3",
+          "eric": [],
+          "division": "anzsrc_42"
+        },
+        {
+          "id": "anzsrc_4299",
+          "label": "Other health sciences",
+          "anzsrc": "4299",
+          "fos": "3.3",
+          "eric": [],
+          "division": "anzsrc_42"
+        },
+        {
+          "id": "anzsrc_43",
+          "label": "History, heritage and archaeology (all)",
+          "anzsrc": "43",
+          "fos": "6.1",
+          "eric": []
+        },
+        {
+          "id": "anzsrc_4301",
+          "label": "Archaeology",
+          "anzsrc": "4301",
+          "fos": "6.1",
+          "eric": [],
+          "division": "anzsrc_43"
+        },
+        {
+          "id": "anzsrc_4302",
+          "label": "Heritage, archive and museum studies",
+          "anzsrc": "4302",
+          "fos": "6.1",
+          "eric": [],
+          "division": "anzsrc_43"
+        },
+        {
+          "id": "anzsrc_4303",
+          "label": "Historical studies",
+          "anzsrc": "4303",
+          "fos": "6.1",
+          "eric": [],
+          "division": "anzsrc_43"
+        },
+        {
+          "id": "anzsrc_4399",
+          "label": "Other history, heritage and archaeology",
+          "anzsrc": "4399",
+          "fos": "6.1",
+          "eric": [],
+          "division": "anzsrc_43"
+        },
+        {
+          "id": "anzsrc_44",
+          "label": "Human society (all)",
+          "anzsrc": "44",
+          "fos": "5",
+          "eric": []
+        },
+        {
+          "id": "anzsrc_4401",
+          "label": "Anthropology",
+          "anzsrc": "4401",
+          "fos": "5.4",
+          "eric": [],
+          "division": "anzsrc_44"
+        },
+        {
+          "id": "anzsrc_4402",
+          "label": "Criminology",
+          "anzsrc": "4402",
+          "fos": "5.5",
+          "eric": [],
+          "division": "anzsrc_44"
+        },
+        {
+          "id": "anzsrc_4403",
+          "label": "Demography",
+          "anzsrc": "4403",
+          "fos": "5.4",
+          "eric": [],
+          "division": "anzsrc_44"
+        },
+        {
+          "id": "anzsrc_4404",
+          "label": "Development studies",
+          "anzsrc": "4404",
+          "fos": "5.9",
+          "eric": [],
+          "division": "anzsrc_44"
+        },
+        {
+          "id": "anzsrc_4405",
+          "label": "Gender studies",
+          "anzsrc": "4405",
+          "fos": "5.4",
+          "eric": [],
+          "division": "anzsrc_44"
+        },
+        {
+          "id": "anzsrc_4406",
+          "label": "Human geography",
+          "anzsrc": "4406",
+          "fos": "5.7",
+          "eric": [],
+          "division": "anzsrc_44"
+        },
+        {
+          "id": "anzsrc_4407",
+          "label": "Policy and administration",
+          "anzsrc": "4407",
+          "fos": "5.6",
+          "eric": [],
+          "division": "anzsrc_44"
+        },
+        {
+          "id": "anzsrc_4408",
+          "label": "Political science",
+          "anzsrc": "4408",
+          "fos": "5.6",
+          "eric": [],
+          "division": "anzsrc_44"
+        },
+        {
+          "id": "anzsrc_4409",
+          "label": "Social work",
+          "anzsrc": "4409",
+          "fos": "5.4",
+          "eric": [],
+          "division": "anzsrc_44"
+        },
+        {
+          "id": "anzsrc_4410",
+          "label": "Sociology",
+          "anzsrc": "4410",
+          "fos": "5.4",
+          "eric": [],
+          "division": "anzsrc_44"
+        },
+        {
+          "id": "anzsrc_4499",
+          "label": "Other human society",
+          "anzsrc": "4499",
+          "fos": "5.9",
+          "eric": [],
+          "division": "anzsrc_44"
+        },
+        {
+          "id": "anzsrc_45",
+          "label": "Indigenous studies (all)",
+          "anzsrc": "45",
+          "fos": "5.9",
+          "eric": []
+        },
+        {
+          "id": "anzsrc_4501",
+          "label": "Aboriginal and Torres Strait Islander culture, language and history",
+          "anzsrc": "4501",
+          "fos": "5.9",
+          "eric": [],
+          "division": "anzsrc_45"
+        },
+        {
+          "id": "anzsrc_4502",
+          "label": "Aboriginal and Torres Strait Islander education",
+          "anzsrc": "4502",
+          "fos": "5.9",
+          "eric": [],
+          "division": "anzsrc_45"
+        },
+        {
+          "id": "anzsrc_4503",
+          "label": "Aboriginal and Torres Strait Islander environmental knowledges and management",
+          "anzsrc": "4503",
+          "fos": "5.9",
+          "eric": [],
+          "division": "anzsrc_45"
+        },
+        {
+          "id": "anzsrc_4504",
+          "label": "Aboriginal and Torres Strait Islander health and wellbeing",
+          "anzsrc": "4504",
+          "fos": "5.9",
+          "eric": [],
+          "division": "anzsrc_45"
+        },
+        {
+          "id": "anzsrc_4505",
+          "label": "Aboriginal and Torres Strait Islander peoples, society and community",
+          "anzsrc": "4505",
+          "fos": "5.9",
+          "eric": [],
+          "division": "anzsrc_45"
+        },
+        {
+          "id": "anzsrc_4506",
+          "label": "Aboriginal and Torres Strait Islander sciences",
+          "anzsrc": "4506",
+          "fos": "5.9",
+          "eric": [],
+          "division": "anzsrc_45"
+        },
+        {
+          "id": "anzsrc_4507",
+          "label": "Te ahurea, reo me te hītori o te Māori (Māori culture, language and history)",
+          "anzsrc": "4507",
+          "fos": "5.9",
+          "eric": [],
+          "division": "anzsrc_45"
+        },
+        {
+          "id": "anzsrc_4508",
+          "label": "Mātauranga Māori (Māori education)",
+          "anzsrc": "4508",
+          "fos": "5.9",
+          "eric": [],
+          "division": "anzsrc_45"
+        },
+        {
+          "id": "anzsrc_4509",
+          "label": "Ngā mātauranga taiao o te Māori (Māori environmental knowledges)",
+          "anzsrc": "4509",
+          "fos": "5.9",
+          "eric": [],
+          "division": "anzsrc_45"
+        },
+        {
+          "id": "anzsrc_4510",
+          "label": "Te hauora me te oranga o te Māori (Māori health and wellbeing)",
+          "anzsrc": "4510",
+          "fos": "5.9",
+          "eric": [],
+          "division": "anzsrc_45"
+        },
+        {
+          "id": "anzsrc_4511",
+          "label": "Ngā tāngata, te porihanga me ngā hapori o te Māori (Māori peoples, society and community)",
+          "anzsrc": "4511",
+          "fos": "5.9",
+          "eric": [],
+          "division": "anzsrc_45"
+        },
+        {
+          "id": "anzsrc_4512",
+          "label": "Ngā pūtaiao Māori (Māori sciences)",
+          "anzsrc": "4512",
+          "fos": "5.9",
+          "eric": [],
+          "division": "anzsrc_45"
+        },
+        {
+          "id": "anzsrc_4513",
+          "label": "Pacific Peoples culture, language and history",
+          "anzsrc": "4513",
+          "fos": "5.9",
+          "eric": [],
+          "division": "anzsrc_45"
+        },
+        {
+          "id": "anzsrc_4514",
+          "label": "Pacific Peoples education",
+          "anzsrc": "4514",
+          "fos": "5.9",
+          "eric": [],
+          "division": "anzsrc_45"
+        },
+        {
+          "id": "anzsrc_4515",
+          "label": "Pacific Peoples environmental knowledges",
+          "anzsrc": "4515",
+          "fos": "5.9",
+          "eric": [],
+          "division": "anzsrc_45"
+        },
+        {
+          "id": "anzsrc_4516",
+          "label": "Pacific Peoples health and wellbeing",
+          "anzsrc": "4516",
+          "fos": "5.9",
+          "eric": [],
+          "division": "anzsrc_45"
+        },
+        {
+          "id": "anzsrc_4517",
+          "label": "Pacific Peoples sciences",
+          "anzsrc": "4517",
+          "fos": "5.9",
+          "eric": [],
+          "division": "anzsrc_45"
+        },
+        {
+          "id": "anzsrc_4518",
+          "label": "Pacific Peoples society and community",
+          "anzsrc": "4518",
+          "fos": "5.9",
+          "eric": [],
+          "division": "anzsrc_45"
+        },
+        {
+          "id": "anzsrc_4519",
+          "label": "Other Indigenous data, methodologies and global Indigenous studies",
+          "anzsrc": "4519",
+          "fos": "5.9",
+          "eric": [],
+          "division": "anzsrc_45"
+        },
+        {
+          "id": "anzsrc_4599",
+          "label": "Other Indigenous studies",
+          "anzsrc": "4599",
+          "fos": "5.9",
+          "eric": [],
+          "division": "anzsrc_45"
+        },
+        {
+          "id": "anzsrc_46",
+          "label": "Information and computing sciences (all)",
+          "anzsrc": "46",
+          "fos": "1.2",
+          "eric": [
+            "Computer Science Education"
+          ]
+        },
+        {
+          "id": "anzsrc_4601",
+          "label": "Applied computing",
+          "anzsrc": "4601",
+          "fos": "1.2",
+          "eric": [],
+          "division": "anzsrc_46"
+        },
+        {
+          "id": "anzsrc_4602",
+          "label": "Artificial intelligence",
+          "anzsrc": "4602",
+          "fos": "1.2",
+          "eric": [],
+          "division": "anzsrc_46"
+        },
+        {
+          "id": "anzsrc_4603",
+          "label": "Computer vision and multimedia computation",
+          "anzsrc": "4603",
+          "fos": "1.2",
+          "eric": [],
+          "division": "anzsrc_46"
+        },
+        {
+          "id": "anzsrc_4604",
+          "label": "Cybersecurity and privacy",
+          "anzsrc": "4604",
+          "fos": "1.2",
+          "eric": [],
+          "division": "anzsrc_46"
+        },
+        {
+          "id": "anzsrc_4605",
+          "label": "Data management and data science",
+          "anzsrc": "4605",
+          "fos": "1.2",
+          "eric": [],
+          "division": "anzsrc_46"
+        },
+        {
+          "id": "anzsrc_4606",
+          "label": "Distributed computing and systems software",
+          "anzsrc": "4606",
+          "fos": "1.2",
+          "eric": [],
+          "division": "anzsrc_46"
+        },
+        {
+          "id": "anzsrc_4607",
+          "label": "Graphics, augmented reality and games",
+          "anzsrc": "4607",
+          "fos": "1.2",
+          "eric": [],
+          "division": "anzsrc_46"
+        },
+        {
+          "id": "anzsrc_4608",
+          "label": "Human-centred computing",
+          "anzsrc": "4608",
+          "fos": "1.2",
+          "eric": [],
+          "division": "anzsrc_46"
+        },
+        {
+          "id": "anzsrc_4609",
+          "label": "Information systems",
+          "anzsrc": "4609",
+          "fos": "1.2",
+          "eric": [],
+          "division": "anzsrc_46"
+        },
+        {
+          "id": "anzsrc_4610",
+          "label": "Library and information studies",
+          "anzsrc": "4610",
+          "fos": "5.8",
+          "eric": [],
+          "division": "anzsrc_46"
+        },
+        {
+          "id": "anzsrc_4611",
+          "label": "Machine learning",
+          "anzsrc": "4611",
+          "fos": "1.2",
+          "eric": [],
+          "division": "anzsrc_46"
+        },
+        {
+          "id": "anzsrc_4612",
+          "label": "Software engineering",
+          "anzsrc": "4612",
+          "fos": "1.2",
+          "eric": [],
+          "division": "anzsrc_46"
+        },
+        {
+          "id": "anzsrc_4613",
+          "label": "Theory of computation",
+          "anzsrc": "4613",
+          "fos": "1.2",
+          "eric": [],
+          "division": "anzsrc_46"
+        },
+        {
+          "id": "anzsrc_4699",
+          "label": "Other information and computing sciences",
+          "anzsrc": "4699",
+          "fos": "1.2",
+          "eric": [],
+          "division": "anzsrc_46"
+        },
+        {
+          "id": "anzsrc_47",
+          "label": "Language, communication and culture (all)",
+          "anzsrc": "47",
+          "fos": "6.2",
+          "eric": []
+        },
+        {
+          "id": "anzsrc_4701",
+          "label": "Communication and media studies",
+          "anzsrc": "4701",
+          "fos": "5.8",
+          "eric": [],
+          "division": "anzsrc_47"
+        },
+        {
+          "id": "anzsrc_4702",
+          "label": "Cultural studies",
+          "anzsrc": "4702",
+          "fos": "6.5",
+          "eric": [],
+          "division": "anzsrc_47"
+        },
+        {
+          "id": "anzsrc_4703",
+          "label": "Language studies",
+          "anzsrc": "4703",
+          "fos": "6.2",
+          "eric": [],
+          "division": "anzsrc_47"
+        },
+        {
+          "id": "anzsrc_4704",
+          "label": "Linguistics",
+          "anzsrc": "4704",
+          "fos": "6.2",
+          "eric": [],
+          "division": "anzsrc_47"
+        },
+        {
+          "id": "anzsrc_4705",
+          "label": "Literary studies",
+          "anzsrc": "4705",
+          "fos": "6.2",
+          "eric": [],
+          "division": "anzsrc_47"
+        },
+        {
+          "id": "anzsrc_4799",
+          "label": "Other language, communication and culture",
+          "anzsrc": "4799",
+          "fos": "6.2",
+          "eric": [],
+          "division": "anzsrc_47"
+        },
+        {
+          "id": "anzsrc_48",
+          "label": "Law and legal studies (all)",
+          "anzsrc": "48",
+          "fos": "5.5",
+          "eric": []
+        },
+        {
+          "id": "anzsrc_4801",
+          "label": "Commercial law",
+          "anzsrc": "4801",
+          "fos": "5.5",
+          "eric": [],
+          "division": "anzsrc_48"
+        },
+        {
+          "id": "anzsrc_4802",
+          "label": "Environmental and resources law",
+          "anzsrc": "4802",
+          "fos": "5.5",
+          "eric": [],
+          "division": "anzsrc_48"
+        },
+        {
+          "id": "anzsrc_4803",
+          "label": "International and comparative law",
+          "anzsrc": "4803",
+          "fos": "5.5",
+          "eric": [],
+          "division": "anzsrc_48"
+        },
+        {
+          "id": "anzsrc_4804",
+          "label": "Law in context",
+          "anzsrc": "4804",
+          "fos": "5.5",
+          "eric": [],
+          "division": "anzsrc_48"
+        },
+        {
+          "id": "anzsrc_4805",
+          "label": "Legal systems",
+          "anzsrc": "4805",
+          "fos": "5.5",
+          "eric": [],
+          "division": "anzsrc_48"
+        },
+        {
+          "id": "anzsrc_4806",
+          "label": "Private law and civil obligations",
+          "anzsrc": "4806",
+          "fos": "5.5",
+          "eric": [],
+          "division": "anzsrc_48"
+        },
+        {
+          "id": "anzsrc_4807",
+          "label": "Public law",
+          "anzsrc": "4807",
+          "fos": "5.5",
+          "eric": [],
+          "division": "anzsrc_48"
+        },
+        {
+          "id": "anzsrc_4899",
+          "label": "Other law and legal studies",
+          "anzsrc": "4899",
+          "fos": "5.5",
+          "eric": [],
+          "division": "anzsrc_48"
+        },
+        {
+          "id": "anzsrc_49",
+          "label": "Mathematical sciences (all)",
+          "anzsrc": "49",
+          "fos": "1.1",
+          "eric": [
+            "Mathematics Education"
+          ]
+        },
+        {
+          "id": "anzsrc_4901",
+          "label": "Applied mathematics",
+          "anzsrc": "4901",
+          "fos": "1.1",
+          "eric": [],
+          "division": "anzsrc_49"
+        },
+        {
+          "id": "anzsrc_4902",
+          "label": "Mathematical physics",
+          "anzsrc": "4902",
+          "fos": "1.1",
+          "eric": [],
+          "division": "anzsrc_49"
+        },
+        {
+          "id": "anzsrc_4903",
+          "label": "Numerical and computational mathematics",
+          "anzsrc": "4903",
+          "fos": "1.1",
+          "eric": [],
+          "division": "anzsrc_49"
+        },
+        {
+          "id": "anzsrc_4904",
+          "label": "Pure mathematics",
+          "anzsrc": "4904",
+          "fos": "1.1",
+          "eric": [],
+          "division": "anzsrc_49"
+        },
+        {
+          "id": "anzsrc_4905",
+          "label": "Statistics",
+          "anzsrc": "4905",
+          "fos": "1.1",
+          "eric": [],
+          "division": "anzsrc_49"
+        },
+        {
+          "id": "anzsrc_4999",
+          "label": "Other mathematical sciences",
+          "anzsrc": "4999",
+          "fos": "1.1",
+          "eric": [],
+          "division": "anzsrc_49"
+        },
+        {
+          "id": "anzsrc_50",
+          "label": "Philosophy and religious studies (all)",
+          "anzsrc": "50",
+          "fos": "6.3",
+          "eric": []
+        },
+        {
+          "id": "anzsrc_5001",
+          "label": "Applied ethics",
+          "anzsrc": "5001",
+          "fos": "6.3",
+          "eric": [],
+          "division": "anzsrc_50"
+        },
+        {
+          "id": "anzsrc_5002",
+          "label": "History and philosophy of specific fields",
+          "anzsrc": "5002",
+          "fos": "6.3",
+          "eric": [],
+          "division": "anzsrc_50"
+        },
+        {
+          "id": "anzsrc_5003",
+          "label": "Philosophy",
+          "anzsrc": "5003",
+          "fos": "6.3",
+          "eric": [],
+          "division": "anzsrc_50"
+        },
+        {
+          "id": "anzsrc_5004",
+          "label": "Religious studies",
+          "anzsrc": "5004",
+          "fos": "6.3",
+          "eric": [],
+          "division": "anzsrc_50"
+        },
+        {
+          "id": "anzsrc_5005",
+          "label": "Theology",
+          "anzsrc": "5005",
+          "fos": "6.3",
+          "eric": [],
+          "division": "anzsrc_50"
+        },
+        {
+          "id": "anzsrc_5099",
+          "label": "Other philosophy and religious studies",
+          "anzsrc": "5099",
+          "fos": "6.3",
+          "eric": [],
+          "division": "anzsrc_50"
+        },
+        {
+          "id": "anzsrc_51",
+          "label": "Physical sciences (all)",
+          "anzsrc": "51",
+          "fos": "1.3",
+          "eric": [
+            "Physics"
+          ]
+        },
+        {
+          "id": "anzsrc_5101",
+          "label": "Astronomical sciences",
+          "anzsrc": "5101",
+          "fos": "1.3",
+          "eric": [
+            "Astronomy"
+          ],
+          "division": "anzsrc_51"
+        },
+        {
+          "id": "anzsrc_5102",
+          "label": "Atomic, molecular and optical physics",
+          "anzsrc": "5102",
+          "fos": "1.3",
+          "eric": [],
+          "division": "anzsrc_51"
+        },
+        {
+          "id": "anzsrc_5103",
+          "label": "Classical physics",
+          "anzsrc": "5103",
+          "fos": "1.3",
+          "eric": [],
+          "division": "anzsrc_51"
+        },
+        {
+          "id": "anzsrc_5104",
+          "label": "Condensed matter physics",
+          "anzsrc": "5104",
+          "fos": "1.3",
+          "eric": [],
+          "division": "anzsrc_51"
+        },
+        {
+          "id": "anzsrc_5105",
+          "label": "Medical and biological physics",
+          "anzsrc": "5105",
+          "fos": "1.3",
+          "eric": [],
+          "division": "anzsrc_51"
+        },
+        {
+          "id": "anzsrc_5106",
+          "label": "Nuclear and plasma physics",
+          "anzsrc": "5106",
+          "fos": "1.3",
+          "eric": [],
+          "division": "anzsrc_51"
+        },
+        {
+          "id": "anzsrc_5107",
+          "label": "Particle and high energy physics",
+          "anzsrc": "5107",
+          "fos": "1.3",
+          "eric": [],
+          "division": "anzsrc_51"
+        },
+        {
+          "id": "anzsrc_5108",
+          "label": "Quantum physics",
+          "anzsrc": "5108",
+          "fos": "1.3",
+          "eric": [],
+          "division": "anzsrc_51"
+        },
+        {
+          "id": "anzsrc_5109",
+          "label": "Space sciences",
+          "anzsrc": "5109",
+          "fos": "1.3",
+          "eric": [],
+          "division": "anzsrc_51"
+        },
+        {
+          "id": "anzsrc_5110",
+          "label": "Synchrotrons and accelerators",
+          "anzsrc": "5110",
+          "fos": "1.3",
+          "eric": [],
+          "division": "anzsrc_51"
+        },
+        {
+          "id": "anzsrc_5199",
+          "label": "Other physical sciences",
+          "anzsrc": "5199",
+          "fos": "1.3",
+          "eric": [],
+          "division": "anzsrc_51"
+        },
+        {
+          "id": "anzsrc_52",
+          "label": "Psychology (all)",
+          "anzsrc": "52",
+          "fos": "5.1",
+          "eric": []
+        },
+        {
+          "id": "anzsrc_5201",
+          "label": "Applied and developmental psychology",
+          "anzsrc": "5201",
+          "fos": "5.1",
+          "eric": [],
+          "division": "anzsrc_52"
+        },
+        {
+          "id": "anzsrc_5202",
+          "label": "Biological psychology",
+          "anzsrc": "5202",
+          "fos": "5.1",
+          "eric": [],
+          "division": "anzsrc_52"
+        },
+        {
+          "id": "anzsrc_5203",
+          "label": "Clinical and health psychology",
+          "anzsrc": "5203",
+          "fos": "5.1",
+          "eric": [],
+          "division": "anzsrc_52"
+        },
+        {
+          "id": "anzsrc_5204",
+          "label": "Cognitive and computational psychology",
+          "anzsrc": "5204",
+          "fos": "5.1",
+          "eric": [],
+          "division": "anzsrc_52"
+        },
+        {
+          "id": "anzsrc_5205",
+          "label": "Social and personality psychology",
+          "anzsrc": "5205",
+          "fos": "5.1",
+          "eric": [],
+          "division": "anzsrc_52"
+        },
+        {
+          "id": "anzsrc_5299",
+          "label": "Other psychology",
+          "anzsrc": "5299",
+          "fos": "5.1",
+          "eric": [],
+          "division": "anzsrc_52"
+        },
         {
           "id": "biology",
           "label": "Biology and life sciences",
           "fos": "1.6",
           "eric": [
             "Biology"
+          ],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_31"
           ]
         },
         {
@@ -58,6 +1947,10 @@
           "fos": "1.4",
           "eric": [
             "Chemistry"
+          ],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_34"
           ]
         },
         {
@@ -66,6 +1959,10 @@
           "fos": "1.3",
           "eric": [
             "Physics"
+          ],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_51"
           ]
         },
         {
@@ -75,6 +1972,10 @@
           "eric": [
             "Earth Science",
             "Geology"
+          ],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_37"
           ]
         },
         {
@@ -84,6 +1985,10 @@
           "eric": [
             "Climate",
             "Earth Science"
+          ],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_3702"
           ]
         },
         {
@@ -92,6 +1997,10 @@
           "fos": "1.3",
           "eric": [
             "Astronomy"
+          ],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_5101"
           ]
         },
         {
@@ -100,6 +2009,10 @@
           "fos": "1.1",
           "eric": [
             "Mathematics Education"
+          ],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_49"
           ]
         },
         {
@@ -108,6 +2021,10 @@
           "fos": "1.2",
           "eric": [
             "Computer Science Education"
+          ],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_46"
           ]
         },
         {
@@ -116,6 +2033,10 @@
           "fos": "2",
           "eric": [
             "Engineering Education"
+          ],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_40"
           ]
         },
         {
@@ -124,114 +2045,192 @@
           "eric": [
             "Science Education",
             "STEM Education"
+          ],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_31",
+            "anzsrc_34",
+            "anzsrc_37",
+            "anzsrc_46",
+            "anzsrc_49",
+            "anzsrc_51"
           ]
         },
         {
           "id": "psychology",
           "label": "Psychology",
           "fos": "5.1",
-          "eric": []
+          "eric": [],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_52"
+          ]
         },
         {
           "id": "economics",
           "label": "Economics and business",
           "fos": "5.2",
-          "eric": []
+          "eric": [],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_38"
+          ]
         },
         {
           "id": "education_studies",
           "label": "Education (as a subject: policy, foundations, teaching and learning)",
           "fos": "5.3",
-          "eric": []
+          "eric": [],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_39"
+          ]
         },
         {
           "id": "sociology",
           "label": "Sociology and demography",
           "fos": "5.4",
-          "eric": []
+          "eric": [],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_4410"
+          ]
         },
         {
           "id": "anthropology",
           "label": "Anthropology and ethnology",
           "fos": "5.4",
-          "eric": []
+          "eric": [],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_4401"
+          ]
         },
         {
           "id": "law",
           "label": "Law",
           "fos": "5.5",
-          "eric": []
+          "eric": [],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_48"
+          ]
         },
         {
           "id": "political_science",
           "label": "Political science and public policy",
           "fos": "5.6",
-          "eric": []
+          "eric": [],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_4408"
+          ]
         },
         {
           "id": "human_geography",
           "label": "Social and economic geography",
           "fos": "5.7",
-          "eric": []
+          "eric": [],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_4406"
+          ]
         },
         {
           "id": "media_communication",
           "label": "Media and communication",
           "fos": "5.8",
-          "eric": []
+          "eric": [],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_4701"
+          ]
         },
         {
           "id": "history",
           "label": "History",
           "fos": "6.1",
-          "eric": []
+          "eric": [],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_4303"
+          ]
         },
         {
           "id": "archaeology",
           "label": "Archaeology",
           "fos": "6.1",
-          "eric": []
+          "eric": [],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_4301"
+          ]
         },
         {
           "id": "languages_literature",
           "label": "Languages, literature, and linguistics",
           "fos": "6.2",
-          "eric": []
+          "eric": [],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_4703",
+            "anzsrc_4705"
+          ]
         },
         {
           "id": "philosophy_religion",
           "label": "Philosophy, ethics, and religion",
           "fos": "6.3",
-          "eric": []
+          "eric": [],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_50"
+          ]
         },
         {
           "id": "visual_arts",
           "label": "Visual arts, design, and art history",
           "fos": "6.4",
-          "eric": []
+          "eric": [],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_3606"
+          ]
         },
         {
           "id": "performing_arts",
           "label": "Performing arts and music",
           "fos": "6.4",
-          "eric": []
+          "eric": [],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_3604"
+          ]
         },
         {
           "id": "other_humanities",
           "label": "Other humanities (e.g., cultural studies, digital humanities)",
           "fos": "6.5",
-          "eric": []
+          "eric": [],
+          "deprecated": true,
+          "replaced_by": []
         },
         {
           "id": "other_social_science",
           "label": "Other social sciences",
           "fos": "5.9",
-          "eric": []
+          "eric": [],
+          "deprecated": true,
+          "replaced_by": [
+            "anzsrc_44"
+          ]
         },
         {
           "id": "other_discipline",
           "label": "Other discipline",
-          "eric": []
+          "eric": [],
+          "deprecated": true,
+          "replaced_by": []
         }
       ]
     },

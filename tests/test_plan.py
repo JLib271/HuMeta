@@ -144,7 +144,7 @@ def test_browse_frameworks_filters_and_search():
     assert [lib.frameworks[f]["kind"] for f in every][-2:] == ["own", "exploratory"]  # always offered, last
     humanities = P.browse_frameworks(lib, field="humanities", kind="lens")
     assert "narratology" in humanities and "tpb" not in humanities and "own_framework" in humanities
-    assert "civic_voluntarism" in P.browse_frameworks(lib, discipline="political_science")
+    assert "civic_voluntarism" in P.browse_frameworks(lib, discipline="anzsrc_4408")
     assert P.browse_frameworks(lib, query="Sweller")[0] == "cognitive_load"  # author names are searchable
     assert "community_of_inquiry" in P.browse_frameworks(lib, query="teaching presence")  # and construct names
 
@@ -155,3 +155,12 @@ def test_every_draft_framework_names_a_source_and_disciplines():
         if fw.get("status") == "draft":
             assert fw.get("citation") and fw.get("disciplines"), fw["id"]
             assert fw["kind"] == "lens" or fw["constructs"], fw["id"]  # paths are optional (e.g., TDF lists domains)
+
+
+def test_discipline_filter_understands_anzsrc_divisions():
+    from oem.library import Library
+    lib = Library.load()
+    assert P.discipline_matches("anzsrc_4410", "anzsrc_44") and P.discipline_matches("anzsrc_44", "anzsrc_4410")
+    assert not P.discipline_matches("anzsrc_4410", "anzsrc_4408") and not P.discipline_matches("sociology", "anzsrc_44")
+    whole = set(P.browse_frameworks(lib, discipline="anzsrc_44"))  # Human society (all)
+    assert set(P.browse_frameworks(lib, discipline="anzsrc_4410")) <= whole and "civic_voluntarism" in whole

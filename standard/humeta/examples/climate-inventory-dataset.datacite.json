@@ -40,16 +40,18 @@
       "valueUri": "https://github.com/JLib271/HuMeta/blob/main/library/constructs.json#conceptual_understanding"
     },
     {
-      "subject": "Climate and environmental science",
-      "subjectScheme": "HuMeta Disciplines",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#discipline.climate_science"
+      "subject": "Climate change science",
+      "subjectScheme": "ANZSRC Fields of Research",
+      "schemeUri": "https://linked.data.gov.au/def/anzsrc-for/2020",
+      "valueUri": "https://linked.data.gov.au/def/anzsrc-for/2020/3702",
+      "classificationCode": "3702"
     },
     {
-      "subject": "Geoscience / Earth science",
-      "subjectScheme": "HuMeta Disciplines",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#discipline.geoscience"
+      "subject": "Earth sciences",
+      "subjectScheme": "ANZSRC Fields of Research",
+      "schemeUri": "https://linked.data.gov.au/def/anzsrc-for/2020",
+      "valueUri": "https://linked.data.gov.au/def/anzsrc-for/2020/37",
+      "classificationCode": "37"
     },
     {
       "subject": "Students / learners",

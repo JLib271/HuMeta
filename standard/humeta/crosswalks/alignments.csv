@@ -83,7 +83,7 @@ study.constructs,core,Constructs measured,HuMeta,HuMeta profile (element or voca
 study.constructs,core,Constructs measured,ERIC,ERIC Thesaurus,descriptors,close,,,https://eric.ed.gov/?ti=all
 study.constructs,core,Constructs measured,schema.org,schema.org Dataset,variableMeasured,close,,,https://schema.org/Dataset
 study.constructs,core,Constructs measured,DataCite,DataCite Metadata Schema 4.7,subject (scheme),close,,,https://schema.datacite.org/
-study.discipline,core,Discipline or subject area,HuMeta,HuMeta profile (element or vocabulary defined by this profile),discipline vocabulary,exact,,,https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md
+study.discipline,core,Discipline or subject area,ANZSRC FoR,Australian and New Zealand Standard Research Classification 2020: Fields of Research (ABS and Stats NZ),Fields of Research 2020 (divisions and groups),exact,,,https://linked.data.gov.au/def/anzsrc-for/2020
 study.discipline,core,Discipline or subject area,OECD FOS,"OECD Fields of Science and Technology (FOS), as used by DataCite",subcategory (per term),close,,,http://www.oecd.org/science/inno/38235147.pdf
 study.discipline,core,Discipline or subject area,ERIC,ERIC Thesaurus,descriptors,close,,,https://eric.ed.gov/?ti=all
 study.discipline,core,Discipline or subject area,DC,Dublin Core (DCMI Metadata Terms),subject,close,,,https://www.dublincore.org/specifications/dublin-core/dcmi-terms/

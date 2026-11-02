@@ -52,10 +52,19 @@ SEEKING_INPUT_BADGE = "(expert input wanted)"
 #: OECD Fields of Science and Technology, labels as used in DataCite metadata
 FOS_SCHEME = "Fields of Science and Technology (FOS)"
 FOS_SCHEME_URI = "http://www.oecd.org/science/inno/38235147.pdf"
-FOS_LABELS = {
+FOS_LABELS = {  # OECD FOS 2007, as labeled in DataCite's Fabrica
     "1": "Natural sciences", "1.1": "Mathematics", "1.2": "Computer and information sciences",
     "1.3": "Physical sciences", "1.4": "Chemical sciences", "1.5": "Earth and related environmental sciences",
-    "1.6": "Biological sciences", "2": "Engineering and technology",
+    "1.6": "Biological sciences", "1.7": "Other natural sciences",
+    "2": "Engineering and technology", "2.1": "Civil engineering",
+    "2.2": "Electrical engineering, electronic engineering, information engineering", "2.3": "Mechanical engineering",
+    "2.4": "Chemical engineering", "2.5": "Materials engineering", "2.6": "Medical engineering",
+    "2.7": "Environmental engineering", "2.8": "Environmental biotechnology", "2.9": "Industrial biotechnology",
+    "2.10": "Nanotechnology", "2.11": "Other engineering and technologies",
+    "3": "Medical and health sciences", "3.1": "Basic medicine", "3.2": "Clinical medicine", "3.3": "Health sciences",
+    "3.4": "Medical biotechnology", "3.5": "Other medical sciences",
+    "4": "Agricultural sciences", "4.1": "Agriculture, forestry and fisheries", "4.2": "Animal and dairy science",
+    "4.3": "Veterinary sciences", "4.4": "Agricultural biotechnology", "4.5": "Other agricultural sciences",
     "5": "Social sciences", "5.1": "Psychology", "5.2": "Economics and business", "5.3": "Educational sciences",
     "5.4": "Sociology", "5.5": "Law", "5.6": "Political science", "5.7": "Social and economic geography",
     "5.8": "Media and communications", "5.9": "Other social sciences",
@@ -63,6 +72,8 @@ FOS_LABELS = {
     "6.3": "Philosophy, ethics and religion", "6.4": "Arts (arts, history of arts, performing arts, music)",
     "6.5": "Other humanities",
 }
+ANZSRC_SCHEME = "ANZSRC Fields of Research"
+ANZSRC_URI = "https://linked.data.gov.au/def/anzsrc-for/2020"
 DDI_CV_URI = "http://rdf-vocabulary.ddialliance.org/cv/"
 RIGHTS_STATEMENTS_URI = "http://rightsstatements.org/vocab/{}/1.0/"
 ONLINE_SOURCES = {"social_media", "websites"}
@@ -142,7 +153,12 @@ class Profile:
         return self.term(vocab_id, term_id)["label"]
 
     def ids(self, vocab_id: str) -> list[str]:
+        """Every term id, including deprecated ones (so older records still validate)."""
         return [t["id"] for t in self.vocab(vocab_id)]
+
+    def active_ids(self, vocab_id: str) -> list[str]:
+        """Term ids to offer for new answers (deprecated terms left out)."""
+        return [t["id"] for t in self.vocab(vocab_id) if not t.get("deprecated")]
 
     def verified_eric(self) -> set[str]:
         return set(self.eric_status["verified"])
@@ -404,7 +420,24 @@ def migrate(record: dict, profile: Profile | None = None) -> dict:
                     for k in {**default, **actual}}
         return default if actual is None and isinstance(default, list) else (actual if actual is not None else default)
 
-    return merge(base, copy.deepcopy(record))
+    out = merge(base, copy.deepcopy(record))
+    # Replace deprecated vocabulary terms with their replacements (e.g., the earlier discipline list -> ANZSRC).
+    p = profile or load()
+    for path, (vocab_id, _) in VOCAB_FIELDS.items():
+        values = get(out, path)
+        if not values or not any(p.term(vocab_id, v).get("deprecated") for v in values if v in p.ids(vocab_id)):
+            continue
+        new: list[str] = []
+        for v in values:
+            term = p.term(vocab_id, v) if v in p.ids(vocab_id) else {}
+            for r in (term.get("replaced_by", []) if term.get("deprecated") else [v]):
+                if r not in new:
+                    new.append(r)
+        node = out
+        for key in path[:-1]:
+            node = node[key]
+        node[path[-1]] = new
+    return out
 
 
 # ----------------------------------------------------------------- validation
@@ -675,6 +708,11 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
         if not scheme:
             continue
         for term_id in get(record, path) or []:
+            anzsrc = p.term(vocab_id, term_id).get("anzsrc")
+            if anzsrc:
+                subjects.append({"subject": p.label(vocab_id, term_id).removesuffix(" (all)"), "subjectScheme": ANZSRC_SCHEME,
+                                 "schemeUri": ANZSRC_URI, "valueUri": f"{ANZSRC_URI}/{anzsrc}", "classificationCode": anzsrc})
+                continue
             tadirah = p.term(vocab_id, term_id).get("tadirah")
             if tadirah:
                 subjects.append({"subject": p.label(vocab_id, term_id), "subjectScheme": scheme,

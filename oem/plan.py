@@ -98,6 +98,15 @@ def construct_key(framework_id: str | None, label_or_id: str) -> str:
 FRAMEWORK_KIND_ORDER = ("theory", "lens", "own", "exploratory")
 
 
+def discipline_matches(tag: str, wanted: str) -> bool:
+    """A framework's discipline tag matches a chosen discipline when they are the same ANZSRC term, or one is the
+    division the other belongs to (e.g. 'Human society (all)' and 'Sociology')."""
+    if tag == wanted:
+        return True
+    a, b = tag.removeprefix("anzsrc_"), wanted.removeprefix("anzsrc_")
+    return tag.startswith("anzsrc_") and wanted.startswith("anzsrc_") and (a.startswith(b) or b.startswith(a))
+
+
 def browse_frameworks(lib: Library, field: str | None = None, kind: str | None = None, discipline: str | None = None,
                       query: str = "") -> list[str]:
     """Framework ids matching the filters (any filter left as None or "" is ignored), theories first.
@@ -114,7 +123,7 @@ def browse_frameworks(lib: Library, field: str | None = None, kind: str | None =
                 continue
             if kind and fw["kind"] != kind:
                 continue
-            if discipline and discipline not in fw.get("disciplines", []):
+            if discipline and not any(discipline_matches(d, discipline) for d in fw.get("disciplines", [])):
                 continue
             if words:
                 text = " ".join([fw["label"], fw.get("description", ""), fw.get("citation", "")]
