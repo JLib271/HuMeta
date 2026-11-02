@@ -1230,12 +1230,12 @@
     {
       "id": "study.evidence.measurement_evidence",
       "label": "Measurement evidence",
-      "obligation": "MA",
+      "obligation": "O",
       "cardinality": "0..n",
       "type": "vocab",
       "vocabulary": "measurement_evidence",
       "condition": "Mandatory when resource_type is Instrument.",
-      "definition": "Kinds of reliability and validity evidence the resource provides.",
+      "definition": "Kinds of reliability and validity evidence the resource provides. Optional and not asked in the portal's study profile; an instrument's measurement evidence is recorded with the instrument in the HuMeta instrument library.",
       "datacite": "subjects (subjectScheme 'HuMeta Measurement Evidence')",
       "alignments": [
         {
@@ -2023,12 +2023,6 @@
       "severity": "error",
       "check": "design_required",
       "message": "Datasets and study registrations must list at least one study design."
-    },
-    {
-      "id": "R3",
-      "severity": "error",
-      "check": "measurement_evidence_required",
-      "message": "Instruments must list at least one kind of measurement evidence."
     },
     {
       "id": "R4",

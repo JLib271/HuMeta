@@ -319,6 +319,44 @@ def empty_record(profile: Profile | None = None, modules: tuple[str, ...] = ()) 
     return record
 
 
+#: Module 1's starting question: choice -> (research field it sets, field module it adds or None)
+START_CHOICES: dict[str, tuple[str, str | None]] = {
+    "education": ("education", "education"),
+    "social_science": ("social_sciences", "social_science"),
+    "humanities": ("humanities", "humanities"),
+    "other": ("other_field", None),
+}
+
+
+def start_choices(record: dict) -> list[str]:
+    """The starting choices a record has: from its research fields, or a field module it already uses."""
+    fields = set((record.get("study") or {}).get("fields") or [])
+    if "arts" in fields:
+        fields.add("humanities")
+    return [c for c, (field, module) in START_CHOICES.items() if field in fields or (module and uses(record, module))]
+
+
+def apply_start_choices(record: dict, chosen: list[str], profile: "Profile | None" = None) -> dict:
+    """A copy of the record whose research fields and field modules follow the starting choices.
+
+    A chosen field's module is added (kept if present); an unchosen one is removed. 'Arts' is kept as a finer
+    research field when Arts and humanities stays chosen.
+    """
+    p = profile or load()
+    out = migrate(copy.deepcopy(record), p)
+    old = out["study"].get("fields") or []
+    fields = [START_CHOICES[c][0] for c in START_CHOICES if c in chosen]
+    if "humanities" in chosen and "arts" in old:
+        fields.append("arts")
+    out["study"]["fields"] = fields
+    for c, (_, module) in START_CHOICES.items():
+        if module and c in chosen and not uses(out, module):
+            out[module] = empty_record(p, modules=(module,))[module]
+        elif module and c not in chosen:
+            out[module] = None
+    return out
+
+
 def uses(record: dict, module: str) -> bool:
     """True if the record includes the given field module."""
     return isinstance(record.get(module), dict)
@@ -437,8 +475,6 @@ def validate(record: dict, lib: Library | None = None, profile: Profile | None =
         flag("constructs_required", "study.constructs")
     if rtype in ("Dataset", "StudyRegistration") and not s["evidence"].get("study_designs"):
         flag("design_required", "study.evidence.study_designs")
-    if rtype == "Instrument" and not s["evidence"].get("measurement_evidence"):
-        flag("measurement_evidence_required", "study.evidence.measurement_evidence")
     if access == "open" and ethics.get("identifiability") not in (None, "deidentified", "anonymous", "aggregate_only", "synthetic", "not_applicable"):
         flag("open_requires_deidentified", "study.ethics.identifiability")
     if access == "open" and ethics.get("consent_for_sharing") not in (None, "broad_sharing", "not_applicable"):
