@@ -1,6 +1,6 @@
-# Contributing to OpenEdMetadata
+# Contributing to HuMeta
 
-Thank you for helping build shared infrastructure for STEM education research.
+Thank you for helping build shared infrastructure for research in education, the social sciences, and the humanities.
 You do not need to be a programmer to contribute: researchers who add or check
 instrument records are as important as people who write code.
 
@@ -20,8 +20,8 @@ See [ROADMAP.md](ROADMAP.md) for where the project is heading.
 ## Getting set up
 
 ```bash
-git clone https://github.com/JLib271/OpenEdMetadata.git
-cd OpenEdMetadata
+git clone https://github.com/JLib271/HuMeta.git
+cd HuMeta
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt -r requirements-dev.txt
 streamlit run openscience.py

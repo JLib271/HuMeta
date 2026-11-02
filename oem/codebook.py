@@ -31,7 +31,7 @@ from dataclasses import asdict, dataclass, field
 from oem import naming
 from oem.library import Library
 
-CODEBOOK_FORMAT = "openedmetadata-codebook"
+CODEBOOK_FORMAT = "humeta-codebook"
 CODEBOOK_VERSION = 1
 
 

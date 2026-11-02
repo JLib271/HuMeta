@@ -53,6 +53,7 @@ construct,teaching_beliefs,Instructor beliefs about teaching,Teacher Attitudes,v
 construct,teaching_beliefs,Instructor beliefs about teaching,Beliefs,verified
 construct,learning_environment,Learning environment perceptions,Classroom Environment,verified
 construct,learning_environment,Learning environment perceptions,Educational Environment,verified
+research_field,education,Education,Educational Research,verified
 discipline,biology,Biology and life sciences,Biology,verified
 discipline,chemistry,Chemistry,Chemistry,verified
 discipline,physics,Physics,Physics,verified
@@ -66,6 +67,8 @@ discipline,computer_science,Computer science and computing,Computer Science Educ
 discipline,engineering,Engineering,Engineering Education,verified
 discipline,general_stem,General or interdisciplinary STEM,Science Education,verified
 discipline,general_stem,General or interdisciplinary STEM,STEM Education,unverified
+participant_role,adults,Adults,Adults,verified
+participant_role,visitors,"Museum, science-center, or event visitors",Museums,verified
 education_level,early_childhood,Early childhood / pre-K (ISCED 0),Early Childhood Education,verified
 education_level,primary,Primary / elementary (ISCED 1),Elementary Education,verified
 education_level,lower_secondary,Lower secondary / middle grades (ISCED 2),Middle Schools,verified
@@ -85,8 +88,6 @@ education_level,doctoral,Doctoral or equivalent (ISCED 8),Graduate Students,veri
 education_level,adult_education,"Adult, continuing, or workforce education (not an ISCED level)",Adult Education,verified
 education_level,adult_education,"Adult, continuing, or workforce education (not an ISCED level)",Adults,verified
 education_level,informal_learning,Informal or out-of-school learning (not an ISCED level),Informal Education,verified
-participant_role,adults,Adults,Adults,verified
-participant_role,visitors,"Museum, science-center, or event visitors",Museums,verified
 institution_type,k12_public,Public K-12 school,Public Schools,verified
 institution_type,k12_private,Private K-12 school,Private Schools,verified
 institution_type,two_year_college,Two-year / community college,Two Year Colleges,verified
@@ -154,13 +155,18 @@ measurement_evidence,irt_scaling,Item response theory scaling,Item Response Theo
 data_collection_method,survey,Survey or questionnaire,Questionnaires,verified
 data_collection_method,survey,Survey or questionnaire,Surveys,unverified
 data_collection_method,assessment,Test or assessment,Tests,verified
-data_collection_method,observation,Observation,Observation,verified
-data_collection_method,observation,Observation,Classroom Observation Techniques,verified
 data_collection_method,interview,Interview,Interviews,verified
 data_collection_method,focus_group,Focus group,Focus Groups,verified
-data_collection_method,artifacts,"Student work, documents, or artifacts",Content Analysis,verified
-data_collection_method,learning_analytics,Learning analytics or log data,Learning Analytics,verified
+data_collection_method,observation,Observation (non-participant),Observation,verified
+data_collection_method,observation,Observation (non-participant),Classroom Observation Techniques,verified
+data_collection_method,artifacts,"Work samples, documents, or artifacts produced by participants (e.g., student work)",Content Analysis,verified
+data_collection_method,learning_analytics,Learning analytics or system log data,Learning Analytics,verified
 data_collection_method,institutional_records,Institutional or administrative records,Student Records,unverified
+analysis_method,statistical,Statistical or quantitative analysis,Data Analysis,verified
+analysis_method,psychometric,"Psychometric or measurement modeling (e.g., factor analysis, IRT)",Psychometrics,verified
+analysis_method,thematic,Qualitative coding or thematic analysis,Qualitative Research,verified
+analysis_method,content_analysis,Content analysis,Content Analysis,verified
+analysis_method,case_analysis,Case analysis or comparative case study,Case Studies,verified
 consent,informed_consent,Informed consent,Informed Consent,verified
 consent,permission_and_assent,Parent/guardian permission and participant assent,Informed Consent,verified
 sensitivity_flag,direct_identifiers,Direct identifiers,Privacy,verified

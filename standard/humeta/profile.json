@@ -6,7 +6,7 @@
   "profile_version": "1.0.0-draft.1",
   "status": "draft",
   "namespace": "humeta",
-  "namespace_uri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/elements.md#",
+  "namespace_uri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/elements.md#",
   "datacite_schema": "4.7",
   "obligations": {
     "M": "Mandatory: every record must have it.",
@@ -18,7 +18,7 @@
     "humeta": {
       "short": "HuMeta",
       "name": "HuMeta profile (element or vocabulary defined by this profile)",
-      "url": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md"
+      "url": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md"
     },
     "datacite": {
       "short": "DataCite",
@@ -39,6 +39,21 @@
       "short": "ERIC",
       "name": "ERIC Thesaurus",
       "url": "https://eric.ed.gov/?ti=all"
+    },
+    "ddi": {
+      "short": "DDI-C",
+      "name": "DDI-Codebook 2.5 (Data Documentation Initiative)",
+      "url": "https://ddialliance.org/Specification/DDI-Codebook/2.5/"
+    },
+    "ddi_cv": {
+      "short": "DDI CV",
+      "name": "DDI Alliance Controlled Vocabularies (CC BY 4.0)",
+      "url": "https://rdf-vocabulary.ddialliance.org/"
+    },
+    "fos": {
+      "short": "OECD FOS",
+      "name": "OECD Fields of Science and Technology (FOS), as used by DataCite",
+      "url": "http://www.oecd.org/science/inno/38235147.pdf"
     },
     "orcid": {
       "short": "ORCID",
@@ -99,6 +114,16 @@
       "short": "Local Contexts",
       "name": "Local Contexts Traditional Knowledge and Biocultural Labels and Notices",
       "url": "https://localcontexts.org/"
+    },
+    "rightsstatements": {
+      "short": "RightsStatements",
+      "name": "RightsStatements.org rights statements",
+      "url": "https://rightsstatements.org/"
+    },
+    "aoir": {
+      "short": "AoIR IRE 3.0",
+      "name": "Association of Internet Researchers, Internet Research: Ethical Guidelines 3.0 (2019)",
+      "url": "https://aoir.org/reports/ethics3.pdf"
     }
   },
   "modules": {
@@ -136,6 +161,11 @@
           "standard": "schemaorg",
           "term": "name",
           "match": "exact"
+        },
+        {
+          "standard": "ddi",
+          "term": "titl",
+          "match": "exact"
         }
       ],
       "module": "core"
@@ -168,6 +198,11 @@
           "standard": "orcid",
           "term": "ORCID iD (nameIdentifier)",
           "match": "exact"
+        },
+        {
+          "standard": "ddi",
+          "term": "AuthEnty",
+          "match": "exact"
         }
       ],
       "module": "core"
@@ -195,6 +230,11 @@
           "standard": "schemaorg",
           "term": "publisher",
           "match": "exact"
+        },
+        {
+          "standard": "ddi",
+          "term": "distrbtr",
+          "match": "close"
         }
       ],
       "module": "core"
@@ -221,6 +261,11 @@
         {
           "standard": "schemaorg",
           "term": "datePublished",
+          "match": "close"
+        },
+        {
+          "standard": "ddi",
+          "term": "distDate",
           "match": "close"
         }
       ],
@@ -285,6 +330,11 @@
           "standard": "schemaorg",
           "term": "identifier",
           "match": "exact"
+        },
+        {
+          "standard": "ddi",
+          "term": "IDNo",
+          "match": "exact"
         }
       ],
       "module": "core"
@@ -312,6 +362,11 @@
           "standard": "schemaorg",
           "term": "description",
           "match": "exact"
+        },
+        {
+          "standard": "ddi",
+          "term": "abstract",
+          "match": "exact"
         }
       ],
       "module": "core"
@@ -338,6 +393,11 @@
         {
           "standard": "schemaorg",
           "term": "keywords",
+          "match": "exact"
+        },
+        {
+          "standard": "ddi",
+          "term": "keyword",
           "match": "exact"
         }
       ],
@@ -425,6 +485,11 @@
           "standard": "schemaorg",
           "term": "funder",
           "match": "close"
+        },
+        {
+          "standard": "ddi",
+          "term": "fundAg / grantNo",
+          "match": "exact"
         }
       ],
       "module": "core"
@@ -457,6 +522,11 @@
           "standard": "schemaorg",
           "term": "temporalCoverage",
           "match": "related"
+        },
+        {
+          "standard": "ddi",
+          "term": "collDate",
+          "match": "exact"
         }
       ],
       "module": "core"
@@ -489,6 +559,11 @@
           "standard": "schemaorg",
           "term": "spatialCoverage",
           "match": "close"
+        },
+        {
+          "standard": "ddi",
+          "term": "nation / geogCover",
+          "match": "close"
         }
       ],
       "module": "core"
@@ -516,6 +591,39 @@
           "standard": "schemaorg",
           "term": "citation",
           "match": "related"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.fields",
+      "label": "Research field",
+      "obligation": "M",
+      "cardinality": "1..n",
+      "type": "vocab",
+      "vocabulary": "research_field",
+      "definition": "Broad field(s) the study belongs to: education, social sciences, humanities, arts, or other. Interdisciplinary studies choose several.",
+      "datacite": "subjects (subjectScheme 'Fields of Science and Technology (FOS)', e.g. 'FOS: Educational sciences')",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "research_field vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "fos",
+          "term": "category",
+          "match": "exact"
+        },
+        {
+          "standard": "datacite",
+          "term": "subject (FOS scheme)",
+          "match": "exact"
+        },
+        {
+          "standard": "ddi",
+          "term": "topcClas",
+          "match": "close"
         }
       ],
       "module": "core"
@@ -586,12 +694,22 @@
       "cardinality": "0..n",
       "type": "vocab",
       "vocabulary": "unit_of_analysis",
-      "definition": "The unit(s) the analysis is about.",
+      "definition": "The unit(s) the analysis is about: people, groups, places, texts, images, objects, and so on.",
       "datacite": "subjects (subjectScheme 'HuMeta Units of Analysis')",
       "alignments": [
         {
           "standard": "humeta",
           "term": "unit_of_analysis vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "ddi_cv",
+          "term": "AnalysisUnit 2.1.3",
+          "match": "exact"
+        },
+        {
+          "standard": "ddi",
+          "term": "anlyUnit",
           "match": "exact"
         },
         {
@@ -609,12 +727,22 @@
       "cardinality": "0..n",
       "type": "vocab",
       "vocabulary": "sampling_procedure",
-      "definition": "How participants or units were selected.",
+      "definition": "How cases (people, texts, objects, sites) were selected.",
       "datacite": "subjects (subjectScheme 'HuMeta Sampling Procedures'); descriptions (Methods)",
       "alignments": [
         {
           "standard": "humeta",
           "term": "sampling_procedure vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "ddi_cv",
+          "term": "SamplingProcedure 2.0.2",
+          "match": "exact"
+        },
+        {
+          "standard": "ddi",
+          "term": "sampProc",
           "match": "exact"
         },
         {
@@ -661,18 +789,23 @@
     },
     {
       "id": "study.discipline",
-      "label": "Discipline",
+      "label": "Discipline or subject area",
       "obligation": "R",
       "cardinality": "0..n",
       "type": "vocab",
       "vocabulary": "discipline",
-      "definition": "STEM discipline(s) of the learning or research.",
-      "datacite": "subjects (subjectScheme 'HuMeta Disciplines')",
+      "definition": "Discipline(s) or subject area(s) of the study; for education studies, the subject taught or learned.",
+      "datacite": "subjects (subjectScheme 'HuMeta Disciplines'; plus 'Fields of Science and Technology (FOS)' with each term's FOS code)",
       "alignments": [
         {
           "standard": "humeta",
           "term": "discipline vocabulary",
           "match": "exact"
+        },
+        {
+          "standard": "fos",
+          "term": "subcategory (per term)",
+          "match": "close"
         },
         {
           "standard": "eric",
@@ -693,13 +826,36 @@
       "module": "core"
     },
     {
+      "id": "study.population.human_participants",
+      "label": "Human participants",
+      "obligation": "M",
+      "cardinality": "1",
+      "type": "vocab",
+      "vocabulary": "human_participants",
+      "definition": "Whether people take part in the study directly, are its subject only indirectly (records, public posts), or are not involved (texts, artworks, objects only).",
+      "datacite": "descriptions (Methods)",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "human_participants vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "common_rule",
+          "term": "\"human subject\" definition",
+          "match": "related"
+        }
+      ],
+      "module": "core"
+    },
+    {
       "id": "study.population.participant_roles",
       "label": "Participant population",
-      "obligation": "M",
-      "cardinality": "1..n",
+      "obligation": "MA",
+      "cardinality": "0..n",
       "type": "vocab",
       "vocabulary": "participant_role",
-      "definition": "Who the participants are.",
+      "definition": "Who the participants, or the people the data are about, are.",
       "datacite": "subjects (subjectScheme 'HuMeta Participant Roles')",
       "alignments": [
         {
@@ -713,7 +869,8 @@
           "match": "close"
         }
       ],
-      "module": "core"
+      "module": "core",
+      "condition": "Mandatory when human participants is direct or indirect."
     },
     {
       "id": "education.education_levels",
@@ -798,6 +955,11 @@
         {
           "standard": "datacite",
           "term": "description (Methods)",
+          "match": "close"
+        },
+        {
+          "standard": "ddi",
+          "term": "universe",
           "match": "close"
         }
       ],
@@ -977,6 +1139,16 @@
           "standard": "datacite",
           "term": "description (Methods)",
           "match": "close"
+        },
+        {
+          "standard": "ddi_cv",
+          "term": "TimeMethod 1.2.3 (time-related designs)",
+          "match": "related"
+        },
+        {
+          "standard": "ddi",
+          "term": "timeMeth",
+          "match": "related"
         }
       ],
       "module": "core"
@@ -1017,12 +1189,22 @@
       "cardinality": "0..n",
       "type": "vocab",
       "vocabulary": "data_collection_method",
-      "definition": "How data were collected.",
+      "definition": "How data or sources were gathered.",
       "datacite": "subjects (subjectScheme 'HuMeta Data Collection Methods')",
       "alignments": [
         {
           "standard": "humeta",
           "term": "data_collection_method vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "ddi_cv",
+          "term": "ModeOfCollection 5.0.1",
+          "match": "close"
+        },
+        {
+          "standard": "ddi",
+          "term": "collMode",
           "match": "exact"
         },
         {
@@ -1034,6 +1216,192 @@
           "standard": "schemaorg",
           "term": "measurementTechnique",
           "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.evidence.analysis_methods",
+      "label": "Analysis method",
+      "obligation": "R",
+      "cardinality": "0..n",
+      "type": "vocab",
+      "vocabulary": "analysis_method",
+      "definition": "How the data or sources were analyzed: statistical, qualitative, interpretive, or computational.",
+      "datacite": "subjects (subjectScheme 'HuMeta Analysis Methods'); descriptions (Methods)",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "analysis_method vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "datacite",
+          "term": "description (Methods)",
+          "match": "close"
+        },
+        {
+          "standard": "eric",
+          "term": "descriptors",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.sources.types",
+      "label": "Source type",
+      "obligation": "MA",
+      "cardinality": "0..n",
+      "type": "vocab",
+      "vocabulary": "source_type",
+      "condition": "Mandatory when human participants is none.",
+      "definition": "Kinds of sources studied other than data collected from participants: texts, archival records, images, artworks, media, online content, objects, existing datasets.",
+      "datacite": "subjects (subjectScheme 'HuMeta Source Types')",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "source_type vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "ddi_cv",
+          "term": "GeneralDataFormat 2.0.3 / DataSourceType 1.0.2",
+          "match": "close"
+        },
+        {
+          "standard": "ddi",
+          "term": "dataKind",
+          "match": "related"
+        },
+        {
+          "standard": "dcterms",
+          "term": "type",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.sources.description",
+      "label": "Sources description",
+      "obligation": "R",
+      "cardinality": "0..1",
+      "type": "text",
+      "definition": "The corpus, collection, or set of sources: what it includes and how it was selected.",
+      "datacite": "descriptions (descriptionType Methods)",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "sources.description",
+          "match": "exact"
+        },
+        {
+          "standard": "ddi",
+          "term": "dataSrc",
+          "match": "close"
+        },
+        {
+          "standard": "dcterms",
+          "term": "source",
+          "match": "related"
+        },
+        {
+          "standard": "datacite",
+          "term": "description (Methods)",
+          "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.sources.holdings",
+      "label": "Holding institutions or platforms",
+      "obligation": "O",
+      "cardinality": "0..1",
+      "type": "text",
+      "definition": "Where the sources are held: archives, libraries, museums, collections, or platforms.",
+      "datacite": "descriptions (descriptionType Methods)",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "sources.holdings",
+          "match": "exact"
+        },
+        {
+          "standard": "ddi",
+          "term": "srcOrig",
+          "match": "related"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.sources.time_period",
+      "label": "Time period of sources",
+      "obligation": "O",
+      "cardinality": "0..1",
+      "type": "text",
+      "definition": "The period the sources cover or were created in (e.g., 1850-1900, 19th century), as distinct from when data were collected.",
+      "datacite": "dates (dateType Coverage)",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "sources.time_period",
+          "match": "exact"
+        },
+        {
+          "standard": "dcterms",
+          "term": "temporal",
+          "match": "exact"
+        },
+        {
+          "standard": "ddi",
+          "term": "timePrd",
+          "match": "exact"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "temporalCoverage",
+          "match": "exact"
+        },
+        {
+          "standard": "datacite",
+          "term": "date (Coverage)",
+          "match": "exact"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.sources.rights",
+      "label": "Rights status of sources",
+      "obligation": "R",
+      "cardinality": "0..1",
+      "type": "vocab",
+      "vocabulary": "source_rights",
+      "definition": "Copyright or other rights status of the sources, which decides whether copies of them can be shared.",
+      "datacite": "rightsList (rights statement for sources)",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "source_rights vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "rightsstatements",
+          "term": "rights statement",
+          "match": "related"
+        },
+        {
+          "standard": "dcterms",
+          "term": "rights",
+          "match": "close"
+        },
+        {
+          "standard": "datacite",
+          "term": "rightsList",
+          "match": "related"
         }
       ],
       "module": "core"
@@ -1131,6 +1499,11 @@
           "standard": "ferpa",
           "term": "de-identified records",
           "match": "related"
+        },
+        {
+          "standard": "ddi",
+          "term": "confDec",
+          "match": "related"
         }
       ],
       "module": "core"
@@ -1154,6 +1527,30 @@
           "standard": "ferpa",
           "term": "education records",
           "match": "close"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.ethics.online_data",
+      "label": "Online data practices",
+      "obligation": "MA",
+      "cardinality": "0..n",
+      "type": "vocab",
+      "vocabulary": "online_data_practice",
+      "condition": "Mandatory when the study uses social media or website sources, or web or platform data collection.",
+      "definition": "How content from websites, social media, or other platforms was collected and handled: public or private spaces, platform terms, consent, and protection of authors.",
+      "datacite": "descriptions (descriptionType Other, ethics statement)",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "online_data_practice vocabulary",
+          "match": "exact"
+        },
+        {
+          "standard": "aoir",
+          "term": "ethical guidance",
+          "match": "related"
         }
       ],
       "module": "core"
@@ -1186,6 +1583,11 @@
         {
           "standard": "datacite",
           "term": "rightsList",
+          "match": "close"
+        },
+        {
+          "standard": "ddi",
+          "term": "restrctn",
           "match": "close"
         }
       ],
@@ -1338,7 +1740,7 @@
       "id": "R1",
       "severity": "error",
       "check": "constructs_required",
-      "message": "Datasets and instruments must list at least one construct measured."
+      "message": "Instruments, and datasets from studies with human participants, must list at least one construct measured."
     },
     {
       "id": "R2",
@@ -1405,6 +1807,36 @@
       "severity": "warning",
       "check": "identifiers_not_shared",
       "message": "Direct identifiers are flagged; they must be removed before the data are shared."
+    },
+    {
+      "id": "R13",
+      "severity": "warning",
+      "check": "online_authors_traceable",
+      "message": "Public online posts can identify their authors through search even after names are removed. Before sharing, remove usernames and alter quotes, or share only post IDs."
+    },
+    {
+      "id": "R14",
+      "severity": "warning",
+      "check": "online_platform_terms",
+      "message": "Confirm that collecting and sharing online content follows the platform's terms of service or a data-access agreement."
+    },
+    {
+      "id": "R15",
+      "severity": "warning",
+      "check": "online_minors",
+      "message": "Online content may come from minors; review whether it can be shared, and with whom."
+    },
+    {
+      "id": "R16",
+      "severity": "warning",
+      "check": "online_private_spaces",
+      "message": "Content from closed or semi-private online spaces usually needs authors' consent or ethics-review approval, because users there expect privacy."
+    },
+    {
+      "id": "R17",
+      "severity": "warning",
+      "check": "source_rights",
+      "message": "Sources are in copyright or not yet evaluated: share metadata, citations, or derived data rather than copies unless the rights allow it."
     }
   ],
   "match_types": {

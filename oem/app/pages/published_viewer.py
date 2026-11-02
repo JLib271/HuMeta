@@ -60,7 +60,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
         st.download_button(
             label=f"📥 Download {view_label} (.csv)",
             data=display_df.to_csv(index=False).encode("utf-8"),
-            file_name=f"openedmetadata_{view}.csv",
+            file_name=f"humeta_{view}.csv",
             mime="text/csv",
             use_container_width=True,
         )

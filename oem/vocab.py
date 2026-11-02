@@ -12,9 +12,11 @@ APP_DIR = Path(__file__).resolve().parent.parent
 PUBLISHED_DIR = APP_DIR / "published"
 PUBLISHED_SUMMARIES_DIR = PUBLISHED_DIR / "study_summaries"
 PUBLISHED_DATASETS_DIR = PUBLISHED_DIR / "datasets"
-DEFAULT_GITHUB_REPO = "JLib271/OpenEdMetadata"
+DEFAULT_GITHUB_REPO = "JLib271/HuMeta"
 PUBLIC_DATASET_MAX_MB = 25
-PROJECT_FILE_FORMAT = "openedmetadata-project"
+PROJECT_FILE_FORMAT = "humeta-project"
+#: earlier project-file format names that still load
+LEGACY_PROJECT_FILE_FORMATS = ("openedmetadata-project",)
 
 # ==========================================
 # 1. PSYCHOMETRIC & METADATA DICTIONARIES

@@ -1,6 +1,6 @@
 # Roadmap
 
-OpenEdMetadata aims to give STEM education researchers shared infrastructure
+HuMeta aims to give researchers in education, the social sciences, and the humanities shared infrastructure
 for designing studies, choosing and administering instruments, describing
 their data with common names and metadata, and sharing data responsibly.
 

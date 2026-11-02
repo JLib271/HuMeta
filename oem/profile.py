@@ -32,9 +32,9 @@ from oem.library import Library
 
 ROOT = Path(__file__).resolve().parent.parent
 PROFILE_DIR = ROOT / "standard" / "humeta"
-CONSTRUCTS_URI = "https://github.com/JLib271/OpenEdMetadata/blob/main/library/constructs.json#"
-VOCAB_URI = "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/vocabularies.json#"
-LIBRARY_RECORD_URI = "https://github.com/JLib271/OpenEdMetadata/blob/main/library/instruments/"
+CONSTRUCTS_URI = "https://github.com/JLib271/HuMeta/blob/main/library/constructs.json#"
+VOCAB_URI = "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#"
+LIBRARY_RECORD_URI = "https://github.com/JLib271/HuMeta/blob/main/library/instruments/"
 DATACITE_NS = "http://datacite.org/schema/kernel-4"
 DATACITE_XSD = "http://schema.datacite.org/meta/kernel-4.7/metadata.xsd"
 ERIC_SCHEME = "ERIC Thesaurus"
@@ -47,9 +47,27 @@ ISCED_LEVELS = {"0": "Early childhood education", "1": "Primary education", "2":
                 "5": "Short-cycle tertiary education", "6": "Bachelor's or equivalent level",
                 "7": "Master's or equivalent level", "8": "Doctoral or equivalent level"}
 SEEKING_INPUT_BADGE = "(expert input wanted)"
+#: OECD Fields of Science and Technology, labels as used in DataCite metadata
+FOS_SCHEME = "Fields of Science and Technology (FOS)"
+FOS_SCHEME_URI = "http://www.oecd.org/science/inno/38235147.pdf"
+FOS_LABELS = {
+    "1": "Natural sciences", "1.1": "Mathematics", "1.2": "Computer and information sciences",
+    "1.3": "Physical sciences", "1.4": "Chemical sciences", "1.5": "Earth and related environmental sciences",
+    "1.6": "Biological sciences", "2": "Engineering and technology",
+    "5": "Social sciences", "5.1": "Psychology", "5.2": "Economics and business", "5.3": "Educational sciences",
+    "5.4": "Sociology", "5.5": "Law", "5.6": "Political science", "5.7": "Social and economic geography",
+    "5.8": "Media and communications", "5.9": "Other social sciences",
+    "6": "Humanities", "6.1": "History and archaeology", "6.2": "Languages and literature",
+    "6.3": "Philosophy, ethics and religion", "6.4": "Arts (arts, history of arts, performing arts, music)",
+    "6.5": "Other humanities",
+}
+DDI_CV_URI = "http://rdf-vocabulary.ddialliance.org/cv/"
+RIGHTS_STATEMENTS_URI = "http://rightsstatements.org/vocab/{}/1.0/"
+ONLINE_SOURCES = {"social_media", "websites"}
 
 #: record path (from the record root) -> (vocabulary id, DataCite subjectScheme label)
 VOCAB_FIELDS: dict[tuple[str, ...], tuple[str, str | None]] = {
+    ("study", "fields"): ("research_field", None),  # exported as OECD FOS subjects
     ("study", "discipline"): ("discipline", "HuMeta Disciplines"),
     ("study", "population", "participant_roles"): ("participant_role", "HuMeta Participant Roles"),
     ("study", "context", "locale"): ("locale", "HuMeta Locales"),
@@ -58,7 +76,10 @@ VOCAB_FIELDS: dict[tuple[str, ...], tuple[str, str | None]] = {
     ("study", "design", "sampling_procedure"): ("sampling_procedure", "HuMeta Sampling Procedures"),
     ("study", "evidence", "measurement_evidence"): ("measurement_evidence", "HuMeta Measurement Evidence"),
     ("study", "evidence", "data_collection_methods"): ("data_collection_method", "HuMeta Data Collection Methods"),
+    ("study", "evidence", "analysis_methods"): ("analysis_method", "HuMeta Analysis Methods"),
+    ("study", "sources", "types"): ("source_type", "HuMeta Source Types"),
     ("study", "ethics", "sensitivity_flags"): ("sensitivity_flag", None),
+    ("study", "ethics", "online_data"): ("online_data_practice", None),
     # Education module
     ("education", "education_levels"): ("education_level", "HuMeta Education Levels"),
     ("education", "undergraduate_levels"): ("undergraduate_level", "HuMeta Undergraduate Levels"),
@@ -69,6 +90,8 @@ VOCAB_FIELDS: dict[tuple[str, ...], tuple[str, str | None]] = {
 }
 #: single-valued vocabulary fields
 VOCAB_SINGLE: dict[tuple[str, ...], str] = {
+    ("study", "population", "human_participants"): "human_participants",
+    ("study", "sources", "rights"): "source_rights",
     ("study", "ethics", "human_subjects_review"): "human_subjects_review",
     ("study", "ethics", "consent"): "consent",
     ("study", "ethics", "consent_for_sharing"): "consent_for_sharing",
@@ -154,6 +177,9 @@ def json_schema(profile: Profile | None = None) -> dict:
     put(("study", "design", "topic"), text)
     put(("study", "design", "research_questions"), text)
     put(("study", "ethics", "governance_notes"), text)
+    put(("study", "sources", "description"), text)
+    put(("study", "sources", "holdings"), text)
+    put(("study", "sources", "time_period"), text)
     put(("study", "care", "statement"), text)
     put(("study", "care", "local_contexts_project"), {"type": ["string", "null"], "format": "uri"})
     put(("study", "care", "local_contexts_labels"), {"type": "array", "items": {"type": "string"}})
@@ -174,7 +200,7 @@ def json_schema(profile: Profile | None = None) -> dict:
     education["description"] = "Education module. Null or absent when the study is not in an education setting."
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "$id": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/schema/humeta-record.schema.json",
+        "$id": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/schema/humeta-record.schema.json",
         "title": f"HuMeta profile record ({p.version})",
         "description": "Generated from standard/humeta/profile.json and vocabularies.json by scripts/build_profile_artifacts.py. Do not edit by hand.",
         "type": "object",
@@ -246,6 +272,7 @@ def _empty_section(section: str) -> dict:
         out["population"].update({"description": None, "sample_size": None})
         out["design"].update({"topic": None, "research_questions": None})
         out["ethics"]["governance_notes"] = None
+        out["sources"].update({"description": None, "holdings": None, "time_period": None})
         out["care"].update({"statement": None, "local_contexts_project": None, "local_contexts_labels": []})
     return out
 
@@ -334,13 +361,22 @@ def validate(record: dict, lib: Library | None = None, profile: Profile | None =
     res, s = record["resource"], record["study"]
     edu = record.get("education") or {}
     rtype = res["resource_type"]
-    required_lists = [(("study", "population", "participant_roles"), "participant_role")]
+    participants = get(record, ("study", "population", "human_participants"))
+    source_types = set(get(record, ("study", "sources", "types")) or [])
+    uses_online = bool(source_types & ONLINE_SOURCES) or "web_platform_data" in (s["evidence"].get("data_collection_methods") or [])
+    required_lists = [(("study", "fields"), "research_field")]
+    if participants in ("direct", "indirect"):
+        required_lists.append((("study", "population", "participant_roles"), "participant_role"))
+    if participants == "none":
+        required_lists.append((("study", "sources", "types"), "source_type"))
+    if uses_online:
+        required_lists.append((("study", "ethics", "online_data"), "online_data_practice"))
     if uses(record, "education"):
         required_lists.append((("education", "education_levels"), "education_level"))
     for path, vocab_id in required_lists:
         if not get(record, path):
             issues.append(Issue("error", ".".join(path), f"Select at least one {p.vocabularies[vocab_id]['label'].lower()}."))
-    for path in [("study", "ethics", "human_subjects_review"), ("study", "ethics", "consent_for_sharing"),
+    for path in [("study", "population", "human_participants"), ("study", "ethics", "human_subjects_review"), ("study", "ethics", "consent_for_sharing"),
                  ("study", "ethics", "identifiability"), ("study", "ethics", "access_level"),
                  ("study", "care", "indigenous_data")]:
         if not get(record, path):
@@ -359,7 +395,8 @@ def validate(record: dict, lib: Library | None = None, profile: Profile | None =
 
     ethics, care = s["ethics"], s["care"]
     access = ethics.get("access_level")
-    if rtype in ("Dataset", "Instrument") and not s.get("constructs"):
+    needs_constructs = rtype == "Instrument" or (rtype == "Dataset" and participants == "direct")
+    if needs_constructs and not s.get("constructs"):
         flag("constructs_required", "study.constructs")
     if rtype in ("Dataset", "StudyRegistration") and not s["evidence"].get("study_designs"):
         flag("design_required", "study.evidence.study_designs")
@@ -387,6 +424,21 @@ def validate(record: dict, lib: Library | None = None, profile: Profile | None =
         flag("care_prompt", "study.care.indigenous_data")
     if "direct_identifiers" in (ethics.get("sensitivity_flags") or []) and access not in (None, "closed", "metadata_only"):
         flag("identifiers_not_shared", "study.ethics.sensitivity_flags")
+    online = set(ethics.get("online_data") or [])
+    if uses_online:
+        shares_content = access not in (None, "closed", "metadata_only") and "ids_only" not in online
+        if shares_content and not {"usernames_removed", "quotes_altered"} <= online:
+            flag("online_authors_traceable", "study.ethics.online_data")
+        if "platform_terms" not in online:
+            flag("online_platform_terms", "study.ethics.online_data")
+        if "minors_possible" in online and access in ("open", "registered"):
+            flag("online_minors", "study.ethics.online_data")
+        if "private_spaces" in online and "author_consent" not in online:
+            flag("online_private_spaces", "study.ethics.online_data")
+    rights = s["sources"].get("rights")
+    if access in ("open", "registered") and (rights in ("in_copyright", "unknown_rights", "mixed_rights")
+                                             or (source_types and not rights)):
+        flag("source_rights", "study.sources.rights")
     return issues
 
 
@@ -429,6 +481,11 @@ def _ethics_text(record: dict, p: Profile) -> str:
     ]:
         if e.get(key):
             parts.append(f"{label}: {p.label(vocab_id, e[key])}.")
+    if record["study"]["population"].get("human_participants"):
+        parts.insert(0, f"Human participants: {p.label('human_participants', record['study']['population']['human_participants'])}.")
+    online = [p.label("online_data_practice", x) for x in e.get("online_data") or []]
+    if online:
+        parts.append("Online data: " + "; ".join(online) + ".")
     flags = [p.label("sensitivity_flag", f) for f in e.get("sensitivity_flags") or []]
     if flags:
         parts.append("Sensitivity: " + "; ".join(flags) + ".")
@@ -465,6 +522,16 @@ def _methods_text(record: dict, p: Profile) -> str | None:
     methods = [p.label("data_collection_method", m) for m in s["evidence"].get("data_collection_methods") or []]
     if methods:
         parts.append("Data collection: " + "; ".join(methods) + ".")
+    analysis = [p.label("analysis_method", m) for m in s["evidence"].get("analysis_methods") or []]
+    if analysis:
+        parts.append("Analysis: " + "; ".join(analysis) + ".")
+    src = s.get("sources") or {}
+    types = [p.label("source_type", t) for t in src.get("types") or []]
+    if types:
+        parts.append("Sources: " + "; ".join(types) + ".")
+    for key, label in (("description", "Sources"), ("holdings", "Held at"), ("time_period", "Period covered")):
+        if (src.get(key) or "").strip():
+            parts.append(f"{label}: {src[key].strip()}")
     if (s["population"].get("description") or "").strip():
         parts.append("Participants: " + s["population"]["description"].strip())
     return " ".join(parts) or None
@@ -516,6 +583,15 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
             if isced is not None:
                 subjects.append({"subject": f"ISCED level {isced}: {ISCED_LEVELS[isced]}",
                                  "subjectScheme": ISCED_SCHEME, "schemeUri": ISCED_SCHEME_URI})
+    fos_codes: list[str] = []
+    for vocab_id, path in (("research_field", ("study", "fields")), ("discipline", ("study", "discipline"))):
+        for term_id in get(record, path) or []:
+            code = p.term(vocab_id, term_id).get("fos")
+            if code and code not in fos_codes:
+                fos_codes.append(code)
+    for code in fos_codes:
+        subjects.append({"subject": f"FOS: {FOS_LABELS[code]}", "subjectScheme": FOS_SCHEME,
+                         "schemeUri": FOS_SCHEME_URI, "classificationCode": code})
     for term in eric_descriptors(record, lib, p):
         subjects.append({"subject": term, "subjectScheme": ERIC_SCHEME, "schemeUri": ERIC_SCHEME_URI})
     if (res.get("description") or "").strip():
@@ -536,6 +612,13 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
         if lic.get("url"):
             right["rightsUri"] = lic["url"]
         rights.append(right)
+    src_rights = (s.get("sources") or {}).get("rights")
+    if src_rights:
+        right = {"rights": f"Sources studied: {p.label('source_rights', src_rights)}"}
+        rs = p.term("source_rights", src_rights).get("rs")
+        if rs:
+            right["rightsUri"] = RIGHTS_STATEMENTS_URI.format(rs)
+        rights.append(right)
     if s["ethics"].get("access_level"):
         rights.append({"rights": f"Access: {p.label('access_level', s['ethics']['access_level'])}"})
     if rights:
@@ -546,6 +629,10 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
     start, end = dates.get("start"), dates.get("end")
     if start or end:
         out["dates"] = [{"date": f"{start}/{end}" if start and end else (start or end), "dateType": "Collected"}]
+    period = ((s.get("sources") or {}).get("time_period") or "").strip()
+    match = re.fullmatch(r"(\d{3,4})(?:\s*[-–/]\s*(\d{3,4}))?", period)
+    if match:  # free-text periods ("19th century") stay in the Methods description
+        out.setdefault("dates", []).append({"date": "/".join(g for g in match.groups() if g), "dateType": "Coverage"})
     geo = res.get("geography") or {}
     places = [f"{st}, United States" for st in geo.get("us_states") or []] + [
         c for c in geo.get("countries") or [] if not (c == "US" and geo.get("us_states"))]
@@ -612,7 +699,8 @@ def to_datacite_xml(record: dict, lib: Library | None = None, profile: Profile |
     if data["subjects"]:
         subjects = sub(root, "subjects")
         for s in data["subjects"]:
-            sub(subjects, "subject", s["subject"], subjectScheme=s.get("subjectScheme"), schemeURI=s.get("schemeUri"), valueURI=s.get("valueUri"))
+            sub(subjects, "subject", s["subject"], subjectScheme=s.get("subjectScheme"), schemeURI=s.get("schemeUri"),
+                valueURI=s.get("valueUri"), classificationCode=s.get("classificationCode"))
     if data.get("dates"):
         dates = sub(root, "dates")
         for d in data["dates"]:
@@ -751,19 +839,25 @@ def alignment_badges(element_id: str, profile: Profile | None = None) -> str:
 
 
 def alignment_help(element_id: str, profile: Profile | None = None) -> str:
-    """Full-sentence alignment notes for tooltips."""
+    """Tooltip text: the element's definition, then the standards it aligns with."""
     p = profile or load()
     e = element(element_id, p)
+    own = [a for a in e.get("alignments", []) if a["standard"] == "humeta"]
+    others = [a for a in e.get("alignments", []) if a["standard"] != "humeta"]
     lines = [e["definition"]]
-    for a in e.get("alignments", []):
-        std = p.definition["standards"][a["standard"]]
-        if a["standard"] == "humeta":
-            lines.append(f"Defined by the HuMeta profile: {a['term']} (no equivalent in general-purpose metadata standards).")
-        else:
-            line = f"{a['match'].capitalize()} match: {std['name']} — {a['term']}."
+    if others:
+        bullets = []
+        for a in others:
+            std = p.definition["standards"][a["standard"]]
+            line = f"- {a['match'].capitalize()} match: {std['name']} — `{a['term']}`."
             if a.get("status") == "seeking_input":
-                line += f" {p.definition['alignment_status']['seeking_input']}"
+                line += f" *{p.definition['alignment_status']['seeking_input']}*"
             if a.get("note"):
                 line += f" {a['note']}"
-            lines.append(line)
+            bullets.append(line)
+        lines.append("**Matches in other standards**\n" + "\n".join(bullets))
+    if own and not others:
+        lines.append("Defined by the HuMeta profile; no general-purpose metadata standard has an equivalent.")
+    elif own and e.get("vocabulary"):
+        lines.append("The answer options are defined by the HuMeta profile.")
     return "\n\n".join(lines)

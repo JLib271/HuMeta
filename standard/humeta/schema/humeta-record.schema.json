@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/schema/humeta-record.schema.json",
+  "$id": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/schema/humeta-record.schema.json",
   "title": "HuMeta profile record (1.0.0-draft.1)",
   "description": "Generated from standard/humeta/profile.json and vocabularies.json by scripts/build_profile_artifacts.py. Do not edit by hand.",
   "type": "object",
@@ -247,6 +247,19 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "fields": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "education",
+              "social_sciences",
+              "humanities",
+              "arts",
+              "other_field"
+            ]
+          }
+        },
         "discipline": {
           "type": "array",
           "uniqueItems": true,
@@ -262,6 +275,23 @@
               "computer_science",
               "engineering",
               "general_stem",
+              "psychology",
+              "economics",
+              "education_studies",
+              "sociology",
+              "anthropology",
+              "law",
+              "political_science",
+              "human_geography",
+              "media_communication",
+              "history",
+              "archaeology",
+              "languages_literature",
+              "philosophy_religion",
+              "visual_arts",
+              "performing_arts",
+              "other_humanities",
+              "other_social_science",
               "other_discipline"
             ]
           }
@@ -284,9 +314,20 @@
                   "visitors",
                   "community_members",
                   "specific_community",
+                  "artists_creators",
+                  "online_authors",
+                  "staff_leaders",
                   "other_participants"
                 ]
               }
+            },
+            "human_participants": {
+              "enum": [
+                "direct",
+                "indirect",
+                "none",
+                null
+              ]
             },
             "description": {
               "type": [
@@ -346,7 +387,11 @@
                   "instrument_development",
                   "secondary_analysis",
                   "meta_analysis",
-                  "replication"
+                  "replication",
+                  "ethnographic",
+                  "historical",
+                  "interpretive_critical",
+                  "practice_based"
                 ]
               }
             },
@@ -373,13 +418,45 @@
                 "enum": [
                   "survey",
                   "assessment",
-                  "observation",
+                  "experiment",
                   "interview",
                   "focus_group",
+                  "observation",
+                  "ethnography",
+                  "diaries",
+                  "recording",
+                  "visual_methods",
                   "artifacts",
+                  "archival_research",
+                  "corpus_collection",
+                  "web_platform_data",
                   "learning_analytics",
                   "institutional_records",
+                  "practice_based",
                   "other_method"
+                ]
+              }
+            },
+            "analysis_methods": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "statistical",
+                  "psychometric",
+                  "thematic",
+                  "content_analysis",
+                  "discourse_analysis",
+                  "close_reading",
+                  "visual_analysis",
+                  "historical_analysis",
+                  "ethnographic_analysis",
+                  "critical_theoretical",
+                  "computational",
+                  "network_analysis",
+                  "spatial_analysis",
+                  "case_analysis",
+                  "other_analysis"
                 ]
               }
             }
@@ -396,11 +473,17 @@
                 "enum": [
                   "individual",
                   "group",
+                  "family_household",
                   "organization",
-                  "place",
                   "event",
-                  "artifact",
-                  "multilevel"
+                  "place",
+                  "time_unit",
+                  "text",
+                  "still_image",
+                  "sound",
+                  "video",
+                  "object",
+                  "other_unit"
                 ]
               }
             },
@@ -410,15 +493,16 @@
               "items": {
                 "enum": [
                   "census",
-                  "convenience",
-                  "volunteer",
-                  "purposive",
+                  "simple_random",
+                  "systematic",
                   "stratified",
                   "cluster",
-                  "random",
-                  "systematic",
-                  "time_location",
+                  "multistage",
+                  "convenience",
+                  "purposive",
+                  "quota",
                   "snowball",
+                  "theoretical",
                   "mixed_sampling",
                   "other_sampling"
                 ]
@@ -438,6 +522,67 @@
             }
           }
         },
+        "sources": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "types": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "texts",
+                  "archival_records",
+                  "administrative_records",
+                  "photographs",
+                  "artworks",
+                  "audio",
+                  "video_film",
+                  "news_media",
+                  "social_media",
+                  "websites",
+                  "correspondence",
+                  "objects",
+                  "performances",
+                  "maps_geospatial",
+                  "existing_datasets",
+                  "software_games",
+                  "other_source"
+                ]
+              }
+            },
+            "rights": {
+              "enum": [
+                "public_domain",
+                "open_license",
+                "permission",
+                "in_copyright",
+                "platform_terms",
+                "mixed_rights",
+                "unknown_rights",
+                null
+              ]
+            },
+            "description": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "holdings": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "time_period": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
         "ethics": {
           "type": "object",
           "additionalProperties": false,
@@ -450,7 +595,26 @@
                   "direct_identifiers",
                   "indirect_identifiers",
                   "sensitive_information",
-                  "education_records"
+                  "education_records",
+                  "public_online_content"
+                ]
+              }
+            },
+            "online_data": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "public_content",
+                  "private_spaces",
+                  "platform_terms",
+                  "author_consent",
+                  "no_consent_public",
+                  "usernames_removed",
+                  "quotes_altered",
+                  "ids_only",
+                  "deletions_honored",
+                  "minors_possible"
                 ]
               }
             },

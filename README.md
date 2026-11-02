@@ -4,7 +4,7 @@ An open-source, community-driven web app that helps researchers in the **social 
 
 ## 🤝 Community
 
-The project (repository: OpenEdMetadata) is open source and welcomes contributors: researchers drafting field modules or adding instruments, librarians and data curators, and developers.
+The project is open source and welcomes contributors: researchers drafting field modules or adding instruments, librarians and data curators, and developers.
 Start with [CONTRIBUTING.md](CONTRIBUTING.md) and the [ROADMAP.md](ROADMAP.md). We follow a [Code of Conduct](CODE_OF_CONDUCT.md);
 see [GOVERNANCE.md](GOVERNANCE.md) for how decisions are made and [SECURITY.md](SECURITY.md) to report security or privacy problems.
 To cite the project, use [CITATION.cff](CITATION.cff).
@@ -19,7 +19,7 @@ The platform is deployed on Streamlit Community Cloud.
 
 The modules follow a study from design to sharing. Study metadata uses one standard throughout: the [HuMeta profile](standard/humeta/README.md). It has a core for every study plus optional field modules. The Education module is available now; Social Science and Humanities modules are in development with researchers from those fields.
 
-1. **Study Metadata Profile (Module 1):** Describe the study with the HuMeta profile: title and team (with ORCID iDs), design (topic, research questions, study design, unit of analysis, sampling, data collection), population and context, the optional Education module (education level, institution type, instructional setting), ethics review, consent for participation and for data sharing, identifiability and access, and Indigenous data governance (CARE). Answers use the profile's controlled vocabularies. Saving puts the record into a **project file** the researcher downloads and keeps; governance fields are researcher-reported and are not approval or sharing determinations.
+1. **Study Metadata Profile (Module 1):** Describe the study with the HuMeta profile: title and team (with ORCID iDs), research fields and disciplines, design (topic, research questions, study design, unit of analysis, sampling, data collection and analysis methods), people and place (including studies with no participants), sources (texts, archives, images, artworks, media, online content, objects), the optional Education module (education level, institution type, instructional setting), ethics review, consent for participation and for data sharing, identifiability and access, practices for public online data, and Indigenous data governance (CARE). Answers use the profile's controlled vocabularies. Saving puts the record into a **project file** the researcher downloads and keeps; governance fields are researcher-reported and are not approval or sharing determinations.
 2. **Variable Instrument Architect (Module 2):** Starts with **Find previously shared studies with related context**, which searches study summaries other researchers have published (study-design and variable/measurement metadata, never item text or participant data). The query is populated from the Module 1 content domain when available. Step 1 captures broad study context; a target behavior and timeframe are optional, and the app does not presume behavior is the study outcome. Step 2 uses a multi-select to choose framework variables, followed by the **Included theory-derived, demographic, and contextual variables** metadata editor, including a context-personalized TPB questionnaire example (app-generated examples, not a validated measure). Step 3 adds or imports custom variables with item text/source type, response scale, language, scoring, citation/URL, adaptation notes, and validity/reliability evidence. Step 4 builds a conceptual diagram; Step 5 reviews variables and downloads the matrices and draft survey. The plan is saved into the project file. Researchers can opt in to **submit a limited study summary for public listing**, which opens a pull request for maintainer review.
 3. **Check & Export Metadata (Module 3):** Add the constructs measured (suggested from the Module 2 plan, linked to library instruments), check the record against the profile's responsible-sharing rules (consent, de-identification, review status, CARE), and export HuMeta JSON, DataCite 4.7 JSON/XML, and ERIC Thesaurus descriptors.
 4. **Community Data Repository Sync (Module 4):** Browse and download published public datasets, or submit a de-identified dataset for public release after permission, identifier, and disclosure-risk confirmations. Submissions open a pull request and are listed only after a maintainer merges them. **Private datasets are never stored.**
@@ -123,8 +123,8 @@ In Streamlit Community Cloud, open the app's **Settings → Secrets** and add:
 # Fine-grained GitHub token limited to this repository:
 # Contents: Read and write; Pull requests: Read and write
 GITHUB_PAT = "your-fine-grained-token"
-# Optional; defaults to JLib271/OpenEdMetadata
-GITHUB_REPO = "JLib271/OpenEdMetadata"
+# Optional; defaults to JLib271/HuMeta
+GITHUB_REPO = "JLib271/HuMeta"
 
 [auth]
 redirect_uri = "https://<your-app>.streamlit.app/oauth2callback"
@@ -147,8 +147,8 @@ Supabase is no longer used: remove `SUPABASE_URL`, `SUPABASE_KEY`, and
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/JLib271/OpenEdMetadata.git
-   cd OpenEdMetadata
+   git clone https://github.com/JLib271/HuMeta.git
+   cd HuMeta
    ```
 
 2. **Install Dependencies:**

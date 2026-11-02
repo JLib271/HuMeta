@@ -1,5 +1,5 @@
 blank_issues_enabled: true
 contact_links:
   - name: Security or privacy problem
-    url: https://github.com/JLib271/OpenEdMetadata/security/policy
+    url: https://github.com/JLib271/HuMeta/security/policy
     about: Report vulnerabilities or exposed personal information privately, not as a public issue.

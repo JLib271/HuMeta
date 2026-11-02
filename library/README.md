@@ -54,7 +54,7 @@ construct only when no existing one fits; prefer adding a synonym.
 **Evidence** (`evidence/<instrument-id>/<id>.json`) is one statistic, for one
 version (and optionally one dimension), in one sample, from one source.
 `source.kind` is `published` (needs a citation) or `platform_derived`
-(contributed from a study run through the OpenEdMetadata app). Both use the
+(contributed from a study run through the HuMeta Portal). Both use the
 same format, so evidence across populations can be compared side by side.
 
 **Item files** (`items/<instrument-id>/<version-id>.json`) list a version's

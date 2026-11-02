@@ -8,7 +8,7 @@ Obligations: **M** = Mandatory: every record must have it.; **MA** = Mandatory i
 
 Alignments: each element lists the standards it corresponds to. No mark = exact match; **≈** = close match; **~** = related. `HuMeta` = defined by this profile, with no equivalent in a general-purpose standard. *(expert input wanted)* = we are seeking expert input on this alignment. Full list, with notes, in [`crosswalks/alignments.csv`](crosswalks/alignments.csv).
 
-Standards: [HuMeta](https://github.com/JLib271/OpenEdMetadata/blob/main/standard/humeta/README.md) = HuMeta profile (element or vocabulary defined by this profile); [DataCite](https://schema.datacite.org/) = DataCite Metadata Schema 4.7; [DC](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) = Dublin Core (DCMI Metadata Terms); [schema.org](https://schema.org/Dataset) = schema.org Dataset; [ERIC](https://eric.ed.gov/?ti=all) = ERIC Thesaurus; [ORCID](https://orcid.org/) = ORCID iD; [SPDX](https://spdx.org/licenses/) = SPDX License List; [BCP 47](https://www.rfc-editor.org/info/bcp47) = IETF BCP 47 language tags; [ISO 3166](https://www.iso.org/iso-3166-country-codes.html) = ISO 3166-1 alpha-2 country codes; [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) = ISO 8601 dates; [NCES](https://nces.ed.gov/programs/edge/Geographic/LocaleBoundaries) = NCES locale classification (locale types City, Suburb, Town, Rural); [ISCED](https://uis.unesco.org/sites/default/files/documents/international-standard-classification-of-education-isced-2011-en.pdf) = UNESCO International Standard Classification of Education (ISCED 2011); [AERA/APA/NCME](https://www.testingstandards.net/) = Standards for Educational and Psychological Testing (2014); [Common Rule](https://www.hhs.gov/ohrp/regulations-and-policy/regulations/45-cfr-46/) = US Common Rule for human-subjects research (45 CFR 46); [FERPA](https://studentprivacy.ed.gov/) = Family Educational Rights and Privacy Act (34 CFR Part 99); [CARE](https://www.gida-global.org/care) = CARE Principles for Indigenous Data Governance; [Local Contexts](https://localcontexts.org/) = Local Contexts Traditional Knowledge and Biocultural Labels and Notices
+Standards: [HuMeta](https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md) = HuMeta profile (element or vocabulary defined by this profile); [DataCite](https://schema.datacite.org/) = DataCite Metadata Schema 4.7; [DC](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) = Dublin Core (DCMI Metadata Terms); [schema.org](https://schema.org/Dataset) = schema.org Dataset; [ERIC](https://eric.ed.gov/?ti=all) = ERIC Thesaurus; [DDI-C](https://ddialliance.org/Specification/DDI-Codebook/2.5/) = DDI-Codebook 2.5 (Data Documentation Initiative); [DDI CV](https://rdf-vocabulary.ddialliance.org/) = DDI Alliance Controlled Vocabularies (CC BY 4.0); [OECD FOS](http://www.oecd.org/science/inno/38235147.pdf) = OECD Fields of Science and Technology (FOS), as used by DataCite; [ORCID](https://orcid.org/) = ORCID iD; [SPDX](https://spdx.org/licenses/) = SPDX License List; [BCP 47](https://www.rfc-editor.org/info/bcp47) = IETF BCP 47 language tags; [ISO 3166](https://www.iso.org/iso-3166-country-codes.html) = ISO 3166-1 alpha-2 country codes; [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) = ISO 8601 dates; [NCES](https://nces.ed.gov/programs/edge/Geographic/LocaleBoundaries) = NCES locale classification (locale types City, Suburb, Town, Rural); [ISCED](https://uis.unesco.org/sites/default/files/documents/international-standard-classification-of-education-isced-2011-en.pdf) = UNESCO International Standard Classification of Education (ISCED 2011); [AERA/APA/NCME](https://www.testingstandards.net/) = Standards for Educational and Psychological Testing (2014); [Common Rule](https://www.hhs.gov/ohrp/regulations-and-policy/regulations/45-cfr-46/) = US Common Rule for human-subjects research (45 CFR 46); [FERPA](https://studentprivacy.ed.gov/) = Family Educational Rights and Privacy Act (34 CFR Part 99); [CARE](https://www.gida-global.org/care) = CARE Principles for Indigenous Data Governance; [Local Contexts](https://localcontexts.org/) = Local Contexts Traditional Knowledge and Biocultural Labels and Notices; [RightsStatements](https://rightsstatements.org/) = RightsStatements.org rights statements; [AoIR IRE 3.0](https://aoir.org/reports/ethics3.pdf) = Association of Internet Researchers, Internet Research: Ethical Guidelines 3.0 (2019)
 
 Modules: the **core** applies to every record; a field module (such as **Education**) applies only when a record includes it, and its mandatory elements are mandatory only then.
 
@@ -18,39 +18,48 @@ Elements for any study in the social sciences, humanities, or education.
 
 | Element | Obligation | Cardinality | Definition | Aligned with | DataCite 4.7 mapping |
 |---|---|---|---|---|---|
-| <a id="resource.title"></a>`resource.title` | M | 1 | Name of the resource. | `DataCite: titles.title`, `DC: title`, `schema.org: name` | titles.title |
-| <a id="resource.creators"></a>`resource.creators` | M | 1..n | People or organizations primarily responsible for the resource, with ORCID iDs where available. | `DataCite: creators`, `DC: creator`, `schema.org: creator`, `ORCID: ORCID iD (nameIdentifier)` | creators (nameIdentifier with nameIdentifierScheme ORCID; affiliation) |
-| <a id="resource.publisher"></a>`resource.publisher` | M | 1 | Entity that holds, archives, or makes the resource available (usually the repository or institution). | `DataCite: publisher`, `DC: publisher`, `schema.org: publisher` | publisher |
-| <a id="resource.publication_year"></a>`resource.publication_year` | M | 1 | Year the resource was or will be made publicly available. | `DataCite: publicationYear`, `≈DC: issued`, `≈schema.org: datePublished` | publicationYear |
+| <a id="resource.title"></a>`resource.title` | M | 1 | Name of the resource. | `DataCite: titles.title`, `DC: title`, `schema.org: name`, `DDI-C: titl` | titles.title |
+| <a id="resource.creators"></a>`resource.creators` | M | 1..n | People or organizations primarily responsible for the resource, with ORCID iDs where available. | `DataCite: creators`, `DC: creator`, `schema.org: creator`, `ORCID: ORCID iD (nameIdentifier)`, `DDI-C: AuthEnty` | creators (nameIdentifier with nameIdentifierScheme ORCID; affiliation) |
+| <a id="resource.publisher"></a>`resource.publisher` | M | 1 | Entity that holds, archives, or makes the resource available (usually the repository or institution). | `DataCite: publisher`, `DC: publisher`, `schema.org: publisher`, `≈DDI-C: distrbtr` | publisher |
+| <a id="resource.publication_year"></a>`resource.publication_year` | M | 1 | Year the resource was or will be made publicly available. | `DataCite: publicationYear`, `≈DC: issued`, `≈schema.org: datePublished`, `≈DDI-C: distDate` | publicationYear |
 | <a id="resource.resource_type"></a>`resource.resource_type` | M | 1 | General type of the resource, using DataCite resourceTypeGeneral values. | `DataCite: resourceTypeGeneral`, `≈DC: type`, `≈schema.org: @type` | types.resourceTypeGeneral; types.resourceType = 'HuMeta <type>' |
-| <a id="resource.identifier"></a>`resource.identifier` | O | 0..1 | Persistent identifier (DOI preferred) once one has been assigned. | `DataCite: identifier`, `DC: identifier`, `schema.org: identifier` | identifiers (DOI) or alternateIdentifiers |
-| <a id="resource.description"></a>`resource.description` | R | 0..1 | Abstract or summary of the resource. | `DataCite: description (Abstract)`, `DC: abstract`, `schema.org: description` | descriptions (descriptionType Abstract) |
-| <a id="resource.keywords"></a>`resource.keywords` | O | 0..n | Free-text keywords. | `DataCite: subject (no scheme)`, `≈DC: subject`, `schema.org: keywords` | subjects (no scheme) |
+| <a id="resource.identifier"></a>`resource.identifier` | O | 0..1 | Persistent identifier (DOI preferred) once one has been assigned. | `DataCite: identifier`, `DC: identifier`, `schema.org: identifier`, `DDI-C: IDNo` | identifiers (DOI) or alternateIdentifiers |
+| <a id="resource.description"></a>`resource.description` | R | 0..1 | Abstract or summary of the resource. | `DataCite: description (Abstract)`, `DC: abstract`, `schema.org: description`, `DDI-C: abstract` | descriptions (descriptionType Abstract) |
+| <a id="resource.keywords"></a>`resource.keywords` | O | 0..n | Free-text keywords. | `DataCite: subject (no scheme)`, `≈DC: subject`, `schema.org: keywords`, `DDI-C: keyword` | subjects (no scheme) |
 | <a id="resource.language"></a>`resource.language` | R | 0..1 | Primary language of the resource (BCP 47 code, e.g. en). | `DataCite: language`, `DC: language`, `schema.org: inLanguage`, `BCP 47: language tag` | language |
 | <a id="resource.license"></a>`resource.license` | R | 0..1 | License for the resource, as an SPDX identifier where possible (e.g. CC-BY-4.0). | `DataCite: rightsList`, `DC: license`, `schema.org: license`, `SPDX: license identifier` | rightsList (rightsIdentifier, rightsIdentifierScheme SPDX) |
-| <a id="resource.funding"></a>`resource.funding` | O | 0..n | Funders and award numbers. | `DataCite: fundingReferences`, `≈schema.org: funder` | fundingReferences |
-| <a id="resource.collection_dates"></a>`resource.collection_dates` | R | 0..1 | Start and end of data collection (ISO 8601 dates). | `DataCite: date (Collected)`, `ISO 8601: date`, `~DC: temporal`, `~schema.org: temporalCoverage` | dates (dateType Collected, as start/end) |
-| <a id="resource.geography"></a>`resource.geography` | R | 0..1 | Countries (ISO 3166-1 alpha-2) and, for the US, states (USPS codes) where data were collected. | `DataCite: geoLocationPlace`, `ISO 3166: country code`, `≈DC: spatial`, `≈schema.org: spatialCoverage` | geoLocations (geoLocationPlace) |
+| <a id="resource.funding"></a>`resource.funding` | O | 0..n | Funders and award numbers. | `DataCite: fundingReferences`, `≈schema.org: funder`, `DDI-C: fundAg / grantNo` | fundingReferences |
+| <a id="resource.collection_dates"></a>`resource.collection_dates` | R | 0..1 | Start and end of data collection (ISO 8601 dates). | `DataCite: date (Collected)`, `ISO 8601: date`, `~DC: temporal`, `~schema.org: temporalCoverage`, `DDI-C: collDate` | dates (dateType Collected, as start/end) |
+| <a id="resource.geography"></a>`resource.geography` | R | 0..1 | Countries (ISO 3166-1 alpha-2) and, for the US, states (USPS codes) where data were collected. | `DataCite: geoLocationPlace`, `ISO 3166: country code`, `≈DC: spatial`, `≈schema.org: spatialCoverage`, `≈DDI-C: nation / geogCover` | geoLocations (geoLocationPlace) |
 | <a id="resource.related"></a>`resource.related` | O | 0..n | Related publications, datasets, preregistrations, or instruments, with a DataCite relationType. | `DataCite: relatedIdentifiers`, `≈DC: relation`, `~schema.org: citation` | relatedIdentifiers |
+| <a id="study.fields"></a>`study.fields` | M | 1..n | Broad field(s) the study belongs to: education, social sciences, humanities, arts, or other. Interdisciplinary studies choose several. Vocabulary: [research_field](#research_field). | `HuMeta`, `OECD FOS: category`, `DataCite: subject (FOS scheme)`, `≈DDI-C: topcClas` | subjects (subjectScheme 'Fields of Science and Technology (FOS)', e.g. 'FOS: Educational sciences') |
 | <a id="study.design.topic"></a>`study.design.topic` | R | 0..1 | The main subject or topic of the study, in the researcher's words (e.g., 'introductory geology lab learning'). | `HuMeta`, `≈DataCite: subject`, `≈DC: subject`, `≈schema.org: about` | subjects (no scheme) |
 | <a id="study.design.research_questions"></a>`study.design.research_questions` | R | 0..1 | Primary research questions, objectives, or hypotheses. | `HuMeta`, `≈DataCite: description (Methods)`, `~DC: description` | descriptions (descriptionType Methods) |
-| <a id="study.design.unit_of_analysis"></a>`study.design.unit_of_analysis` | O | 0..n | The unit(s) the analysis is about. Vocabulary: [unit_of_analysis](#unit_of_analysis). | `HuMeta`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Units of Analysis') |
-| <a id="study.design.sampling_procedure"></a>`study.design.sampling_procedure` | O | 0..n | How participants or units were selected. Vocabulary: [sampling_procedure](#sampling_procedure). | `HuMeta`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Sampling Procedures'); descriptions (Methods) |
+| <a id="study.design.unit_of_analysis"></a>`study.design.unit_of_analysis` | O | 0..n | The unit(s) the analysis is about: people, groups, places, texts, images, objects, and so on. Vocabulary: [unit_of_analysis](#unit_of_analysis). | `HuMeta`, `DDI CV: AnalysisUnit 2.1.3`, `DDI-C: anlyUnit`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Units of Analysis') |
+| <a id="study.design.sampling_procedure"></a>`study.design.sampling_procedure` | O | 0..n | How cases (people, texts, objects, sites) were selected. Vocabulary: [sampling_procedure](#sampling_procedure). | `HuMeta`, `DDI CV: SamplingProcedure 2.0.2`, `DDI-C: sampProc`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Sampling Procedures'); descriptions (Methods) |
 | <a id="study.constructs"></a>`study.constructs` | MA | 0..n | Constructs measured, from the HuMeta construct vocabulary (library/constructs.json), optionally with the instrument, version and subscale used. *Mandatory when resource_type is Dataset or Instrument.* | `HuMeta`, `≈ERIC: descriptors`, `≈schema.org: variableMeasured`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Constructs', valueURI per construct); for datasets, relatedIdentifiers to the instrument's library record (URL, relationType IsCollectedBy) and its publication (DOI, relationType References); ERIC descriptors as additional subjects |
-| <a id="study.discipline"></a>`study.discipline` | R | 0..n | STEM discipline(s) of the learning or research. Vocabulary: [discipline](#discipline). | `HuMeta`, `≈ERIC: descriptors`, `≈DC: subject`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Disciplines') |
-| <a id="study.population.participant_roles"></a>`study.population.participant_roles` | M | 1..n | Who the participants are. Vocabulary: [participant_role](#participant_role). | `HuMeta`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Participant Roles') |
-| <a id="study.population.description"></a>`study.population.description` | R | 0..1 | Narrative description of the participants and sampling, without identifying information. | `HuMeta`, `≈DataCite: description (Methods)` | descriptions (descriptionType Methods) |
+| <a id="study.discipline"></a>`study.discipline` | R | 0..n | Discipline(s) or subject area(s) of the study; for education studies, the subject taught or learned. Vocabulary: [discipline](#discipline). | `HuMeta`, `≈OECD FOS: subcategory (per term)`, `≈ERIC: descriptors`, `≈DC: subject`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Disciplines'; plus 'Fields of Science and Technology (FOS)' with each term's FOS code) |
+| <a id="study.population.human_participants"></a>`study.population.human_participants` | M | 1 | Whether people take part in the study directly, are its subject only indirectly (records, public posts), or are not involved (texts, artworks, objects only). Vocabulary: [human_participants](#human_participants). | `HuMeta`, `~Common Rule: "human subject" definition` | descriptions (Methods) |
+| <a id="study.population.participant_roles"></a>`study.population.participant_roles` | MA | 0..n | Who the participants, or the people the data are about, are. *Mandatory when human participants is direct or indirect.* Vocabulary: [participant_role](#participant_role). | `HuMeta`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Participant Roles') |
+| <a id="study.population.description"></a>`study.population.description` | R | 0..1 | Narrative description of the participants and sampling, without identifying information. | `HuMeta`, `≈DataCite: description (Methods)`, `≈DDI-C: universe` | descriptions (descriptionType Methods) |
 | <a id="study.population.sample_size"></a>`study.population.sample_size` | R | 0..1 | Number of participants (or units) in the data. | `HuMeta`, `≈DataCite: sizes` | sizes ('N = <n> participants') |
 | <a id="study.context.locale"></a>`study.context.locale` | R | 0..n | Community type(s) where the study took place. Vocabulary: [locale](#locale). | `HuMeta`, `NCES: locale type`, `≈ERIC: descriptors` | subjects (subjectScheme 'HuMeta Locales') |
-| <a id="study.evidence.study_designs"></a>`study.evidence.study_designs` | MA | 0..n | Design(s) that produced the evidence. *Mandatory when resource_type is Dataset or StudyRegistration.* Vocabulary: [study_design](#study_design). | `HuMeta`, `≈ERIC: descriptors`, `≈DataCite: description (Methods)` | subjects (subjectScheme 'HuMeta Study Designs'); descriptions (Methods) |
+| <a id="study.evidence.study_designs"></a>`study.evidence.study_designs` | MA | 0..n | Design(s) that produced the evidence. *Mandatory when resource_type is Dataset or StudyRegistration.* Vocabulary: [study_design](#study_design). | `HuMeta`, `≈ERIC: descriptors`, `≈DataCite: description (Methods)`, `~DDI CV: TimeMethod 1.2.3 (time-related designs)`, `~DDI-C: timeMeth` | subjects (subjectScheme 'HuMeta Study Designs'); descriptions (Methods) |
 | <a id="study.evidence.measurement_evidence"></a>`study.evidence.measurement_evidence` | MA | 0..n | Kinds of reliability and validity evidence the resource provides. *Mandatory when resource_type is Instrument.* Vocabulary: [measurement_evidence](#measurement_evidence). | `HuMeta`, `≈AERA/APA/NCME: sources of validity evidence`, `≈ERIC: descriptors` | subjects (subjectScheme 'HuMeta Measurement Evidence') |
-| <a id="study.evidence.data_collection_methods"></a>`study.evidence.data_collection_methods` | R | 0..n | How data were collected. Vocabulary: [data_collection_method](#data_collection_method). | `HuMeta`, `≈ERIC: descriptors`, `≈schema.org: measurementTechnique` | subjects (subjectScheme 'HuMeta Data Collection Methods') |
+| <a id="study.evidence.data_collection_methods"></a>`study.evidence.data_collection_methods` | R | 0..n | How data or sources were gathered. Vocabulary: [data_collection_method](#data_collection_method). | `HuMeta`, `≈DDI CV: ModeOfCollection 5.0.1`, `DDI-C: collMode`, `≈ERIC: descriptors`, `≈schema.org: measurementTechnique` | subjects (subjectScheme 'HuMeta Data Collection Methods') |
+| <a id="study.evidence.analysis_methods"></a>`study.evidence.analysis_methods` | R | 0..n | How the data or sources were analyzed: statistical, qualitative, interpretive, or computational. Vocabulary: [analysis_method](#analysis_method). | `HuMeta`, `≈DataCite: description (Methods)`, `≈ERIC: descriptors` | subjects (subjectScheme 'HuMeta Analysis Methods'); descriptions (Methods) |
+| <a id="study.sources.types"></a>`study.sources.types` | MA | 0..n | Kinds of sources studied other than data collected from participants: texts, archival records, images, artworks, media, online content, objects, existing datasets. *Mandatory when human participants is none.* Vocabulary: [source_type](#source_type). | `HuMeta`, `≈DDI CV: GeneralDataFormat 2.0.3 / DataSourceType 1.0.2`, `~DDI-C: dataKind`, `≈DC: type` | subjects (subjectScheme 'HuMeta Source Types') |
+| <a id="study.sources.description"></a>`study.sources.description` | R | 0..1 | The corpus, collection, or set of sources: what it includes and how it was selected. | `HuMeta`, `≈DDI-C: dataSrc`, `~DC: source`, `≈DataCite: description (Methods)` | descriptions (descriptionType Methods) |
+| <a id="study.sources.holdings"></a>`study.sources.holdings` | O | 0..1 | Where the sources are held: archives, libraries, museums, collections, or platforms. | `HuMeta`, `~DDI-C: srcOrig` | descriptions (descriptionType Methods) |
+| <a id="study.sources.time_period"></a>`study.sources.time_period` | O | 0..1 | The period the sources cover or were created in (e.g., 1850-1900, 19th century), as distinct from when data were collected. | `HuMeta`, `DC: temporal`, `DDI-C: timePrd`, `schema.org: temporalCoverage`, `DataCite: date (Coverage)` | dates (dateType Coverage) |
+| <a id="study.sources.rights"></a>`study.sources.rights` | R | 0..1 | Copyright or other rights status of the sources, which decides whether copies of them can be shared. Vocabulary: [source_rights](#source_rights). | `HuMeta`, `~RightsStatements: rights statement`, `≈DC: rights`, `~DataCite: rightsList` | rightsList (rights statement for sources) |
 | <a id="study.ethics.human_subjects_review"></a>`study.ethics.human_subjects_review` | M | 1 | Ethics / IRB review status, as reported by the researcher. Vocabulary: [human_subjects_review](#human_subjects_review). | `HuMeta`, `~Common Rule: IRB review / exemption` | descriptions (descriptionType Other, 'Ethics and access') |
 | <a id="study.ethics.consent"></a>`study.ethics.consent` | R | 0..1 | How participants agreed to take part. Vocabulary: [consent](#consent). | `HuMeta`, `~Common Rule: informed consent / waiver` | descriptions (Other, 'Ethics and access') |
 | <a id="study.ethics.consent_for_sharing"></a>`study.ethics.consent_for_sharing` | M | 1 | What participants allow regarding sharing beyond the research team. Vocabulary: [consent_for_sharing](#consent_for_sharing). | `HuMeta`, `~schema.org: conditionsOfAccess`, `~DataCite: rightsList` | descriptions (Other, 'Ethics and access'); rightsList |
-| <a id="study.ethics.identifiability"></a>`study.ethics.identifiability` | M | 1 | Identifiability of the data. Vocabulary: [identifiability](#identifiability). | `HuMeta`, `~FERPA: de-identified records` | descriptions (Other, 'Ethics and access') |
+| <a id="study.ethics.identifiability"></a>`study.ethics.identifiability` | M | 1 | Identifiability of the data. Vocabulary: [identifiability](#identifiability). | `HuMeta`, `~FERPA: de-identified records`, `~DDI-C: confDec` | descriptions (Other, 'Ethics and access') |
 | <a id="study.ethics.sensitivity_flags"></a>`study.ethics.sensitivity_flags` | R | 0..n | Kinds of sensitive information in the underlying data. Vocabulary: [sensitivity_flag](#sensitivity_flag). | `HuMeta`, `≈FERPA: education records` | descriptions (Other, 'Ethics and access') |
-| <a id="study.ethics.access_level"></a>`study.ethics.access_level` | M | 1 | How the data can be accessed. Vocabulary: [access_level](#access_level). | `HuMeta`, `≈DC: accessRights`, `≈schema.org: conditionsOfAccess`, `≈DataCite: rightsList` | rightsList (access statement) |
+| <a id="study.ethics.online_data"></a>`study.ethics.online_data` | MA | 0..n | How content from websites, social media, or other platforms was collected and handled: public or private spaces, platform terms, consent, and protection of authors. *Mandatory when the study uses social media or website sources, or web or platform data collection.* Vocabulary: [online_data_practice](#online_data_practice). | `HuMeta`, `~AoIR IRE 3.0: ethical guidance` | descriptions (descriptionType Other, ethics statement) |
+| <a id="study.ethics.access_level"></a>`study.ethics.access_level` | M | 1 | How the data can be accessed. Vocabulary: [access_level](#access_level). | `HuMeta`, `≈DC: accessRights`, `≈schema.org: conditionsOfAccess`, `≈DataCite: rightsList`, `≈DDI-C: restrctn` | rightsList (access statement) |
 | <a id="study.ethics.governance_notes"></a>`study.ethics.governance_notes` | O | 0..1 | Approval references, data-use restrictions, retention or de-identification requirements (no confidential details). | `HuMeta`, `~DC: accessRights`, `≈DataCite: description (Other)` | descriptions (Other, 'Ethics and access') |
 | <a id="study.care.indigenous_data"></a>`study.care.indigenous_data` | M | 1 | Whether the resource contains or derives from data about Indigenous Peoples, nations, communities, lands, territories, or knowledges. Vocabulary: [indigenous_data](#indigenous_data). | `HuMeta`, `≈CARE: scope: Indigenous data` | descriptions (Other, 'CARE statement') |
 | <a id="study.care.governance"></a>`study.care.governance` | MA | 0..1 | How Indigenous authority to control the data is exercised (CARE: Authority to control). *Mandatory when indigenous_data is yes.* Vocabulary: [indigenous_governance](#indigenous_governance). | `HuMeta`, `≈CARE: Authority to control` | descriptions (Other, 'CARE statement'); rightsList |
@@ -75,7 +84,7 @@ Optional module for studies in education settings: learners' education levels, i
 
 | Rule | Severity | Requirement |
 |---|---|---|
-| R1 | error | Datasets and instruments must list at least one construct measured. |
+| R1 | error | Instruments, and datasets from studies with human participants, must list at least one construct measured. |
 | R2 | error | Datasets and study registrations must list at least one study design. |
 | R3 | error | Instruments must list at least one kind of measurement evidence. |
 | R4 | error | Open access requires data that are de-identified, anonymous, aggregate-only, synthetic, or not participant data. |
@@ -87,12 +96,29 @@ Optional module for studies in education settings: learners' education levels, i
 | R10 | warning | Indigenous data status is unknown; assess it before sharing. |
 | R11 | warning | A specific community or a tribal college is involved; confirm whether the data are Indigenous data. |
 | R12 | warning | Direct identifiers are flagged; they must be removed before the data are shared. |
+| R13 | warning | Public online posts can identify their authors through search even after names are removed. Before sharing, remove usernames and alter quotes, or share only post IDs. |
+| R14 | warning | Confirm that collecting and sharing online content follows the platform's terms of service or a data-access agreement. |
+| R15 | warning | Online content may come from minors; review whether it can be shared, and with whom. |
+| R16 | warning | Content from closed or semi-private online spaces usually needs authors' consent or ethics-review approval, because users there expect privacy. |
+| R17 | warning | Sources are in copyright or not yet evaluated: share metadata, citations, or derived data rather than copies unless the rights allow it. |
 
 ## Vocabularies
 
-### <a id="discipline"></a>STEM discipline (`discipline`)
+### <a id="research_field"></a>Research field (`research_field`)
 
-Disciplinary content area of the learning or research studied.
+Broad field(s) the study belongs to. Choose all that apply; interdisciplinary studies choose several. Mapped to the OECD Fields of Science and Technology (FOS) used by DataCite.
+
+| Code | Label | ERIC descriptors |
+|---|---|---|
+| `education` | Education | Educational Research |
+| `social_sciences` | Social sciences (including psychology, communication, economics, sociology) |  |
+| `humanities` | Humanities (including history, languages and literature, philosophy, religion) |  |
+| `arts` | Arts (visual arts, performing arts, music, design, art history) |  |
+| `other_field` | Other field (e.g., natural sciences, health, engineering) |  |
+
+### <a id="discipline"></a>Discipline or subject area (`discipline`)
+
+Discipline(s) or subject area(s) the study is about. For education studies, the subject taught or learned. Each term carries its OECD Fields of Science (FOS) code.
 
 | Code | Label | ERIC descriptors |
 |---|---|---|
@@ -106,7 +132,54 @@ Disciplinary content area of the learning or research studied.
 | `computer_science` | Computer science and computing | Computer Science Education |
 | `engineering` | Engineering | Engineering Education |
 | `general_stem` | General or interdisciplinary STEM | Science Education, STEM Education (unverified) |
+| `psychology` | Psychology |  |
+| `economics` | Economics and business |  |
+| `education_studies` | Education (as a subject: policy, foundations, teaching and learning) |  |
+| `sociology` | Sociology and demography |  |
+| `anthropology` | Anthropology and ethnology |  |
+| `law` | Law |  |
+| `political_science` | Political science and public policy |  |
+| `human_geography` | Social and economic geography |  |
+| `media_communication` | Media and communication |  |
+| `history` | History |  |
+| `archaeology` | Archaeology |  |
+| `languages_literature` | Languages, literature, and linguistics |  |
+| `philosophy_religion` | Philosophy, ethics, and religion |  |
+| `visual_arts` | Visual arts, design, and art history |  |
+| `performing_arts` | Performing arts and music |  |
+| `other_humanities` | Other humanities (e.g., cultural studies, digital humanities) |  |
+| `other_social_science` | Other social sciences |  |
 | `other_discipline` | Other discipline |  |
+
+### <a id="human_participants"></a>Human participants (`human_participants`)
+
+Whether people take part in the study. Decides which population and consent fields apply.
+
+| Code | Label | ERIC descriptors |
+|---|---|---|
+| `direct` | Yes: people take part directly (surveys, interviews, observation, tests, creative work) |  |
+| `indirect` | Indirectly: data are about people who do not take part (records, public online posts) |  |
+| `none` | No: the study uses only texts, artworks, objects, or other non-human sources |  |
+
+### <a id="participant_role"></a>Participant population (`participant_role`)
+
+Who the participants are.
+
+| Code | Label | ERIC descriptors |
+|---|---|---|
+| `students` | Students / learners |  |
+| `educators` | Teachers, instructors, or teaching assistants |  |
+| `professionals` | Researchers or other professionals |  |
+| `children_youth` | Children or youth |  |
+| `adults` | Adults | Adults |
+| `families` | Families or household groups |  |
+| `visitors` | Museum, science-center, or event visitors | Museums |
+| `community_members` | Community members / general public |  |
+| `specific_community` | A specific community or cultural group |  |
+| `artists_creators` | Artists, writers, performers, or other creators |  |
+| `online_authors` | Authors of online content (e.g., social media users) |  |
+| `staff_leaders` | Staff, administrators, or organizational leaders |  |
+| `other_participants` | Other participants |  |
 
 ### <a id="education_level"></a>Education level (`education_level`)
 
@@ -136,23 +209,6 @@ For undergraduate studies, the course level(s) involved.
 | `intermediate` | Intermediate / second-year |  |
 | `advanced` | Advanced / third- or fourth-year |  |
 | `capstone` | Upper-division / capstone |  |
-
-### <a id="participant_role"></a>Participant population (`participant_role`)
-
-Who the participants are.
-
-| Code | Label | ERIC descriptors |
-|---|---|---|
-| `students` | Students / learners |  |
-| `educators` | Teachers, instructors, or teaching assistants |  |
-| `professionals` | Researchers or other professionals |  |
-| `children_youth` | Children or youth |  |
-| `adults` | Adults | Adults |
-| `families` | Families or household groups |  |
-| `visitors` | Museum, science-center, or event visitors | Museums |
-| `community_members` | Community members / general public |  |
-| `specific_community` | A specific community or cultural group |  |
-| `other_participants` | Other participants |  |
 
 ### <a id="institution_type"></a>Institution or organization type (`institution_type`)
 
@@ -254,38 +310,49 @@ The design that produced the evidence in the resource.
 | `secondary_analysis` | Secondary analysis of existing data | Data Analysis |
 | `meta_analysis` | Meta-analysis or systematic review | Meta Analysis |
 | `replication` | Replication | Replication (Evaluation) |
+| `ethnographic` | Ethnographic study |  |
+| `historical` | Historical study |  |
+| `interpretive_critical` | Interpretive, critical, or theoretical study |  |
+| `practice_based` | Practice-based or creative research (e.g., making artworks, performances, designs) |  |
 
 ### <a id="unit_of_analysis"></a>Unit of analysis (`unit_of_analysis`)
 
-The unit the analysis is about.
+The unit the analysis is about. Follows the DDI AnalysisUnit vocabulary (2.1.3).
 
 | Code | Label | ERIC descriptors |
 |---|---|---|
-| `individual` | Individual (person / participant) |  |
-| `group` | Group, household, or community |  |
+| `individual` | Individual (person) |  |
+| `group` | Group (e.g., class, team, community) |  |
+| `family_household` | Family or household |  |
 | `organization` | Organization or institution |  |
-| `place` | Place, site, or geographic area |  |
-| `event` | Event, activity, or interaction |  |
-| `artifact` | Document, artifact, or media object |  |
-| `multilevel` | Other or multi-level |  |
+| `event` | Event, process, or activity |  |
+| `place` | Geographic or political-administrative area |  |
+| `time_unit` | Time unit (e.g., year, period) |  |
+| `text` | Text (e.g., document, book, post, transcript) |  |
+| `still_image` | Still image (e.g., photograph, artwork) |  |
+| `sound` | Sound (e.g., music, audio recording) |  |
+| `video` | Video or film |  |
+| `object` | Object or artifact |  |
+| `other_unit` | Other or multi-level |  |
 
 ### <a id="sampling_procedure"></a>Sampling procedure (`sampling_procedure`)
 
-How participants or units were selected.
+How cases (people, texts, objects, sites) were selected. Follows the DDI SamplingProcedure vocabulary (2.0.2).
 
 | Code | Label | ERIC descriptors |
 |---|---|---|
-| `census` | Census of all eligible units |  |
-| `convenience` | Convenience sample |  |
-| `volunteer` | Volunteer / self-selected |  |
-| `purposive` | Purposive / criterion-based |  |
-| `stratified` | Stratified sample |  |
-| `cluster` | Cluster or multistage sample |  |
-| `random` | Random sample within sites |  |
-| `systematic` | Systematic sample from a list |  |
-| `time_location` | Time-location or venue-based sample |  |
-| `snowball` | Snowball / peer referral |  |
-| `mixed_sampling` | Multiple or mixed procedures |  |
+| `census` | Total universe / complete enumeration (all eligible cases) |  |
+| `simple_random` | Probability: simple random |  |
+| `systematic` | Probability: systematic random (e.g., every nth on a list) |  |
+| `stratified` | Probability: stratified |  |
+| `cluster` | Probability: cluster (e.g., whole classes or schools) |  |
+| `multistage` | Probability: multistage |  |
+| `convenience` | Non-probability: availability / convenience (including volunteers) |  |
+| `purposive` | Non-probability: purposive / criterion-based |  |
+| `quota` | Non-probability: quota |  |
+| `snowball` | Non-probability: respondent-assisted / snowball |  |
+| `theoretical` | Theoretical sampling (cases chosen as theory develops) |  |
+| `mixed_sampling` | Mixed probability and non-probability |  |
 | `other_sampling` | Other |  |
 
 ### <a id="measurement_evidence"></a>Measurement evidence (`measurement_evidence`)
@@ -305,19 +372,88 @@ Kinds of reliability or validity evidence the resource provides, following the s
 
 ### <a id="data_collection_method"></a>Data collection method (`data_collection_method`)
 
-How data were collected.
+How data or sources were gathered. Each term maps to the DDI ModeOfCollection vocabulary (5.0.1).
 
 | Code | Label | ERIC descriptors |
 |---|---|---|
 | `survey` | Survey or questionnaire | Questionnaires, Surveys (unverified) |
 | `assessment` | Test or assessment | Tests |
-| `observation` | Observation | Observation, Classroom Observation Techniques |
+| `experiment` | Experiment (laboratory, field, or web-based) |  |
 | `interview` | Interview | Interviews |
 | `focus_group` | Focus group | Focus Groups |
-| `artifacts` | Student work, documents, or artifacts | Content Analysis |
-| `learning_analytics` | Learning analytics or log data | Learning Analytics |
+| `observation` | Observation (non-participant) | Observation, Classroom Observation Techniques |
+| `ethnography` | Ethnography / participant observation |  |
+| `diaries` | Diaries, journals, or reflective writing |  |
+| `recording` | Audio or video recording |  |
+| `visual_methods` | Visual or arts-based methods (e.g., photo elicitation, photovoice, drawing) |  |
+| `artifacts` | Work samples, documents, or artifacts produced by participants (e.g., student work) | Content Analysis |
+| `archival_research` | Archival research (finding and selecting records in archives or collections) |  |
+| `corpus_collection` | Assembling a corpus of texts, images, or media (e.g., published works, news) |  |
+| `web_platform_data` | Web or platform data collection (API, scraping, data donation) |  |
+| `learning_analytics` | Learning analytics or system log data | Learning Analytics |
 | `institutional_records` | Institutional or administrative records | Student Records (unverified) |
+| `practice_based` | Practice-based or creative making (artworks, performances, designs) |  |
 | `other_method` | Other |  |
+
+### <a id="analysis_method"></a>Analysis method (`analysis_method`)
+
+How the data or sources were analyzed. Covers quantitative, qualitative, interpretive, and computational approaches.
+
+| Code | Label | ERIC descriptors |
+|---|---|---|
+| `statistical` | Statistical or quantitative analysis | Data Analysis |
+| `psychometric` | Psychometric or measurement modeling (e.g., factor analysis, IRT) | Psychometrics |
+| `thematic` | Qualitative coding or thematic analysis | Qualitative Research |
+| `content_analysis` | Content analysis | Content Analysis |
+| `discourse_analysis` | Discourse or conversation analysis |  |
+| `close_reading` | Close reading or textual analysis |  |
+| `visual_analysis` | Visual or image analysis (e.g., photographs, artworks, film) |  |
+| `historical_analysis` | Historical analysis or source criticism |  |
+| `ethnographic_analysis` | Ethnographic or interpretive analysis |  |
+| `critical_theoretical` | Critical or theoretical analysis |  |
+| `computational` | Computational text or media analysis (e.g., text mining, NLP, image recognition) |  |
+| `network_analysis` | Network analysis |  |
+| `spatial_analysis` | Spatial or geographic analysis |  |
+| `case_analysis` | Case analysis or comparative case study | Case Studies |
+| `other_analysis` | Other |  |
+
+### <a id="source_type"></a>Source type (`source_type`)
+
+Kinds of sources studied that are not (only) data collected from participants: texts, images, artworks, media, records, objects, and online content. Mapped to DDI GeneralDataFormat and DataSourceType.
+
+| Code | Label | ERIC descriptors |
+|---|---|---|
+| `texts` | Texts and documents (books, manuscripts, letters, policies, curricula) |  |
+| `archival_records` | Archival or historical records |  |
+| `administrative_records` | Administrative or institutional records |  |
+| `photographs` | Photographs and other images |  |
+| `artworks` | Artworks (including participant or student artwork) |  |
+| `audio` | Audio and music recordings |  |
+| `video_film` | Video and film |  |
+| `news_media` | News and broadcast media |  |
+| `social_media` | Social media and online platform content |  |
+| `websites` | Websites and web archives |  |
+| `correspondence` | Private correspondence and personal papers |  |
+| `objects` | Material objects and artifacts |  |
+| `performances` | Performances and events |  |
+| `maps_geospatial` | Maps and geospatial data |  |
+| `existing_datasets` | Existing research datasets |  |
+| `software_games` | Software, games, or digital tools |  |
+| `other_source` | Other |  |
+
+### <a id="source_rights"></a>Rights status of sources (`source_rights`)
+
+Copyright or other rights status of the sources studied. Decides whether copies of sources can be shared. Related to RightsStatements.org statements.
+
+| Code | Label | ERIC descriptors |
+|---|---|---|
+| `public_domain` | Public domain or no known copyright |  |
+| `open_license` | Openly licensed (e.g., Creative Commons) |  |
+| `permission` | In copyright, used with permission from rights holders |  |
+| `in_copyright` | In copyright, used under an exception such as fair use (copies not shared) |  |
+| `platform_terms` | Governed by platform terms of service |  |
+| `mixed_rights` | Mixed: sources have different rights |  |
+| `unknown_rights` | Not yet evaluated |  |
 
 ### <a id="human_subjects_review"></a>Human-subjects review (`human_subjects_review`)
 
@@ -381,6 +517,24 @@ Kinds of sensitive information present in the underlying data.
 | `indirect_identifiers` | Indirect identifiers or small groups | Privacy |
 | `sensitive_information` | Sensitive personal information | Confidentiality |
 | `education_records` | Education records (FERPA) | Student Records (unverified), Privacy |
+| `public_online_content` | Public online content that can be traced to its authors |  |
+
+### <a id="online_data_practice"></a>Online data practices (`online_data_practice`)
+
+How content collected from websites, social media, or other online platforms was handled. Informed by the Association of Internet Researchers' Internet Research: Ethical Guidelines 3.0 (2019).
+
+| Code | Label | ERIC descriptors |
+|---|---|---|
+| `public_content` | Content was publicly available (no login or membership needed) |  |
+| `private_spaces` | Some content is from closed or semi-private spaces (groups, forums, chats needing login) |  |
+| `platform_terms` | Collected under the platform's terms of service or a data-access agreement |  |
+| `author_consent` | Authors gave consent |  |
+| `no_consent_public` | Consent not sought (public content; ethics review agreed or determined not needed) |  |
+| `usernames_removed` | Usernames and profile details removed or replaced |  |
+| `quotes_altered` | Quotes paraphrased or altered so authors cannot be found by searching |  |
+| `ids_only` | Only post IDs or derived data are shared, not the content itself |  |
+| `deletions_honored` | Content later deleted by its authors is removed from the dataset |  |
+| `minors_possible` | Authors may include minors |  |
 
 ### <a id="access_level"></a>Access level (`access_level`)
 

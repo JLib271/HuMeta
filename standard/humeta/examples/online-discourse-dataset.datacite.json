@@ -1,0 +1,206 @@
+{
+  "types": {
+    "resourceTypeGeneral": "Dataset",
+    "resourceType": "HuMeta Dataset"
+  },
+  "titles": [
+    {
+      "title": "Public talk about climate anxiety on two social platforms, 2018-2023 (illustrative)"
+    }
+  ],
+  "creators": [
+    {
+      "name": "Example, Researcher",
+      "nameType": "Personal",
+      "affiliation": [
+        {
+          "name": "Example University"
+        }
+      ]
+    }
+  ],
+  "publisher": {
+    "name": "Example University"
+  },
+  "publicationYear": "2026",
+  "subjects": [
+    {
+      "subject": "climate anxiety"
+    },
+    {
+      "subject": "social media"
+    },
+    {
+      "subject": "discourse"
+    },
+    {
+      "subject": "Climate anxiety in public online discourse"
+    },
+    {
+      "subject": "Media and communication",
+      "subjectScheme": "HuMeta Disciplines",
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#discipline.media_communication"
+    },
+    {
+      "subject": "Languages, literature, and linguistics",
+      "subjectScheme": "HuMeta Disciplines",
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#discipline.languages_literature"
+    },
+    {
+      "subject": "Authors of online content (e.g., social media users)",
+      "subjectScheme": "HuMeta Participant Roles",
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#participant_role.online_authors"
+    },
+    {
+      "subject": "Qualitative",
+      "subjectScheme": "HuMeta Study Designs",
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#study_design.qualitative"
+    },
+    {
+      "subject": "Time series",
+      "subjectScheme": "HuMeta Study Designs",
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#study_design.time_series"
+    },
+    {
+      "subject": "Text (e.g., document, book, post, transcript)",
+      "subjectScheme": "HuMeta Units of Analysis",
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#unit_of_analysis.text"
+    },
+    {
+      "subject": "Non-probability: purposive / criterion-based",
+      "subjectScheme": "HuMeta Sampling Procedures",
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#sampling_procedure.purposive"
+    },
+    {
+      "subject": "Web or platform data collection (API, scraping, data donation)",
+      "subjectScheme": "HuMeta Data Collection Methods",
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#data_collection_method.web_platform_data"
+    },
+    {
+      "subject": "Assembling a corpus of texts, images, or media (e.g., published works, news)",
+      "subjectScheme": "HuMeta Data Collection Methods",
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#data_collection_method.corpus_collection"
+    },
+    {
+      "subject": "Discourse or conversation analysis",
+      "subjectScheme": "HuMeta Analysis Methods",
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#analysis_method.discourse_analysis"
+    },
+    {
+      "subject": "Content analysis",
+      "subjectScheme": "HuMeta Analysis Methods",
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#analysis_method.content_analysis"
+    },
+    {
+      "subject": "Computational text or media analysis (e.g., text mining, NLP, image recognition)",
+      "subjectScheme": "HuMeta Analysis Methods",
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#analysis_method.computational"
+    },
+    {
+      "subject": "Social media and online platform content",
+      "subjectScheme": "HuMeta Source Types",
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#source_type.social_media"
+    },
+    {
+      "subject": "FOS: Social sciences",
+      "subjectScheme": "Fields of Science and Technology (FOS)",
+      "schemeUri": "http://www.oecd.org/science/inno/38235147.pdf",
+      "classificationCode": "5"
+    },
+    {
+      "subject": "FOS: Humanities",
+      "subjectScheme": "Fields of Science and Technology (FOS)",
+      "schemeUri": "http://www.oecd.org/science/inno/38235147.pdf",
+      "classificationCode": "6"
+    },
+    {
+      "subject": "FOS: Media and communications",
+      "subjectScheme": "Fields of Science and Technology (FOS)",
+      "schemeUri": "http://www.oecd.org/science/inno/38235147.pdf",
+      "classificationCode": "5.8"
+    },
+    {
+      "subject": "FOS: Languages and literature",
+      "subjectScheme": "Fields of Science and Technology (FOS)",
+      "schemeUri": "http://www.oecd.org/science/inno/38235147.pdf",
+      "classificationCode": "6.2"
+    },
+    {
+      "subject": "Qualitative Research",
+      "subjectScheme": "ERIC Thesaurus",
+      "schemeUri": "https://eric.ed.gov/?ti=all"
+    },
+    {
+      "subject": "Content Analysis",
+      "subjectScheme": "ERIC Thesaurus",
+      "schemeUri": "https://eric.ed.gov/?ti=all"
+    }
+  ],
+  "descriptions": [
+    {
+      "description": "Illustrative record (fictional study) showing how a communication and humanities study of public online posts is described with HuMeta: no direct participants, social media sources, and online data practices.",
+      "descriptionType": "Abstract"
+    },
+    {
+      "description": "Study design: Qualitative; Time series. Research questions: How do people describe climate anxiety in public posts, and how has this changed since 2018? Sampling: Non-probability: purposive / criterion-based. Data collection: Web or platform data collection (API, scraping, data donation); Assembling a corpus of texts, images, or media (e.g., published works, news). Analysis: Discourse or conversation analysis; Content analysis; Computational text or media analysis (e.g., text mining, NLP, image recognition). Sources: Social media and online platform content. Sources: About 12,000 public posts in English selected by keyword, with replies. Held at: Two public social media platforms (collected through their research APIs) Period covered: 2018-2023 Participants: Authors of public posts that mention climate anxiety; no authors were contacted.",
+      "descriptionType": "Methods"
+    },
+    {
+      "description": "Ethics and access (HuMeta profile). Human participants: Indirectly: data are about people who do not take part (records, public online posts). Human-subjects review: Exempt determination. Participation consent: Not applicable. Consent for data sharing: Not applicable (no human-subjects data). Identifiability: Coded / pseudonymous (a linking key exists). Access level: Controlled access (application and/or data-use agreement). Online data: Content was publicly available (no login or membership needed); Collected under the platform's terms of service or a data-access agreement; Consent not sought (public content; ethics review agreed or determined not needed); Usernames and profile details removed or replaced; Quotes paraphrased or altered so authors cannot be found by searching; Only post IDs or derived data are shared, not the content itself; Content later deleted by its authors is removed from the dataset. Sensitivity: Public online content that can be traced to its authors. Only post IDs and derived codes are shared; researchers rehydrate posts under the platforms' terms.",
+      "descriptionType": "Other"
+    },
+    {
+      "description": "CARE statement (HuMeta profile). Indigenous data: No.",
+      "descriptionType": "Other"
+    }
+  ],
+  "schemaVersion": "http://datacite.org/schema/kernel-4",
+  "doi": "10.5072/example-humeta-2",
+  "rightsList": [
+    {
+      "rights": "Creative Commons Attribution 4.0",
+      "rightsIdentifier": "CC-BY-4.0",
+      "rightsIdentifierScheme": "SPDX",
+      "schemeUri": "https://spdx.org/licenses/",
+      "rightsUri": "https://creativecommons.org/licenses/by/4.0/"
+    },
+    {
+      "rights": "Sources studied: Governed by platform terms of service"
+    },
+    {
+      "rights": "Access: Controlled access (application and/or data-use agreement)"
+    }
+  ],
+  "language": "en",
+  "dates": [
+    {
+      "date": "2024-01-15/2024-03-30",
+      "dateType": "Collected"
+    },
+    {
+      "date": "2018/2023",
+      "dateType": "Coverage"
+    }
+  ],
+  "geoLocations": [
+    {
+      "geoLocationPlace": "US"
+    },
+    {
+      "geoLocationPlace": "GB"
+    }
+  ]
+}

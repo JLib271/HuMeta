@@ -1,15 +1,53 @@
 {
   "profile": "humeta",
   "profile_version": "1.0.0-draft.1",
-  "note": "Controlled vocabularies of the HuMeta profile. 'eric' lists ERIC Thesaurus descriptors for the term (see crosswalks/eric_descriptor_status.json for verification). Term codes are permanent: never change or reuse a code; deprecate it instead.",
+  "note": "Controlled vocabularies of the HuMeta profile. 'eric' lists ERIC Thesaurus descriptors for the term (see crosswalks/eric_descriptor_status.json for verification). Term codes are permanent: never change or reuse a code; deprecate it instead. 'ddi' maps a term to a DDI Alliance controlled vocabulary (cv, code, match). 'fos' is the OECD Fields of Science and Technology code. 'isced' is the ISCED 2011 level. 'rs' is a RightsStatements.org statement.",
   "vocabularies": {
+    "research_field": {
+      "label": "Research field",
+      "definition": "Broad field(s) the study belongs to. Choose all that apply; interdisciplinary studies choose several. Mapped to the OECD Fields of Science and Technology (FOS) used by DataCite.",
+      "terms": [
+        {
+          "id": "education",
+          "label": "Education",
+          "fos": "5.3",
+          "eric": [
+            "Educational Research"
+          ]
+        },
+        {
+          "id": "social_sciences",
+          "label": "Social sciences (including psychology, communication, economics, sociology)",
+          "fos": "5",
+          "eric": []
+        },
+        {
+          "id": "humanities",
+          "label": "Humanities (including history, languages and literature, philosophy, religion)",
+          "fos": "6",
+          "eric": []
+        },
+        {
+          "id": "arts",
+          "label": "Arts (visual arts, performing arts, music, design, art history)",
+          "fos": "6.4",
+          "eric": []
+        },
+        {
+          "id": "other_field",
+          "label": "Other field (e.g., natural sciences, health, engineering)",
+          "eric": []
+        }
+      ]
+    },
     "discipline": {
-      "label": "STEM discipline",
-      "definition": "Disciplinary content area of the learning or research studied.",
+      "label": "Discipline or subject area",
+      "definition": "Discipline(s) or subject area(s) the study is about. For education studies, the subject taught or learned. Each term carries its OECD Fields of Science (FOS) code.",
       "terms": [
         {
           "id": "biology",
           "label": "Biology and life sciences",
+          "fos": "1.6",
           "eric": [
             "Biology"
           ]
@@ -17,6 +55,7 @@
         {
           "id": "chemistry",
           "label": "Chemistry",
+          "fos": "1.4",
           "eric": [
             "Chemistry"
           ]
@@ -24,6 +63,7 @@
         {
           "id": "physics",
           "label": "Physics",
+          "fos": "1.3",
           "eric": [
             "Physics"
           ]
@@ -31,6 +71,7 @@
         {
           "id": "geoscience",
           "label": "Geoscience / Earth science",
+          "fos": "1.5",
           "eric": [
             "Earth Science",
             "Geology"
@@ -39,6 +80,7 @@
         {
           "id": "climate_science",
           "label": "Climate and environmental science",
+          "fos": "1.5",
           "eric": [
             "Climate",
             "Earth Science"
@@ -47,6 +89,7 @@
         {
           "id": "astronomy",
           "label": "Astronomy and space science",
+          "fos": "1.3",
           "eric": [
             "Astronomy"
           ]
@@ -54,6 +97,7 @@
         {
           "id": "mathematics",
           "label": "Mathematics and statistics",
+          "fos": "1.1",
           "eric": [
             "Mathematics Education"
           ]
@@ -61,6 +105,7 @@
         {
           "id": "computer_science",
           "label": "Computer science and computing",
+          "fos": "1.2",
           "eric": [
             "Computer Science Education"
           ]
@@ -68,6 +113,7 @@
         {
           "id": "engineering",
           "label": "Engineering",
+          "fos": "2",
           "eric": [
             "Engineering Education"
           ]
@@ -81,8 +127,207 @@
           ]
         },
         {
+          "id": "psychology",
+          "label": "Psychology",
+          "fos": "5.1",
+          "eric": []
+        },
+        {
+          "id": "economics",
+          "label": "Economics and business",
+          "fos": "5.2",
+          "eric": []
+        },
+        {
+          "id": "education_studies",
+          "label": "Education (as a subject: policy, foundations, teaching and learning)",
+          "fos": "5.3",
+          "eric": []
+        },
+        {
+          "id": "sociology",
+          "label": "Sociology and demography",
+          "fos": "5.4",
+          "eric": []
+        },
+        {
+          "id": "anthropology",
+          "label": "Anthropology and ethnology",
+          "fos": "5.4",
+          "eric": []
+        },
+        {
+          "id": "law",
+          "label": "Law",
+          "fos": "5.5",
+          "eric": []
+        },
+        {
+          "id": "political_science",
+          "label": "Political science and public policy",
+          "fos": "5.6",
+          "eric": []
+        },
+        {
+          "id": "human_geography",
+          "label": "Social and economic geography",
+          "fos": "5.7",
+          "eric": []
+        },
+        {
+          "id": "media_communication",
+          "label": "Media and communication",
+          "fos": "5.8",
+          "eric": []
+        },
+        {
+          "id": "history",
+          "label": "History",
+          "fos": "6.1",
+          "eric": []
+        },
+        {
+          "id": "archaeology",
+          "label": "Archaeology",
+          "fos": "6.1",
+          "eric": []
+        },
+        {
+          "id": "languages_literature",
+          "label": "Languages, literature, and linguistics",
+          "fos": "6.2",
+          "eric": []
+        },
+        {
+          "id": "philosophy_religion",
+          "label": "Philosophy, ethics, and religion",
+          "fos": "6.3",
+          "eric": []
+        },
+        {
+          "id": "visual_arts",
+          "label": "Visual arts, design, and art history",
+          "fos": "6.4",
+          "eric": []
+        },
+        {
+          "id": "performing_arts",
+          "label": "Performing arts and music",
+          "fos": "6.4",
+          "eric": []
+        },
+        {
+          "id": "other_humanities",
+          "label": "Other humanities (e.g., cultural studies, digital humanities)",
+          "fos": "6.5",
+          "eric": []
+        },
+        {
+          "id": "other_social_science",
+          "label": "Other social sciences",
+          "fos": "5.9",
+          "eric": []
+        },
+        {
           "id": "other_discipline",
           "label": "Other discipline",
+          "eric": []
+        }
+      ]
+    },
+    "human_participants": {
+      "label": "Human participants",
+      "definition": "Whether people take part in the study. Decides which population and consent fields apply.",
+      "terms": [
+        {
+          "id": "direct",
+          "label": "Yes: people take part directly (surveys, interviews, observation, tests, creative work)",
+          "eric": []
+        },
+        {
+          "id": "indirect",
+          "label": "Indirectly: data are about people who do not take part (records, public online posts)",
+          "eric": []
+        },
+        {
+          "id": "none",
+          "label": "No: the study uses only texts, artworks, objects, or other non-human sources",
+          "eric": []
+        }
+      ]
+    },
+    "participant_role": {
+      "label": "Participant population",
+      "definition": "Who the participants are.",
+      "terms": [
+        {
+          "id": "students",
+          "label": "Students / learners",
+          "eric": []
+        },
+        {
+          "id": "educators",
+          "label": "Teachers, instructors, or teaching assistants",
+          "eric": []
+        },
+        {
+          "id": "professionals",
+          "label": "Researchers or other professionals",
+          "eric": []
+        },
+        {
+          "id": "children_youth",
+          "label": "Children or youth",
+          "eric": []
+        },
+        {
+          "id": "adults",
+          "label": "Adults",
+          "eric": [
+            "Adults"
+          ]
+        },
+        {
+          "id": "families",
+          "label": "Families or household groups",
+          "eric": []
+        },
+        {
+          "id": "visitors",
+          "label": "Museum, science-center, or event visitors",
+          "eric": [
+            "Museums"
+          ]
+        },
+        {
+          "id": "community_members",
+          "label": "Community members / general public",
+          "eric": []
+        },
+        {
+          "id": "specific_community",
+          "label": "A specific community or cultural group",
+          "eric": [],
+          "note": "Selecting this prompts the CARE questions."
+        },
+        {
+          "id": "artists_creators",
+          "label": "Artists, writers, performers, or other creators",
+          "eric": []
+        },
+        {
+          "id": "online_authors",
+          "label": "Authors of online content (e.g., social media users)",
+          "eric": []
+        },
+        {
+          "id": "staff_leaders",
+          "label": "Staff, administrators, or organizational leaders",
+          "eric": []
+        },
+        {
+          "id": "other_participants",
+          "label": "Other participants",
           "eric": []
         }
       ]
@@ -209,67 +454,6 @@
         {
           "id": "capstone",
           "label": "Upper-division / capstone",
-          "eric": []
-        }
-      ]
-    },
-    "participant_role": {
-      "label": "Participant population",
-      "definition": "Who the participants are.",
-      "terms": [
-        {
-          "id": "students",
-          "label": "Students / learners",
-          "eric": []
-        },
-        {
-          "id": "educators",
-          "label": "Teachers, instructors, or teaching assistants",
-          "eric": []
-        },
-        {
-          "id": "professionals",
-          "label": "Researchers or other professionals",
-          "eric": []
-        },
-        {
-          "id": "children_youth",
-          "label": "Children or youth",
-          "eric": []
-        },
-        {
-          "id": "adults",
-          "label": "Adults",
-          "eric": [
-            "Adults"
-          ]
-        },
-        {
-          "id": "families",
-          "label": "Families or household groups",
-          "eric": []
-        },
-        {
-          "id": "visitors",
-          "label": "Museum, science-center, or event visitors",
-          "eric": [
-            "Museums"
-          ]
-        },
-        {
-          "id": "community_members",
-          "label": "Community members / general public",
-          "eric": []
-        },
-        {
-          "id": "specific_community",
-          "label": "A specific community or cultural group",
-          "eric": [],
-          "note": "Selecting this prompts the CARE questions."
-        },
-        {
-          "id": "other_participants",
-          "label": "Other participants",
           "eric": []
         }
       ]
@@ -590,6 +774,11 @@
         {
           "id": "cross_sectional",
           "label": "Cross-sectional (single time point)",
+          "ddi": {
+            "cv": "TimeMethod",
+            "code": "CrossSection",
+            "match": "exact"
+          },
           "eric": []
         },
         {
@@ -623,6 +812,11 @@
         {
           "id": "longitudinal",
           "label": "Longitudinal",
+          "ddi": {
+            "cv": "TimeMethod",
+            "code": "Longitudinal",
+            "match": "exact"
+          },
           "eric": [
             "Longitudinal Studies"
           ]
@@ -630,11 +824,21 @@
         {
           "id": "pre_post",
           "label": "Pre/post measurement around an intervention",
+          "ddi": {
+            "cv": "TimeMethod",
+            "code": "Longitudinal",
+            "match": "related"
+          },
           "eric": []
         },
         {
           "id": "time_series",
           "label": "Time series",
+          "ddi": {
+            "cv": "TimeMethod",
+            "code": "TimeSeries",
+            "match": "exact"
+          },
           "eric": []
         },
         {
@@ -700,112 +904,297 @@
           "eric": [
             "Replication (Evaluation)"
           ]
+        },
+        {
+          "id": "ethnographic",
+          "label": "Ethnographic study",
+          "eric": []
+        },
+        {
+          "id": "historical",
+          "label": "Historical study",
+          "eric": []
+        },
+        {
+          "id": "interpretive_critical",
+          "label": "Interpretive, critical, or theoretical study",
+          "eric": []
+        },
+        {
+          "id": "practice_based",
+          "label": "Practice-based or creative research (e.g., making artworks, performances, designs)",
+          "eric": []
         }
       ]
     },
     "unit_of_analysis": {
       "label": "Unit of analysis",
-      "definition": "The unit the analysis is about.",
+      "definition": "The unit the analysis is about. Follows the DDI AnalysisUnit vocabulary (2.1.3).",
       "terms": [
         {
           "id": "individual",
-          "label": "Individual (person / participant)",
+          "label": "Individual (person)",
+          "ddi": {
+            "cv": "AnalysisUnit",
+            "code": "Individual",
+            "match": "exact"
+          },
           "eric": []
         },
         {
           "id": "group",
-          "label": "Group, household, or community",
+          "label": "Group (e.g., class, team, community)",
+          "ddi": {
+            "cv": "AnalysisUnit",
+            "code": "Group",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "family_household",
+          "label": "Family or household",
+          "ddi": {
+            "cv": "AnalysisUnit",
+            "code": "Household",
+            "match": "close"
+          },
           "eric": []
         },
         {
           "id": "organization",
           "label": "Organization or institution",
-          "eric": []
-        },
-        {
-          "id": "place",
-          "label": "Place, site, or geographic area",
+          "ddi": {
+            "cv": "AnalysisUnit",
+            "code": "OrganizationOrInstitution",
+            "match": "exact"
+          },
           "eric": []
         },
         {
           "id": "event",
-          "label": "Event, activity, or interaction",
+          "label": "Event, process, or activity",
+          "ddi": {
+            "cv": "AnalysisUnit",
+            "code": "EventOrProcessOrActivity",
+            "match": "exact"
+          },
           "eric": []
         },
         {
-          "id": "artifact",
-          "label": "Document, artifact, or media object",
+          "id": "place",
+          "label": "Geographic or political-administrative area",
+          "ddi": {
+            "cv": "AnalysisUnit",
+            "code": "GeographicUnit",
+            "match": "exact"
+          },
           "eric": []
         },
         {
-          "id": "multilevel",
+          "id": "time_unit",
+          "label": "Time unit (e.g., year, period)",
+          "ddi": {
+            "cv": "AnalysisUnit",
+            "code": "TimeUnit",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "text",
+          "label": "Text (e.g., document, book, post, transcript)",
+          "ddi": {
+            "cv": "AnalysisUnit",
+            "code": "MediaUnit.Text",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "still_image",
+          "label": "Still image (e.g., photograph, artwork)",
+          "ddi": {
+            "cv": "AnalysisUnit",
+            "code": "MediaUnit.StillImage",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "sound",
+          "label": "Sound (e.g., music, audio recording)",
+          "ddi": {
+            "cv": "AnalysisUnit",
+            "code": "MediaUnit.Sound",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "video",
+          "label": "Video or film",
+          "ddi": {
+            "cv": "AnalysisUnit",
+            "code": "MediaUnit.Video",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "object",
+          "label": "Object or artifact",
+          "ddi": {
+            "cv": "AnalysisUnit",
+            "code": "Object",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "other_unit",
           "label": "Other or multi-level",
+          "ddi": {
+            "cv": "AnalysisUnit",
+            "code": "Other",
+            "match": "exact"
+          },
           "eric": []
         }
       ]
     },
     "sampling_procedure": {
       "label": "Sampling procedure",
-      "definition": "How participants or units were selected.",
+      "definition": "How cases (people, texts, objects, sites) were selected. Follows the DDI SamplingProcedure vocabulary (2.0.2).",
       "terms": [
         {
           "id": "census",
-          "label": "Census of all eligible units",
+          "label": "Total universe / complete enumeration (all eligible cases)",
+          "ddi": {
+            "cv": "SamplingProcedure",
+            "code": "TotalUniverseCompleteEnumeration",
+            "match": "exact"
+          },
           "eric": []
         },
         {
-          "id": "convenience",
-          "label": "Convenience sample",
-          "eric": []
-        },
-        {
-          "id": "volunteer",
-          "label": "Volunteer / self-selected",
-          "eric": []
-        },
-        {
-          "id": "purposive",
-          "label": "Purposive / criterion-based",
-          "eric": []
-        },
-        {
-          "id": "stratified",
-          "label": "Stratified sample",
-          "eric": []
-        },
-        {
-          "id": "cluster",
-          "label": "Cluster or multistage sample",
-          "eric": []
-        },
-        {
-          "id": "random",
-          "label": "Random sample within sites",
+          "id": "simple_random",
+          "label": "Probability: simple random",
+          "ddi": {
+            "cv": "SamplingProcedure",
+            "code": "Probability.SimpleRandom",
+            "match": "exact"
+          },
           "eric": []
         },
         {
           "id": "systematic",
-          "label": "Systematic sample from a list",
+          "label": "Probability: systematic random (e.g., every nth on a list)",
+          "ddi": {
+            "cv": "SamplingProcedure",
+            "code": "Probability.SystematicRandom",
+            "match": "exact"
+          },
           "eric": []
         },
         {
-          "id": "time_location",
-          "label": "Time-location or venue-based sample",
+          "id": "stratified",
+          "label": "Probability: stratified",
+          "ddi": {
+            "cv": "SamplingProcedure",
+            "code": "Probability.Stratified",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "cluster",
+          "label": "Probability: cluster (e.g., whole classes or schools)",
+          "ddi": {
+            "cv": "SamplingProcedure",
+            "code": "Probability.Cluster",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "multistage",
+          "label": "Probability: multistage",
+          "ddi": {
+            "cv": "SamplingProcedure",
+            "code": "Probability.Multistage",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "convenience",
+          "label": "Non-probability: availability / convenience (including volunteers)",
+          "ddi": {
+            "cv": "SamplingProcedure",
+            "code": "Nonprobability.Availability",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "purposive",
+          "label": "Non-probability: purposive / criterion-based",
+          "ddi": {
+            "cv": "SamplingProcedure",
+            "code": "Nonprobability.Purposive",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "quota",
+          "label": "Non-probability: quota",
+          "ddi": {
+            "cv": "SamplingProcedure",
+            "code": "Nonprobability.Quota",
+            "match": "exact"
+          },
           "eric": []
         },
         {
           "id": "snowball",
-          "label": "Snowball / peer referral",
+          "label": "Non-probability: respondent-assisted / snowball",
+          "ddi": {
+            "cv": "SamplingProcedure",
+            "code": "Nonprobability.RespondentAssisted",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "theoretical",
+          "label": "Theoretical sampling (cases chosen as theory develops)",
+          "ddi": {
+            "cv": "SamplingProcedure",
+            "code": "TheoreticalSampling",
+            "match": "exact"
+          },
           "eric": []
         },
         {
           "id": "mixed_sampling",
-          "label": "Multiple or mixed procedures",
+          "label": "Mixed probability and non-probability",
+          "ddi": {
+            "cv": "SamplingProcedure",
+            "code": "MixedProbabilityNonprobability",
+            "match": "exact"
+          },
           "eric": []
         },
         {
           "id": "other_sampling",
           "label": "Other",
+          "ddi": {
+            "cv": "SamplingProcedure",
+            "code": "Other",
+            "match": "exact"
+          },
           "eric": []
         }
       ]
@@ -877,11 +1266,16 @@
     },
     "data_collection_method": {
       "label": "Data collection method",
-      "definition": "How data were collected.",
+      "definition": "How data or sources were gathered. Each term maps to the DDI ModeOfCollection vocabulary (5.0.1).",
       "terms": [
         {
           "id": "survey",
           "label": "Survey or questionnaire",
+          "ddi": {
+            "cv": "ModeOfCollection",
+            "code": "SelfAdministeredQuestionnaire",
+            "match": "close"
+          },
           "eric": [
             "Questionnaires",
             "Surveys"
@@ -890,21 +1284,33 @@
         {
           "id": "assessment",
           "label": "Test or assessment",
+          "ddi": {
+            "cv": "ModeOfCollection",
+            "code": "MeasurementsAndTests",
+            "match": "exact"
+          },
           "eric": [
             "Tests"
           ]
         },
         {
-          "id": "observation",
-          "label": "Observation",
-          "eric": [
-            "Observation",
-            "Classroom Observation Techniques"
-          ]
+          "id": "experiment",
+          "label": "Experiment (laboratory, field, or web-based)",
+          "ddi": {
+            "cv": "ModeOfCollection",
+            "code": "Experiment",
+            "match": "exact"
+          },
+          "eric": []
         },
         {
           "id": "interview",
           "label": "Interview",
+          "ddi": {
+            "cv": "ModeOfCollection",
+            "code": "Interview",
+            "match": "exact"
+          },
           "eric": [
             "Interviews"
           ]
@@ -912,20 +1318,118 @@
         {
           "id": "focus_group",
           "label": "Focus group",
+          "ddi": {
+            "cv": "ModeOfCollection",
+            "code": "FocusGroup",
+            "match": "exact"
+          },
           "eric": [
             "Focus Groups"
           ]
         },
         {
+          "id": "observation",
+          "label": "Observation (non-participant)",
+          "ddi": {
+            "cv": "ModeOfCollection",
+            "code": "Observation",
+            "match": "close"
+          },
+          "eric": [
+            "Observation",
+            "Classroom Observation Techniques"
+          ]
+        },
+        {
+          "id": "ethnography",
+          "label": "Ethnography / participant observation",
+          "ddi": {
+            "cv": "ModeOfCollection",
+            "code": "Observation.Field.Participant",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "diaries",
+          "label": "Diaries, journals, or reflective writing",
+          "ddi": {
+            "cv": "ModeOfCollection",
+            "code": "SelfAdministeredWritingsAndDiaries",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "recording",
+          "label": "Audio or video recording",
+          "ddi": {
+            "cv": "ModeOfCollection",
+            "code": "Recording",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "visual_methods",
+          "label": "Visual or arts-based methods (e.g., photo elicitation, photovoice, drawing)",
+          "ddi": {
+            "cv": "ModeOfCollection",
+            "code": "Other",
+            "match": "related"
+          },
+          "eric": []
+        },
+        {
           "id": "artifacts",
-          "label": "Student work, documents, or artifacts",
+          "label": "Work samples, documents, or artifacts produced by participants (e.g., student work)",
+          "ddi": {
+            "cv": "ModeOfCollection",
+            "code": "CompilationSynthesis",
+            "match": "related"
+          },
           "eric": [
             "Content Analysis"
           ]
         },
         {
+          "id": "archival_research",
+          "label": "Archival research (finding and selecting records in archives or collections)",
+          "ddi": {
+            "cv": "ModeOfCollection",
+            "code": "CompilationSynthesis",
+            "match": "close"
+          },
+          "eric": []
+        },
+        {
+          "id": "corpus_collection",
+          "label": "Assembling a corpus of texts, images, or media (e.g., published works, news)",
+          "ddi": {
+            "cv": "ModeOfCollection",
+            "code": "CompilationSynthesis",
+            "match": "close"
+          },
+          "eric": []
+        },
+        {
+          "id": "web_platform_data",
+          "label": "Web or platform data collection (API, scraping, data donation)",
+          "ddi": {
+            "cv": "ModeOfCollection",
+            "code": "AutomatedDataExtraction",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
           "id": "learning_analytics",
-          "label": "Learning analytics or log data",
+          "label": "Learning analytics or system log data",
+          "ddi": {
+            "cv": "ModeOfCollection",
+            "code": "Observation.ComputerBased",
+            "match": "close"
+          },
           "eric": [
             "Learning Analytics"
           ]
@@ -933,13 +1437,350 @@
         {
           "id": "institutional_records",
           "label": "Institutional or administrative records",
+          "ddi": {
+            "cv": "ModeOfCollection",
+            "code": "AutomatedDataExtraction.DatabaseQuery",
+            "match": "related"
+          },
           "eric": [
             "Student Records"
           ]
         },
         {
+          "id": "practice_based",
+          "label": "Practice-based or creative making (artworks, performances, designs)",
+          "ddi": {
+            "cv": "ModeOfCollection",
+            "code": "Other",
+            "match": "related"
+          },
+          "eric": []
+        },
+        {
           "id": "other_method",
           "label": "Other",
+          "ddi": {
+            "cv": "ModeOfCollection",
+            "code": "Other",
+            "match": "exact"
+          },
+          "eric": []
+        }
+      ]
+    },
+    "analysis_method": {
+      "label": "Analysis method",
+      "definition": "How the data or sources were analyzed. Covers quantitative, qualitative, interpretive, and computational approaches.",
+      "terms": [
+        {
+          "id": "statistical",
+          "label": "Statistical or quantitative analysis",
+          "eric": [
+            "Data Analysis"
+          ]
+        },
+        {
+          "id": "psychometric",
+          "label": "Psychometric or measurement modeling (e.g., factor analysis, IRT)",
+          "eric": [
+            "Psychometrics"
+          ]
+        },
+        {
+          "id": "thematic",
+          "label": "Qualitative coding or thematic analysis",
+          "eric": [
+            "Qualitative Research"
+          ]
+        },
+        {
+          "id": "content_analysis",
+          "label": "Content analysis",
+          "ddi": {
+            "cv": "ModeOfCollection",
+            "code": "ContentCoding",
+            "match": "close"
+          },
+          "eric": [
+            "Content Analysis"
+          ]
+        },
+        {
+          "id": "discourse_analysis",
+          "label": "Discourse or conversation analysis",
+          "eric": []
+        },
+        {
+          "id": "close_reading",
+          "label": "Close reading or textual analysis",
+          "eric": []
+        },
+        {
+          "id": "visual_analysis",
+          "label": "Visual or image analysis (e.g., photographs, artworks, film)",
+          "eric": []
+        },
+        {
+          "id": "historical_analysis",
+          "label": "Historical analysis or source criticism",
+          "eric": []
+        },
+        {
+          "id": "ethnographic_analysis",
+          "label": "Ethnographic or interpretive analysis",
+          "eric": []
+        },
+        {
+          "id": "critical_theoretical",
+          "label": "Critical or theoretical analysis",
+          "eric": []
+        },
+        {
+          "id": "computational",
+          "label": "Computational text or media analysis (e.g., text mining, NLP, image recognition)",
+          "eric": []
+        },
+        {
+          "id": "network_analysis",
+          "label": "Network analysis",
+          "eric": []
+        },
+        {
+          "id": "spatial_analysis",
+          "label": "Spatial or geographic analysis",
+          "eric": []
+        },
+        {
+          "id": "case_analysis",
+          "label": "Case analysis or comparative case study",
+          "eric": [
+            "Case Studies"
+          ]
+        },
+        {
+          "id": "other_analysis",
+          "label": "Other",
+          "eric": []
+        }
+      ]
+    },
+    "source_type": {
+      "label": "Source type",
+      "definition": "Kinds of sources studied that are not (only) data collected from participants: texts, images, artworks, media, records, objects, and online content. Mapped to DDI GeneralDataFormat and DataSourceType.",
+      "terms": [
+        {
+          "id": "texts",
+          "label": "Texts and documents (books, manuscripts, letters, policies, curricula)",
+          "ddi": {
+            "cv": "GeneralDataFormat",
+            "code": "Text",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "archival_records",
+          "label": "Archival or historical records",
+          "ddi": {
+            "cv": "DataSourceType",
+            "code": "RegistersRecordsAccounts.Historical",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "administrative_records",
+          "label": "Administrative or institutional records",
+          "ddi": {
+            "cv": "DataSourceType",
+            "code": "RegistersRecordsAccounts.Administrative",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "photographs",
+          "label": "Photographs and other images",
+          "ddi": {
+            "cv": "GeneralDataFormat",
+            "code": "StillImage",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "artworks",
+          "label": "Artworks (including participant or student artwork)",
+          "ddi": {
+            "cv": "GeneralDataFormat",
+            "code": "StillImage",
+            "match": "close"
+          },
+          "eric": []
+        },
+        {
+          "id": "audio",
+          "label": "Audio and music recordings",
+          "ddi": {
+            "cv": "GeneralDataFormat",
+            "code": "Audio",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "video_film",
+          "label": "Video and film",
+          "ddi": {
+            "cv": "GeneralDataFormat",
+            "code": "Video",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "news_media",
+          "label": "News and broadcast media",
+          "ddi": {
+            "cv": "DataSourceType",
+            "code": "Communications.Public",
+            "match": "close"
+          },
+          "eric": []
+        },
+        {
+          "id": "social_media",
+          "label": "Social media and online platform content",
+          "ddi": {
+            "cv": "DataSourceType",
+            "code": "Communications.Public",
+            "match": "close"
+          },
+          "eric": []
+        },
+        {
+          "id": "websites",
+          "label": "Websites and web archives",
+          "ddi": {
+            "cv": "GeneralDataFormat",
+            "code": "InteractiveResource",
+            "match": "related"
+          },
+          "eric": []
+        },
+        {
+          "id": "correspondence",
+          "label": "Private correspondence and personal papers",
+          "ddi": {
+            "cv": "DataSourceType",
+            "code": "Communications.Interpersonal",
+            "match": "close"
+          },
+          "eric": []
+        },
+        {
+          "id": "objects",
+          "label": "Material objects and artifacts",
+          "ddi": {
+            "cv": "DataSourceType",
+            "code": "PhysicalObjects",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "performances",
+          "label": "Performances and events",
+          "ddi": {
+            "cv": "DataSourceType",
+            "code": "EventsInteractions",
+            "match": "close"
+          },
+          "eric": []
+        },
+        {
+          "id": "maps_geospatial",
+          "label": "Maps and geospatial data",
+          "ddi": {
+            "cv": "GeneralDataFormat",
+            "code": "Geospatial",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "existing_datasets",
+          "label": "Existing research datasets",
+          "ddi": {
+            "cv": "DataSourceType",
+            "code": "ResearchData",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "software_games",
+          "label": "Software, games, or digital tools",
+          "ddi": {
+            "cv": "GeneralDataFormat",
+            "code": "Software",
+            "match": "exact"
+          },
+          "eric": []
+        },
+        {
+          "id": "other_source",
+          "label": "Other",
+          "ddi": {
+            "cv": "DataSourceType",
+            "code": "Other",
+            "match": "exact"
+          },
+          "eric": []
+        }
+      ]
+    },
+    "source_rights": {
+      "label": "Rights status of sources",
+      "definition": "Copyright or other rights status of the sources studied. Decides whether copies of sources can be shared. Related to RightsStatements.org statements.",
+      "terms": [
+        {
+          "id": "public_domain",
+          "label": "Public domain or no known copyright",
+          "rs": "NoC-US",
+          "eric": []
+        },
+        {
+          "id": "open_license",
+          "label": "Openly licensed (e.g., Creative Commons)",
+          "eric": []
+        },
+        {
+          "id": "permission",
+          "label": "In copyright, used with permission from rights holders",
+          "rs": "InC",
+          "eric": []
+        },
+        {
+          "id": "in_copyright",
+          "label": "In copyright, used under an exception such as fair use (copies not shared)",
+          "rs": "InC",
+          "eric": []
+        },
+        {
+          "id": "platform_terms",
+          "label": "Governed by platform terms of service",
+          "eric": []
+        },
+        {
+          "id": "mixed_rights",
+          "label": "Mixed: sources have different rights",
+          "eric": []
+        },
+        {
+          "id": "unknown_rights",
+          "label": "Not yet evaluated",
+          "rs": "CNE",
           "eric": []
         }
       ]
@@ -1124,6 +1965,67 @@
             "Student Records",
             "Privacy"
           ]
+        },
+        {
+          "id": "public_online_content",
+          "label": "Public online content that can be traced to its authors",
+          "eric": []
+        }
+      ]
+    },
+    "online_data_practice": {
+      "label": "Online data practices",
+      "definition": "How content collected from websites, social media, or other online platforms was handled. Informed by the Association of Internet Researchers' Internet Research: Ethical Guidelines 3.0 (2019).",
+      "terms": [
+        {
+          "id": "public_content",
+          "label": "Content was publicly available (no login or membership needed)",
+          "eric": []
+        },
+        {
+          "id": "private_spaces",
+          "label": "Some content is from closed or semi-private spaces (groups, forums, chats needing login)",
+          "eric": []
+        },
+        {
+          "id": "platform_terms",
+          "label": "Collected under the platform's terms of service or a data-access agreement",
+          "eric": []
+        },
+        {
+          "id": "author_consent",
+          "label": "Authors gave consent",
+          "eric": []
+        },
+        {
+          "id": "no_consent_public",
+          "label": "Consent not sought (public content; ethics review agreed or determined not needed)",
+          "eric": []
+        },
+        {
+          "id": "usernames_removed",
+          "label": "Usernames and profile details removed or replaced",
+          "eric": []
+        },
+        {
+          "id": "quotes_altered",
+          "label": "Quotes paraphrased or altered so authors cannot be found by searching",
+          "eric": []
+        },
+        {
+          "id": "ids_only",
+          "label": "Only post IDs or derived data are shared, not the content itself",
+          "eric": []
+        },
+        {
+          "id": "deletions_honored",
+          "label": "Content later deleted by its authors is removed from the dataset",
+          "eric": []
+        },
+        {
+          "id": "minors_possible",
+          "label": "Authors may include minors",
+          "eric": []
         }
       ]
     },
