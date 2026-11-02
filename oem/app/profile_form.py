@@ -22,6 +22,16 @@ SPEC_URL = "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.m
 ISSUES_URL = "https://github.com/JLib271/HuMeta/issues"
 DDI_URL = "https://ddialliance.org/"
 TADIRAH_URL = "https://vocabs.dariah.eu/tadirah/"
+#: plain-language answers for the DataCite resource type
+RESOURCE_TYPE_LABELS = {
+    "Dataset": "Data from the study (a dataset)",
+    "StudyRegistration": "A study plan or preregistration (no data yet)",
+    "Instrument": "A measure or instrument (a survey, test, rubric, or coding scheme)",
+    "Collection": "A collection of sources or materials (an archive, corpus, or set of works)",
+    "Text": "A report, article, or other text",
+    "Software": "Software or code",
+    "Other": "Something else",
+}
 #: starting choice in Module 1: field module -> button label, and the research field it adds
 FIELD_START = {"education": "Education", "social_science": "Social science", "humanities": "Arts and humanities"}
 FIELD_FOR_MODULE = {"education": "education", "social_science": "social_sciences", "humanities": "humanities"}
@@ -146,14 +156,17 @@ def record_form(record: dict) -> dict | None:
                f"[Suggest changes on GitHub]({ISSUES_URL}).")
     with st.form(key=f"profile_form_{v}"):
         st.subheader("1 · The study")
-        c1, c2 = st.columns([3, 1])
-        title = c1.text_input(lab("Title *", "resource.title"), res.get("title") or "", key=key("title"),
+        title = st.text_input(lab("Title *", "resource.title"), res.get("title") or "", key=key("title"),
                               help=tip("resource.title"))
-        type_options = list(profile.RESOURCE_TYPES)
-        resource_type = c2.selectbox(
-            lab("What are you describing? *", "resource.resource_type"), type_options,
+        # Full-width radio buttons: the answers need a few words each, which a narrow dropdown cuts off.
+        type_options = [t for t in RESOURCE_TYPE_LABELS if t in profile.RESOURCE_TYPES]
+        resource_type = st.radio(
+            lab("What will this profile be attached to? *", "resource.resource_type"), type_options,
             index=type_options.index(res.get("resource_type") or "Dataset"), key=key("rtype"),
-            help=tip("resource.resource_type", "Dataset: data from a study. Instrument: a measure. StudyRegistration: a preregistered plan."))
+            format_func=RESOURCE_TYPE_LABELS.get,
+            help=tip("resource.resource_type", "A study profile describes your study through the thing you will share, "
+                     "register, or cite. This sets the DataCite resource type used when you get a DOI, and what the "
+                     "profile checks for (for example, a dataset needs a study design)."))
         st.markdown("**Study team**",
                     help=tip("resource.creators"))
         creators_df = st.data_editor(
