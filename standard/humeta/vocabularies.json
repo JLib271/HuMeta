@@ -42,7 +42,7 @@
     },
     "discipline": {
       "label": "Discipline or subject area",
-      "definition": "Discipline(s) or subject area(s) the study is about; for education studies, also the subject taught or learned. Terms are the Divisions (broad) and Groups of the Australian and New Zealand Standard Research Classification (ANZSRC) 2020 Fields of Research, (c) Commonwealth of Australia and Crown Copyright New Zealand 2020, source: Australian Bureau of Statistics and Stats NZ. 'anzsrc' is the FoR code (concept URI https://linked.data.gov.au/def/anzsrc-for/2020/<code>); 'fos' is the corresponding OECD Fields of Science code used for DataCite. Terms marked deprecated are the profile's earlier discipline list; records using them are moved to the terms in replaced_by.",
+      "definition": "Discipline(s) or subject area(s) the study is about; for education studies, also the subject taught or learned. Terms are the Divisions (broad) and Groups of the Australian and New Zealand Standard Research Classification (ANZSRC) 2020 Fields of Research. Based on Australian Bureau of Statistics and Stats NZ material, (c) Commonwealth of Australia and Crown Copyright New Zealand 2020, used under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/); HuMeta added the OECD FOS mapping and '(all)' division labels (see THIRD_PARTY_NOTICES.md). 'anzsrc' is the FoR code (concept URI https://linked.data.gov.au/def/anzsrc-for/2020/<code>); 'fos' is the corresponding OECD Fields of Science code used for DataCite. Terms marked deprecated are the profile's earlier discipline list; records using them are moved to the terms in replaced_by.",
       "terms": [
         {
           "id": "anzsrc_30",

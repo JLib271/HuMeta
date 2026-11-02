@@ -288,9 +288,10 @@ archives, is planned for the Social Science module.
 ### ANZSRC Fields of Research and OECD Fields of Science
 
 Disciplines are the divisions and groups of the Australian and New Zealand
-Standard Research Classification 2020 Fields of Research (ANZSRC FoR; (c)
-Commonwealth of Australia and Crown Copyright New Zealand 2020; source: ABS
-and Stats NZ). Each is exported as a DataCite subject with subjectScheme
+Standard Research Classification 2020 Fields of Research (ANZSRC FoR). Based
+on ABS and Stats NZ material, (c) Commonwealth of Australia and Crown Copyright
+New Zealand 2020, used under CC BY 4.0; HuMeta added the OECD FOS mapping (see
+`THIRD_PARTY_NOTICES.md`). Each is exported as a DataCite subject with subjectScheme
 "ANZSRC Fields of Research", its concept URI
 (`https://linked.data.gov.au/def/anzsrc-for/2020/<code>`) as `valueUri`, and
 its code as `classificationCode`. The profile's earlier discipline terms are

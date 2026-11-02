@@ -234,3 +234,5 @@ The application code is licensed under the **GNU Affero General Public License, 
 Copyright (C) 2026 Julie C. Libarkin. Versions released before this change remain available under the MIT License.
 
 The instrument library in `library/` is licensed separately: records are CC BY-SA 4.0, and each instrument's item text carries its own license. See [`library/LICENSE.md`](library/LICENSE.md).
+
+The profile reuses third-party classifications and vocabularies, including the ANZSRC 2020 Fields of Research (CC BY 4.0, ABS and Stats NZ), TaDiRAH (CC0), and the DDI Alliance controlled vocabularies (CC BY 4.0). Their sources, licenses, and HuMeta's changes are listed in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
