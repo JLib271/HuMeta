@@ -6,7 +6,7 @@ Obligations: **M** = Mandatory: every record must have it.; **MA** = Mandatory i
 
 Alignments: each element lists the standards it corresponds to. No mark = exact match; **≈** = close match; **~** = related. `STEMEd+` = defined by this profile, with no equivalent in a general-purpose standard. Full list in [`crosswalks/alignments.csv`](crosswalks/alignments.csv).
 
-Standards: [STEMEd+](https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md) = STEMEd+ Metadata Application Profile (extension element or vocabulary); [DataCite](https://schema.datacite.org/) = DataCite Metadata Schema 4.7; [DC](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) = Dublin Core (DCMI Metadata Terms); [schema.org](https://schema.org/Dataset) = schema.org Dataset; [ERIC](https://eric.ed.gov/?ti=all) = ERIC Thesaurus; [ORCID](https://orcid.org/) = ORCID iD; [SPDX](https://spdx.org/licenses/) = SPDX License List; [BCP 47](https://www.rfc-editor.org/info/bcp47) = IETF BCP 47 language tags; [ISO 3166](https://www.iso.org/iso-3166-country-codes.html) = ISO 3166-1 alpha-2 country codes; [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) = ISO 8601 dates; [NCES](https://nces.ed.gov/programs/edge/Geographic/LocaleBoundaries) = NCES locale classifications (City, Suburb, Town, Rural); [AERA/APA/NCME](https://www.testingstandards.net/) = Standards for Educational and Psychological Testing (2014); [Common Rule](https://www.hhs.gov/ohrp/regulations-and-policy/regulations/45-cfr-46/) = US Common Rule for human-subjects research (45 CFR 46); [FERPA](https://studentprivacy.ed.gov/) = Family Educational Rights and Privacy Act (34 CFR Part 99); [CARE](https://www.gida-global.org/care) = CARE Principles for Indigenous Data Governance; [Local Contexts](https://localcontexts.org/) = Local Contexts Traditional Knowledge and Biocultural Labels and Notices
+Standards: [STEMEd+](https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md) = STEMEd+ Metadata Application Profile (extension element or vocabulary); [DataCite](https://schema.datacite.org/) = DataCite Metadata Schema 4.7; [DC](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/) = Dublin Core (DCMI Metadata Terms); [schema.org](https://schema.org/Dataset) = schema.org Dataset; [ERIC](https://eric.ed.gov/?ti=all) = ERIC Thesaurus; [ORCID](https://orcid.org/) = ORCID iD; [SPDX](https://spdx.org/licenses/) = SPDX License List; [BCP 47](https://www.rfc-editor.org/info/bcp47) = IETF BCP 47 language tags; [ISO 3166](https://www.iso.org/iso-3166-country-codes.html) = ISO 3166-1 alpha-2 country codes; [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) = ISO 8601 dates; [NCES](https://nces.ed.gov/programs/edge/Geographic/LocaleBoundaries) = NCES locale classification (locale types City, Suburb, Town, Rural); [AERA/APA/NCME](https://www.testingstandards.net/) = Standards for Educational and Psychological Testing (2014); [Common Rule](https://www.hhs.gov/ohrp/regulations-and-policy/regulations/45-cfr-46/) = US Common Rule for human-subjects research (45 CFR 46); [FERPA](https://studentprivacy.ed.gov/) = Family Educational Rights and Privacy Act (34 CFR Part 99); [CARE](https://www.gida-global.org/care) = CARE Principles for Indigenous Data Governance; [Local Contexts](https://localcontexts.org/) = Local Contexts Traditional Knowledge and Biocultural Labels and Notices
 
 ## Elements
 
@@ -38,7 +38,7 @@ Standards: [STEMEd+](https://github.com/JLib271/OpenEdMetadata/blob/main/standar
 | <a id="stemed.population.description"></a>`stemed.population.description` | R | 0..1 | Narrative description of the participants and sampling, without identifying information. | `STEMEd+`, `≈DataCite: description (Methods)` | descriptions (descriptionType Methods) |
 | <a id="stemed.population.sample_size"></a>`stemed.population.sample_size` | R | 0..1 | Number of participants (or units) in the data. | `STEMEd+`, `≈DataCite: sizes` | sizes ('N = <n> participants') |
 | <a id="stemed.context.institution_types"></a>`stemed.context.institution_types` | R | 0..n | Type(s) of institution or organization. Vocabulary: [institution_type](#institution_type). | `STEMEd+`, `≈ERIC: descriptors` | subjects (subjectScheme 'STEMEd+ Institution Types') |
-| <a id="stemed.context.locale"></a>`stemed.context.locale` | R | 0..n | Community type(s) where the study took place. Vocabulary: [locale](#locale). | `STEMEd+`, `≈NCES: locale category`, `≈ERIC: descriptors` | subjects (subjectScheme 'STEMEd+ Locales') |
+| <a id="stemed.context.locale"></a>`stemed.context.locale` | R | 0..n | Community type(s) where the study took place. Vocabulary: [locale](#locale). | `STEMEd+`, `NCES: locale type`, `≈ERIC: descriptors` | subjects (subjectScheme 'STEMEd+ Locales') |
 | <a id="stemed.setting.modality"></a>`stemed.setting.modality` | R | 0..n | How instruction or participation was delivered. Vocabulary: [modality](#modality). | `STEMEd+`, `≈ERIC: descriptors` | subjects (subjectScheme 'STEMEd+ Modalities') |
 | <a id="stemed.setting.learning_environments"></a>`stemed.setting.learning_environments` | R | 0..n | Instructional setting(s). Vocabulary: [learning_environment](#learning_environment). | `STEMEd+`, `≈ERIC: descriptors` | subjects (subjectScheme 'STEMEd+ Learning Environments') |
 | <a id="stemed.setting.pedagogy"></a>`stemed.setting.pedagogy` | O | 0..n | Instructional approach(es) used or studied. Vocabulary: [pedagogy](#pedagogy). | `STEMEd+`, `≈ERIC: descriptors`, `≈DC: instructionalMethod` | subjects (subjectScheme 'STEMEd+ Instructional Approaches') |
@@ -159,16 +159,14 @@ Type(s) of institution or organization where the study took place.
 
 ### <a id="locale"></a>Locale (`locale`)
 
-Community type where the study took place (NCES-style locale categories).
+Community type where the study took place, using the four NCES locale types. Choose more than one for multi-site studies. For fully online studies, leave blank and use Modality.
 
 | Code | Label | ERIC descriptors |
 |---|---|---|
-| `city` | City | Urban Areas |
-| `suburban` | Suburban |  |
-| `town` | Town |  |
-| `rural` | Rural | Rural Areas |
-| `online` | Online / virtual | Distance Education |
-| `multiple_locales` | Multiple locales |  |
+| `city` | City (NCES 11–13) | Urban Areas |
+| `suburb` | Suburb (NCES 21–23) |  |
+| `town` | Town (NCES 31–33) |  |
+| `rural` | Rural (NCES 41–43) | Rural Areas |
 
 ### <a id="modality"></a>Instructional modality (`modality`)
 

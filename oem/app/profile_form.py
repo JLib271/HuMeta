@@ -194,7 +194,8 @@ def record_form(record: dict) -> dict | None:
         with c2:
             institutions = multi("Institution type", "institution_type", s["context"].get("institution_types"), "inst",
                                  "stemed.context.institution_types")
-            locale = multi("Locale", "locale", s["context"].get("locale"), "locale", "stemed.context.locale")
+            locale = multi("Locale", "locale", s["context"].get("locale"), "locale", "stemed.context.locale",
+                           help="NCES locale types. Fully online study? Leave blank and set Modality.")
             geo = res.get("geography") or {}
             states = st.multiselect(lab("US states", "resource.geography"), US_STATES, help=tip("resource.geography", "USPS state codes."), default=[x for x in geo.get("us_states") or [] if x in US_STATES],
                                     key=key("states"))

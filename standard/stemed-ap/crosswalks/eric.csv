@@ -95,9 +95,8 @@ institution_type,tribal_college,Tribal college or university,Minority Serving In
 institution_type,museum_science_center,"Museum, science center, or library",Museums,verified
 institution_type,community_organization,Community organization,Community Organizations,verified
 institution_type,online_provider,Online learning provider,Distance Education,verified
-locale,city,City,Urban Areas,verified
-locale,rural,Rural,Rural Areas,verified
-locale,online,Online / virtual,Distance Education,verified
+locale,city,City (NCES 11–13),Urban Areas,verified
+locale,rural,Rural (NCES 41–43),Rural Areas,verified
 modality,online_synchronous,"Online, synchronous",Online Courses,verified
 modality,online_synchronous,"Online, synchronous",Synchronous Communication,unverified
 modality,online_asynchronous,"Online, asynchronous",Online Courses,verified

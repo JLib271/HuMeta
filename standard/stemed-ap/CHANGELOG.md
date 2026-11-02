@@ -1,5 +1,15 @@
 # Changelog: STEMEd+ Metadata Application Profile
 
+## Unreleased
+
+* Every element now lists its alignments to DataCite, Dublin Core, schema.org,
+  ERIC and other standards, with match type (exact, close, related);
+  `crosswalks/alignments.csv` lists them all.
+* Locale now uses the four NCES locale types (City, Suburb, Town, Rural) and is
+  an exact match to NCES. `suburban` is renamed `suburb`. `online` and
+  `multiple_locales` are removed: use Modality for online studies, and choose
+  several locales for multi-site studies.
+
 ## 1.0.0-draft.1 (2026-11-01)
 
 First public draft for community comment.

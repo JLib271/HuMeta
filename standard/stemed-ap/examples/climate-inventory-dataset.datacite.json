@@ -76,7 +76,7 @@
       "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json#institution_type.research_university"
     },
     {
-      "subject": "City",
+      "subject": "City (NCES 11–13)",
       "subjectScheme": "STEMEd+ Locales",
       "schemeUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json",
       "valueUri": "https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/vocabularies.json#locale.city"

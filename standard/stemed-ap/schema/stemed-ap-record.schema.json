@@ -361,11 +361,9 @@
               "items": {
                 "enum": [
                   "city",
-                  "suburban",
+                  "suburb",
                   "town",
-                  "rural",
-                  "online",
-                  "multiple_locales"
+                  "rural"
                 ]
               }
             }

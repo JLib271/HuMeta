@@ -65,7 +65,7 @@
     },
     "nces_locale": {
       "short": "NCES",
-      "name": "NCES locale classifications (City, Suburb, Town, Rural)",
+      "name": "NCES locale classification (locale types City, Suburb, Town, Rural)",
       "url": "https://nces.ed.gov/programs/edge/Geographic/LocaleBoundaries"
     },
     "testing_standards": {
@@ -811,8 +811,8 @@
         },
         {
           "standard": "nces_locale",
-          "term": "locale category",
-          "match": "close"
+          "term": "locale type",
+          "match": "exact"
         },
         {
           "standard": "eric",

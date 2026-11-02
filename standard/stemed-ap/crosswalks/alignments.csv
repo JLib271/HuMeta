@@ -79,7 +79,7 @@ stemed.population.sample_size,Sample size,DataCite,DataCite Metadata Schema 4.7,
 stemed.context.institution_types,Institution type,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),institution_type vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
 stemed.context.institution_types,Institution type,ERIC,ERIC Thesaurus,descriptors,close,https://eric.ed.gov/?ti=all
 stemed.context.locale,Locale,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),locale vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
-stemed.context.locale,Locale,NCES,"NCES locale classifications (City, Suburb, Town, Rural)",locale category,close,https://nces.ed.gov/programs/edge/Geographic/LocaleBoundaries
+stemed.context.locale,Locale,NCES,"NCES locale classification (locale types City, Suburb, Town, Rural)",locale type,exact,https://nces.ed.gov/programs/edge/Geographic/LocaleBoundaries
 stemed.context.locale,Locale,ERIC,ERIC Thesaurus,descriptors,close,https://eric.ed.gov/?ti=all
 stemed.setting.modality,Instructional modality,STEMEd+,STEMEd+ Metadata Application Profile (extension element or vocabulary),modality vocabulary,exact,https://github.com/JLib271/OpenEdMetadata/blob/main/standard/stemed-ap/README.md
 stemed.setting.modality,Instructional modality,ERIC,ERIC Thesaurus,descriptors,close,https://eric.ed.gov/?ti=all

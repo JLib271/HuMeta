@@ -335,43 +335,31 @@
     },
     "locale": {
       "label": "Locale",
-      "definition": "Community type where the study took place (NCES-style locale categories).",
+      "definition": "Community type where the study took place, using the four NCES locale types. Choose more than one for multi-site studies. For fully online studies, leave blank and use Modality.",
       "terms": [
         {
           "id": "city",
-          "label": "City",
+          "label": "City (NCES 11–13)",
           "eric": [
             "Urban Areas"
           ]
         },
         {
-          "id": "suburban",
-          "label": "Suburban",
+          "id": "suburb",
+          "label": "Suburb (NCES 21–23)",
           "eric": []
         },
         {
           "id": "town",
-          "label": "Town",
+          "label": "Town (NCES 31–33)",
           "eric": []
         },
         {
           "id": "rural",
-          "label": "Rural",
+          "label": "Rural (NCES 41–43)",
           "eric": [
             "Rural Areas"
           ]
-        },
-        {
-          "id": "online",
-          "label": "Online / virtual",
-          "eric": [
-            "Distance Education"
-          ]
-        },
-        {
-          "id": "multiple_locales",
-          "label": "Multiple locales",
-          "eric": []
         }
       ]
     },
