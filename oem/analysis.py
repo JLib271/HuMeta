@@ -355,6 +355,26 @@ def regression(frame: pd.DataFrame, outcome: str, predictors: list[str], logisti
 
 
 # ------------------------------------------------------------------ example data
+def sample_plan(lib: Library) -> dict:
+    """A small variable plan for trying Module 5 without one of your own: Self-Determination Theory's
+    autonomy, competence, and relatedness, each with researcher-written 5-point items, measured pre and post."""
+    plan = P.empty_plan()
+    plan["frameworks"] = ["sdt"] if "sdt" in lib.frameworks else []
+    plan["constructs"] = P.framework_constructs(lib, plan["frameworks"])
+    items = {"autonomy": ["I feel free to decide how to do my work.", "I have a say in what happens in this class.",
+                          "I can pursue topics that interest me.", "I can choose how to show what I have learned."],
+             "competence": ["I feel capable of doing well here.", "I can master the skills taught here.",
+                            "I feel confident in my ability to learn this material."],
+             "relatedness": ["I feel connected to others in this class.", "People here care about me.",
+                             "I feel like I belong in this class."]}
+    keys = {c["id"].split(".")[-1]: c["id"] for c in plan["constructs"]}
+    plan["measures"] = [{"construct": keys[name], "kind": "question", "text": text, "scale_id": "agree5"}
+                        for name, texts in items.items() if name in keys for text in texts]
+    plan["standard_variables"] = ["participant_id"]
+    plan["timepoints"] = ["pre", "post"]
+    return P.normalize(plan, lib)
+
+
 def example_data(lib: Library, plan: dict, n: int = 120, seed: int = 42) -> pd.DataFrame:
     """Synthetic data shaped like the plan's codebook (for trying Module 5; not research data)."""
     rng = np.random.default_rng(seed)
