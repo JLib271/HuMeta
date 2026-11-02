@@ -56,7 +56,10 @@ with st.sidebar:
     st.subheader("📁 Project file")
     st.caption(
         "Your study profile (Module 1) and variable plan (Module 2) are kept in a project "
-        "file on your own computer. The app never stores them."
+        "file on your own computer. The app does not store them. You can choose to share "
+        "parts of your work: a limited study summary or a theory and variable suggestion "
+        "(Module 2), or a de-identified dataset (Module 4). Shared items go to the project's "
+        "GitHub repository and are reviewed before they are listed in the app."
     )
     project_upload = st.file_uploader(
         "Open a project file",
