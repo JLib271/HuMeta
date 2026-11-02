@@ -9,7 +9,7 @@ shared helpers in ``oem/app/common.py``; Streamlit-free logic in ``oem/``.
 from __future__ import annotations
 import streamlit as st
 import json
-from oem.app.common import (auth_is_configured, current_project, empty_project, navigate_to_module, parse_project_file, render_project_download, render_value_card, researcher_display_name, researcher_is_signed_in, value_propositions)
+from oem.app.common import (auth_is_configured, render_feedback_box, current_project, empty_project, navigate_to_module, parse_project_file, render_project_download, render_value_card, researcher_display_name, researcher_is_signed_in, value_propositions)
 from oem.app.pages import (
     analytics,
     data_repository,
@@ -107,6 +107,10 @@ with st.sidebar:
         if st.button("Sign in with Google", use_container_width=True, type="primary"):
             st.login()
 
+    st.divider()
+    st.caption("💬 Trying the app? Use **Send feedback about this page** at the bottom of any page. "
+               "No GitHub account needed.")
+
     # AGPL-3.0 section 13: offer users of the hosted app its source code.
     st.divider()
     st.caption(
@@ -158,3 +162,5 @@ PAGES = {
 
 if app_mode in PAGES:
     PAGES[app_mode](signed_in=signed_in, publish_disabled=publish_disabled, publish_hint=publish_hint)
+
+render_feedback_box(app_mode)
