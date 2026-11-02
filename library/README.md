@@ -134,6 +134,11 @@ have no fixed constructs; researchers add their own.
 `own` and `exploratory` entries cover a researcher's own framework and
 inductive work with no framework chosen in advance. `citation_status: added`
 marks citations added by maintainers that a reviewer should confirm.
+`disciplines` lists the disciplines (HuMeta discipline vocabulary) where a
+framework is widely used, for browsing in Module 2. `status: draft` marks
+frameworks added as a starting point whose constructs and relationships still
+need review by experts in the field; the governance committee removes the
+mark once they are reviewed.
 Frameworks are recorded in a study's HuMeta profile
 (`study.design.frameworks`).
 

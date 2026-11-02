@@ -16,6 +16,9 @@ their data with common names and metadata, and sharing data responsibly.
   and Module 3 checks and exports
 - Renamed the profile to the HuMeta profile (`standard/humeta/`) and split it into a core plus an
   optional Education module; every field shows its alignments to DataCite, Dublin Core, schema.org and others
+- Module 2's framework library can be browsed by field, kind, and discipline and searched; 27 widely used
+  theories and lenses added across sociology, political science, communication, economics, education, and the
+  humanities and arts, marked Draft until reviewed by experts
 - Module 1 starts with the study's fields; new Social Science (DDI-based, linking to the study's DDI record) and
   Arts and Humanities (TaDiRAH) modules, as starting points for researchers in those fields
 

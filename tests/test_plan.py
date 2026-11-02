@@ -134,3 +134,24 @@ def test_older_plans_are_migrated(lib):
     assert plan["constructs"][0]["shared_construct_id"] == "self_efficacy"
     assert plan["measures"][0]["construct"] == "sdt.competence" and "behavior" not in plan
     assert P.problems(lib, plan) == []
+
+
+def test_browse_frameworks_filters_and_search():
+    from oem.library import Library
+    lib = Library.load()
+    every = P.browse_frameworks(lib)
+    assert len(every) == len(lib.frameworks)
+    assert [lib.frameworks[f]["kind"] for f in every][-2:] == ["own", "exploratory"]  # always offered, last
+    humanities = P.browse_frameworks(lib, field="humanities", kind="lens")
+    assert "narratology" in humanities and "tpb" not in humanities and "own_framework" in humanities
+    assert "civic_voluntarism" in P.browse_frameworks(lib, discipline="political_science")
+    assert P.browse_frameworks(lib, query="Sweller")[0] == "cognitive_load"  # author names are searchable
+    assert "community_of_inquiry" in P.browse_frameworks(lib, query="teaching presence")  # and construct names
+
+
+def test_every_draft_framework_names_a_source_and_disciplines():
+    from oem.library import Library
+    for fw in Library.load().frameworks.values():
+        if fw.get("status") == "draft":
+            assert fw.get("citation") and fw.get("disciplines"), fw["id"]
+            assert fw["kind"] == "lens" or (fw["constructs"] and fw["paths"]), fw["id"]
