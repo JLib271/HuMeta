@@ -152,7 +152,7 @@ checks is `oem/profile.py` (`validate()`).
 | `study.population.description`, `.sample_size` | R | |
 | `study.context.locale` | R | `locale` (NCES locale types) |
 | `study.evidence.study_designs` | MA (datasets, study registrations) | `study_design` |
-| `study.evidence.measurement_evidence` | MA (instruments) | `measurement_evidence` |
+| `study.evidence.measurement_evidence` | O | `measurement_evidence` |
 | `study.evidence.data_collection_methods` | R | `data_collection_method` (mapped to DDI ModeOfCollection) |
 | `study.evidence.analysis_methods` | R | `analysis_method` |
 | `study.sources.types` | MA (no participants) | `source_type` (mapped to DDI GeneralDataFormat / DataSourceType) |
@@ -189,7 +189,7 @@ Indigenous data governance to the access level a record declares:
 |---|---|---|
 | R1 | error | Datasets and instruments list at least one construct measured |
 | R2 | error | Datasets and study registrations list at least one study design |
-| R3 | error | Instruments list at least one kind of measurement evidence |
+| R3 | — | Retired: measurement evidence is recorded with the instrument in the library |
 | R4 | error | Open access requires de-identified, anonymous, aggregate, synthetic, or non-participant data |
 | R5 | error | Open access requires consent for broad sharing (or no human-subjects data) |
 | R6 | error | No open or registered access while human-subjects review is not assessed or pending |

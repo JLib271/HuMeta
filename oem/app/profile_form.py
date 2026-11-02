@@ -21,10 +21,21 @@ from oem.library import Library
 SPEC_URL = "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md"
 ISSUES_URL = "https://github.com/JLib271/HuMeta/issues"
 DDI_URL = "https://ddialliance.org/"
+KCWORKS_URL = "https://works.hcommons.org/"
 TADIRAH_URL = "https://vocabs.dariah.eu/tadirah/"
+#: plain-language answers for the DataCite resource type
+RESOURCE_TYPE_LABELS = {
+    "Dataset": "Data from the study (a dataset)",
+    "StudyRegistration": "A study plan or preregistration (no data yet)",
+    "Instrument": "A measure or instrument (a survey, test, rubric, or coding scheme)",
+    "Collection": "A collection of sources or materials (an archive, corpus, or set of works)",
+    "Text": "A report, article, or other text",
+    "Software": "Software or code",
+    "Other": "Something else",
+}
 #: starting choice in Module 1: field module -> button label, and the research field it adds
-FIELD_START = {"education": "Education", "social_science": "Social science", "humanities": "Arts and humanities"}
-FIELD_FOR_MODULE = {"education": "education", "social_science": "social_sciences", "humanities": "humanities"}
+FIELD_START = {"education": "Education", "social_science": "Social sciences", "humanities": "Arts and humanities",
+               "other": "Other field"}
 #: research field -> OECD FOS prefix used to narrow the discipline list
 FIELD_FOS = {"social_sciences": "5", "humanities": "6", "arts": "6"}
 CARE_URL = "https://www.gida-global.org/care"
@@ -77,6 +88,10 @@ def _blank(value: str | None) -> str | None:
 def record_form(record: dict) -> dict | None:
     """Render the profile form (everything except constructs). Returns the new record on submit."""
     p = profile.load()
+    # Older profiles may list a research field without its section; add the section (saved with the form).
+    if any(m and profile.START_CHOICES[c][1] == m and not profile.uses(record, m)
+           for c in profile.start_choices(record) for m in [profile.START_CHOICES[c][1]]):
+        record = profile.apply_start_choices(record, profile.start_choices(record), p)
     res, s = record["resource"], record["study"]
     edu = record.get("education") or {}
     social = record.get("social_science") or {}
@@ -104,10 +119,14 @@ def record_form(record: dict) -> dict | None:
 
     def single(label: str, vocab_id: str, current: str | None, name: str, element_id: str,
                help: str | None = None) -> str | None:
-        options = [None, *p.ids(vocab_id)]
-        return st.selectbox(lab(label, element_id), options, index=options.index(current) if current in options else 0,
-                            format_func=lambda t: "— choose —" if t is None else p.label(vocab_id, t),
-                            key=key(name), help=tip(element_id, help))
+        """One answer from a vocabulary, as radio buttons: answers wrap instead of being cut off in a dropdown.
+        Required questions (label ends with *) start unanswered; optional ones offer 'Not answered'."""
+        required = label.rstrip().endswith("*")
+        options = p.ids(vocab_id) if required else [None, *p.ids(vocab_id)]
+        index = options.index(current) if current in options else (None if required else 0)
+        return st.radio(lab(label, element_id), options, index=index,
+                        format_func=lambda t: "Not answered" if t is None else p.label(vocab_id, t),
+                        key=key(name), help=tip(element_id, help))
 
     with st.expander("How fields align with metadata standards", expanded=False):
         st.markdown(
@@ -118,42 +137,46 @@ def record_form(record: dict) -> dict | None:
         )
         st.markdown("\n".join(f"- **{std['short']}**: [{std['name']}]({std['url']})"
                                  for std in p.definition["standards"].values()))
-    st.markdown("**Start here: what field is your study in?**")
-    st.caption("Choose all that apply. Each choice adds a short section for that field to the form below, and every "
-               "study also gets the shared core. Another field? Skip this step. Removing a field clears its section.")
-    active = [m for m in FIELD_START if profile.uses(record, m)]
+    st.markdown("**Start here: what field is your study in?** *")
+    st.caption("Choose all that apply. Education, social sciences, and arts and humanities each add a short section "
+               "for that field to the form below; every study gets the shared core. Removing a field clears its section.")
+    active = profile.start_choices(record)
     chosen = list(st.pills("Field", list(FIELD_START), selection_mode="multi", default=active,
-                           format_func=FIELD_START.get, key=key("start_fields"), label_visibility="collapsed") or [])
+                           format_func=FIELD_START.get, key=key("start_fields"), label_visibility="collapsed",
+                           help=tip("study.fields")) or [])
     if set(chosen) != set(active):
-        changed = profile.migrate(record, p)
-        fields_now = list(changed["study"].get("fields") or [])
-        for module in FIELD_START:
-            if module in chosen and module not in active:
-                changed[module] = profile.empty_record(p, modules=(module,))[module]
-                if FIELD_FOR_MODULE[module] not in fields_now:
-                    fields_now.append(FIELD_FOR_MODULE[module])
-            elif module not in chosen and module in active:
-                changed[module] = None
-        changed["study"]["fields"] = fields_now
-        store_record(changed, reset_widgets=True)
+        store_record(profile.apply_start_choices(record, chosen, p), reset_widgets=True)
         st.rerun()
-    missing = [FIELD_START[m] for m, fid in FIELD_FOR_MODULE.items()
-               if (fid in (s.get("fields") or []) or (m == "humanities" and "arts" in (s.get("fields") or [])))
-               and m not in active]
-    if missing:
-        st.info(f"Your research fields include {', '.join(missing)}. Choose it above to add that field's section.")
+    if not chosen:
+        st.warning("Choose at least one field to continue.")
     st.caption("Field sections are starting points, to be developed with researchers in each field. "
                f"[Suggest changes on GitHub]({ISSUES_URL}).")
     with st.form(key=f"profile_form_{v}"):
+        # Narrow the subject list to the chosen fields (education studies can be about any subject).
+        current_fields = set(s.get("fields") or [])
+        prefixes = {FIELD_FOS[f] for f in current_fields if f in FIELD_FOS}
+        all_subjects = p.ids("discipline")
+        narrowed = bool(prefixes) and not current_fields & {"education", "other_field"}
+        subject_ids = [d for d in all_subjects if not narrowed or d in (s.get("discipline") or [])
+                       or any(str(p.term("discipline", d).get("fos", "")).startswith(x) for x in prefixes)]
+        disciplines = st.multiselect(
+            lab("Discipline or subject area", "study.discipline"), subject_ids,
+            default=[d for d in s.get("discipline") or [] if d in subject_ids],
+            format_func=lambda t: p.label("discipline", t), key=key("discipline"),
+            help=tip("study.discipline", "Showing subjects in the fields you chose above." if narrowed else
+                     "For education studies, the subject taught or learned."))
         st.subheader("1 · The study")
-        c1, c2 = st.columns([3, 1])
-        title = c1.text_input(lab("Title *", "resource.title"), res.get("title") or "", key=key("title"),
+        title = st.text_input(lab("Title *", "resource.title"), res.get("title") or "", key=key("title"),
                               help=tip("resource.title"))
-        type_options = list(profile.RESOURCE_TYPES)
-        resource_type = c2.selectbox(
-            lab("What are you describing? *", "resource.resource_type"), type_options,
+        # Full-width radio buttons: the answers need a few words each, which a narrow dropdown cuts off.
+        type_options = [t for t in RESOURCE_TYPE_LABELS if t in profile.RESOURCE_TYPES]
+        resource_type = st.radio(
+            lab("What will this profile be attached to? *", "resource.resource_type"), type_options,
             index=type_options.index(res.get("resource_type") or "Dataset"), key=key("rtype"),
-            help=tip("resource.resource_type", "Dataset: data from a study. Instrument: a measure. StudyRegistration: a preregistered plan."))
+            format_func=RESOURCE_TYPE_LABELS.get,
+            help=tip("resource.resource_type", "A study profile describes your study through the thing you will share, "
+                     "register, or cite. This sets the DataCite resource type used when you get a DOI, and what the "
+                     "profile checks for (for example, a dataset needs a study design)."))
         st.markdown("**Study team**",
                     help=tip("resource.creators"))
         creators_df = st.data_editor(
@@ -166,18 +189,35 @@ def record_form(record: dict) -> dict | None:
                 "affiliation": st.column_config.TextColumn("Affiliation"),
             },
         )
+        description = st.text_area(lab("Short summary of the study", "resource.description"), res.get("description") or "",
+                                   key=key("description"),
+                                   placeholder="Two to five sentences: what you studied, with whom or what, and how.",
+                                   help=tip("resource.description", "Used as the abstract when you share or register the study."))
+        st.markdown("**For citing and sharing**")
+        st.caption("These become the citation when you share data or register a DOI. Estimates are fine for now; "
+                   "you can update them later.")
+        st.info(
+            f"**Need a DOI?** [KCWorks]({KCWORKS_URL}) (Knowledge Commons Works), a free open-access repository hosted "
+            "at Michigan State University, gives every public deposit a DOI. It accepts data, instruments, coding "
+            "schemes, course materials, and more, from any discipline. Deposits there are public and meant to be "
+            "permanent, so share only de-identified data or materials you are free to share; for restricted data, "
+            "use an archive such as ICPSR or your institution's repository."
+        )
         c1, c2, c3 = st.columns(3)
-        publisher = c1.text_input(lab("Institution / publisher *", "resource.publisher"), res.get("publisher") or "",
-                                  key=key("publisher"),
-                                  help=tip("resource.publisher", "The institution responsible, or the repository that will publish the data."))
-        publication_year = c2.number_input(lab("Publication year *", "resource.publication_year"), min_value=1900,
-                                           max_value=2100, step=1,
+        publisher = c1.text_input(lab("Lead institution or repository *", "resource.publisher"), res.get("publisher") or "",
+                                  key=key("publisher"), placeholder="e.g., your university, KCWorks, or ICPSR",
+                                  help=tip("resource.publisher", "Who releases this: usually your university, or the "
+                                           "repository that will publish the data. DataCite calls this the publisher."))
+        publication_year = c2.number_input(lab("Year it will be shared (estimate) *", "resource.publication_year"),
+                                           min_value=1900, max_value=2100, step=1,
                                            value=int(res.get("publication_year") or dt.date.today().year), key=key("year"),
-                                           help=tip("resource.publication_year", "Your best estimate of when the data or record will be available."))
-        doi = c3.text_input(lab("DOI (if assigned)", "resource.identifier"), (res.get("identifier") or {}).get("value") or "",
-                            key=key("doi"), placeholder="10.xxxx/xxxxx", help=tip("resource.identifier"))
-        description = st.text_area(lab("Description / abstract", "resource.description"), res.get("description") or "",
-                                   key=key("description"), help=tip("resource.description"))
+                                           help=tip("resource.publication_year", "Your best estimate of when the data or "
+                                                    "record will be available. DataCite calls this the publication year."))
+        doi = c3.text_input(lab("DOI, if you already have one", "resource.identifier"),
+                            (res.get("identifier") or {}).get("value") or "", key=key("doi"),
+                            placeholder="Leave blank until a repository such as KCWorks assigns one",
+                            help=tip("resource.identifier", "A DOI is a permanent link to your data or materials, "
+                                     "usually assigned when you deposit them in a repository (for example 10.3886/ICPSR12345)."))
         c1, c2, c3 = st.columns(3)
         funder = c1.text_input(lab("Funder", "resource.funding"), "; ".join(f["funder_name"] for f in res.get("funding") or []),
                                key=key("funder"), help=tip("resource.funding"))
@@ -187,33 +227,15 @@ def record_form(record: dict) -> dict | None:
         keywords = c3.text_input(lab("Keywords (comma-separated)", "resource.keywords"), ", ".join(res.get("keywords") or []),
                                  key=key("keywords"), help=tip("resource.keywords"))
         c1, c2 = st.columns(2)
-        language = c1.text_input(lab("Language code", "resource.language"), res.get("language") or "en", key=key("language"),
-                                 help=tip("resource.language", "For example en or es."))
+        language = c1.text_input(lab("Main language of the study materials (code)", "resource.language"),
+                                 res.get("language") or "en", key=key("language"),
+                                 help=tip("resource.language", "A language code, for example en (English) or es (Spanish)."))
         current_license = (res.get("license") or {}).get("spdx")
         license_options = list(LICENSES)
         license_id = c2.selectbox(lab("Data license", "resource.license"), license_options, help=tip("resource.license"),
                                   index=license_options.index(current_license) if current_license in license_options else 0,
                                   format_func=lambda k: LICENSES[k], key=key("license"))
         c2.caption(LICENSE_HELP)
-
-        c1, c2 = st.columns(2)
-        with c1:
-            fields = multi("Research field *", "research_field", s.get("fields"), "fields", "study.fields",
-                           help="Choose all that apply. Your choices under Start here are filled in; add Arts or other fields here. "
-                                "Shared across fields so studies can be found and compared across disciplines.")
-        with c2:
-            # Narrow the subject list to the chosen fields (education studies can be about any subject).
-            current_fields = set(s.get("fields") or [])
-            prefixes = {FIELD_FOS[f] for f in current_fields if f in FIELD_FOS}
-            all_subjects = p.ids("discipline")
-            narrowed = bool(prefixes) and not current_fields & {"education", "other_field"}
-            subject_ids = [d for d in all_subjects if not narrowed or d in (s.get("discipline") or [])
-                           or any(str(p.term("discipline", d).get("fos", "")).startswith(x) for x in prefixes)]
-            disciplines = st.multiselect(
-                lab("Discipline or subject area", "study.discipline"), subject_ids,
-                default=[d for d in s.get("discipline") or [] if d in subject_ids],
-                format_func=lambda t: p.label("discipline", t), key=key("discipline"),
-                help=tip("study.discipline", "Showing subjects in your saved research fields." if narrowed else None))
 
         st.subheader("2 · Study design")
         design = s.get("design") or {}
@@ -247,9 +269,6 @@ def record_form(record: dict) -> dict | None:
                              "study.evidence.analysis_methods")
             sampling = multi("Sampling procedure", "sampling_procedure", design.get("sampling_procedure"), "sampling",
                              "study.design.sampling_procedure")
-            measurement = multi("Measurement evidence (for instruments)", "measurement_evidence",
-                                s["evidence"].get("measurement_evidence"), "measurement", "study.evidence.measurement_evidence",
-                                help="Required for instruments. Sources of validity evidence follow the Standards for Educational and Psychological Testing.")
         dates = res.get("collection_dates") or {}
         c1, c2 = st.columns(2)
         start = c1.text_input(lab("Data collection start (YYYY-MM-DD)", "resource.collection_dates"), dates.get("start") or "",
@@ -381,21 +400,20 @@ def record_form(record: dict) -> dict | None:
             number += 1
 
         st.subheader(f"{number} · Ethics, consent, and access")
-        c1, c2, c3 = st.columns(3)
+        c1, c2 = st.columns(2)
         with c1:
             review = single("Human-subjects review *", "human_subjects_review", s["ethics"].get("human_subjects_review"), "review",
                             "study.ethics.human_subjects_review")
             consent = single("Participation consent", "consent", s["ethics"].get("consent"), "consent", "study.ethics.consent")
+            identifiability = single("Identifiability *", "identifiability", s["ethics"].get("identifiability"), "ident",
+                                     "study.ethics.identifiability")
         with c2:
             sharing = single("Consent for data sharing *", "consent_for_sharing", s["ethics"].get("consent_for_sharing"), "sharing",
                              "study.ethics.consent_for_sharing",
                              help="What participants agreed to about sharing beyond your team. Plan this before you collect data.")
-            identifiability = single("Identifiability *", "identifiability", s["ethics"].get("identifiability"), "ident",
-                                     "study.ethics.identifiability")
-        with c3:
             access = single("Access level *", "access_level", s["ethics"].get("access_level"), "access", "study.ethics.access_level")
-            flags = multi("Sensitivity flags", "sensitivity_flag", s["ethics"].get("sensitivity_flags"), "flags",
-                          "study.ethics.sensitivity_flags")
+        flags = multi("Sensitivity flags", "sensitivity_flag", s["ethics"].get("sensitivity_flags"), "flags",
+                      "study.ethics.sensitivity_flags")
         online_data = multi("Online data practices (required if you use social media, websites, or platform data)",
                             "online_data_practice", s["ethics"].get("online_data"), "online", "study.ethics.online_data",
                             help="Informed by the Association of Internet Researchers' ethical guidelines (IRE 3.0).")
@@ -456,7 +474,7 @@ def record_form(record: dict) -> dict | None:
     })
     ns = new["study"]
     ns["constructs"] = s.get("constructs") or []  # edited in Module 3
-    ns["fields"] = fields
+    ns["fields"] = list(s.get("fields") or [])  # set by the starting question
     ns["discipline"] = disciplines
     ns["design"].update({"topic": _blank(topic), "research_questions": _blank(research_questions),
                          "frameworks": frameworks, "framework_description": _blank(framework_description),
@@ -477,8 +495,9 @@ def record_form(record: dict) -> dict | None:
         new["humanities"].update({"research_activities": activities, "objects_of_study": _blank(objects_of_study),
                                   "source_languages": [c.strip() for c in source_languages.split(",") if c.strip()],
                                   "editorial_standards": _blank(editorial)})
-    ns["evidence"].update({"study_designs": designs, "measurement_evidence": measurement, "data_collection_methods": methods,
-                           "analysis_methods": analysis})
+    # Measurement evidence is no longer asked here (it lives with instruments in the library); keep any saved value.
+    ns["evidence"].update({"study_designs": designs, "measurement_evidence": s["evidence"].get("measurement_evidence") or [],
+                           "data_collection_methods": methods, "analysis_methods": analysis})
     ns["sources"].update({"types": source_types, "rights": source_rights, "holdings": _blank(holdings),
                           "time_period": _blank(time_period), "description": _blank(sources_description)})
     ns["ethics"].update({"human_subjects_review": review, "consent": consent, "consent_for_sharing": sharing,

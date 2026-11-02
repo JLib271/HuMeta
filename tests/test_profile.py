@@ -80,11 +80,11 @@ def test_constructs_and_design_required_for_datasets(lib):
     assert {"R1", "R2"} <= rules_fired(record, lib)
 
 
-def test_instrument_needs_measurement_evidence(lib):
+def test_measurement_evidence_is_optional_for_instruments(lib):
     record = copy.deepcopy(EXAMPLE)
     record["resource"]["resource_type"] = "Instrument"
     record["study"]["evidence"]["measurement_evidence"] = []
-    assert "R3" in rules_fired(record, lib)
+    assert "R3" not in rules_fired(record, lib)  # R3 retired: evidence lives with the instrument in the library
 
 
 def test_care_rules(lib):
@@ -377,3 +377,15 @@ def test_new_modules_are_optional(lib, p):
     record["social_science"] = record["humanities"] = None
     assert profile.is_valid(record, lib, p)
     assert profile.empty_record(p, modules=("social_science", "humanities"))["humanities"]["source_languages"] == []
+
+
+def test_start_choices_set_fields_and_modules(p):
+    record = copy.deepcopy(ARCHIVAL)  # fields: humanities, education; humanities module only
+    assert profile.start_choices(record) == ["education", "humanities"]
+    new = profile.apply_start_choices(record, ["social_science", "humanities", "other"], p)
+    assert new["study"]["fields"] == ["social_sciences", "humanities", "other_field"]
+    assert profile.uses(new, "social_science") and profile.uses(new, "humanities") and not profile.uses(new, "education")
+    assert new["humanities"] == ARCHIVAL["humanities"]  # kept, not reset
+    record["study"]["fields"] = ["arts"]
+    assert profile.start_choices(record) == ["humanities"]
+    assert profile.apply_start_choices(record, ["humanities"], p)["study"]["fields"] == ["humanities", "arts"]
