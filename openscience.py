@@ -377,197 +377,72 @@ def context_search_terms(value: str) -> list[str]:
     ))
 
 
-# ==========================================
-# 1. PSYCHOMETRIC & METADATA DICTIONARIES
-# ==========================================
-THEORY_MAP = {
-    "Theory of Planned Behavior (TPB)": {
-        "Attitude Toward the Behavior": {
-            "item": "Engaging in this educational behavior is beneficial for my academic goals.",
-            "scale": "1=Strongly Disagree, 2=Disagree, 3=Neutral, 4=Agree, 5=Strongly Agree"
-        },
-        "Subjective Norms": {
-            "item": "People who are important to me think I should perform this behavior.",
-            "scale": "1=Strongly Disagree, 2=Disagree, 3=Neutral, 4=Agree, 5=Strongly Agree"
-        },
-        "Perceived Behavioral Control": {
-            "item": "I have total control over my ability to perform this behavior successfully.",
-            "scale": "1=Strongly Disagree, 2=Disagree, 3=Neutral, 4=Agree, 5=Strongly Agree"
-        },
-        "Behavioral Intention": {
-            "item": "I intend to perform this behavior during the current academic term.",
-            "scale": "1=Strongly Disagree, 2=Disagree, 3=Neutral, 4=Agree, 5=Strongly Agree"
-        },
-        "Behavior": {
-            "item": "Observed or recorded performance of the target educational behavior.",
-            "scale": "Define the behavior, observation window, source, and coding or measurement rule."
-        },
-    },
-    "Self-Determination Theory (SDT)": {
-        "Autonomy": {
-            "item": "I feel a strong sense of choice and freedom in how I undertake my learning tasks.",
-            "scale": "1=Not at all True, 2=Somewhat True, 3=Very True"
-        },
-        "Competence": {
-            "item": "I feel confident and capable in mastering the difficult concepts in this course.",
-            "scale": "1=Not at all True, 2=Somewhat True, 3=Very True"
-        },
-        "Relatedness": {
-            "item": "I feel a genuine sense of connection and belonging with my peers and instructors.",
-            "scale": "1=Not at all True, 2=Somewhat True, 3=Very True"
-        },
-        "Intrinsic Motivation": {
-            "item": "I engage in these learning activities because I find them deeply interesting and enjoyable.",
-            "scale": "1=Not at all True, 2=Somewhat True, 3=Very True"
-        }
-    },
-    "Technology Acceptance Model (TAM)": {
-        "Perceived Usefulness (PU)": {
-            "item": "Using this learning platform improves my academic performance and productivity.",
-            "scale": "1=Strongly Disagree, 2=Disagree, 3=Neutral, 4=Agree, 5=Strongly Agree"
-        },
-        "Perceived Ease of Use (PEOU)": {
-            "item": "Learning to operate this digital dashboard is easy and clear for me.",
-            "scale": "1=Strongly Disagree, 2=Disagree, 3=Neutral, 4=Agree, 5=Strongly Agree"
-        },
-        "Behavioral Intention to Use": {
-            "item": "I plan to regularly use this learning system throughout the upcoming academic year.",
-            "scale": "1=Strongly Disagree, 2=Disagree, 3=Neutral, 4=Agree, 5=Strongly Agree"
-        },
-        "Actual System Use": {
-            "item": "Observed or recorded use of the learning system.",
-            "scale": "Define the use event, observation window, source, and aggregation rule."
-        }
+MODULE2_CATALOG_PATH = Path(__file__).resolve().parent / "catalogs" / "module2_catalog.json"
+
+def load_module2_catalog() -> dict:
+    with MODULE2_CATALOG_PATH.open(encoding="utf-8") as catalog_file:
+        catalog = json.load(catalog_file)
+    if not isinstance(catalog, dict):
+        raise ValueError("Module 2 catalog must be a JSON object.")
+    if catalog.get("schema_version") != 1:
+        raise ValueError("Unsupported Module 2 catalog version.")
+    required_fields = {
+        "schema_version",
+        "theories",
+        "demographic_variables",
+        "quantitative_methods",
+        "qualitative_methods",
+        "data_type_choices",
+        "theory_path_templates",
+        "tpb_measurement_examples",
     }
-}
-THEORY_MAP.update({
-    "Health Belief Model (HBM)": {
-        "Perceived Susceptibility": {},
-        "Perceived Severity": {},
-        "Perceived Threat": {},
-        "Perceived Benefits": {},
-        "Perceived Barriers": {},
-        "Self-Efficacy": {},
-        "Cues to Action": {},
-        "Preventive Behavior": {},
-    },
-    "Social Cognitive Theory (SCT)": {
-        "Personal Factors": {},
-        "Environmental Factors": {},
-        "Behavioral Factors": {},
-        "Observational Learning": {},
-        "Outcome Expectations": {},
-        "Self-Efficacy": {},
-        "Reinforcement": {},
-    },
-    "Self-Efficacy Theory": {
-        "Self-Efficacy": {},
-        "Mastery Experiences": {},
-        "Vicarious Experiences": {},
-        "Verbal Persuasion": {},
-        "Emotional / Physiological Arousal": {},
-    },
-    "Transtheoretical Model (Stages of Change)": {
-        "Precontemplation": {},
-        "Contemplation": {},
-        "Preparation": {},
-        "Action": {},
-        "Maintenance": {},
-        "Termination": {},
-        "Relapse / Stage Progression": {},
-    },
-    "Control Theory": {
-        "Goal / Reference State": {},
-        "Input / Perceived Current State": {},
-        "Comparator / Discrepancy": {},
-        "Output / Behavior Adjustment": {},
-        "Feedback": {},
-        "Environmental Impact": {},
-        "Disturbances / Obstacles": {},
-    },
-    "Operant Conditioning": {
-        "Positive Reinforcement": {},
-        "Negative Reinforcement": {},
-        "Positive Punishment": {},
-        "Negative Punishment": {},
-        "Behavioral Consequence": {},
-    },
-    "COM-B Model": {
-        "Psychological Capability": {},
-        "Physical Capability": {},
-        "Physical Opportunity": {},
-        "Social Opportunity": {},
-        "Reflective Motivation": {},
-        "Automatic Motivation": {},
-        "Behavior": {},
-    },
-    "Theoretical Domains Framework (TDF)": {
-        "Knowledge": {},
-        "Skills": {},
-        "Memory, Attention, and Decision Processes": {},
-        "Behavioral Regulation": {},
-        "Beliefs about Capabilities": {},
-        "Beliefs about Consequences": {},
-        "Intentions": {},
-        "Optimism": {},
-        "Goals": {},
-        "Reinforcement": {},
-        "Emotion": {},
-        "Social / Professional Role and Identity": {},
-        "Environmental Context and Resources": {},
-        "Social Influences": {},
-    },
-})
-THEORY_CITATIONS = {
-    "Health Belief Model (HBM)": (
-        "Rosenstock, I. M. (1974). The health belief model and preventive health behavior. "
-        "Health Education Monographs, 2(4), 354–386."
-    ),
-    "Social Cognitive Theory (SCT)": (
-        "Bandura, A. (1999). Social cognitive theory of personality. "
-        "In Handbook of Personality (2nd ed., pp. 154–196)."
-    ),
-    "Self-Efficacy Theory": (
-        "Bandura, A. (1977). Self-efficacy: Toward a unifying theory of behavioral change. "
-        "Psychological Review, 84(2), 191–215."
-    ),
-    "Theory of Planned Behavior (TPB)": (
-        "Ajzen, I. (1991). The theory of planned behavior. "
-        "Organizational Behavior and Human Decision Processes, 50(2), 179–211."
-    ),
-    "Transtheoretical Model (Stages of Change)": (
-        "Grimley, D., Prochaska, J. O., Velicer, W. F., Blais, L. M., & DiClemente, C. C. "
-        "(1994). The transtheoretical model of change. In Changing the Self: Philosophies, "
-        "Techniques, and Experiences (pp. 201–227)."
-    ),
-    "Self-Determination Theory (SDT)": (
-        "Ryan, R. M., & Deci, E. L. (2000). Self-determination theory and the facilitation "
-        "of intrinsic motivation, social development, and well-being. American Psychologist, 55, 68–78."
-    ),
-    "Control Theory": (
-        "Carver, C. S., & Scheier, M. F. (1982). Control theory: A useful conceptual framework "
-        "for personality-social, clinical, and health psychology. Psychological Bulletin, 92, 111–135."
-    ),
-    "Operant Conditioning": (
-        "Skinner, B. F. (1953). Operant conditioning. [Citation as listed in the linked source.]"
-    ),
-    "COM-B Model": (
-        "Michie, S., van Stralen, M. M., & West, R. (2011). Authors and year identified in "
-        "the linked source; a full reference is not provided there."
-    ),
-    "Theoretical Domains Framework (TDF)": (
-        "Atkins, L., Francis, J., Islam, R., O’Connor, D., Patey, A., Ivers, N., et al. "
-        "(2017). A guide to using the Theoretical Domains Framework of behaviour change to "
-        "investigate implementation problems. Implementation Science, 12(1), 1–18."
-    ),
-}
-
-
-def citation_for_framework(framework: str) -> str:
-    return THEORY_CITATIONS.get(
-        framework,
-        "No primary citation for this framework is listed in the linked source; add a citation.",
-    )
+    missing_fields = required_fields - catalog.keys()
+    if missing_fields:
+        raise ValueError(
+            "Module 2 catalog is missing required fields: "
+            + ", ".join(sorted(missing_fields))
+        )
+    if not isinstance(catalog["theories"], list) or any(
+        not isinstance(theory, dict)
+        or not isinstance(theory.get("name"), str)
+        or not isinstance(theory.get("variables"), list)
+        or any(not isinstance(variable, str) for variable in theory["variables"])
+        or not isinstance(theory.get("citation"), str)
+        for theory in catalog["theories"]
+    ):
+        raise ValueError("Module 2 catalog theories must have a name, variables, and citation.")
+    theory_names = [theory["name"] for theory in catalog["theories"]]
+    if len(theory_names) != len(set(theory_names)):
+        raise ValueError("Module 2 catalog theory names must be unique.")
+    for field in (
+        "demographic_variables",
+        "quantitative_methods",
+        "qualitative_methods",
+        "data_type_choices",
+    ):
+        if not isinstance(catalog[field], list) or any(
+            not isinstance(value, str) for value in catalog[field]
+        ):
+            raise ValueError(f"Module 2 catalog field {field!r} must be a list of strings.")
+    if not isinstance(catalog["theory_path_templates"], dict):
+        raise ValueError("Module 2 catalog theory_path_templates must be an object.")
+    for framework, paths in catalog["theory_path_templates"].items():
+        if framework not in theory_names or not isinstance(paths, list) or any(
+            not isinstance(path, list)
+            or len(path) != 3
+            or any(not isinstance(value, str) for value in path)
+            for path in paths
+        ):
+            raise ValueError(f"Invalid theory relationship entries for {framework!r}.")
+    examples = catalog["tpb_measurement_examples"]
+    if (
+        not isinstance(examples, dict)
+        or not isinstance(examples.get("variables"), dict)
+        or not isinstance(examples.get("agreement_scale"), str)
+        or not isinstance(examples.get("behavior_scale"), str)
+    ):
+        raise ValueError("Module 2 catalog TPB example configuration is incomplete.")
+    return catalog
 
 
 MEASURE_CATALOG_PATH = Path(__file__).resolve().parent / "catalogs" / "measure_catalog.json"
@@ -1373,6 +1248,27 @@ if app_mode == "1. Study Metadata Schema Registry":
 # MODULE 2: VARIABLE ARCHITECT & INSTRUMENT EXPORTER
 # ==========================================
 elif app_mode == "2. Variable Instrument Architect":
+    try:
+        MODULE2_CATALOG = load_module2_catalog()
+    except (OSError, json.JSONDecodeError, ValueError) as catalog_error:
+        st.error(f"Could not load the Module 2 catalog: {catalog_error}")
+        st.stop()
+    THEORY_MAP = {
+        theory["name"]: {variable: {} for variable in theory["variables"]}
+        for theory in MODULE2_CATALOG["theories"]
+    }
+    THEORY_CITATIONS = {
+        theory["name"]: theory["citation"]
+        for theory in MODULE2_CATALOG["theories"]
+    }
+
+    def citation_for_framework(framework: str) -> str:
+        return THEORY_CITATIONS.get(
+            framework,
+        ) or (
+            "No primary citation for this framework is listed in the linked source; add a citation."
+        )
+
     st.header("2. Variable Instrument Architect")
     st.caption(
         "Select theories, models, or frameworks; review their associated factors; then plan "
@@ -1441,6 +1337,8 @@ elif app_mode == "2. Variable Instrument Architect":
         with st.expander("Study context from Module 1"):
             st.write(f"**Study:** {selected_study.get('study_title') or 'Untitled study'}")
             st.write(f"**Persistent identifier:** {study_metadata.get('study_doi_or_persistent_identifier') or 'Not provided'}")
+            st.write(f"**Content domain or topic:** {study_metadata.get('content_domain') or 'Not specified'}")
+            st.write(f"**Subject keywords:** {study_metadata.get('subject_keywords') or 'Not provided'}")
             st.write(f"**Unit of analysis:** {study_metadata.get('unit_of_analysis') or 'Not specified'}")
             st.write(f"**Population:** {', '.join(study_metadata.get('participant_populations', [])) or 'Not specified'}")
             st.write(f"**Study settings:** {', '.join(study_metadata.get('study_settings', [])) or 'Not specified'}")
@@ -1557,8 +1455,9 @@ elif app_mode == "2. Variable Instrument Architect":
     st.subheader("Step 1 — Define study context and choose frameworks")
     st.markdown("**Describe the study's content and context**")
     st.caption(
-        "This step supports a broad range of educational and social-science studies. Add a target "
-        "behavior only when it is relevant to your study; it is not assumed to be the outcome."
+        "When a Module 1 study is selected, its study-level topic and context are shown above. "
+        "Add only measurement-specific details here; a target behavior is optional and is not "
+        "assumed to be the study outcome."
     )
     saved_study_context = saved_module2_plan.get("study_context", {})
     if not isinstance(saved_study_context, dict):
@@ -1567,32 +1466,50 @@ elif app_mode == "2. Variable Instrument Architect":
         saved_study_context.get("content_domain")
         or study_metadata.get("content_domain", "")
     ).strip()
-    if content_domain:
-        st.write(f"**Content domain or topic from Module 1:** {content_domain}")
+
+    def study_context_values(field: str) -> list[str]:
+        value = study_metadata.get(field, [])
+        if isinstance(value, str):
+            return [value.strip()] if value.strip() else []
+        if isinstance(value, list):
+            return [str(item).strip() for item in value if str(item).strip()]
+        return []
+
+    module1_populations = ", ".join(
+        study_context_values("participant_populations")
+    )
+    module1_settings = ", ".join(study_context_values("study_settings"))
+    module1_context = ", ".join(
+        value for value in (
+            module1_populations,
+            module1_settings,
+        )
+        if value
+    )
+    context_description = str(
+        module1_context or saved_study_context.get("context", "")
+    ).strip()
+    subject_keywords = str(study_metadata.get("subject_keywords", "") or "").strip()
+    content_tags = ", ".join(dict.fromkeys(
+        tag.strip()
+        for tag in (
+            subject_keywords + ", "
+            + str(saved_study_context.get("content_tags", "") or "")
+        ).split(",")
+        if tag.strip()
+    ))
     target_action = st.text_input(
-        "Target behavior / action (optional; if relevant)",
+        "Target behavior / action (optional; if relevant to measurement planning)",
         value=str(saved_study_context.get("target_action", "")),
         placeholder="e.g., choose a lower-carbon travel option; leave blank if not relevant",
         key=f"module2_target_action_{workflow_key}",
     )
-    context_description = st.text_input(
-        "Specific context",
-        value=str(saved_study_context.get("context", "")),
-        placeholder="e.g., high-school science classrooms in rural communities",
-        help="Describe the study population, setting, or circumstances; it need not describe a behavior.",
-        key=f"module2_context_description_{workflow_key}",
-    )
     timeframe = st.text_input(
-        "Timeframe (optional; if relevant)",
+        "Measurement timeframe (optional; if relevant)",
         value=str(saved_study_context.get("timeframe", "")),
-        placeholder="e.g., during the next semester",
+        placeholder="e.g., during the next semester; leave blank if not relevant",
+        help="This is the timeframe for the behavior or measure, not the overall study dates in Module 1.",
         key=f"module2_timeframe_{workflow_key}",
-    )
-    content_tags = st.text_input(
-        "Additional content tags (comma-separated)",
-        value=str(saved_study_context.get("content_tags", "")),
-        placeholder="e.g., sustainability, secondary education",
-        key=f"module2_content_tags_{workflow_key}",
     )
     share_study_for_discovery = False
     if selected_study and not preview_mode:
@@ -1692,10 +1609,9 @@ elif app_mode == "2. Variable Instrument Architect":
     )
     if "Theory of Planned Behavior (TPB)" in selected_theories:
         st.info(
-            "The TPB example creates three context-personalized prompts per included construct, "
-            "with response scale, language, scoring, source, and adaptation metadata. These are "
-            "illustrative, app-generated items—not a validated questionnaire. Review and revise "
-            "all wording and scoring before use."
+            "TPB examples change with the selected methods: survey choices show illustrative "
+            "Likert items, written/oral choices show open-ended questions, and drawing choices "
+            "show drawing prompts. These examples are not validated measures."
         )
     try:
         measure_catalog = load_measure_catalog()
@@ -1735,22 +1651,7 @@ elif app_mode == "2. Variable Instrument Architect":
                 help="Select the framework variables to include in your plan and conceptual diagram.",
                 key=factor_key,
             )
-    demographic_variable_options = [
-        "Age",
-        "Gender identity",
-        "Race and ethnicity",
-        "Socioeconomic status",
-        "Home language / English learner status",
-        "Disability / special education status",
-        "Grade or education level",
-        "School, district, or institution",
-        "Geographic setting",
-        "Undergraduate major / field of study",
-        "Major or non-major status",
-        "First-generation college status",
-        "Enrollment / course status",
-        "Other demographic or contextual variable",
-    ]
+    demographic_variable_options = MODULE2_CATALOG["demographic_variables"]
     selected_demographic_variables = st.multiselect(
         "Core demographic and contextual variables",
         options=demographic_variable_options,
@@ -1768,6 +1669,9 @@ elif app_mode == "2. Variable Instrument Architect":
         )
     variable_fields = [
         "Data_Type",
+        "Data_Collection_Category",
+        "Data_Collection_Types",
+        "Metadata_Tags",
         "Framework_Source",
         "Framework_ID",
         "Theory_Citation",
@@ -1788,6 +1692,9 @@ elif app_mode == "2. Variable Instrument Architect":
         "Item_Text",
         "Item_Text_2",
         "Item_Text_3",
+        "Item_Method_1",
+        "Item_Method_2",
+        "Item_Method_3",
         "Response_Scale_or_Representation",
         "Response_Scale",
         "Language",
@@ -1823,31 +1730,65 @@ elif app_mode == "2. Variable Instrument Architect":
         words = str(framework).replace("(", " ").replace(")", " ").split()
         return "".join(word[0] for word in words if word).upper() or "FRAMEWORK"
 
+    def metadata_text(value: object) -> str:
+        return value.strip() if isinstance(value, str) else ""
+
     def prepare_variable_metadata(row: dict) -> dict:
         row = dict(row)
         framework = str(row.get("Framework_Source") or "")
         construct = str(row.get("Concept_Construct") or "")
-        content_domain = str(row.get("Content_Domain") or ""        )
+        row_content_domain = str(row.get("Content_Domain") or content_domain or "")
+        row["Data_Collection_Category"] = metadata_text(
+            row.get("Data_Collection_Category")
+        )
+        row["Data_Collection_Types"] = metadata_text(
+            row.get("Data_Collection_Types")
+        )
+        for field in ("Item_Method_1", "Item_Method_2", "Item_Method_3"):
+            row[field] = metadata_text(row.get(field))
         row["Framework_ID"] = row.get("Framework_ID") or stable_identifier(framework)
         row["Construct_ID"] = row.get("Construct_ID") or stable_identifier(construct)
-        row["Content_Domain"] = content_domain
+        row["Content_Domain"] = row_content_domain
+        metadata_tags = []
+        if row_content_domain:
+            metadata_tags.append(f"topic:{row_content_domain}")
+        if row["Data_Collection_Category"]:
+            metadata_tags.append(
+                f"type:{row['Data_Collection_Category'].casefold()}"
+            )
+        metadata_tags.extend(
+            f"method:{method.strip()}"
+            for method in row["Data_Collection_Types"].split(" | ")
+            if method.strip()
+        )
+        row["Metadata_Tags"] = " | ".join(metadata_tags)
         row["Construct_Domain"] = row.get("Construct_Domain") or "Unassigned"
         row["Content_Tags"] = row.get("Content_Tags") or ""
-        row["Item_Text"] = row.get("Item_Text") or row.get("Question_Item_or_Indicator") or ""
-        row["Item_Text_2"] = row.get("Item_Text_2") or ""
-        row["Item_Text_3"] = row.get("Item_Text_3") or ""
+        row["Item_Text"] = (
+            metadata_text(row.get("Item_Text"))
+            or metadata_text(row.get("Question_Item_or_Indicator"))
+        )
+        row["Item_Text_2"] = metadata_text(row.get("Item_Text_2"))
+        row["Item_Text_3"] = metadata_text(row.get("Item_Text_3"))
+        row["Question_Item_or_Indicator"] = metadata_text(
+            row.get("Question_Item_or_Indicator")
+        )
         row["Question_Item_or_Indicator"] = (
             row["Item_Text"] or row.get("Question_Item_or_Indicator") or ""
         )
         row["Response_Scale"] = (
-            row.get("Response_Scale") or row.get("Response_Scale_or_Representation") or ""
+            metadata_text(row.get("Response_Scale"))
+            or metadata_text(row.get("Response_Scale_or_Representation"))
         )
         row["Response_Scale_or_Representation"] = (
-            row["Response_Scale"] or row.get("Response_Scale_or_Representation") or ""
+            row["Response_Scale"]
+            or metadata_text(row.get("Response_Scale_or_Representation"))
         )
+        for field in ("Scoring", "Language", "Instrument_Name"):
+            row[field] = metadata_text(row.get(field))
         row["Source_Citation"] = row.get("Source_Citation") or row.get("Instrument_Citation") or ""
         row["Source_URL"] = row.get("Source_URL") or ""
-        row["Item_Source_Type"] = row.get("Item_Source_Type") or ""
+        row["Item_Source_Type"] = metadata_text(row.get("Item_Source_Type"))
         row["Adaptation_Notes"] = row.get("Adaptation_Notes") or ""
         row["Validation_Status"] = "Not validated by this app; researcher review required"
         if framework and construct and content_domain:
@@ -1859,56 +1800,96 @@ elif app_mode == "2. Variable Instrument Architect":
             row["Variable_Label"] = construct
         return row
 
-    def tpb_example_items(construct: str) -> list[str]:
+    def tpb_example_items(
+        construct: str, selected_methods: list[str]
+    ) -> list[tuple[str, str]]:
         action = target_action.strip() or "[target behavior]"
         context_phrase = f" in {context_description.strip()}" if context_description.strip() else ""
         timeframe_phrase = f" {timeframe.strip()}" if timeframe.strip() else ""
         behavior_phrase = f"{action}{context_phrase}{timeframe_phrase}"
+        topic = content_domain or "[study topic]"
         behavior_period = timeframe.strip() or "[timeframe]"
         if behavior_period.casefold().startswith(
             ("during ", "within ", "over ", "in ", "for ")
         ):
             behavior_period = behavior_period.split(" ", 1)[1]
-        examples = {
-            "Attitude Toward the Behavior": [
-                f"It would be good for me to {behavior_phrase}.",
-                f"It would be beneficial for me to {behavior_phrase}.",
-                f"For me, {behavior_phrase} would be worthwhile.",
-            ],
-            "Subjective Norms": [
-                f"People important to me think I should {behavior_phrase}.",
-                f"People whose opinions I value would approve of my decision to {behavior_phrase}.",
-                f"People like me are expected to {behavior_phrase}.",
-            ],
-            "Perceived Behavioral Control": [
-                f"I am confident that I can {behavior_phrase}.",
-                f"Whether I {behavior_phrase} is mostly under my control.",
-                f"I have the resources and opportunities needed to {behavior_phrase}.",
-            ],
-            "Behavioral Intention": [
-                f"I intend to {behavior_phrase}.",
-                f"I plan to {behavior_phrase}.",
-                f"I expect that I will {behavior_phrase}.",
-            ],
-            "Behavior": [
-                f"During {behavior_period}, how often did you {action}{context_phrase}?",
-                f"When an opportunity arose during {behavior_period}, how often did you {action}{context_phrase}?",
-                f"How consistently did you {behavior_phrase}?",
-            ],
+        templates = MODULE2_CATALOG["tpb_measurement_examples"]
+        construct_examples = templates.get("variables", {}).get(construct, {})
+        format_values = {
+            "action": action,
+            "behavior_phrase": behavior_phrase,
+            "behavior_period": behavior_period,
+            "construct": construct,
+            "context_phrase": context_phrase,
+            "timeframe_phrase": timeframe_phrase,
+            "topic": topic,
         }
-        return examples.get(construct, ["", "", ""])
-
-    tpb_agreement_scale = (
-        "1=Strongly disagree|2=Disagree|3=Neither agree nor disagree|"
-        "4=Agree|5=Strongly agree"
-    )
-    tpb_behavior_scale = (
-        "0=Never|1=Rarely|2=Sometimes|3=Often|4=Always"
-    )
-    tpb_source_citation = (
-        "Ajzen, I. (1991). The theory of planned behavior. "
-        "Organizational Behavior and Human Decision Processes, 50(2), 179–211."
-    )
+        examples = []
+        has_qualitative_example = any(
+            method in selected_methods
+            for method in (
+                "Qualitative — Written",
+                "Qualitative — Oral",
+                "Qualitative — Drawings",
+            )
+        )
+        if "Quantitative — Survey" in selected_methods:
+            selected_survey_examples = construct_examples.get("survey", [])
+            if has_qualitative_example:
+                selected_survey_examples = selected_survey_examples[:1]
+            examples.extend(
+                (
+                    item_template.format(**format_values),
+                    "Quantitative — Survey",
+                )
+                for item_template in selected_survey_examples
+            )
+        if any(
+            method in selected_methods
+            for method in ("Qualitative — Written", "Qualitative — Oral")
+        ):
+            qualitative_questions = {
+                "Attitude Toward the Behavior": (
+                    f"What are your thoughts about {action}{context_phrase}, "
+                    f"and how does it relate to {topic}?"
+                ),
+                "Subjective Norms": (
+                    f"How do people important to you influence your views about "
+                    f"{action}{context_phrase}?"
+                ),
+                "Perceived Behavioral Control": (
+                    f"What makes it easier or harder for you to {action}{context_phrase}?"
+                ),
+                "Behavioral Intention": (
+                    f"What, if anything, do you plan to do about {action}{context_phrase}?"
+                ),
+                "Behavior": (
+                    f"Please describe your experience with {action}{context_phrase}"
+                    f"{timeframe_phrase}."
+                ),
+            }
+            methods = [
+                method for method in ("Qualitative — Written", "Qualitative — Oral")
+                if method in selected_methods
+            ]
+            question_template = construct_examples.get(
+                "question",
+                templates["default_question"],
+            )
+            examples.append((
+                question_template.format(**format_values),
+                " | ".join(methods),
+            ))
+        if "Qualitative — Drawings" in selected_methods:
+            drawing_template = construct_examples.get(
+                "drawing",
+                templates["default_drawing"],
+            )
+            examples.append((
+                drawing_template.format(**format_values),
+                "Qualitative — Drawings",
+            ))
+        return examples[:3]
 
     active_items = []
     all_demographic_variables = [
@@ -2107,61 +2088,13 @@ elif app_mode == "2. Variable Instrument Architect":
                 active_items[-1].get("Timeframe") or timeframe
             )
             if framework == "Theory of Planned Behavior (TPB)":
-                example_items = tpb_example_items(construct)
-                for item_field, example_item in zip(
-                    ("Item_Text", "Item_Text_2", "Item_Text_3"),
-                    example_items,
-                ):
-                    if not active_items[-1].get(item_field):
-                        active_items[-1][item_field] = example_item
-                active_items[-1]["Question_Item_or_Indicator"] = (
-                    active_items[-1].get("Item_Text") or example_items[0]
-                )
-                active_items[-1]["Response_Scale"] = (
-                    active_items[-1].get("Response_Scale")
-                    or (
-                        tpb_behavior_scale
-                        if construct == "Behavior"
-                        else tpb_agreement_scale
-                    )
-                )
-                active_items[-1]["Response_Scale_or_Representation"] = (
-                    active_items[-1]["Response_Scale"]
-                )
-                active_items[-1]["Language"] = (
-                    active_items[-1].get("Language") or "English"
-                )
-                active_items[-1]["Scoring"] = (
-                    active_items[-1].get("Scoring")
-                    or (
-                        "Report the frequency response for each behavior indicator; "
-                        "do not assume the indicators form a validated scale."
-                        if construct == "Behavior"
-                        else (
-                            "Example only: review item content and dimensionality; "
-                            "calculate a mean only if justified by study-specific evidence."
-                        )
-                    )
-                )
-                active_items[-1]["Instrument_Name"] = (
-                    active_items[-1].get("Instrument_Name")
-                    or "Generic TPB questionnaire example (not validated)"
-                )
                 active_items[-1]["Source_Citation"] = (
-                    active_items[-1].get("Source_Citation") or tpb_source_citation
+                    active_items[-1].get("Source_Citation")
+                    or citation_for_framework(framework)
                 )
                 active_items[-1]["Source_URL"] = (
                     active_items[-1].get("Source_URL")
                     or "https://doi.org/10.1016/0749-5978(91)90020-T"
-                )
-                active_items[-1]["Item_Source_Type"] = (
-                    active_items[-1].get("Item_Source_Type")
-                    or "App-generated generic example; unvalidated"
-                )
-                active_items[-1]["Adaptation_Notes"] = (
-                    active_items[-1].get("Adaptation_Notes")
-                    or "Illustrative wording only. Personalize to the defined behavior and context; "
-                    "review comprehension, validity, reliability, and permissions before use."
                 )
     for demographic in all_demographic_variables:
         active_items.append({
@@ -2215,15 +2148,219 @@ elif app_mode == "2. Variable Instrument Architect":
     if active_items:
         st.markdown("**Included theory-derived, demographic, and contextual variables**")
         active_items = [prepare_variable_metadata(item) for item in active_items]
+        st.caption(
+            "For each variable, first choose quantitative, qualitative, or both. "
+            "Then select one or more collection methods."
+        )
+        quantitative_methods = MODULE2_CATALOG["quantitative_methods"]
+        qualitative_methods = MODULE2_CATALOG["qualitative_methods"]
+        type_options = MODULE2_CATALOG["data_type_choices"]
+        method_headers = st.columns([2, 2.5, 3])
+        method_headers[0].markdown("**Variable**")
+        method_headers[1].markdown("**Data type**")
+        method_headers[2].markdown("**Collection methods**")
+        for index, item in enumerate(active_items):
+            existing_methods = [
+                method.strip()
+                for method in str(item.get("Data_Collection_Types") or "").split("|")
+                if method.strip()
+            ]
+            existing_methods = [
+                "Quantitative — Survey" if method == "Quantitative — Surveys" else method
+                for method in existing_methods
+            ]
+            category = str(item.get("Data_Collection_Category") or "")
+            if category not in type_options:
+                if existing_methods:
+                    has_quantitative = any(
+                        method.startswith("Quantitative — ")
+                        for method in existing_methods
+                    )
+                    has_qualitative = any(
+                        method.startswith("Qualitative — ")
+                        for method in existing_methods
+                    )
+                    category = (
+                        "Both" if has_quantitative and has_qualitative
+                        else "Quantitative" if has_quantitative
+                        else "Qualitative" if has_qualitative
+                        else "Choose type"
+                    )
+                else:
+                    category = "Choose type"
+            variable_col, type_col, methods_col = st.columns([2, 2.5, 3])
+            with variable_col:
+                st.write(item.get("Variable_Label") or item.get("Concept_Construct", ""))
+            with type_col:
+                selected_category = st.radio(
+                    f"Data type for {item.get('Variable_Label') or item.get('Concept_Construct', '')}",
+                    type_options,
+                    index=type_options.index(category),
+                    horizontal=True,
+                    label_visibility="collapsed",
+                    key=(
+                        f"module2_data_category_{workflow_key}_"
+                        f"{stable_identifier(str(item.get('Variable_ID') or index))}"
+                    ),
+                )
+            available_methods = (
+                quantitative_methods if selected_category == "Quantitative"
+                else qualitative_methods if selected_category == "Qualitative"
+                else quantitative_methods + qualitative_methods
+                if selected_category == "Both"
+                else []
+            )
+            with methods_col:
+                if available_methods:
+                    selected_methods = st.multiselect(
+                        f"Collection methods for {item.get('Variable_Label') or item.get('Concept_Construct', '')}",
+                        available_methods,
+                        default=[
+                            method for method in existing_methods
+                            if method in available_methods
+                        ],
+                        placeholder="Select one or more methods",
+                        label_visibility="collapsed",
+                        key=(
+                            f"module2_data_methods_{workflow_key}_"
+                            f"{stable_identifier(str(item.get('Variable_ID') or index))}_"
+                            f"{stable_identifier(selected_category)}"
+                        ),
+                    )
+                else:
+                    selected_methods = []
+                    st.caption("Choose a data type to see its methods.")
+            item["Data_Collection_Category"] = (
+                selected_category if selected_category != "Choose type" else ""
+            )
+            item["Data_Collection_Types"] = " | ".join(selected_methods)
+
+        generated_tpb_examples = {}
+        for item in active_items:
+            if item.get("Framework_Source") != "Theory of Planned Behavior (TPB)":
+                continue
+            selected_methods = [
+                method.strip()
+                for method in str(item.get("Data_Collection_Types") or "").split("|")
+                if method.strip()
+            ]
+            source_type = str(item.get("Item_Source_Type") or "")
+            is_app_example = source_type.startswith(
+                ("App-generated", "Researcher-edited app example")
+            )
+            has_item_methods = any(
+                str(item.get(field) or "").strip()
+                for field in ("Item_Method_1", "Item_Method_2", "Item_Method_3")
+            )
+            has_item_text = any(
+                str(item.get(field) or "").strip()
+                for field in ("Item_Text", "Item_Text_2", "Item_Text_3")
+            )
+            if is_app_example or not has_item_text:
+                generated_examples = tpb_example_items(
+                    str(item.get("Concept_Construct") or ""), selected_methods
+                )
+                existing_examples = []
+                if is_app_example and has_item_methods:
+                    for text_field, method_field in zip(
+                        ("Item_Text", "Item_Text_2", "Item_Text_3"),
+                        ("Item_Method_1", "Item_Method_2", "Item_Method_3"),
+                    ):
+                        saved_text = str(item.get(text_field) or "").strip()
+                        saved_method = str(item.get(method_field) or "").strip()
+                        if saved_text and saved_method:
+                            existing_examples.append((saved_text, saved_method))
+                example_values = []
+                for generated_text, generated_method in generated_examples:
+                    generated_method_set = {
+                        value.strip() for value in generated_method.split("|")
+                        if value.strip()
+                    }
+                    saved_example_index = next(
+                        (
+                            index for index, (_, saved_method) in enumerate(existing_examples)
+                            if generated_method_set.intersection(
+                                value.strip() for value in saved_method.split("|")
+                                if value.strip()
+                            )
+                        ),
+                        None,
+                    )
+                    if saved_example_index is None:
+                        example_values.append((generated_text, generated_method))
+                    else:
+                        saved_text, _ = existing_examples.pop(saved_example_index)
+                        example_values.append((saved_text, generated_method))
+                for text_field, method_field in zip(
+                    ("Item_Text", "Item_Text_2", "Item_Text_3"),
+                    ("Item_Method_1", "Item_Method_2", "Item_Method_3"),
+                ):
+                    item[text_field] = ""
+                    item[method_field] = ""
+                for text_field, method_field, (example, method) in zip(
+                    ("Item_Text", "Item_Text_2", "Item_Text_3"),
+                    ("Item_Method_1", "Item_Method_2", "Item_Method_3"),
+                    example_values,
+                ):
+                    item[text_field] = example
+                    item[method_field] = method
+                item["Question_Item_or_Indicator"] = (
+                    example_values[0][0] if example_values else ""
+                )
+                has_survey = "Quantitative — Survey" in selected_methods
+                if has_survey:
+                    item["Response_Scale"] = item.get("Response_Scale") or (
+                        MODULE2_CATALOG["tpb_measurement_examples"]["behavior_scale"]
+                        if item.get("Concept_Construct") == "Behavior"
+                        else MODULE2_CATALOG["tpb_measurement_examples"]["agreement_scale"]
+                    )
+                    item["Scoring"] = item.get("Scoring") or (
+                        "Report the frequency response for each behavior indicator; "
+                        "do not assume the indicators form a validated scale."
+                        if item.get("Concept_Construct") == "Behavior"
+                        else (
+                            "Illustrative only; review item content and dimensionality. "
+                            "Do not assume a validated scale."
+                        )
+                    )
+                else:
+                    item["Response_Scale"] = ""
+                    item["Scoring"] = ""
+                item["Response_Scale_or_Representation"] = item["Response_Scale"]
+                item["Language"] = "English" if example_values else ""
+                item["Instrument_Name"] = (
+                    "TPB illustrative measurement examples (not validated)"
+                    if example_values else ""
+                )
+                item["Item_Source_Type"] = (
+                    (
+                        "Researcher-edited app example; review required"
+                        if source_type.startswith("Researcher-edited app example")
+                        else "App-generated illustrative example; unvalidated"
+                    )
+                    if example_values else ""
+                )
+                item["Adaptation_Notes"] = (
+                    "Illustrative wording only. Review and adapt for the selected method, "
+                    "study context, comprehension, validity, and permissions."
+                    if example_values else ""
+                )
+            if str(item.get("Item_Source_Type") or "").startswith("App-generated"):
+                generated_tpb_examples[item.get("Variable_ID", "")] = {
+                    field: item.get(field, "")
+                    for field in (
+                        "Item_Text",
+                        "Item_Text_2",
+                        "Item_Text_3",
+                    )
+                }
+
         active_edit_fields = [
             "Framework_Source",
             "Concept_Construct",
             "Variable_ID",
             "Variable_Label",
-            "Content_Domain",
-            "Content_Tags",
-            "Behavioral_Target",
-            "Target_Action",
+            "Metadata_Tags",
             "Context",
             "Timeframe",
             "Operational_Definition",
@@ -2242,9 +2379,13 @@ elif app_mode == "2. Variable Instrument Architect":
             "Validity_Evidence",
             "Reliability_Evidence",
         ]
+        edit_signature = stable_identifier("|".join(
+            f"{item.get('Variable_ID', '')}:{item.get('Data_Collection_Types', '')}"
+            for item in active_items
+        ))
         active_edit_df = st.data_editor(
             pd.DataFrame(active_items, columns=variable_fields)[active_edit_fields],
-            key=f"module2_construct_metadata_{workflow_key}",
+            key=f"module2_construct_metadata_{workflow_key}_{edit_signature}",
             use_container_width=True,
             hide_index=True,
             disabled=[
@@ -2253,17 +2394,19 @@ elif app_mode == "2. Variable Instrument Architect":
                 "Variable_ID",
                 "Variable_Label",
                 "Validation_Status",
+                "Metadata_Tags",
             ],
             column_config={
-                "Content_Domain": st.column_config.TextColumn(
-                    help="Study content domain, such as climate science; it does not change construct identity."
+                "Metadata_Tags": st.column_config.TextColumn(
+                    "Topic and method tags",
+                    help="Automatically linked topic, data type, and collection methods; the Variable_ID stays unchanged."
                 ),
                 "Item_Text": st.column_config.TextColumn(
-                    "Item 1",
-                    help="Researcher-selected or researcher-written item/indicator. The app does not validate it."
+                    "Item / question / prompt 1",
+                    help="TPB examples are illustrative only. The app does not validate them."
                 ),
-                "Item_Text_2": st.column_config.TextColumn("Item 2"),
-                "Item_Text_3": st.column_config.TextColumn("Item 3"),
+                "Item_Text_2": st.column_config.TextColumn("Item / question / prompt 2"),
+                "Item_Text_3": st.column_config.TextColumn("Item / question / prompt 3"),
                 "Source_Citation": st.column_config.TextColumn(
                     help="Citation or persistent identifier for the source measure/item."
                 ),
@@ -2275,6 +2418,21 @@ elif app_mode == "2. Variable Instrument Architect":
             )
             for index, item in enumerate(active_items)
         ]
+        for item in active_items:
+            generated_examples = generated_tpb_examples.get(
+                item.get("Variable_ID", "")
+            )
+            if (
+                generated_examples
+                and str(item.get("Item_Source_Type") or "").startswith("App-generated")
+                and any(
+                    str(item.get(field) or "") != str(generated_examples.get(field) or "")
+                    for field in ("Item_Text", "Item_Text_2", "Item_Text_3")
+                )
+            ):
+                item["Item_Source_Type"] = (
+                    "Researcher-edited app example; review required"
+                )
         st.caption(
             "Items and adaptations are researcher-reported; this app does not establish that "
             "they are validated, reliable, suitable, or permitted for reuse."
@@ -2419,65 +2577,7 @@ elif app_mode == "2. Variable Instrument Architect":
         "them; click an arrow to select it and use the controls to edit, reverse, or delete it."
     )
     if final_instrument_list:
-        theory_path_templates = {
-            "Theory of Planned Behavior (TPB)": [
-                ("Attitude Toward the Behavior", "Behavioral Intention", "Supports intention"),
-                ("Subjective Norms", "Behavioral Intention", "Supports intention"),
-                ("Perceived Behavioral Control", "Behavioral Intention", "Supports intention"),
-                ("Behavioral Intention", "Behavior", "Predicts behavior"),
-                ("Perceived Behavioral Control", "Behavior", "May directly predict behavior"),
-            ],
-            "Self-Determination Theory (SDT)": [
-                ("Autonomy", "Intrinsic Motivation", "Supports motivation"),
-                ("Competence", "Intrinsic Motivation", "Supports motivation"),
-                ("Relatedness", "Intrinsic Motivation", "Supports motivation"),
-            ],
-            "Technology Acceptance Model (TAM)": [
-                ("Perceived Ease of Use (PEOU)", "Perceived Usefulness (PU)", "Influences usefulness"),
-                ("Perceived Ease of Use (PEOU)", "Behavioral Intention to Use", "Influences intention"),
-                ("Perceived Usefulness (PU)", "Behavioral Intention to Use", "Influences intention"),
-                ("Behavioral Intention to Use", "Actual System Use", "Predicts system use"),
-            ],
-            "Health Belief Model (HBM)": [
-                ("Perceived Susceptibility", "Perceived Threat", "Contributes to perceived threat"),
-                ("Perceived Severity", "Perceived Threat", "Contributes to perceived threat"),
-                ("Perceived Threat", "Preventive Behavior", "May motivate action"),
-                ("Perceived Benefits", "Preventive Behavior", "May support action"),
-                ("Perceived Barriers", "Preventive Behavior", "May inhibit action"),
-                ("Cues to Action", "Preventive Behavior", "May prompt action"),
-                ("Self-Efficacy", "Preventive Behavior", "May support action"),
-            ],
-            "Self-Efficacy Theory": [
-                ("Mastery Experiences", "Self-Efficacy", "May strengthen self-efficacy"),
-                ("Vicarious Experiences", "Self-Efficacy", "May shape self-efficacy"),
-                ("Verbal Persuasion", "Self-Efficacy", "May shape self-efficacy"),
-                ("Emotional / Physiological Arousal", "Self-Efficacy", "May shape self-efficacy"),
-            ],
-            "Control Theory": [
-                ("Goal / Reference State", "Comparator / Discrepancy", "Defines comparison standard"),
-                ("Input / Perceived Current State", "Comparator / Discrepancy", "Provides current-state input"),
-                ("Comparator / Discrepancy", "Output / Behavior Adjustment", "Guides adjustment"),
-                ("Output / Behavior Adjustment", "Environmental Impact", "Changes current conditions"),
-                ("Environmental Impact", "Input / Perceived Current State", "Provides feedback"),
-                ("Disturbances / Obstacles", "Input / Perceived Current State", "Affects current state"),
-            ],
-            "Social Cognitive Theory (SCT)": [
-                ("Personal Factors", "Behavioral Factors", "Reciprocal influence"),
-                ("Environmental Factors", "Behavioral Factors", "Reciprocal influence"),
-                ("Behavioral Factors", "Personal Factors", "Reciprocal influence"),
-                ("Observational Learning", "Behavioral Factors", "Informs behavior"),
-                ("Outcome Expectations", "Behavioral Factors", "Informs behavior"),
-                ("Self-Efficacy", "Behavioral Factors", "Informs behavior"),
-            ],
-            "COM-B Model": [
-                ("Psychological Capability", "Behavior", "Contributes to behavior"),
-                ("Physical Capability", "Behavior", "Contributes to behavior"),
-                ("Physical Opportunity", "Behavior", "Contributes to behavior"),
-                ("Social Opportunity", "Behavior", "Contributes to behavior"),
-                ("Reflective Motivation", "Behavior", "Contributes to behavior"),
-                ("Automatic Motivation", "Behavior", "Contributes to behavior"),
-            ],
-        }
+        theory_path_templates = MODULE2_CATALOG["theory_path_templates"]
         model_records = df_manifest.fillna("").astype(str).to_dict(orient="records")
         model_nodes_by_id = {}
         model_node_ids_by_construct = {}
@@ -2981,10 +3081,10 @@ elif app_mode == "2. Variable Instrument Architect":
                                     "Framework_Source",
                                     "Concept_Construct",
                                     "Variable_Label",
+                                    "Data_Collection_Category",
+                                    "Data_Collection_Types",
+                                    "Metadata_Tags",
                                     "Content_Domain",
-                                    "Content_Tags",
-                                    "Behavioral_Target",
-                                    "Target_Action",
                                     "Context",
                                     "Timeframe",
                                     "Response_Scale",
@@ -3207,26 +3307,19 @@ elif app_mode == "2. Variable Instrument Architect":
                 disabled=preview_mode,
                 use_container_width=True,
             )
-        st.subheader("Download Variable Matrices and Draft")
-        csv_buffer = io.StringIO()
-        df_manifest.to_csv(csv_buffer, index=False)
-        st.download_button(
-            "Download Variable and Measure Metadata (CSV)",
-            data=csv_buffer.getvalue(),
-            file_name="educational_study_metadata_sheet.csv",
-            mime="text/csv",
-            disabled=preview_mode,
-            use_container_width=True,
-        )
-
+        st.subheader("Download Technical Manifest and Draft Survey")
         txt_manifest = "=== VARIABLE AND MEASURE METADATA MANIFEST ===\n"
         txt_manifest += f"Study DOI / Persistent Identifier: {repository_id or 'Not provided'}\n"
         txt_manifest += f"Unit of Analysis: {unit_of_analysis}\n"
         txt_manifest += f"Sampling Procedure: {sampling_method}\n"
         txt_manifest += f"Sampling Details: {sampling_procedure or 'Not provided'}\n"
+        txt_manifest += f"Study Topic:       {content_domain or 'Not provided'}\n"
         txt_manifest += "=" * 60 + "\n\n"
         for _, row in df_manifest.iterrows():
             txt_manifest += f"DDI Variable ID:  {row['Variable_ID']}\n"
+            txt_manifest += f"Data Collection Type: {row.get('Data_Collection_Category', '')}\n"
+            txt_manifest += f"Collection Methods: {row.get('Data_Collection_Types', '')}\n"
+            txt_manifest += f"Topic and Method Tags: {row.get('Metadata_Tags', '')}\n"
             txt_manifest += f"Framework ID:     {row.get('Framework_ID', '')}\n"
             txt_manifest += f"Concept/Construct: {row['Concept_Construct']}\n"
             txt_manifest += f"Construct ID:     {row.get('Construct_ID', '')}\n"
@@ -3282,12 +3375,29 @@ elif app_mode == "2. Variable Instrument Architect":
         clean_survey += "=" * 60 + "\n\n"
         question_number = 0
         for _, row in df_manifest.iterrows():
-            item_texts = [
-                str(row.get(field) or "").strip()
-                for field in ("Item_Text", "Item_Text_2", "Item_Text_3")
-                if str(row.get(field) or "").strip()
+            methods_value = row.get("Data_Collection_Types")
+            selected_methods = [
+                method.strip()
+                for method in (methods_value if isinstance(methods_value, str) else "").split(" | ")
+                if method.strip()
             ]
-            if not item_texts:
+            survey_selected = "Quantitative — Survey" in selected_methods
+            item_texts = []
+            for item_field, method_field in zip(
+                ("Item_Text", "Item_Text_2", "Item_Text_3"),
+                ("Item_Method_1", "Item_Method_2", "Item_Method_3"),
+            ):
+                item_text = str(row.get(item_field) or "").strip()
+                if not item_text:
+                    continue
+                method_value = row.get(method_field)
+                item_method = method_value if isinstance(method_value, str) else ""
+                if item_method:
+                    if "Quantitative — Survey" in item_method:
+                        item_texts.append(item_text)
+                elif survey_selected or not selected_methods:
+                    item_texts.append(item_text)
+            if not item_texts and not selected_methods:
                 legacy_item = str(row.get("Question_Item_or_Indicator") or "").strip()
                 if legacy_item:
                     item_texts = [legacy_item]

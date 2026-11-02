@@ -1,0 +1,455 @@
+{
+  "theories": [
+    {
+      "name": "Theory of Planned Behavior (TPB)",
+      "variables": [
+        "Attitude Toward the Behavior",
+        "Subjective Norms",
+        "Perceived Behavioral Control",
+        "Behavioral Intention",
+        "Behavior"
+      ],
+      "citation": "Ajzen, I. (1991). The theory of planned behavior. Organizational Behavior and Human Decision Processes, 50(2), 179–211."
+    },
+    {
+      "name": "Self-Determination Theory (SDT)",
+      "variables": [
+        "Autonomy",
+        "Competence",
+        "Relatedness",
+        "Intrinsic Motivation"
+      ],
+      "citation": "Ryan, R. M., & Deci, E. L. (2000). Self-determination theory and the facilitation of intrinsic motivation, social development, and well-being. American Psychologist, 55, 68–78."
+    },
+    {
+      "name": "Technology Acceptance Model (TAM)",
+      "variables": [
+        "Perceived Usefulness (PU)",
+        "Perceived Ease of Use (PEOU)",
+        "Behavioral Intention to Use",
+        "Actual System Use"
+      ],
+      "citation": ""
+    },
+    {
+      "name": "Health Belief Model (HBM)",
+      "variables": [
+        "Perceived Susceptibility",
+        "Perceived Severity",
+        "Perceived Threat",
+        "Perceived Benefits",
+        "Perceived Barriers",
+        "Self-Efficacy",
+        "Cues to Action",
+        "Preventive Behavior"
+      ],
+      "citation": "Rosenstock, I. M. (1974). The health belief model and preventive health behavior. Health Education Monographs, 2(4), 354–386."
+    },
+    {
+      "name": "Social Cognitive Theory (SCT)",
+      "variables": [
+        "Personal Factors",
+        "Environmental Factors",
+        "Behavioral Factors",
+        "Observational Learning",
+        "Outcome Expectations",
+        "Self-Efficacy",
+        "Reinforcement"
+      ],
+      "citation": "Bandura, A. (1999). Social cognitive theory of personality. In Handbook of Personality (2nd ed., pp. 154–196)."
+    },
+    {
+      "name": "Self-Efficacy Theory",
+      "variables": [
+        "Self-Efficacy",
+        "Mastery Experiences",
+        "Vicarious Experiences",
+        "Verbal Persuasion",
+        "Emotional / Physiological Arousal"
+      ],
+      "citation": "Bandura, A. (1977). Self-efficacy: Toward a unifying theory of behavioral change. Psychological Review, 84(2), 191–215."
+    },
+    {
+      "name": "Transtheoretical Model (Stages of Change)",
+      "variables": [
+        "Precontemplation",
+        "Contemplation",
+        "Preparation",
+        "Action",
+        "Maintenance",
+        "Termination",
+        "Relapse / Stage Progression"
+      ],
+      "citation": "Grimley, D., Prochaska, J. O., Velicer, W. F., Blais, L. M., & DiClemente, C. C. (1994). The transtheoretical model of change. In Changing the Self: Philosophies, Techniques, and Experiences (pp. 201–227)."
+    },
+    {
+      "name": "Control Theory",
+      "variables": [
+        "Goal / Reference State",
+        "Input / Perceived Current State",
+        "Comparator / Discrepancy",
+        "Output / Behavior Adjustment",
+        "Feedback",
+        "Environmental Impact",
+        "Disturbances / Obstacles"
+      ],
+      "citation": "Carver, C. S., & Scheier, M. F. (1982). Control theory: A useful conceptual framework for personality-social, clinical, and health psychology. Psychological Bulletin, 92, 111–135."
+    },
+    {
+      "name": "Operant Conditioning",
+      "variables": [
+        "Positive Reinforcement",
+        "Negative Reinforcement",
+        "Positive Punishment",
+        "Negative Punishment",
+        "Behavioral Consequence"
+      ],
+      "citation": "Skinner, B. F. (1953). Operant conditioning. [Citation as listed in the linked source.]"
+    },
+    {
+      "name": "COM-B Model",
+      "variables": [
+        "Psychological Capability",
+        "Physical Capability",
+        "Physical Opportunity",
+        "Social Opportunity",
+        "Reflective Motivation",
+        "Automatic Motivation",
+        "Behavior"
+      ],
+      "citation": "Michie, S., van Stralen, M. M., & West, R. (2011). Authors and year identified in the linked source; a full reference is not provided there."
+    },
+    {
+      "name": "Theoretical Domains Framework (TDF)",
+      "variables": [
+        "Knowledge",
+        "Skills",
+        "Memory, Attention, and Decision Processes",
+        "Behavioral Regulation",
+        "Beliefs about Capabilities",
+        "Beliefs about Consequences",
+        "Intentions",
+        "Optimism",
+        "Goals",
+        "Reinforcement",
+        "Emotion",
+        "Social / Professional Role and Identity",
+        "Environmental Context and Resources",
+        "Social Influences"
+      ],
+      "citation": "Atkins, L., Francis, J., Islam, R., O’Connor, D., Patey, A., Ivers, N., et al. (2017). A guide to using the Theoretical Domains Framework of behaviour change to investigate implementation problems. Implementation Science, 12(1), 1–18."
+    }
+  ],
+  "schema_version": 1,
+  "demographic_variables": [
+    "Age",
+    "Gender identity",
+    "Race and ethnicity",
+    "Socioeconomic status",
+    "Home language / English learner status",
+    "Disability / special education status",
+    "Grade or education level",
+    "School, district, or institution",
+    "Geographic setting",
+    "Undergraduate major / field of study",
+    "Major or non-major status",
+    "First-generation college status",
+    "Enrollment / course status",
+    "Other demographic or contextual variable"
+  ],
+  "quantitative_methods": [
+    "Quantitative — Survey",
+    "Quantitative — Student Information Systems logs",
+    "Quantitative — Biosensors",
+    "Quantitative — Other"
+  ],
+  "qualitative_methods": [
+    "Qualitative — Written",
+    "Qualitative — Oral",
+    "Qualitative — Video",
+    "Qualitative — Drawings",
+    "Qualitative — Other"
+  ],
+  "data_type_choices": [
+    "Choose type",
+    "Quantitative",
+    "Qualitative",
+    "Both"
+  ],
+  "theory_path_templates": {
+    "Theory of Planned Behavior (TPB)": [
+      [
+        "Attitude Toward the Behavior",
+        "Behavioral Intention",
+        "Supports intention"
+      ],
+      [
+        "Subjective Norms",
+        "Behavioral Intention",
+        "Supports intention"
+      ],
+      [
+        "Perceived Behavioral Control",
+        "Behavioral Intention",
+        "Supports intention"
+      ],
+      [
+        "Behavioral Intention",
+        "Behavior",
+        "Predicts behavior"
+      ],
+      [
+        "Perceived Behavioral Control",
+        "Behavior",
+        "May directly predict behavior"
+      ]
+    ],
+    "Self-Determination Theory (SDT)": [
+      [
+        "Autonomy",
+        "Intrinsic Motivation",
+        "Supports motivation"
+      ],
+      [
+        "Competence",
+        "Intrinsic Motivation",
+        "Supports motivation"
+      ],
+      [
+        "Relatedness",
+        "Intrinsic Motivation",
+        "Supports motivation"
+      ]
+    ],
+    "Technology Acceptance Model (TAM)": [
+      [
+        "Perceived Ease of Use (PEOU)",
+        "Perceived Usefulness (PU)",
+        "Influences usefulness"
+      ],
+      [
+        "Perceived Ease of Use (PEOU)",
+        "Behavioral Intention to Use",
+        "Influences intention"
+      ],
+      [
+        "Perceived Usefulness (PU)",
+        "Behavioral Intention to Use",
+        "Influences intention"
+      ],
+      [
+        "Behavioral Intention to Use",
+        "Actual System Use",
+        "Predicts system use"
+      ]
+    ],
+    "Health Belief Model (HBM)": [
+      [
+        "Perceived Susceptibility",
+        "Perceived Threat",
+        "Contributes to perceived threat"
+      ],
+      [
+        "Perceived Severity",
+        "Perceived Threat",
+        "Contributes to perceived threat"
+      ],
+      [
+        "Perceived Threat",
+        "Preventive Behavior",
+        "May motivate action"
+      ],
+      [
+        "Perceived Benefits",
+        "Preventive Behavior",
+        "May support action"
+      ],
+      [
+        "Perceived Barriers",
+        "Preventive Behavior",
+        "May inhibit action"
+      ],
+      [
+        "Cues to Action",
+        "Preventive Behavior",
+        "May prompt action"
+      ],
+      [
+        "Self-Efficacy",
+        "Preventive Behavior",
+        "May support action"
+      ]
+    ],
+    "Self-Efficacy Theory": [
+      [
+        "Mastery Experiences",
+        "Self-Efficacy",
+        "May strengthen self-efficacy"
+      ],
+      [
+        "Vicarious Experiences",
+        "Self-Efficacy",
+        "May shape self-efficacy"
+      ],
+      [
+        "Verbal Persuasion",
+        "Self-Efficacy",
+        "May shape self-efficacy"
+      ],
+      [
+        "Emotional / Physiological Arousal",
+        "Self-Efficacy",
+        "May shape self-efficacy"
+      ]
+    ],
+    "Control Theory": [
+      [
+        "Goal / Reference State",
+        "Comparator / Discrepancy",
+        "Defines comparison standard"
+      ],
+      [
+        "Input / Perceived Current State",
+        "Comparator / Discrepancy",
+        "Provides current-state input"
+      ],
+      [
+        "Comparator / Discrepancy",
+        "Output / Behavior Adjustment",
+        "Guides adjustment"
+      ],
+      [
+        "Output / Behavior Adjustment",
+        "Environmental Impact",
+        "Changes current conditions"
+      ],
+      [
+        "Environmental Impact",
+        "Input / Perceived Current State",
+        "Provides feedback"
+      ],
+      [
+        "Disturbances / Obstacles",
+        "Input / Perceived Current State",
+        "Affects current state"
+      ]
+    ],
+    "Social Cognitive Theory (SCT)": [
+      [
+        "Personal Factors",
+        "Behavioral Factors",
+        "Reciprocal influence"
+      ],
+      [
+        "Environmental Factors",
+        "Behavioral Factors",
+        "Reciprocal influence"
+      ],
+      [
+        "Behavioral Factors",
+        "Personal Factors",
+        "Reciprocal influence"
+      ],
+      [
+        "Observational Learning",
+        "Behavioral Factors",
+        "Informs behavior"
+      ],
+      [
+        "Outcome Expectations",
+        "Behavioral Factors",
+        "Informs behavior"
+      ],
+      [
+        "Self-Efficacy",
+        "Behavioral Factors",
+        "Informs behavior"
+      ]
+    ],
+    "COM-B Model": [
+      [
+        "Psychological Capability",
+        "Behavior",
+        "Contributes to behavior"
+      ],
+      [
+        "Physical Capability",
+        "Behavior",
+        "Contributes to behavior"
+      ],
+      [
+        "Physical Opportunity",
+        "Behavior",
+        "Contributes to behavior"
+      ],
+      [
+        "Social Opportunity",
+        "Behavior",
+        "Contributes to behavior"
+      ],
+      [
+        "Reflective Motivation",
+        "Behavior",
+        "Contributes to behavior"
+      ],
+      [
+        "Automatic Motivation",
+        "Behavior",
+        "Contributes to behavior"
+      ]
+    ]
+  },
+  "tpb_measurement_examples": {
+    "agreement_scale": "1=Strongly disagree|2=Disagree|3=Neither agree nor disagree|4=Agree|5=Strongly agree",
+    "behavior_scale": "0=Never|1=Rarely|2=Sometimes|3=Often|4=Always",
+    "variables": {
+      "Attitude Toward the Behavior": {
+        "survey": [
+          "It would be good for me to {behavior_phrase}.",
+          "It would be beneficial for me to {behavior_phrase}.",
+          "For me, {behavior_phrase} would be worthwhile."
+        ],
+        "question": "What are your thoughts about {action}{context_phrase}, and how does it relate to {topic}?",
+        "drawing": "Draw how you feel about {action}{context_phrase}."
+      },
+      "Subjective Norms": {
+        "survey": [
+          "People important to me think I should {behavior_phrase}.",
+          "People whose opinions I value would approve of my decision to {behavior_phrase}.",
+          "People like me are expected to {behavior_phrase}."
+        ],
+        "question": "How do people important to you influence your views about {action}{context_phrase}?",
+        "drawing": "Draw how people around you influence {action}{context_phrase}."
+      },
+      "Perceived Behavioral Control": {
+        "survey": [
+          "I am confident that I can {behavior_phrase}.",
+          "Whether I {behavior_phrase} is mostly under my control.",
+          "I have the resources and opportunities needed to {behavior_phrase}."
+        ],
+        "question": "What makes it easier or harder for you to {action}{context_phrase}?",
+        "drawing": "Draw what helps or gets in the way when you {action}{context_phrase}."
+      },
+      "Behavioral Intention": {
+        "survey": [
+          "I intend to {behavior_phrase}.",
+          "I plan to {behavior_phrase}.",
+          "I expect that I will {behavior_phrase}."
+        ],
+        "question": "What, if anything, do you plan to do about {action}{context_phrase}?",
+        "drawing": "Draw what you plan to do about {action}{context_phrase}."
+      },
+      "Behavior": {
+        "survey": [
+          "During {behavior_period}, how often did you {action}{context_phrase}?",
+          "When an opportunity arose during {behavior_period}, how often did you {action}{context_phrase}?",
+          "How consistently did you {behavior_phrase}?"
+        ],
+        "question": "Please describe your experience with {action}{context_phrase}{timeframe_phrase}.",
+        "drawing": "Draw an experience of {action}{context_phrase}{timeframe_phrase}."
+      }
+    },
+    "default_question": "How does {construct} relate to {topic} in your experience?",
+    "default_drawing": "Draw how {construct} relates to {topic}."
+  }
+}

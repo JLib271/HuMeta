@@ -44,3 +44,23 @@ items, confidential content, participant data, or claims unsupported by the
 citation. The application shows measure descriptions and source details; it
 does not reproduce test items or determine whether an instrument is valid for a
 particular study.
+
+## Module 2 reference catalog
+
+[`module2_catalog.json`](module2_catalog.json) contains the selectable theory
+frameworks and variables, framework citations and suggested relationship paths,
+demographic/contextual variable options, data-type choices, collection methods,
+and illustrative TPB examples. Module 2 reads this file at runtime; it does not
+require a database migration.
+
+To edit these options, update the relevant catalog values while preserving the
+JSON structure, then run the app and review Module 2. Theory records have a
+unique `name`, a `variables` list, and a `citation`. Each relationship path is
+an array of `[source variable, target variable, label]`. Quantitative and
+qualitative collection methods are stored in separate lists. TPB example
+templates use placeholders such as `{behavior_phrase}`, `{action}`,
+`{context_phrase}`, `{timeframe_phrase}`, `{behavior_period}`, `{construct}`,
+and `{topic}`.
+
+The examples are app-generated illustrations, not validated measures. Review
+their wording, fit, and permissions before using them in research.
