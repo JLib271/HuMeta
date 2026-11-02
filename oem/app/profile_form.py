@@ -179,18 +179,28 @@ def record_form(record: dict) -> dict | None:
                 "affiliation": st.column_config.TextColumn("Affiliation"),
             },
         )
+        description = st.text_area(lab("Short summary of the study", "resource.description"), res.get("description") or "",
+                                   key=key("description"),
+                                   placeholder="Two to five sentences: what you studied, with whom or what, and how.",
+                                   help=tip("resource.description", "Used as the abstract when you share or register the study."))
+        st.markdown("**For citing and sharing**")
+        st.caption("These become the citation when you share data or register a DOI. Estimates are fine for now; "
+                   "you can update them later.")
         c1, c2, c3 = st.columns(3)
-        publisher = c1.text_input(lab("Institution / publisher *", "resource.publisher"), res.get("publisher") or "",
-                                  key=key("publisher"),
-                                  help=tip("resource.publisher", "The institution responsible, or the repository that will publish the data."))
-        publication_year = c2.number_input(lab("Publication year *", "resource.publication_year"), min_value=1900,
-                                           max_value=2100, step=1,
+        publisher = c1.text_input(lab("Lead institution or repository *", "resource.publisher"), res.get("publisher") or "",
+                                  key=key("publisher"), placeholder="e.g., your university, or ICPSR",
+                                  help=tip("resource.publisher", "Who releases this: usually your university, or the "
+                                           "repository that will publish the data. DataCite calls this the publisher."))
+        publication_year = c2.number_input(lab("Year it will be shared (estimate) *", "resource.publication_year"),
+                                           min_value=1900, max_value=2100, step=1,
                                            value=int(res.get("publication_year") or dt.date.today().year), key=key("year"),
-                                           help=tip("resource.publication_year", "Your best estimate of when the data or record will be available."))
-        doi = c3.text_input(lab("DOI (if assigned)", "resource.identifier"), (res.get("identifier") or {}).get("value") or "",
-                            key=key("doi"), placeholder="10.xxxx/xxxxx", help=tip("resource.identifier"))
-        description = st.text_area(lab("Description / abstract", "resource.description"), res.get("description") or "",
-                                   key=key("description"), help=tip("resource.description"))
+                                           help=tip("resource.publication_year", "Your best estimate of when the data or "
+                                                    "record will be available. DataCite calls this the publication year."))
+        doi = c3.text_input(lab("DOI, if you already have one", "resource.identifier"),
+                            (res.get("identifier") or {}).get("value") or "", key=key("doi"),
+                            placeholder="Leave blank until a repository assigns one",
+                            help=tip("resource.identifier", "A DOI is a permanent link to your data or materials, "
+                                     "usually assigned when you deposit them in a repository (for example 10.3886/ICPSR12345)."))
         c1, c2, c3 = st.columns(3)
         funder = c1.text_input(lab("Funder", "resource.funding"), "; ".join(f["funder_name"] for f in res.get("funding") or []),
                                key=key("funder"), help=tip("resource.funding"))
@@ -200,8 +210,9 @@ def record_form(record: dict) -> dict | None:
         keywords = c3.text_input(lab("Keywords (comma-separated)", "resource.keywords"), ", ".join(res.get("keywords") or []),
                                  key=key("keywords"), help=tip("resource.keywords"))
         c1, c2 = st.columns(2)
-        language = c1.text_input(lab("Language code", "resource.language"), res.get("language") or "en", key=key("language"),
-                                 help=tip("resource.language", "For example en or es."))
+        language = c1.text_input(lab("Main language of the study materials (code)", "resource.language"),
+                                 res.get("language") or "en", key=key("language"),
+                                 help=tip("resource.language", "A language code, for example en (English) or es (Spanish)."))
         current_license = (res.get("license") or {}).get("spdx")
         license_options = list(LICENSES)
         license_id = c2.selectbox(lab("Data license", "resource.license"), license_options, help=tip("resource.license"),
