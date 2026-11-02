@@ -40,6 +40,12 @@
     to instruments and to datasets with direct participants.
   * Two new examples: a study of public online posts and an archival
     humanities collection.
+* **Theoretical framework.** New `study.design.frameworks` (recommended): the
+  theories, lenses, or framework approaches (including the researcher's own
+  framework, or an exploratory approach) that guide the study, from
+  `library/frameworks.json`; plus `study.design.framework_description`.
+  Exported as DataCite subjects (subjectScheme "HuMeta Frameworks") and in the
+  Methods description.
 
 * Every element now lists its alignments to DataCite, Dublin Core, schema.org,
   ERIC and other standards, with match type (exact, close, related);

@@ -15,6 +15,7 @@ import re
 import pandas as pd
 import streamlit as st
 
+from oem import plan as plan_model
 from oem import profile
 from oem.app.common import current_project, navigate_to_module
 from oem.app.profile_form import SPEC_URL, current_record, library, show_issues, store_record
@@ -48,8 +49,9 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     if suggestions:
         st.caption("From your variable plan (Module 2): " + ", ".join(construct_names[c] for c in suggestions))
         if st.button("Add these constructs", key="m3_add_suggestions"):
-            record["study"]["constructs"] += [{"construct_id": c, "instrument_id": None, "version_id": None,
-                                                "dimension_id": None} for c in suggestions]
+            linked = {c["construct_id"]: c for c in plan_model.profile_constructs(plan_model.normalize(plan, lib))}
+            record["study"]["constructs"] += [linked.get(c) or {"construct_id": c, "instrument_id": None, "version_id": None,
+                                                                "dimension_id": None} for c in suggestions]
             store_record(record, reset_widgets=True)
             st.rerun()
     elif not plan:

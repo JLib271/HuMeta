@@ -3,7 +3,7 @@
 """Read-only access to the instrument library in ``library/``.
 
 The library is the single source of truth for instruments, items, constructs,
-response scales and standard variables. Load it once and look things up by ID::
+frameworks (theories and lenses), response scales and standard variables. Load it once and look things up by ID::
 
     from oem.library import Library
     lib = Library.load()
@@ -58,6 +58,7 @@ class Library:
     scales: dict[str, Scale] = field(default_factory=dict)
     standard_variables: dict[str, dict] = field(default_factory=dict)
     evidence: list[dict] = field(default_factory=list)
+    frameworks: dict[str, dict] = field(default_factory=dict)
 
     # ------------------------------------------------------------------ load
     @classmethod
@@ -95,6 +96,10 @@ class Library:
         if std_path.exists():
             for variable in _load_json(std_path)["variables"]:
                 lib.standard_variables[variable["name"]] = variable
+        frameworks_path = root / "frameworks.json"
+        if frameworks_path.exists():
+            for framework in _load_json(frameworks_path)["frameworks"]:
+                lib.frameworks[framework["id"]] = framework
         evidence_dir = root / "evidence"
         if evidence_dir.is_dir():
             lib.evidence = [_load_json(p) for p in sorted(evidence_dir.glob("*/*.json"))]
@@ -136,6 +141,12 @@ class Library:
             return self.standard_variables[name]
         except KeyError:
             raise LibraryError(f"No standard variable {name!r} in the library") from None
+
+    def framework(self, framework_id: str) -> dict:
+        try:
+            return self.frameworks[framework_id]
+        except KeyError:
+            raise LibraryError(f"No framework {framework_id!r} in the library") from None
 
     def prefix(self, instrument_id: str) -> str:
         return self.instrument(instrument_id)["variable_prefix"]

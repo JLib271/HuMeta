@@ -28,10 +28,12 @@ their data with common names and metadata, and sharing data responsibly.
    discourse analysis), add a section for non-human sources (texts, artworks, media, platform data), and
    revisit rules that assume measured constructs or human participants.
 
-1. **Connect Module 2 to the library.** Suggest instruments by construct, let
-   researchers add library items as variables with generated names, export the
-   study codebook, and retire `catalogs/measure_catalog.json` and the item text
-   in `schema_config.json`.
+1. **Module 2 follow-ups.** Module 2 is now Framework and Measures, built on
+   the library (frameworks, constructs, instruments, codebook). Next: let
+   researchers pick individual library items, retire
+   `catalogs/measure_catalog.json` and the item text in `schema_config.json`,
+   add a downloadable R script (psych) for Module 5's analyses, and move
+   browsing (library, published studies, datasets) into one Explore page.
 2. **Test builder.** Assemble a form from items whose license allows it
    (respecting `requires_item_ids`), export to Qualtrics import format, a
    printable document, and a codebook; otherwise show instrument suggestions

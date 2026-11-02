@@ -15,6 +15,8 @@ instead of copying by default.
 ```
 library/
   constructs.json              shared construct vocabulary (what things measure)
+  frameworks.json              theories, theoretical lenses, and framework approaches
+                               used by Module 2, with concepts linked to constructs
   instruments/<id>.json        one file per instrument
   evidence/<instrument-id>/<record-id>.json
                                one file per reliability/validity result
@@ -119,7 +121,21 @@ instrument's own license (`access.item_text_basis.license`), which the
 validator requires before any item text is accepted. See
 [`LICENSE.md`](LICENSE.md).
 
+## Frameworks
+
+`frameworks.json` lists the theories, theoretical lenses, and framework
+approaches offered in Module 2 (Framework and Measures). A theory lists its
+concepts, each linked to a construct where one matches (`construct_match`:
+exact, close, or related), and its expected paths between concepts, which
+start the Module 2 diagram. Lenses (for example sociocultural theory or
+critical race theory) have no fixed concepts; researchers add their own.
+`own` and `exploratory` entries cover a researcher's own framework and
+inductive work with no framework chosen in advance. `citation_status: added`
+marks citations added by maintainers that a reviewer should confirm.
+Frameworks are recorded in a study's HuMeta profile
+(`study.design.frameworks`).
+
 ## Relationship to `catalogs/measure_catalog.json`
 
-The existing flat catalog read by Module 2 is superseded by this library once
-Module 2 is updated to read `library/`. Until then, the two are independent.
+Module 2 now reads instruments from this library. The older flat catalog is
+only shown in the Module 6 viewer and will be retired.

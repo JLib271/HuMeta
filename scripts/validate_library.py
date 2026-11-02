@@ -52,6 +52,33 @@ def main(library: Path) -> int:
         if c.get("broader") and c["broader"] not in construct_ids:
             problems.append(f"constructs.json: {c['id']} has unknown broader '{c['broader']}'")
 
+    # Frameworks (theories, lenses, approaches) used by Module 2
+    framework_count = 0
+    frameworks_path = library / "frameworks.json"
+    if frameworks_path.exists():
+        fw_doc = load(frameworks_path)
+        problems += schema_errors(Draft202012Validator(load(schemas / "frameworks.schema.json"), format_checker=fmt),
+                                  fw_doc, "frameworks.json")
+        seen_fw: set[str] = set()
+        for fw in fw_doc.get("frameworks", []):
+            framework_count += 1
+            label = f"frameworks.json: {fw.get('id')}"
+            if fw.get("id") in seen_fw:
+                problems.append(f"{label}: duplicate id")
+            seen_fw.add(fw.get("id"))
+            concept_ids = [c.get("id") for c in fw.get("concepts", [])]
+            if len(concept_ids) != len(set(concept_ids)):
+                problems.append(f"{label}: duplicate concept ids")
+            for c in fw.get("concepts", []):
+                if c.get("construct_id") and c["construct_id"] not in construct_ids:
+                    problems.append(f"{label}: concept {c['id']} has unknown construct_id {c['construct_id']}")
+            for path in fw.get("paths", []):
+                if path.get("from") not in concept_ids or path.get("to") not in concept_ids:
+                    problems.append(f"{label}: path {path.get('from')} -> {path.get('to')} uses an unknown concept")
+            for concept_id in (fw.get("example_items") or {}).get("items", {}):
+                if concept_id not in concept_ids:
+                    problems.append(f"{label}: example items for unknown concept {concept_id}")
+
     def check_review(review: dict, label: str):
         if review.get("status") == "source_verified" and review.get("needs_check"):
             problems.append(f"{label}: status is source_verified but needs_check is not empty")
@@ -251,7 +278,7 @@ def main(library: Path) -> int:
         for p in list((library / "instruments").glob("*.json")) + list((library / "evidence").glob("*/*.json"))
     )
     print(
-        f"Library OK: {len(construct_ids)} constructs, {len(instruments)} instruments, "
+        f"Library OK: {len(construct_ids)} constructs, {framework_count} frameworks, {len(instruments)} instruments, "
         f"{len(evidence_ids)} evidence records, {item_file_count} item files "
         f"({open_checks} open needs_check items)."
     )

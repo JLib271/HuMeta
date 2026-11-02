@@ -16,6 +16,8 @@ resource.related,core,Related resources,O,0..n,,relatedIdentifiers
 study.fields,core,Research field,M,1..n,research_field,"subjects (subjectScheme 'Fields of Science and Technology (FOS)', e.g. 'FOS: Educational sciences')"
 study.design.topic,core,Topic / content domain,R,0..1,,subjects (no scheme)
 study.design.research_questions,core,Research questions and aims,R,0..1,,descriptions (descriptionType Methods)
+study.design.frameworks,core,Theoretical framework,R,0..n,,"subjects (subjectScheme 'HuMeta Frameworks', valueURI per framework); descriptions (Methods)"
+study.design.framework_description,core,Framework description,O,0..1,,descriptions (descriptionType Methods)
 study.design.unit_of_analysis,core,Unit of analysis,O,0..n,unit_of_analysis,subjects (subjectScheme 'HuMeta Units of Analysis')
 study.design.sampling_procedure,core,Sampling procedure,O,0..n,sampling_procedure,subjects (subjectScheme 'HuMeta Sampling Procedures'); descriptions (Methods)
 study.constructs,core,Constructs measured,MA,0..n,,"subjects (subjectScheme 'HuMeta Constructs', valueURI per construct); for datasets, relatedIdentifiers to the instrument's library record (URL, relationType IsCollectedBy) and its publication (DOI, relationType References); ERIC descriptors as additional subjects"

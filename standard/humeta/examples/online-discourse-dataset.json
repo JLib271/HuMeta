@@ -87,7 +87,11 @@
         "purposive"
       ],
       "topic": "Climate anxiety in public online discourse",
-      "research_questions": "How do people describe climate anxiety in public posts, and how has this changed since 2018?"
+      "research_questions": "How do people describe climate anxiety in public posts, and how has this changed since 2018?",
+      "frameworks": [
+        "semiotics"
+      ],
+      "framework_description": null
     },
     "sources": {
       "types": [

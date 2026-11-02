@@ -13,15 +13,15 @@ from oem.app.common import (auth_is_configured, current_project, empty_project, 
 from oem.app.pages import (
     analytics,
     data_repository,
+    framework_measures,
     metadata_check,
     published_viewer,
     study_profile,
-    variable_architect,
 )
 
 
 # Storage model (no database):
-# - Private study records and Module 2 plans live only in a project file the
+# - Private study profiles and variable plans live only in a project file the
 #   researcher downloads and re-opens; the app never stores them.
 # - Private datasets are analyzed in memory for the current session only.
 # - Public study summaries and datasets live in this GitHub repository under
@@ -40,7 +40,7 @@ app_mode = st.sidebar.radio(
     [
         "About this app",
         "1. Study Metadata Profile",
-        "2. Variable Instrument Architect",
+        "2. Framework and Measures",
         "3. Check & Export Metadata",
         "4. Community Data Repository Sync",
         "5. Descriptive & Scale Analytics",
@@ -149,7 +149,7 @@ publish_hint = (
 
 PAGES = {
     "1. Study Metadata Profile": study_profile.render,
-    "2. Variable Instrument Architect": variable_architect.render,
+    "2. Framework and Measures": framework_measures.render,
     "3. Check & Export Metadata": metadata_check.render,
     "4. Community Data Repository Sync": data_repository.render,
     "5. Descriptive & Scale Analytics": analytics.render,

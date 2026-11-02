@@ -63,8 +63,8 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
         st.caption("Next: plan variables in Module 2, then add the constructs you measure and export the "
                    "metadata in Module 3.")
         c1, c2 = st.columns(2)
-        c1.button("Go to 2. Variable Instrument Architect", key="module1_to_m2", on_click=navigate_to_module,
-                  args=("2. Variable Instrument Architect",), use_container_width=True)
+        c1.button("Go to 2. Framework and Measures", key="module1_to_m2", on_click=navigate_to_module,
+                  args=("2. Framework and Measures",), use_container_width=True)
         c2.button("Go to 3. Check & Export Metadata", key="module1_to_m3", on_click=navigate_to_module,
                   args=("3. Check & Export Metadata",), use_container_width=True)
     render_project_download(key="module1_project_download")

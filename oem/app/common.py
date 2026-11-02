@@ -13,7 +13,7 @@ import time
 import uuid
 from pathlib import Path
 from github import Github
-from oem.vocab import (APP_DIR, DEFAULT_GITHUB_REPO, LEGACY_PROJECT_FILE_FORMATS, PROJECT_FILE_FORMAT, PUBLISHED_DATASETS_DIR, PUBLISHED_SUMMARIES_DIR, THEORY_CITATIONS)
+from oem.vocab import (APP_DIR, DEFAULT_GITHUB_REPO, LEGACY_PROJECT_FILE_FORMATS, PROJECT_FILE_FORMAT, PUBLISHED_DATASETS_DIR, PUBLISHED_SUMMARIES_DIR)
 
 
 # Storage model (no database):
@@ -169,13 +169,6 @@ def context_search_terms(value: str) -> list[str]:
 
 
 
-def citation_for_framework(framework: str) -> str:
-    return THEORY_CITATIONS.get(
-        framework,
-        "No primary citation for this framework is listed in the linked source; add a citation.",
-    )
-
-
 MEASURE_CATALOG_PATH = APP_DIR / "catalogs" / "measure_catalog.json"
 MEASURE_CATALOG_REQUIRED_FIELDS = {
     "measure_id",
@@ -216,54 +209,6 @@ def load_measure_catalog() -> list[dict]:
     return catalog["measures"]
 
 
-def find_measure_suggestions(
-    catalog: list[dict],
-    variable: str,
-    frameworks: list[str],
-    study_areas: list[str],
-) -> list[dict]:
-    variable_key = variable.strip().casefold()
-    framework_keys = {value.strip().casefold() for value in frameworks if value.strip()}
-    study_area_keys = {value.strip().casefold() for value in study_areas if value.strip()}
-    matches = []
-    for measure in catalog:
-        catalog_variable = str(measure["variable"]).strip().casefold()
-        if catalog_variable not in {"", "*", variable_key}:
-            continue
-        catalog_frameworks = measure["theory_framework"]
-        if isinstance(catalog_frameworks, str):
-            catalog_frameworks = [catalog_frameworks] if catalog_frameworks else []
-        catalog_framework_keys = {
-            str(value).strip().casefold()
-            for value in catalog_frameworks
-            if str(value).strip()
-        }
-        if framework_keys and catalog_framework_keys and not framework_keys.intersection(catalog_framework_keys):
-            continue
-        catalog_disciplines = measure["discipline"]
-        if isinstance(catalog_disciplines, str):
-            catalog_disciplines = [catalog_disciplines] if catalog_disciplines else []
-        catalog_discipline_keys = {
-            str(value).strip().casefold()
-            for value in catalog_disciplines
-            if str(value).strip()
-        }
-        if study_area_keys and catalog_discipline_keys and not study_area_keys.intersection(catalog_discipline_keys):
-            continue
-        catalog_areas = measure["study_area"]
-        if isinstance(catalog_areas, str):
-            catalog_areas = [catalog_areas] if catalog_areas else []
-        catalog_area_keys = {
-            str(value).strip().casefold()
-            for value in catalog_areas
-            if str(value).strip()
-        }
-        if study_area_keys and catalog_area_keys and not study_area_keys.intersection(catalog_area_keys):
-            continue
-        matches.append(measure)
-    return matches
-
-
 value_propositions = [
     (
         "1. Study Metadata Profile",
@@ -279,15 +224,15 @@ value_propositions = [
         ],
     ),
     (
-        "2. Variable Instrument Architect",
-        "🗺️ Theoretical-to-Variable Mapping",
-        "Directly assists researchers in building out robust study designs derived from "
-        "conceptual frameworks seamlessly linked to operational variables.",
-        "2. Variable Instrument Architect",
+        "2. Framework and Measures",
+        "🗺️ From Theory to Measures",
+        "Starts from the framework that guides the study, whether a theory, a lens, your own framework, or an exploratory "
+        "approach, and links each of its concepts to how it is measured or coded.",
+        "2. Framework and Measures",
         [
-            "Find related study summaries shared by other researchers.",
-            "Select frameworks and variables; define measurement and questionnaire metadata.",
-            "Build a conceptual diagram and download variable matrices and a draft survey.",
+            "Choose a theory, lens, or your own framework; it supplies the concepts.",
+            "Give each concept a measure: a library instrument, your own questions, or codes in a coding scheme.",
+            "The framework's relationships draw the diagram; download the codebook and variable matrix.",
         ],
     ),
     (

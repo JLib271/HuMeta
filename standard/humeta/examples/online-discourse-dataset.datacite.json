@@ -37,6 +37,12 @@
       "subject": "Climate anxiety in public online discourse"
     },
     {
+      "subject": "Semiotics and Visual Rhetoric",
+      "subjectScheme": "HuMeta Frameworks",
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/library/frameworks.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/library/frameworks.json#semiotics"
+    },
+    {
       "subject": "Media and communication",
       "subjectScheme": "HuMeta Disciplines",
       "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
@@ -155,7 +161,7 @@
       "descriptionType": "Abstract"
     },
     {
-      "description": "Study design: Qualitative; Time series. Research questions: How do people describe climate anxiety in public posts, and how has this changed since 2018? Sampling: Non-probability: purposive / criterion-based. Data collection: Web or platform data collection (API, scraping, data donation); Assembling a corpus of texts, images, or media (e.g., published works, news). Analysis: Discourse or conversation analysis; Content analysis; Computational text or media analysis (e.g., text mining, NLP, image recognition). Sources: Social media and online platform content. Sources: About 12,000 public posts in English selected by keyword, with replies. Held at: Two public social media platforms (collected through their research APIs) Period covered: 2018-2023 Participants: Authors of public posts that mention climate anxiety; no authors were contacted.",
+      "description": "Study design: Qualitative; Time series. Research questions: How do people describe climate anxiety in public posts, and how has this changed since 2018? Theoretical framework: Semiotics and Visual Rhetoric. Sampling: Non-probability: purposive / criterion-based. Data collection: Web or platform data collection (API, scraping, data donation); Assembling a corpus of texts, images, or media (e.g., published works, news). Analysis: Discourse or conversation analysis; Content analysis; Computational text or media analysis (e.g., text mining, NLP, image recognition). Sources: Social media and online platform content. Sources: About 12,000 public posts in English selected by keyword, with replies. Held at: Two public social media platforms (collected through their research APIs) Period covered: 2018-2023 Participants: Authors of public posts that mention climate anxiety; no authors were contacted.",
       "descriptionType": "Methods"
     },
     {
