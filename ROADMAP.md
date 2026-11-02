@@ -31,8 +31,7 @@ their data with common names and metadata, and sharing data responsibly.
 1. **Module 2 follow-ups.** Module 2 is now Framework and Measures, built on
    the library (frameworks, constructs, instruments, codebook). Next: let
    researchers pick individual library items, retire
-   `catalogs/measure_catalog.json` and the item text in `schema_config.json`,
-   add a downloadable R script (psych) for Module 5's analyses, and move
+   `catalogs/measure_catalog.json`, add a downloadable R script (psych) for Module 5's analyses, and move
    browsing (library, published studies, datasets) into one Explore page.
 2. **Test builder.** Assemble a form from items whose license allows it
    (respecting `requires_item_ids`), export to Qualtrics import format, a

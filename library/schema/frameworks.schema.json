@@ -4,37 +4,110 @@
   "title": "Frameworks: theories, theoretical lenses, and framework approaches",
   "type": "object",
   "additionalProperties": false,
-  "required": ["vocabulary_version", "frameworks"],
+  "required": [
+    "vocabulary_version",
+    "frameworks"
+  ],
   "properties": {
-    "vocabulary_version": {"type": "integer", "minimum": 1},
-    "note": {"type": "string"},
+    "vocabulary_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "note": {
+      "type": "string"
+    },
     "frameworks": {
       "type": "array",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "label", "kind", "description", "fields", "concepts", "paths"],
+        "required": [
+          "id",
+          "label",
+          "kind",
+          "description",
+          "fields",
+          "concepts",
+          "paths"
+        ],
         "properties": {
-          "id": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
-          "label": {"type": "string", "minLength": 1},
-          "kind": {"enum": ["theory", "lens", "own", "exploratory"]},
-          "description": {"type": "string", "minLength": 1},
-          "citation": {"type": "string"},
-          "doi": {"type": "string", "pattern": "^10\\.\\d{4,9}/\\S+$"},
-          "citation_status": {"enum": ["provided", "added", "verified"]},
-          "fields": {"type": "array", "items": {"enum": ["education", "social_sciences", "humanities", "arts", "other_field"]}},
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "theory",
+              "lens",
+              "own",
+              "exploratory"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "citation": {
+            "type": "string"
+          },
+          "doi": {
+            "type": "string",
+            "pattern": "^10\\.\\d{4,9}/\\S+$"
+          },
+          "citation_status": {
+            "enum": [
+              "provided",
+              "added",
+              "verified"
+            ]
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "education",
+                "social_sciences",
+                "humanities",
+                "arts",
+                "other_field"
+              ]
+            }
+          },
           "concepts": {
             "type": "array",
             "items": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["id", "label"],
+              "required": [
+                "id",
+                "label"
+              ],
               "properties": {
-                "id": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
-                "label": {"type": "string", "minLength": 1},
-                "definition": {"type": "string"},
-                "construct_id": {"type": "string"},
-                "construct_match": {"enum": ["exact", "close", "related"]}
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]*$"
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "definition": {
+                  "type": "string"
+                },
+                "construct_id": {
+                  "type": "string"
+                },
+                "construct_match": {
+                  "enum": [
+                    "exact",
+                    "close",
+                    "related"
+                  ]
+                }
               }
             }
           },
@@ -43,20 +116,22 @@
             "items": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["from", "to", "relationship"],
+              "required": [
+                "from",
+                "to",
+                "relationship"
+              ],
               "properties": {
-                "from": {"type": "string"}, "to": {"type": "string"}, "relationship": {"type": "string"}
+                "from": {
+                  "type": "string"
+                },
+                "to": {
+                  "type": "string"
+                },
+                "relationship": {
+                  "type": "string"
+                }
               }
-            }
-          },
-          "example_items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": ["note", "scale_id", "items"],
-            "properties": {
-              "note": {"type": "string"},
-              "scale_id": {"type": "string"},
-              "items": {"type": "object", "additionalProperties": {"type": "array", "items": {"type": "string"}}}
             }
           }
         }

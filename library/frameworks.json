@@ -70,36 +70,7 @@
           "to": "behavior",
           "relationship": "May directly predict behavior"
         }
-      ],
-      "example_items": {
-        "note": "App-generated example items for drafting. They are not a validated measure; adapt and pilot them, or use a published TPB questionnaire.",
-        "scale_id": "agree5",
-        "items": {
-          "attitude_toward_the_behavior": [
-            "It would be good for me to {behavior}.",
-            "It would be beneficial for me to {behavior}.",
-            "For me, to {behavior} would be worthwhile."
-          ],
-          "subjective_norms": [
-            "People important to me think I should {behavior}.",
-            "People whose opinions I value would approve of my decision to {behavior}.",
-            "People like me are expected to {behavior}."
-          ],
-          "perceived_behavioral_control": [
-            "I am confident that I can {behavior}.",
-            "Whether I {behavior} is mostly under my control.",
-            "I have the resources and opportunities needed to {behavior}."
-          ],
-          "behavioral_intention": [
-            "I intend to {behavior}.",
-            "I plan to {behavior}.",
-            "I expect that I will {behavior}."
-          ],
-          "behavior": [
-            "In the past month, how often did you {behavior}?"
-          ]
-        }
-      }
+      ]
     },
     {
       "id": "sdt",

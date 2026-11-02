@@ -92,13 +92,6 @@ def test_problems_are_reported(lib):
     assert "choose one of the plan's concepts" in issues and "Bad Name" in issues and "both ends" in issues
 
 
-def test_tpb_example_items(lib):
-    concepts = {c["id"] for c in P.framework_concepts(lib, ["tpb"])}
-    rows = P.example_items(lib, "tpb", "recycle at school", concepts)
-    assert any(r["text"] == "I intend to recycle at school." for r in rows)
-    assert P.example_items(lib, "sdt", "recycle", concepts) == []
-
-
 def test_diagram_and_summary(lib):
     plan = sdt_plan(lib)
     dot = P.diagram_dot(lib, plan)

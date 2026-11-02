@@ -75,9 +75,6 @@ def main(library: Path) -> int:
             for path in fw.get("paths", []):
                 if path.get("from") not in concept_ids or path.get("to") not in concept_ids:
                     problems.append(f"{label}: path {path.get('from')} -> {path.get('to')} uses an unknown concept")
-            for concept_id in (fw.get("example_items") or {}).get("items", {}):
-                if concept_id not in concept_ids:
-                    problems.append(f"{label}: example items for unknown concept {concept_id}")
 
     def check_review(review: dict, label: str):
         if review.get("status") == "source_verified" and review.get("needs_check"):

@@ -32,7 +32,8 @@ scripts/validate_library.py    run before opening a PR
 **Constructs** (`constructs.json`) are the shared vocabulary that links
 instruments, Module 2 variables, and evidence. Each has an id, a definition in
 our own words, synonyms used to match free-text searches, and optionally the
-Module 2 variable keys (from `schema_config.json`) it corresponds to. Add a
+variable keys from the earlier Module 2 that it corresponds to (used only to
+convert old variable plans). Add a
 construct only when no existing one fits; prefer adding a synonym.
 
 **Instruments** (`instruments/<id>.json`) hold:

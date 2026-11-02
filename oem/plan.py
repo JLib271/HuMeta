@@ -60,7 +60,6 @@ def empty_plan() -> dict:
         "relationships": [],
         "standard_variables": [],
         "timepoints": [],
-        "behavior": "",
         "narrative": "",
     }
 
@@ -129,25 +128,6 @@ def suggest_measures(lib: Library, concepts: list[dict]) -> list[dict]:
 def _instrument_row(concept: str, instrument_id: str, version_id: str | None, dimension_id: str | None) -> dict:
     return {"concept_id": concept, "kind": "instrument", "instrument_id": instrument_id, "version_id": version_id,
             "dimension_id": dimension_id, "name": "", "label": "", "text": "", "scale_id": None}
-
-
-def example_items(lib: Library, framework_id: str, behavior: str, concept_ids: set[str]) -> list[dict]:
-    """App-generated draft items for a framework that offers them (currently TPB)."""
-    framework = lib.frameworks.get(framework_id, {})
-    examples = framework.get("example_items")
-    if not examples or not behavior.strip():
-        return []
-    rows = []
-    for local_id, templates in examples["items"].items():
-        cid = concept_id(framework_id, local_id)
-        if cid not in concept_ids:
-            continue
-        for template in templates:
-            rows.append({"concept_id": cid, "kind": "question", "instrument_id": None, "version_id": None,
-                         "dimension_id": None, "name": "", "label": "",
-                         "text": template.format(behavior=behavior.strip()),
-                         "scale_id": examples["scale_id"] if local_id != "behavior" else "frequency5"})
-    return rows
 
 
 # ------------------------------------------------------------------ checking
@@ -366,7 +346,6 @@ def migrate_v1(old: dict, lib: Library) -> dict:
     plan["frameworks"] = [by_label[t] for t in old.get("selected_theories", []) if t in by_label]
     plan["framework_description"] = str(old.get("other_theory_sources") or "")
     plan["narrative"] = str(old.get("narrative") or "")
-    plan["behavior"] = str((old.get("study_context") or {}).get("target_action") or "")
     known = {c["label"].lower(): c for c in framework_concepts(lib, plan["frameworks"])}
     concepts: dict[str, dict] = {}
     for row in list(old.get("variables") or []) + list(old.get("custom_variables") or []):

@@ -238,25 +238,12 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
                          "text": _s(row.get("Question, or code definition")),
                          "scale_id": scale_labels.get(_s(row.get("Response scale")))})
     plan["measures"] = measures
-    c1, c2 = st.columns(2)
-    with c1:
-        suggestions = [m for m in P.suggest_measures(lib, concepts)
-                       if (m["concept_id"], m["instrument_id"], m["dimension_id"])
-                       not in {(x["concept_id"], x["instrument_id"], x["dimension_id"]) for x in measures}]
-        if st.button(f"Add {len(suggestions)} library measure(s) for my concepts", disabled=not suggestions,
-                     key=f"m2_add_lib_{v}", help="Instruments and subscales in the library that measure your concepts' constructs."):
-            _rebase({**plan, "measures": measures + suggestions, "relationships": base["relationships"]})
-    with c2:
-        examples_for = [fid for fid in plan["frameworks"] if lib.frameworks[fid].get("example_items")]
-        if examples_for:
-            behavior = st.text_input("Behavior for example items (e.g., recycle at school)", base.get("behavior", ""),
-                                     key=f"m2_behavior_{v}")
-            plan["behavior"] = behavior
-            if st.button("Add example items", key=f"m2_examples_{v}", disabled=not behavior.strip(),
-                         help=lib.frameworks[examples_for[0]]["example_items"]["note"]):
-                rows = [r for fid in examples_for for r in P.example_items(lib, fid, behavior, concept_ids)]
-                _rebase({**plan, "measures": measures + rows, "relationships": base["relationships"]})
-            st.caption("Example items are app-generated drafts, not a validated measure.")
+    suggestions = [m for m in P.suggest_measures(lib, concepts)
+                   if (m["concept_id"], m["instrument_id"], m["dimension_id"])
+                   not in {(x["concept_id"], x["instrument_id"], x["dimension_id"]) for x in measures}]
+    if st.button(f"Add {len(suggestions)} library measure(s) for my concepts", disabled=not suggestions,
+                 key=f"m2_add_lib_{v}", help="Instruments and subscales in the library that measure your concepts' constructs."):
+        _rebase({**plan, "measures": measures + suggestions, "relationships": base["relationships"]})
     unmeasured = [c["label"] for c in concepts if c["id"] not in {m["concept_id"] for m in measures}]
     if unmeasured:
         st.warning("No measure yet for: " + ", ".join(unmeasured))
