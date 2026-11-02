@@ -375,7 +375,21 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
                             f"{cite} *Construct mapping: {status}.*")
 
     # ------------------------------------------------------------ Step 4
-    st.subheader("Step 4 · Relationships and diagram")
+    st.subheader("Step 4 · Standard variables and timepoints")
+    st.caption("Also collected: participant IDs, demographics, and other standard variables, and the timepoints at "
+               "which your measures are repeated.")
+    c1, c2 = st.columns(2)
+    std_labels = {f"{s['label']} ({name})": name for name, s in lib.standard_variables.items()}
+    plan["standard_variables"] = [std_labels[x] for x in c1.multiselect(
+        "Standard and demographic variables", list(std_labels),
+        default=[k for k, name in std_labels.items() if name in base["standard_variables"]], key=f"m2_std_{v}",
+        help="Shared definitions from the library, so these columns match across studies.")]
+    plan["timepoints"] = c2.multiselect("Timepoints (for repeated measures)", list(P.naming.TIMEPOINT_SUFFIXES),
+                                        default=base["timepoints"], key=f"m2_tp_{v}",
+                                        help="Each measured variable is repeated with this suffix, e.g. _pre and _post.")
+
+    # ------------------------------------------------------------ Step 5
+    st.subheader("Step 5 · Relationships and diagram")
     st.caption("Expected relationships between constructs start from the framework. Edit them, add your own, and note hypotheses.")
     rel_df = st.data_editor(
         pd.DataFrame([{"From": construct_from_key.get(r["from"]), "To": construct_from_key.get(r["to"]),
@@ -399,17 +413,8 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
     plan["narrative"] = st.text_area("Conceptual framework narrative (optional)", base.get("narrative", ""),
                                      key=f"m2_narrative_{v}")
 
-    # ------------------------------------------------------------ Step 5
-    st.subheader("Step 5 · Review and save")
-    c1, c2 = st.columns(2)
-    std_labels = {f"{s['label']} ({name})": name for name, s in lib.standard_variables.items()}
-    plan["standard_variables"] = [std_labels[x] for x in c1.multiselect(
-        "Standard and demographic variables", list(std_labels),
-        default=[k for k, name in std_labels.items() if name in base["standard_variables"]], key=f"m2_std_{v}",
-        help="Shared definitions from the library, so these columns match across studies.")]
-    plan["timepoints"] = c2.multiselect("Timepoints (for repeated measures)", list(P.naming.TIMEPOINT_SUFFIXES),
-                                        default=base["timepoints"], key=f"m2_tp_{v}",
-                                        help="Each measured variable is repeated with this suffix, e.g. _pre and _post.")
+    # ------------------------------------------------------------ Step 6
+    st.subheader("Step 6 · Review and save")
     issues = P.problems(lib, plan)
     if {"own", "lens"} & {kinds[f] for f in plan["frameworks"]} and not plan["framework_description"].strip():
         issues.append("Describe your own framework or lens in Step 1.")
