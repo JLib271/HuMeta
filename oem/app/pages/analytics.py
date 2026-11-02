@@ -8,13 +8,15 @@ import pandas as pd
 import numpy as np
 import io
 import uuid
-from oem.app.common import (automate_github_pull_request, load_published_datasets)
+from oem import plan as plan_model
+from oem.app.common import (automate_github_pull_request, current_project, load_published_datasets, public_submission_warning)
+from oem.library import Library
 
 
 def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None) -> None:
     st.header("📊 Descriptive & Scale Analytics")
     st.caption(
-        "Analyze dataset columns in the context of your Module 2 theory-derived, "
+        "Analyze dataset columns in the context of your Module 2 framework-derived, "
         "demographic/contextual, and custom variable matrix."
     )
     st.markdown("---")
@@ -32,17 +34,20 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     data_source = st.radio("Analytics Dataset Source Selection:", data_source_options)
 
     st.info(
-        "There are no required column names or theory prefixes. Use the Module 2 matrix to "
-        "map numeric columns for scores and categorical columns for response distributions. "
+        "There are no required column names. Use the variable matrix from Module 2 to map "
+        "numeric columns for scores and categorical columns for response distributions. "
         "The dataset needs at least one numeric analysis variable."
     )
     manifest_upload = st.file_uploader(
-        "Optional: upload the Module 2 Theory and Variable Matrix (CSV)",
+        "Optional: upload the variable matrix from Module 2 (CSV)",
         type=["csv"],
         key="analytics_module2_manifest_upload",
-        help="Use the matrix downloaded at the end of Module 2. A matrix created in this same app session is loaded automatically.",
+        help="Use the variable matrix downloaded in Module 2. The variable plan in your project is loaded automatically.",
     )
     module2_manifest = st.session_state.get("module2_variable_manifest", [])
+    saved_plan = current_project().get("module2_plan") or {}
+    if not module2_manifest and saved_plan.get("schema_version", 1) >= 2:
+        module2_manifest = plan_model.manifest(Library.load(), plan_model.normalize(saved_plan))
     if manifest_upload is not None:
         try:
             imported_manifest = pd.read_csv(manifest_upload)
@@ -54,11 +59,11 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
                 st.success(f"Loaded {len(module2_manifest)} variables from the Module 2 matrix.")
             else:
                 st.error(
-                    "The uploaded file is not a Module 2 variable matrix. It must include "
+                    "The uploaded file is not a variable matrix from Module 2. It must include "
                     "Variable_ID, Variable_Label, Framework_Source, and Concept_Construct."
                 )
         except (pd.errors.EmptyDataError, pd.errors.ParserError, UnicodeDecodeError) as matrix_error:
-            st.error(f"Could not read the Module 2 variable matrix: {matrix_error}")
+            st.error(f"Could not read the variable matrix: {matrix_error}")
     
     st.markdown("---")
     df_analytics = None
@@ -243,8 +248,8 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
                 st.info("The Module 2 matrix has no variables to map, or this dataset has no usable columns.")
         else:
             st.info(
-                "To map analytics to your study framework, select variables in Module 2 during this "
-                "session or upload the Module 2 Theory and Variable Matrix CSV above."
+                "To map analytics to your study framework, save a variable plan in Module 2 or "
+                "upload its variable matrix (CSV) above."
             )
         if mapped_categorical_variables:
             st.markdown("**Categorical Module 2 variable response counts**")
@@ -498,6 +503,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     st.markdown("### 🚀 Propose Alternative Statistical & Analytical Functions")
     st.caption("Seeking custom calculations? Enter a metric or statistical test title below. If you don't know the code, our system will auto-generate a Python template for you!")
     
+    public_submission_warning()
     suggested_stat_metric = st.text_input("Proposed Statistical Function Title", placeholder="e.g., Two-Way ANOVA, Chi-Square Test", key="mod4_metric")
     suggested_stat_code = st.text_area("Proposed Python Code block (Optional)", placeholder="Leave blank to let the system auto-create the statistical calculation template...", height=100, key="mod4_code")
     

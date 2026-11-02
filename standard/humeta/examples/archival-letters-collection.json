@@ -70,7 +70,11 @@
       ],
       "sampling_procedure": [],
       "topic": "Rural schooling in the 1920s",
-      "research_questions": "What did rural students and teachers write and draw about school life?"
+      "research_questions": "What did rural students and teachers write and draw about school life?",
+      "frameworks": [
+        "new_historicism"
+      ],
+      "framework_description": null
     },
     "sources": {
       "types": [

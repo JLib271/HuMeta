@@ -1,6 +1,6 @@
 # Copyright (C) 2026 Julie C. Libarkin
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""HuMeta: the Social Science, Humanities, and Education Study Metadata Profile.
+"""HuMeta: The Social Science, Humanities, and Education Study Metadata Profile.
 
 A core for any study, plus optional field modules (currently: Education).
 The profile itself is data in ``standard/humeta/`` (``profile.json`` and
@@ -33,6 +33,7 @@ from oem.library import Library
 ROOT = Path(__file__).resolve().parent.parent
 PROFILE_DIR = ROOT / "standard" / "humeta"
 CONSTRUCTS_URI = "https://github.com/JLib271/HuMeta/blob/main/library/constructs.json#"
+FRAMEWORKS_URI = "https://github.com/JLib271/HuMeta/blob/main/library/frameworks.json#"
 VOCAB_URI = "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#"
 LIBRARY_RECORD_URI = "https://github.com/JLib271/HuMeta/blob/main/library/instruments/"
 DATACITE_NS = "http://datacite.org/schema/kernel-4"
@@ -176,6 +177,9 @@ def json_schema(profile: Profile | None = None) -> dict:
     put(("study", "population", "sample_size"), {"type": ["integer", "null"], "minimum": 0})
     put(("study", "design", "topic"), text)
     put(("study", "design", "research_questions"), text)
+    put(("study", "design", "framework_description"), text)
+    put(("study", "design", "frameworks"), {"type": "array", "uniqueItems": True,
+                                            "items": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"}})
     put(("study", "ethics", "governance_notes"), text)
     put(("study", "sources", "description"), text)
     put(("study", "sources", "holdings"), text)
@@ -270,7 +274,7 @@ def _empty_section(section: str) -> dict:
     if section == "study":
         out["constructs"] = []
         out["population"].update({"description": None, "sample_size": None})
-        out["design"].update({"topic": None, "research_questions": None})
+        out["design"].update({"topic": None, "research_questions": None, "frameworks": [], "framework_description": None})
         out["ethics"]["governance_notes"] = None
         out["sources"].update({"description": None, "holdings": None, "time_period": None})
         out["care"].update({"statement": None, "local_contexts_project": None, "local_contexts_labels": []})
@@ -305,7 +309,14 @@ def get(record: dict, path: tuple[str, ...]) -> Any:
 
 
 def suggest_constructs(lib: Library, plan: dict) -> list[str]:
-    """Match Module 2 variables to library constructs (variable keys, labels, synonyms)."""
+    """Constructs measured in the Module 2 variable plan.
+
+    Version-2 plans link concepts to constructs directly. Older plans are
+    matched by variable keys, labels and construct synonyms.
+    """
+    if (plan or {}).get("schema_version", 1) >= 2:
+        from oem import plan as plan_model
+        return [c for c in plan_model.construct_ids(plan_model.normalize(plan, lib)) if c in lib.constructs]
     texts: list[str] = []
     for row in (plan or {}).get("variables", []) + (plan or {}).get("custom_variables", []):
         if isinstance(row, dict):
@@ -381,6 +392,9 @@ def validate(record: dict, lib: Library | None = None, profile: Profile | None =
                  ("study", "care", "indigenous_data")]:
         if not get(record, path):
             issues.append(Issue("error", ".".join(path), "Required."))
+    for fid in s["design"].get("frameworks") or []:
+        if fid not in lib.frameworks:
+            issues.append(Issue("error", "study.design.frameworks", f"Unknown framework {fid!r}."))
     for c in s.get("constructs", []):
         if c["construct_id"] not in lib.constructs:
             issues.append(Issue("error", "study.constructs", f"Unknown construct {c['construct_id']!r}."))
@@ -508,7 +522,8 @@ def _care_text(record: dict, p: Profile) -> str | None:
     return "CARE statement (HuMeta profile). " + " ".join(parts)
 
 
-def _methods_text(record: dict, p: Profile) -> str | None:
+def _methods_text(record: dict, p: Profile, lib: Library | None = None) -> str | None:
+    lib = lib or Library.load()
     s = record["study"]
     parts = []
     designs = [p.label("study_design", d) for d in s["evidence"].get("study_designs") or []]
@@ -516,6 +531,11 @@ def _methods_text(record: dict, p: Profile) -> str | None:
         parts.append("Study design: " + "; ".join(designs) + ".")
     if (s["design"].get("research_questions") or "").strip():
         parts.append("Research questions: " + s["design"]["research_questions"].strip())
+    frameworks = [lib.frameworks[f]["label"] for f in s["design"].get("frameworks") or [] if f in lib.frameworks]
+    if frameworks:
+        parts.append("Theoretical framework: " + "; ".join(frameworks) + ".")
+    if (s["design"].get("framework_description") or "").strip():
+        parts.append(s["design"]["framework_description"].strip())
     sampling = [p.label("sampling_procedure", m) for m in s["design"].get("sampling_procedure") or []]
     if sampling:
         parts.append("Sampling: " + "; ".join(sampling) + ".")
@@ -573,6 +593,11 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
         if construct:
             subjects.append({"subject": construct["label"], "subjectScheme": "HuMeta Constructs",
                              "schemeUri": CONSTRUCTS_URI.rstrip("#"), "valueUri": CONSTRUCTS_URI + construct["id"]})
+    for fid in s["design"].get("frameworks") or []:
+        framework = lib.frameworks.get(fid)
+        if framework:
+            subjects.append({"subject": framework["label"], "subjectScheme": "HuMeta Frameworks",
+                             "schemeUri": FRAMEWORKS_URI.rstrip("#"), "valueUri": FRAMEWORKS_URI + fid})
     for path, (vocab_id, scheme) in VOCAB_FIELDS.items():
         if not scheme:
             continue
@@ -596,7 +621,7 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
         subjects.append({"subject": term, "subjectScheme": ERIC_SCHEME, "schemeUri": ERIC_SCHEME_URI})
     if (res.get("description") or "").strip():
         out["descriptions"].append({"description": res["description"].strip(), "descriptionType": "Abstract"})
-    methods = _methods_text(record, p)
+    methods = _methods_text(record, p, lib)
     if methods:
         out["descriptions"].append({"description": methods, "descriptionType": "Methods"})
     out["descriptions"].append({"description": _ethics_text(record, p), "descriptionType": "Other"})

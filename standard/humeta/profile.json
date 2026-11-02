@@ -1,7 +1,7 @@
 {
   "profile": "humeta",
   "title": "HuMeta",
-  "full_title": "Social Science, Humanities, and Education Study Metadata Profile",
+  "full_title": "HuMeta: The Social Science, Humanities, and Education Study Metadata Profile",
   "short_name": "HuMeta",
   "profile_version": "1.0.0-draft.1",
   "status": "draft",
@@ -683,6 +683,55 @@
           "standard": "dcterms",
           "term": "description",
           "match": "related"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.design.frameworks",
+      "label": "Theoretical framework",
+      "obligation": "R",
+      "cardinality": "0..n",
+      "type": "framework",
+      "definition": "Theories, theoretical lenses, or framework approaches (including the researcher's own framework, or an exploratory approach with no framework chosen in advance) that guide the study, from the HuMeta framework list (library/frameworks.json).",
+      "datacite": "subjects (subjectScheme 'HuMeta Frameworks', valueURI per framework); descriptions (Methods)",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "framework list",
+          "match": "exact"
+        },
+        {
+          "standard": "datacite",
+          "term": "subject (scheme)",
+          "match": "close"
+        },
+        {
+          "standard": "schemaorg",
+          "term": "about",
+          "match": "related"
+        }
+      ],
+      "module": "core"
+    },
+    {
+      "id": "study.design.framework_description",
+      "label": "Framework description",
+      "obligation": "O",
+      "cardinality": "0..1",
+      "type": "text",
+      "definition": "How the framework guides the study, or a description of the researcher's own framework or lens.",
+      "datacite": "descriptions (descriptionType Methods)",
+      "alignments": [
+        {
+          "standard": "humeta",
+          "term": "design.framework_description",
+          "match": "exact"
+        },
+        {
+          "standard": "datacite",
+          "term": "description (Methods)",
+          "match": "close"
         }
       ],
       "module": "core"

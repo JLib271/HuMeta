@@ -15,6 +15,8 @@ instead of copying by default.
 ```
 library/
   constructs.json              shared construct vocabulary (what things measure)
+  frameworks.json              theories, theoretical lenses, and framework approaches
+                               used by Module 2, with concepts linked to constructs
   instruments/<id>.json        one file per instrument
   evidence/<instrument-id>/<record-id>.json
                                one file per reliability/validity result
@@ -30,7 +32,8 @@ scripts/validate_library.py    run before opening a PR
 **Constructs** (`constructs.json`) are the shared vocabulary that links
 instruments, Module 2 variables, and evidence. Each has an id, a definition in
 our own words, synonyms used to match free-text searches, and optionally the
-Module 2 variable keys (from `schema_config.json`) it corresponds to. Add a
+variable keys from the earlier Module 2 that it corresponds to (used only to
+convert old variable plans). Add a
 construct only when no existing one fits; prefer adding a synonym.
 
 **Instruments** (`instruments/<id>.json`) hold:
@@ -119,7 +122,21 @@ instrument's own license (`access.item_text_basis.license`), which the
 validator requires before any item text is accepted. See
 [`LICENSE.md`](LICENSE.md).
 
+## Frameworks
+
+`frameworks.json` lists the theories, theoretical lenses, and framework
+approaches offered in Module 2 (Framework and Measures). A theory lists its
+concepts, each linked to a construct where one matches (`construct_match`:
+exact, close, or related), and its expected paths between concepts, which
+start the Module 2 diagram. Lenses (for example sociocultural theory or
+critical race theory) have no fixed concepts; researchers add their own.
+`own` and `exploratory` entries cover a researcher's own framework and
+inductive work with no framework chosen in advance. `citation_status: added`
+marks citations added by maintainers that a reviewer should confirm.
+Frameworks are recorded in a study's HuMeta profile
+(`study.design.frameworks`).
+
 ## Relationship to `catalogs/measure_catalog.json`
 
-The existing flat catalog read by Module 2 is superseded by this library once
-Module 2 is updated to read `library/`. Until then, the two are independent.
+Module 2 now reads instruments from this library. The older flat catalog is
+only shown in the Module 6 viewer and will be retired.

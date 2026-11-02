@@ -11,11 +11,12 @@ body:
     attributes:
       label: Where did it happen?
       options:
-        - "Module 1: Study Metadata"
-        - "Module 2: Variable Instrument Architect"
-        - "Module 3: Data Repository"
-        - "Module 4: Analytics"
-        - "Module 5: Published Viewer"
+        - "Module 1: Study Metadata Profile"
+        - "Module 2: Framework and Measures"
+        - "Module 3: Check & Export Metadata"
+        - "Module 4: Community Data Repository"
+        - "Module 5: Analytics"
+        - "Module 6: Published Repository Viewer"
         - Instrument library (library/)
         - Other
     validations:

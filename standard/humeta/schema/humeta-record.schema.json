@@ -519,6 +519,20 @@
                 "string",
                 "null"
               ]
+            },
+            "framework_description": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "frameworks": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]*$"
+              }
             }
           }
         },

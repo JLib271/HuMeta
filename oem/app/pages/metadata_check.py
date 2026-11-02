@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Module 3: Check & Export Metadata.
 
-Add the constructs measured (suggested from the Module 2 plan), check the
-HuMeta record against the profile's rules, and export HuMeta JSON, DataCite
+Add the constructs measured (suggested from the variable plan in Module 2), check the
+study profile against the profile's rules, and export HuMeta JSON, DataCite
 4.7 JSON/XML, and ERIC descriptors. Logic lives in oem/profile.py.
 """
 
@@ -15,6 +15,7 @@ import re
 import pandas as pd
 import streamlit as st
 
+from oem import plan as plan_model
 from oem import profile
 from oem.app.common import current_project, navigate_to_module
 from oem.app.profile_form import SPEC_URL, current_record, library, show_issues, store_record
@@ -25,8 +26,8 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     p = profile.load()
     lib = library()
     st.caption(
-        f"Complete your [HuMeta profile]({SPEC_URL}) record with the constructs you measure, check it against the "
-        "profile's responsible-sharing rules, and export metadata that DataCite (DOIs) and ERIC understand."
+        f"Complete your study profile with the constructs you measure, check it against the "
+        f"[HuMeta]({SPEC_URL}) responsible-sharing rules, and export metadata that DataCite (DOIs) and ERIC understand."
     )
     record = current_record()
     if record is None:
@@ -46,10 +47,11 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     suggestions = [c for c in profile.suggest_constructs(lib, plan)
                    if c not in {x["construct_id"] for x in record["study"]["constructs"]}]
     if suggestions:
-        st.caption("From your Module 2 plan: " + ", ".join(construct_names[c] for c in suggestions))
+        st.caption("From your variable plan (Module 2): " + ", ".join(construct_names[c] for c in suggestions))
         if st.button("Add these constructs", key="m3_add_suggestions"):
-            record["study"]["constructs"] += [{"construct_id": c, "instrument_id": None, "version_id": None,
-                                                "dimension_id": None} for c in suggestions]
+            linked = {c["construct_id"]: c for c in plan_model.profile_constructs(plan_model.normalize(plan, lib))}
+            record["study"]["constructs"] += [linked.get(c) or {"construct_id": c, "instrument_id": None, "version_id": None,
+                                                                "dimension_id": None} for c in suggestions]
             store_record(record, reset_widgets=True)
             st.rerun()
     elif not plan:
@@ -88,7 +90,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
 
     st.subheader("Export")
     slug = re.sub(r"[^a-z0-9]+", "-", (record["resource"].get("title") or "record").lower()).strip("-")[:50] or "record"
-    st.download_button("HuMeta record (JSON)", json.dumps(record, ensure_ascii=False, indent=2).encode("utf-8"),
+    st.download_button("Study profile (HuMeta JSON)", json.dumps(record, ensure_ascii=False, indent=2).encode("utf-8"),
                        file_name=f"{slug}.humeta.json", mime="application/json", key="m3_dl_record",
                        use_container_width=True)
     if any(i.severity == "error" for i in issues):

@@ -65,7 +65,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Existing Module 2 variable keys (schema_config.json) that map to this construct."
+            "description": "Variable keys from the earlier Module 2 that map to this construct (used to convert old variable plans)."
           },
           "eric": {
             "type": "array",

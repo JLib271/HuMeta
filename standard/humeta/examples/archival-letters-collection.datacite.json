@@ -37,6 +37,12 @@
       "subject": "Rural schooling in the 1920s"
     },
     {
+      "subject": "New Historicism and Cultural History",
+      "subjectScheme": "HuMeta Frameworks",
+      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/library/frameworks.json",
+      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/library/frameworks.json#new_historicism"
+    },
+    {
       "subject": "History",
       "subjectScheme": "HuMeta Disciplines",
       "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
@@ -138,7 +144,7 @@
       "descriptionType": "Abstract"
     },
     {
-      "description": "Study design: Historical study. Research questions: What did rural students and teachers write and draw about school life? Data collection: Archival research (finding and selecting records in archives or collections). Analysis: Historical analysis or source criticism; Close reading or textual analysis; Visual or image analysis (e.g., photographs, artworks, film). Sources: Archival or historical records; Private correspondence and personal papers; Artworks (including participant or student artwork). Sources: Letters between a teacher and families, school reports, and students' drawings in one county archive. Held at: A county historical society archive (fictional) Period covered: 1921-1929",
+      "description": "Study design: Historical study. Research questions: What did rural students and teachers write and draw about school life? Theoretical framework: New Historicism and Cultural History. Data collection: Archival research (finding and selecting records in archives or collections). Analysis: Historical analysis or source criticism; Close reading or textual analysis; Visual or image analysis (e.g., photographs, artworks, film). Sources: Archival or historical records; Private correspondence and personal papers; Artworks (including participant or student artwork). Sources: Letters between a teacher and families, school reports, and students' drawings in one county archive. Held at: A county historical society archive (fictional) Period covered: 1921-1929",
       "descriptionType": "Methods"
     },
     {

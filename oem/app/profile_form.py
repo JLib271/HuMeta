@@ -15,7 +15,7 @@ import pandas as pd
 import streamlit as st
 
 from oem import profile
-from oem.app.common import current_project
+from oem.app.common import LICENSE_HELP, current_project
 from oem.library import Library
 
 SPEC_URL = "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md"
@@ -172,6 +172,7 @@ def record_form(record: dict) -> dict | None:
         license_id = c2.selectbox(lab("Data license", "resource.license"), license_options, help=tip("resource.license"),
                                   index=license_options.index(current_license) if current_license in license_options else 0,
                                   format_func=lambda k: LICENSES[k], key=key("license"))
+        c2.caption(LICENSE_HELP)
 
         c1, c2 = st.columns(2)
         with c1:
@@ -187,6 +188,19 @@ def record_form(record: dict) -> dict | None:
         research_questions = st.text_area(lab("Research questions and aims", "study.design.research_questions"),
                                           design.get("research_questions") or "", key=key("rq"),
                                           help=tip("study.design.research_questions"))
+        lib = library()
+        framework_ids = sorted(lib.frameworks, key=lambda fid: (
+            ["theory", "lens", "own", "exploratory"].index(lib.frameworks[fid]["kind"]), lib.frameworks[fid]["label"]))
+        c1, c2 = st.columns([2, 3])
+        frameworks = c1.multiselect(
+            lab("Theoretical framework", "study.design.frameworks"), framework_ids,
+            default=[f for f in design.get("frameworks") or [] if f in lib.frameworks],
+            format_func=lambda fid: lib.frameworks[fid]["label"], key=key("frameworks"),
+            help=tip("study.design.frameworks", "Module 2 builds your concepts and measures from this framework."))
+        framework_description = c2.text_area(
+            lab("How the framework guides the study", "study.design.framework_description"),
+            design.get("framework_description") or "", key=key("fdesc"), height=80,
+            help=tip("study.design.framework_description"))
         c1, c2 = st.columns(2)
         with c1:
             designs = multi("Study design", "study_design", s["evidence"].get("study_designs"), "designs", "study.evidence.study_designs",
@@ -354,6 +368,7 @@ def record_form(record: dict) -> dict | None:
     ns["fields"] = fields
     ns["discipline"] = disciplines
     ns["design"].update({"topic": _blank(topic), "research_questions": _blank(research_questions),
+                         "frameworks": frameworks, "framework_description": _blank(framework_description),
                          "unit_of_analysis": units, "sampling_procedure": sampling})
     ns["population"].update({"human_participants": participants, "participant_roles": roles,
                              "description": _blank(population_description),
@@ -381,7 +396,7 @@ def show_issues(issues: list[profile.Issue]) -> None:
     errors = [i for i in issues if i.severity == "error"]
     warnings = [i for i in issues if i.severity == "warning"]
     if not issues:
-        st.success("This record meets every requirement of the HuMeta profile.")
+        st.success("This study profile meets every requirement of HuMeta.")
     for issue in errors:
         st.error(f"**{issue.element}**: {issue.message}" + (f" ({issue.rule})" if issue.rule else ""))
     for issue in warnings:

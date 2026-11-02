@@ -13,7 +13,7 @@ import time
 import uuid
 from pathlib import Path
 from github import Github
-from oem.vocab import (APP_DIR, DEFAULT_GITHUB_REPO, LEGACY_PROJECT_FILE_FORMATS, PROJECT_FILE_FORMAT, PUBLISHED_DATASETS_DIR, PUBLISHED_SUMMARIES_DIR, THEORY_CITATIONS)
+from oem.vocab import (APP_DIR, DEFAULT_GITHUB_REPO, LEGACY_PROJECT_FILE_FORMATS, PROJECT_FILE_FORMAT, PUBLISHED_DATASETS_DIR, PUBLISHED_SUMMARIES_DIR)
 
 
 # Storage model (no database):
@@ -77,13 +77,13 @@ def parse_project_file(raw_bytes: bytes) -> dict:
         raise ValueError("This is not a HuMeta Portal project file.")
     study = project.get("study")
     if study is not None and (not isinstance(study, dict) or not study.get("id")):
-        raise ValueError("The project file's study record is missing or malformed.")
+        raise ValueError("The project file's study profile is missing or malformed.")
     plan = project.get("module2_plan") or {}
     if not isinstance(plan, dict):
-        raise ValueError("The project file's Module 2 plan is malformed.")
+        raise ValueError("The project file's variable plan (Module 2) is malformed.")
     profile_record = project.get("profile_record")
     if profile_record is not None and not isinstance(profile_record, dict):
-        raise ValueError("The project file's HuMeta metadata record is malformed.")
+        raise ValueError("The project file's study profile is malformed.")
     loaded = empty_project()
     loaded.update({"study": study, "module2_plan": plan, "profile_record": profile_record})
     return loaded
@@ -98,7 +98,7 @@ def project_file_bytes() -> bytes:
 def project_file_name() -> str:
     study = current_project().get("study") or {}
     slug = re.sub(r"[^a-z0-9]+", "_", str(study.get("study_title") or "study").lower()).strip("_")
-    return f"{(slug or 'study')[:60]}.oem-project.json"
+    return f"{(slug or 'study')[:60]}.humeta-project.json"
 
 
 def render_project_download(key: str, label: str = "Download project file") -> None:
@@ -169,13 +169,6 @@ def context_search_terms(value: str) -> list[str]:
 
 
 
-def citation_for_framework(framework: str) -> str:
-    return THEORY_CITATIONS.get(
-        framework,
-        "No primary citation for this framework is listed in the linked source; add a citation.",
-    )
-
-
 MEASURE_CATALOG_PATH = APP_DIR / "catalogs" / "measure_catalog.json"
 MEASURE_CATALOG_REQUIRED_FIELDS = {
     "measure_id",
@@ -216,59 +209,11 @@ def load_measure_catalog() -> list[dict]:
     return catalog["measures"]
 
 
-def find_measure_suggestions(
-    catalog: list[dict],
-    variable: str,
-    frameworks: list[str],
-    study_areas: list[str],
-) -> list[dict]:
-    variable_key = variable.strip().casefold()
-    framework_keys = {value.strip().casefold() for value in frameworks if value.strip()}
-    study_area_keys = {value.strip().casefold() for value in study_areas if value.strip()}
-    matches = []
-    for measure in catalog:
-        catalog_variable = str(measure["variable"]).strip().casefold()
-        if catalog_variable not in {"", "*", variable_key}:
-            continue
-        catalog_frameworks = measure["theory_framework"]
-        if isinstance(catalog_frameworks, str):
-            catalog_frameworks = [catalog_frameworks] if catalog_frameworks else []
-        catalog_framework_keys = {
-            str(value).strip().casefold()
-            for value in catalog_frameworks
-            if str(value).strip()
-        }
-        if framework_keys and catalog_framework_keys and not framework_keys.intersection(catalog_framework_keys):
-            continue
-        catalog_disciplines = measure["discipline"]
-        if isinstance(catalog_disciplines, str):
-            catalog_disciplines = [catalog_disciplines] if catalog_disciplines else []
-        catalog_discipline_keys = {
-            str(value).strip().casefold()
-            for value in catalog_disciplines
-            if str(value).strip()
-        }
-        if study_area_keys and catalog_discipline_keys and not study_area_keys.intersection(catalog_discipline_keys):
-            continue
-        catalog_areas = measure["study_area"]
-        if isinstance(catalog_areas, str):
-            catalog_areas = [catalog_areas] if catalog_areas else []
-        catalog_area_keys = {
-            str(value).strip().casefold()
-            for value in catalog_areas
-            if str(value).strip()
-        }
-        if study_area_keys and catalog_area_keys and not study_area_keys.intersection(catalog_area_keys):
-            continue
-        matches.append(measure)
-    return matches
-
-
 value_propositions = [
     (
         "1. Study Metadata Profile",
         "📐 One Shared Metadata Standard",
-        "Describes every study with HuMeta, the Social Science, Humanities, and Education Study Metadata Profile, so studies across "
+        "Describes every study with HuMeta: The Social Science, Humanities, and Education Study Metadata Profile, so studies across "
         "institutions use the same fields and vocabularies and stay searchable and comparable.",
         "1. Study Metadata Profile",
         [
@@ -279,25 +224,26 @@ value_propositions = [
         ],
     ),
     (
-        "2. Variable Instrument Architect",
-        "🗺️ Theoretical-to-Variable Mapping",
-        "Directly assists researchers in building out robust study designs derived from "
-        "conceptual frameworks seamlessly linked to operational variables.",
-        "2. Variable Instrument Architect",
+        "2. Framework and Measures",
+        "🗺️ From Theory to Measures",
+        "Starts from the framework that guides the study, whether a theory, a lens, your own framework, or an exploratory "
+        "approach, and links each of its concepts to how it is measured or coded.",
+        "2. Framework and Measures",
         [
-            "Find related study summaries shared by other researchers.",
-            "Select frameworks and variables; define measurement and questionnaire metadata.",
-            "Build a conceptual diagram and download variable matrices and a draft survey.",
+            "Choose a theory, lens, or your own framework; it supplies the concepts.",
+            "Give each concept a measure: a library instrument, your own questions, or codes in a coding scheme.",
+            "The framework's relationships draw the diagram; download the codebook and variable matrix.",
+            "Recommend theories, frameworks, and instruments so they are available to everyone.",
         ],
     ),
     (
         "3. Check & Export Metadata",
         "🏷️ Standards-Ready Metadata",
-        "Completes the HuMeta record with the constructs you measure, checks it against the profile's "
+        "Completes your study profile with the constructs you measure, checks it against the profile's "
         "responsible-sharing rules, and exports metadata that DOI registration and education indexes use.",
         "3. Check & Export Metadata",
         [
-            "Add constructs measured, suggested from your Module 2 plan.",
+            "Add constructs measured, suggested from your variable plan (Module 2).",
             "See what to fix before sharing: consent, de-identification, review, CARE.",
             "Export HuMeta JSON, DataCite 4.7 (JSON/XML), and ERIC descriptors.",
         ],
@@ -341,7 +287,42 @@ value_propositions = [
     ),
 ]
 
-ALLOWED_PR_FOLDERS = ("suggestions/", "published/study_summaries/", "published/datasets/")
+ALLOWED_PR_FOLDERS = ("suggestions/", "suggestions/frameworks/", "suggestions/instruments/", "suggestions/corrections/",
+                      "published/study_summaries/", "published/datasets/")
+
+
+LICENSE_GUIDE_URL = "https://creativecommons.org/share-your-work/cclicenses/"
+LICENSE_CHOOSER_URL = "https://creativecommons.org/chooser/"
+LICENSE_HELP = (
+    "Not sure which license to choose? Read [about the Creative Commons licenses]("
+    + LICENSE_GUIDE_URL + ") or try the [license chooser](" + LICENSE_CHOOSER_URL + "). "
+    "For research data, CC0 and CC BY are the most widely reused. Licenses are hard to take back "
+    "once data are shared, so check your institution's and funder's requirements first."
+)
+
+
+LICENSE_TABLE_NOTE = (
+    "The License column says how each item may be reused. Learn [about the Creative Commons licenses]("
+    + LICENSE_GUIDE_URL + ")."
+)
+
+
+def license_help_link() -> None:
+    """Show links to license guidance under any license field."""
+    st.caption(LICENSE_HELP)
+
+
+PUBLIC_SUBMISSION_NOTICE = (
+    "**Visible as soon as you submit.** Submitting opens a pull request on the project's GitHub "
+    "repository. Anyone who can view the repository can see what you submit right away, before a "
+    "maintainer reviews it, and it stays in the repository's history even if it is not accepted. "
+    "Do not include participant data, identifying or confidential information, or unpublished results."
+)
+
+
+def public_submission_warning() -> None:
+    """Show the standard warning before any form that submits to the GitHub repository."""
+    st.warning(PUBLIC_SUBMISSION_NOTICE)
 
 
 def open_review_pull_request(
@@ -416,7 +397,7 @@ def open_review_pull_request(
             base=base_branch,
         )
         return (
-            "🎉 Submitted for review. It becomes public only after a maintainer merges it. "
+            "🎉 Submitted. A maintainer will review it before it is added to the app. "
             f"Track it here: {pull_request.html_url}"
         )
     except Exception as git_error:

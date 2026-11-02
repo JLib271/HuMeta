@@ -16,7 +16,7 @@ APP = str(Path(__file__).resolve().parent.parent / "openscience.py")
 PAGES = [
     "About this app",
     "1. Study Metadata Profile",
-    "2. Variable Instrument Architect",
+    "2. Framework and Measures",
     "3. Check & Export Metadata",
     "4. Community Data Repository Sync",
     "5. Descriptive & Scale Analytics",

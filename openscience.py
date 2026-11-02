@@ -13,15 +13,15 @@ from oem.app.common import (auth_is_configured, current_project, empty_project, 
 from oem.app.pages import (
     analytics,
     data_repository,
+    framework_measures,
     metadata_check,
     published_viewer,
     study_profile,
-    variable_architect,
 )
 
 
 # Storage model (no database):
-# - Private study records and Module 2 plans live only in a project file the
+# - Private study profiles and variable plans live only in a project file the
 #   researcher downloads and re-opens; the app never stores them.
 # - Private datasets are analyzed in memory for the current session only.
 # - Public study summaries and datasets live in this GitHub repository under
@@ -40,7 +40,7 @@ app_mode = st.sidebar.radio(
     [
         "About this app",
         "1. Study Metadata Profile",
-        "2. Variable Instrument Architect",
+        "2. Framework and Measures",
         "3. Check & Export Metadata",
         "4. Community Data Repository Sync",
         "5. Descriptive & Scale Analytics",
@@ -55,14 +55,17 @@ with st.sidebar:
     st.divider()
     st.subheader("📁 Project file")
     st.caption(
-        "Your study record and Module 2 plan are kept in a project file on your own "
-        "computer. The app never stores them."
+        "Your study profile (Module 1) and variable plan (Module 2) are kept in a project "
+        "file on your own computer. The app does not store them. You can choose to share "
+        "parts of your work: a limited study summary or a theory and variable suggestion "
+        "(Module 2), or a de-identified dataset (Module 4). Shared items go to the project's "
+        "GitHub repository and are reviewed before they are listed in the app."
     )
     project_upload = st.file_uploader(
         "Open a project file",
         type=["json"],
         key="project_file_upload",
-        help="Open a .oem-project.json file you downloaded earlier.",
+        help="Open a .humeta-project.json file you downloaded earlier.",
     )
     if project_upload is not None:
         upload_marker = (project_upload.name, project_upload.size)
@@ -83,7 +86,7 @@ with st.sidebar:
             st.session_state.pop("loaded_project_marker", None)
             st.rerun()
     else:
-        st.caption("No study yet — save one in Module 1, or open a project file.")
+        st.caption("No study profile yet. Save one in Module 1, or open a project file.")
 
     st.divider()
     st.subheader("🔐 Researcher sign-in")
@@ -112,15 +115,15 @@ with st.sidebar:
     )
 
 st.title("🔬 HuMeta Portal")
-st.caption("Built on HuMeta: the Social Science, Humanities, and Education Study Metadata Profile")
-st.caption("Standardized Study Registries and Psychometric Instrument Architects under DCMES, IEEE LOM, and CEDS Standards.")
+st.caption("Built on HuMeta: The Social Science, Humanities, and Education Study Metadata Profile")
+st.caption("Study metadata aligned with DataCite, Dublin Core, DDI, schema.org, and ERIC, with an open instrument library.")
 
 if app_mode == "About this app":
-    st.header("🔬 Accelerating Human Science & Educational Research")
+    st.header("🔬 Accelerating Research in Education, the Social Sciences, and the Humanities")
     st.markdown(
         "This platform is specifically engineered to resolve the most critical bottlenecks in "
-        "human science research—particularly within educational ecosystems—by enforcing data "
-        "structural integrity and empowering open-science collaboration."
+        "research across education, the social sciences, the humanities, and related fields by "
+        "enforcing data structural integrity and empowering open-science collaboration."
     )
     for value_card in value_propositions:
         render_value_card(value_card, show_open_button=True)
@@ -146,7 +149,7 @@ publish_hint = (
 
 PAGES = {
     "1. Study Metadata Profile": study_profile.render,
-    "2. Variable Instrument Architect": variable_architect.render,
+    "2. Framework and Measures": framework_measures.render,
     "3. Check & Export Metadata": metadata_check.render,
     "4. Community Data Repository Sync": data_repository.render,
     "5. Descriptive & Scale Analytics": analytics.render,

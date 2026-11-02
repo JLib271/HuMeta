@@ -1,0 +1,1017 @@
+{
+  "vocabulary_version": 1,
+  "note": "Theories, theoretical lenses, and framework approaches offered in Module 2. Each theory's concepts link to the construct vocabulary where one matches (construct_match: exact, close, or related). citation_status 'added' marks citations added by maintainers that a reviewer should confirm.",
+  "frameworks": [
+    {
+      "id": "tpb",
+      "label": "Theory of Planned Behavior (TPB)",
+      "kind": "theory",
+      "description": "Behavior follows from intention, which is shaped by attitude, subjective norms, and perceived behavioral control.",
+      "fields": [
+        "social_sciences",
+        "education"
+      ],
+      "citation": "Ajzen, I. (1991). The theory of planned behavior. Organizational Behavior and Human Decision Processes, 50(2), 179-211.",
+      "doi": "10.1016/0749-5978(91)90020-T",
+      "citation_status": "provided",
+      "concepts": [
+        {
+          "id": "attitude_toward_the_behavior",
+          "label": "Attitude Toward the Behavior",
+          "construct_id": "attitude_toward_subject",
+          "construct_match": "exact"
+        },
+        {
+          "id": "subjective_norms",
+          "label": "Subjective Norms",
+          "construct_id": "subjective_norm",
+          "construct_match": "exact"
+        },
+        {
+          "id": "perceived_behavioral_control",
+          "label": "Perceived Behavioral Control",
+          "construct_id": "perceived_behavioral_control",
+          "construct_match": "exact"
+        },
+        {
+          "id": "behavioral_intention",
+          "label": "Behavioral Intention",
+          "construct_id": "behavioral_intention",
+          "construct_match": "exact"
+        },
+        {
+          "id": "behavior",
+          "label": "Behavior"
+        }
+      ],
+      "paths": [
+        {
+          "from": "attitude_toward_the_behavior",
+          "to": "behavioral_intention",
+          "relationship": "Supports intention"
+        },
+        {
+          "from": "subjective_norms",
+          "to": "behavioral_intention",
+          "relationship": "Supports intention"
+        },
+        {
+          "from": "perceived_behavioral_control",
+          "to": "behavioral_intention",
+          "relationship": "Supports intention"
+        },
+        {
+          "from": "behavioral_intention",
+          "to": "behavior",
+          "relationship": "Predicts behavior"
+        },
+        {
+          "from": "perceived_behavioral_control",
+          "to": "behavior",
+          "relationship": "May directly predict behavior"
+        }
+      ]
+    },
+    {
+      "id": "sdt",
+      "label": "Self-Determination Theory (SDT)",
+      "kind": "theory",
+      "description": "Satisfying needs for autonomy, competence, and relatedness supports intrinsic motivation.",
+      "fields": [
+        "social_sciences",
+        "education"
+      ],
+      "citation": "Ryan, R. M., & Deci, E. L. (2000). Self-determination theory and the facilitation of intrinsic motivation, social development, and well-being. American Psychologist, 55(1), 68-78.",
+      "doi": "10.1037/0003-066X.55.1.68",
+      "citation_status": "provided",
+      "concepts": [
+        {
+          "id": "autonomy",
+          "label": "Autonomy"
+        },
+        {
+          "id": "competence",
+          "label": "Competence",
+          "construct_id": "self_efficacy",
+          "construct_match": "close"
+        },
+        {
+          "id": "relatedness",
+          "label": "Relatedness",
+          "construct_id": "sense_of_belonging",
+          "construct_match": "close"
+        },
+        {
+          "id": "intrinsic_motivation",
+          "label": "Intrinsic Motivation",
+          "construct_id": "interest",
+          "construct_match": "close"
+        }
+      ],
+      "paths": [
+        {
+          "from": "autonomy",
+          "to": "intrinsic_motivation",
+          "relationship": "Supports motivation"
+        },
+        {
+          "from": "competence",
+          "to": "intrinsic_motivation",
+          "relationship": "Supports motivation"
+        },
+        {
+          "from": "relatedness",
+          "to": "intrinsic_motivation",
+          "relationship": "Supports motivation"
+        }
+      ]
+    },
+    {
+      "id": "evt",
+      "label": "Expectancy-Value Theory",
+      "kind": "theory",
+      "description": "Achievement-related choices and performance depend on expectancies for success and the subjective value of the task.",
+      "fields": [
+        "education",
+        "social_sciences"
+      ],
+      "citation": "Wigfield, A., & Eccles, J. S. (2000). Expectancy-value theory of achievement motivation. Contemporary Educational Psychology, 25(1), 68-81.",
+      "doi": "10.1006/ceps.1999.1015",
+      "citation_status": "added",
+      "concepts": [
+        {
+          "id": "expectancy_for_success",
+          "label": "Expectancy for Success",
+          "construct_id": "self_efficacy",
+          "construct_match": "close"
+        },
+        {
+          "id": "intrinsic_value",
+          "label": "Intrinsic Value",
+          "construct_id": "interest",
+          "construct_match": "close"
+        },
+        {
+          "id": "utility_value",
+          "label": "Utility Value",
+          "construct_id": "task_value",
+          "construct_match": "close"
+        },
+        {
+          "id": "attainment_value",
+          "label": "Attainment Value",
+          "construct_id": "task_value",
+          "construct_match": "close"
+        },
+        {
+          "id": "cost",
+          "label": "Cost"
+        },
+        {
+          "id": "achievement_related_choices",
+          "label": "Achievement-Related Choices",
+          "construct_id": "behavioral_intention",
+          "construct_match": "close"
+        }
+      ],
+      "paths": [
+        {
+          "from": "expectancy_for_success",
+          "to": "achievement_related_choices",
+          "relationship": "Predicts choices"
+        },
+        {
+          "from": "intrinsic_value",
+          "to": "achievement_related_choices",
+          "relationship": "Predicts choices"
+        },
+        {
+          "from": "utility_value",
+          "to": "achievement_related_choices",
+          "relationship": "Predicts choices"
+        },
+        {
+          "from": "attainment_value",
+          "to": "achievement_related_choices",
+          "relationship": "Predicts choices"
+        },
+        {
+          "from": "cost",
+          "to": "achievement_related_choices",
+          "relationship": "May deter choices"
+        }
+      ]
+    },
+    {
+      "id": "science_identity",
+      "label": "Science Identity Model",
+      "kind": "theory",
+      "description": "Science identity is built from competence, performance, and recognition as a science person.",
+      "fields": [
+        "education"
+      ],
+      "citation": "Carlone, H. B., & Johnson, A. (2007). Understanding the science experiences of successful women of color: Science identity as an analytic lens. Journal of Research in Science Teaching, 44(8), 1187-1218.",
+      "doi": "10.1002/tea.20237",
+      "citation_status": "added",
+      "concepts": [
+        {
+          "id": "competence",
+          "label": "Competence",
+          "construct_id": "content_knowledge",
+          "construct_match": "related"
+        },
+        {
+          "id": "performance",
+          "label": "Performance"
+        },
+        {
+          "id": "recognition",
+          "label": "Recognition"
+        },
+        {
+          "id": "science_identity",
+          "label": "Science Identity",
+          "construct_id": "disciplinary_identity",
+          "construct_match": "exact"
+        }
+      ],
+      "paths": [
+        {
+          "from": "competence",
+          "to": "science_identity",
+          "relationship": "Contributes to identity"
+        },
+        {
+          "from": "performance",
+          "to": "science_identity",
+          "relationship": "Contributes to identity"
+        },
+        {
+          "from": "recognition",
+          "to": "science_identity",
+          "relationship": "Contributes to identity"
+        }
+      ]
+    },
+    {
+      "id": "tam",
+      "label": "Technology Acceptance Model (TAM)",
+      "kind": "theory",
+      "description": "Perceived usefulness and ease of use shape the intention to use a technology and its actual use.",
+      "fields": [
+        "social_sciences",
+        "education"
+      ],
+      "citation": "Davis, F. D. (1989). Perceived usefulness, perceived ease of use, and user acceptance of information technology. MIS Quarterly, 13(3), 319-340.",
+      "doi": "10.2307/249008",
+      "citation_status": "added",
+      "concepts": [
+        {
+          "id": "perceived_usefulness",
+          "label": "Perceived Usefulness"
+        },
+        {
+          "id": "perceived_ease_of_use",
+          "label": "Perceived Ease of Use"
+        },
+        {
+          "id": "behavioral_intention_to_use",
+          "label": "Behavioral Intention to Use",
+          "construct_id": "behavioral_intention",
+          "construct_match": "exact"
+        },
+        {
+          "id": "actual_system_use",
+          "label": "Actual System Use"
+        }
+      ],
+      "paths": [
+        {
+          "from": "perceived_ease_of_use",
+          "to": "perceived_usefulness",
+          "relationship": "Influences usefulness"
+        },
+        {
+          "from": "perceived_ease_of_use",
+          "to": "behavioral_intention_to_use",
+          "relationship": "Influences intention"
+        },
+        {
+          "from": "perceived_usefulness",
+          "to": "behavioral_intention_to_use",
+          "relationship": "Influences intention"
+        },
+        {
+          "from": "behavioral_intention_to_use",
+          "to": "actual_system_use",
+          "relationship": "Predicts system use"
+        }
+      ]
+    },
+    {
+      "id": "hbm",
+      "label": "Health Belief Model (HBM)",
+      "kind": "theory",
+      "description": "Health behavior depends on perceived threat, benefits, barriers, self-efficacy, and cues to action.",
+      "fields": [
+        "social_sciences"
+      ],
+      "citation": "Rosenstock, I. M. (1974). The health belief model and preventive health behavior. Health Education Monographs, 2(4), 354-386.",
+      "doi": "10.1177/109019817400200405",
+      "citation_status": "provided",
+      "concepts": [
+        {
+          "id": "perceived_susceptibility",
+          "label": "Perceived Susceptibility"
+        },
+        {
+          "id": "perceived_severity",
+          "label": "Perceived Severity"
+        },
+        {
+          "id": "perceived_threat",
+          "label": "Perceived Threat"
+        },
+        {
+          "id": "perceived_benefits",
+          "label": "Perceived Benefits"
+        },
+        {
+          "id": "perceived_barriers",
+          "label": "Perceived Barriers"
+        },
+        {
+          "id": "self_efficacy",
+          "label": "Self-Efficacy",
+          "construct_id": "self_efficacy",
+          "construct_match": "exact"
+        },
+        {
+          "id": "cues_to_action",
+          "label": "Cues to Action"
+        },
+        {
+          "id": "preventive_behavior",
+          "label": "Preventive Behavior"
+        }
+      ],
+      "paths": [
+        {
+          "from": "perceived_susceptibility",
+          "to": "perceived_threat",
+          "relationship": "Contributes to perceived threat"
+        },
+        {
+          "from": "perceived_severity",
+          "to": "perceived_threat",
+          "relationship": "Contributes to perceived threat"
+        },
+        {
+          "from": "perceived_threat",
+          "to": "preventive_behavior",
+          "relationship": "May motivate action"
+        },
+        {
+          "from": "perceived_benefits",
+          "to": "preventive_behavior",
+          "relationship": "May support action"
+        },
+        {
+          "from": "perceived_barriers",
+          "to": "preventive_behavior",
+          "relationship": "May inhibit action"
+        },
+        {
+          "from": "cues_to_action",
+          "to": "preventive_behavior",
+          "relationship": "May prompt action"
+        },
+        {
+          "from": "self_efficacy",
+          "to": "preventive_behavior",
+          "relationship": "May support action"
+        }
+      ]
+    },
+    {
+      "id": "sct",
+      "label": "Social Cognitive Theory (SCT)",
+      "kind": "theory",
+      "description": "Personal, environmental, and behavioral factors influence each other; self-efficacy and outcome expectations guide behavior.",
+      "fields": [
+        "social_sciences",
+        "education"
+      ],
+      "citation": "Bandura, A. (1986). Social foundations of thought and action: A social cognitive theory. Prentice-Hall.",
+      "citation_status": "added",
+      "concepts": [
+        {
+          "id": "personal_factors",
+          "label": "Personal Factors"
+        },
+        {
+          "id": "environmental_factors",
+          "label": "Environmental Factors",
+          "construct_id": "learning_environment",
+          "construct_match": "related"
+        },
+        {
+          "id": "behavioral_factors",
+          "label": "Behavioral Factors"
+        },
+        {
+          "id": "observational_learning",
+          "label": "Observational Learning"
+        },
+        {
+          "id": "outcome_expectations",
+          "label": "Outcome Expectations"
+        },
+        {
+          "id": "self_efficacy",
+          "label": "Self-Efficacy",
+          "construct_id": "self_efficacy",
+          "construct_match": "exact"
+        }
+      ],
+      "paths": [
+        {
+          "from": "personal_factors",
+          "to": "behavioral_factors",
+          "relationship": "Reciprocal influence"
+        },
+        {
+          "from": "environmental_factors",
+          "to": "behavioral_factors",
+          "relationship": "Reciprocal influence"
+        },
+        {
+          "from": "behavioral_factors",
+          "to": "personal_factors",
+          "relationship": "Reciprocal influence"
+        },
+        {
+          "from": "observational_learning",
+          "to": "behavioral_factors",
+          "relationship": "Informs behavior"
+        },
+        {
+          "from": "outcome_expectations",
+          "to": "behavioral_factors",
+          "relationship": "Informs behavior"
+        },
+        {
+          "from": "self_efficacy",
+          "to": "behavioral_factors",
+          "relationship": "Informs behavior"
+        }
+      ]
+    },
+    {
+      "id": "self_efficacy_theory",
+      "label": "Self-Efficacy Theory",
+      "kind": "theory",
+      "description": "Self-efficacy is shaped by mastery experiences, vicarious experiences, verbal persuasion, and emotional states.",
+      "fields": [
+        "social_sciences",
+        "education"
+      ],
+      "citation": "Bandura, A. (1977). Self-efficacy: Toward a unifying theory of behavioral change. Psychological Review, 84(2), 191-215.",
+      "doi": "10.1037/0033-295X.84.2.191",
+      "citation_status": "provided",
+      "concepts": [
+        {
+          "id": "self_efficacy",
+          "label": "Self-Efficacy",
+          "construct_id": "self_efficacy",
+          "construct_match": "exact"
+        },
+        {
+          "id": "mastery_experiences",
+          "label": "Mastery Experiences"
+        },
+        {
+          "id": "vicarious_experiences",
+          "label": "Vicarious Experiences"
+        },
+        {
+          "id": "verbal_persuasion",
+          "label": "Verbal Persuasion"
+        },
+        {
+          "id": "emotional_and_physiological_states",
+          "label": "Emotional and Physiological States"
+        }
+      ],
+      "paths": [
+        {
+          "from": "mastery_experiences",
+          "to": "self_efficacy",
+          "relationship": "May strengthen self-efficacy"
+        },
+        {
+          "from": "vicarious_experiences",
+          "to": "self_efficacy",
+          "relationship": "May shape self-efficacy"
+        },
+        {
+          "from": "verbal_persuasion",
+          "to": "self_efficacy",
+          "relationship": "May shape self-efficacy"
+        },
+        {
+          "from": "emotional_and_physiological_states",
+          "to": "self_efficacy",
+          "relationship": "May shape self-efficacy"
+        }
+      ]
+    },
+    {
+      "id": "ttm",
+      "label": "Transtheoretical Model (Stages of Change)",
+      "kind": "theory",
+      "description": "People move through stages of readiness to change a behavior.",
+      "fields": [
+        "social_sciences"
+      ],
+      "citation": "Grimley, D., Prochaska, J. O., Velicer, W. F., Blais, L. M., & DiClemente, C. C. (1994). The transtheoretical model of change. In T. M. Brinthaupt & R. P. Lipka (Eds.), Changing the self: Philosophies, techniques, and experiences (pp. 201-227). SUNY Press.",
+      "citation_status": "provided",
+      "concepts": [
+        {
+          "id": "precontemplation",
+          "label": "Precontemplation"
+        },
+        {
+          "id": "contemplation",
+          "label": "Contemplation"
+        },
+        {
+          "id": "preparation",
+          "label": "Preparation"
+        },
+        {
+          "id": "action",
+          "label": "Action"
+        },
+        {
+          "id": "maintenance",
+          "label": "Maintenance"
+        }
+      ],
+      "paths": [
+        {
+          "from": "precontemplation",
+          "to": "contemplation",
+          "relationship": "Stage progression"
+        },
+        {
+          "from": "contemplation",
+          "to": "preparation",
+          "relationship": "Stage progression"
+        },
+        {
+          "from": "preparation",
+          "to": "action",
+          "relationship": "Stage progression"
+        },
+        {
+          "from": "action",
+          "to": "maintenance",
+          "relationship": "Stage progression"
+        }
+      ]
+    },
+    {
+      "id": "control_theory",
+      "label": "Control Theory",
+      "kind": "theory",
+      "description": "Behavior is regulated by comparing a perceived current state with a goal and adjusting to reduce the discrepancy.",
+      "fields": [
+        "social_sciences"
+      ],
+      "citation": "Carver, C. S., & Scheier, M. F. (1982). Control theory: A useful conceptual framework for personality-social, clinical, and health psychology. Psychological Bulletin, 92(1), 111-135.",
+      "doi": "10.1037/0033-2909.92.1.111",
+      "citation_status": "provided",
+      "concepts": [
+        {
+          "id": "goal_or_reference_state",
+          "label": "Goal or Reference State"
+        },
+        {
+          "id": "perceived_current_state",
+          "label": "Perceived Current State"
+        },
+        {
+          "id": "discrepancy",
+          "label": "Discrepancy"
+        },
+        {
+          "id": "behavior_adjustment",
+          "label": "Behavior Adjustment"
+        },
+        {
+          "id": "feedback",
+          "label": "Feedback"
+        }
+      ],
+      "paths": [
+        {
+          "from": "goal_or_reference_state",
+          "to": "discrepancy",
+          "relationship": "Defines the standard"
+        },
+        {
+          "from": "perceived_current_state",
+          "to": "discrepancy",
+          "relationship": "Provides input"
+        },
+        {
+          "from": "discrepancy",
+          "to": "behavior_adjustment",
+          "relationship": "Guides adjustment"
+        },
+        {
+          "from": "behavior_adjustment",
+          "to": "feedback",
+          "relationship": "Changes conditions"
+        },
+        {
+          "from": "feedback",
+          "to": "perceived_current_state",
+          "relationship": "Updates perception"
+        }
+      ]
+    },
+    {
+      "id": "com_b",
+      "label": "COM-B Model",
+      "kind": "theory",
+      "description": "Behavior results from capability, opportunity, and motivation.",
+      "fields": [
+        "social_sciences"
+      ],
+      "citation": "Michie, S., van Stralen, M. M., & West, R. (2011). The behaviour change wheel: A new method for characterising and designing behaviour change interventions. Implementation Science, 6, 42.",
+      "doi": "10.1186/1748-5908-6-42",
+      "citation_status": "added",
+      "concepts": [
+        {
+          "id": "psychological_capability",
+          "label": "Psychological Capability"
+        },
+        {
+          "id": "physical_capability",
+          "label": "Physical Capability"
+        },
+        {
+          "id": "social_opportunity",
+          "label": "Social Opportunity",
+          "construct_id": "subjective_norm",
+          "construct_match": "related"
+        },
+        {
+          "id": "physical_opportunity",
+          "label": "Physical Opportunity"
+        },
+        {
+          "id": "reflective_motivation",
+          "label": "Reflective Motivation"
+        },
+        {
+          "id": "automatic_motivation",
+          "label": "Automatic Motivation"
+        },
+        {
+          "id": "behavior",
+          "label": "Behavior"
+        }
+      ],
+      "paths": [
+        {
+          "from": "psychological_capability",
+          "to": "behavior",
+          "relationship": "Contributes to behavior"
+        },
+        {
+          "from": "physical_capability",
+          "to": "behavior",
+          "relationship": "Contributes to behavior"
+        },
+        {
+          "from": "social_opportunity",
+          "to": "behavior",
+          "relationship": "Contributes to behavior"
+        },
+        {
+          "from": "physical_opportunity",
+          "to": "behavior",
+          "relationship": "Contributes to behavior"
+        },
+        {
+          "from": "reflective_motivation",
+          "to": "behavior",
+          "relationship": "Contributes to behavior"
+        },
+        {
+          "from": "automatic_motivation",
+          "to": "behavior",
+          "relationship": "Contributes to behavior"
+        }
+      ]
+    },
+    {
+      "id": "tdf",
+      "label": "Theoretical Domains Framework (TDF)",
+      "kind": "theory",
+      "description": "Fourteen domains that influence behavior, used to study implementation problems.",
+      "fields": [
+        "social_sciences",
+        "education"
+      ],
+      "citation": "Atkins, L., Francis, J., Islam, R., O'Connor, D., Patey, A., Ivers, N., et al. (2017). A guide to using the Theoretical Domains Framework of behaviour change to investigate implementation problems. Implementation Science, 12, 77.",
+      "doi": "10.1186/s13012-017-0605-9",
+      "citation_status": "provided",
+      "concepts": [
+        {
+          "id": "knowledge",
+          "label": "Knowledge",
+          "construct_id": "content_knowledge",
+          "construct_match": "close"
+        },
+        {
+          "id": "skills",
+          "label": "Skills"
+        },
+        {
+          "id": "beliefs_about_capabilities",
+          "label": "Beliefs about Capabilities",
+          "construct_id": "self_efficacy",
+          "construct_match": "close"
+        },
+        {
+          "id": "beliefs_about_consequences",
+          "label": "Beliefs about Consequences"
+        },
+        {
+          "id": "intentions",
+          "label": "Intentions",
+          "construct_id": "behavioral_intention",
+          "construct_match": "exact"
+        },
+        {
+          "id": "goals",
+          "label": "Goals",
+          "construct_id": "goal_orientation",
+          "construct_match": "related"
+        },
+        {
+          "id": "social_influences",
+          "label": "Social Influences",
+          "construct_id": "subjective_norm",
+          "construct_match": "close"
+        },
+        {
+          "id": "social_and_professional_role_and_identity",
+          "label": "Social and Professional Role and Identity",
+          "construct_id": "disciplinary_identity",
+          "construct_match": "related"
+        },
+        {
+          "id": "environmental_context_and_resources",
+          "label": "Environmental Context and Resources",
+          "construct_id": "learning_environment",
+          "construct_match": "related"
+        },
+        {
+          "id": "emotion",
+          "label": "Emotion"
+        },
+        {
+          "id": "behavioral_regulation",
+          "label": "Behavioral Regulation",
+          "construct_id": "self_regulated_learning",
+          "construct_match": "related"
+        }
+      ],
+      "paths": []
+    },
+    {
+      "id": "operant",
+      "label": "Operant Conditioning",
+      "kind": "theory",
+      "description": "Behavior changes with its consequences: reinforcement and punishment.",
+      "fields": [
+        "social_sciences",
+        "education"
+      ],
+      "citation": "Skinner, B. F. (1953). Science and human behavior. Macmillan.",
+      "citation_status": "added",
+      "concepts": [
+        {
+          "id": "positive_reinforcement",
+          "label": "Positive Reinforcement"
+        },
+        {
+          "id": "negative_reinforcement",
+          "label": "Negative Reinforcement"
+        },
+        {
+          "id": "positive_punishment",
+          "label": "Positive Punishment"
+        },
+        {
+          "id": "negative_punishment",
+          "label": "Negative Punishment"
+        },
+        {
+          "id": "behavior",
+          "label": "Behavior"
+        }
+      ],
+      "paths": [
+        {
+          "from": "positive_reinforcement",
+          "to": "behavior",
+          "relationship": "Changes behavior"
+        },
+        {
+          "from": "negative_reinforcement",
+          "to": "behavior",
+          "relationship": "Changes behavior"
+        },
+        {
+          "from": "positive_punishment",
+          "to": "behavior",
+          "relationship": "Changes behavior"
+        },
+        {
+          "from": "negative_punishment",
+          "to": "behavior",
+          "relationship": "Changes behavior"
+        }
+      ]
+    },
+    {
+      "id": "sociocultural",
+      "label": "Sociocultural Theory",
+      "kind": "lens",
+      "description": "Learning and thinking develop through social interaction and cultural tools.",
+      "fields": [
+        "education",
+        "social_sciences",
+        "humanities"
+      ],
+      "citation": "Vygotsky, L. S. (1978). Mind in society: The development of higher psychological processes. Harvard University Press.",
+      "citation_status": "added",
+      "concepts": [],
+      "paths": []
+    },
+    {
+      "id": "communities_of_practice",
+      "label": "Communities of Practice / Situated Learning",
+      "kind": "lens",
+      "description": "Learning is participation in communities of practice, moving from peripheral to full participation.",
+      "fields": [
+        "education",
+        "social_sciences"
+      ],
+      "citation": "Lave, J., & Wenger, E. (1991). Situated learning: Legitimate peripheral participation. Cambridge University Press.",
+      "citation_status": "added",
+      "concepts": [],
+      "paths": []
+    },
+    {
+      "id": "critical_race_theory",
+      "label": "Critical Race Theory",
+      "kind": "lens",
+      "description": "Examines how race and racism shape law, institutions, and everyday life, centering the experiences of people of color.",
+      "fields": [
+        "education",
+        "social_sciences",
+        "humanities"
+      ],
+      "citation": "Delgado, R., & Stefancic, J. (2017). Critical race theory: An introduction (3rd ed.). New York University Press.",
+      "citation_status": "added",
+      "concepts": [],
+      "paths": []
+    },
+    {
+      "id": "intersectionality",
+      "label": "Intersectionality",
+      "kind": "lens",
+      "description": "Examines how overlapping social identities and systems of power shape experience.",
+      "fields": [
+        "education",
+        "social_sciences",
+        "humanities"
+      ],
+      "citation": "Crenshaw, K. (1989). Demarginalizing the intersection of race and sex. University of Chicago Legal Forum, 1989(1), 139-167.",
+      "citation_status": "added",
+      "concepts": [],
+      "paths": []
+    },
+    {
+      "id": "feminist_theory",
+      "label": "Feminist Theory",
+      "kind": "lens",
+      "description": "Examines gender, power, and knowledge; a family of perspectives rather than a single theory. Cite the specific work you draw on.",
+      "fields": [
+        "social_sciences",
+        "humanities",
+        "arts"
+      ],
+      "concepts": [],
+      "paths": []
+    },
+    {
+      "id": "postcolonial_theory",
+      "label": "Postcolonial and Decolonial Theory",
+      "kind": "lens",
+      "description": "Examines the legacies of colonialism in culture, knowledge, and institutions. Cite the specific work you draw on.",
+      "fields": [
+        "humanities",
+        "social_sciences",
+        "arts"
+      ],
+      "concepts": [],
+      "paths": []
+    },
+    {
+      "id": "phenomenology",
+      "label": "Phenomenology",
+      "kind": "lens",
+      "description": "Studies lived experience as people experience it.",
+      "fields": [
+        "social_sciences",
+        "humanities",
+        "education"
+      ],
+      "concepts": [],
+      "paths": []
+    },
+    {
+      "id": "critical_theory",
+      "label": "Critical Theory",
+      "kind": "lens",
+      "description": "Examines power, ideology, and social structures with the aim of social change. Cite the specific work you draw on.",
+      "fields": [
+        "social_sciences",
+        "humanities"
+      ],
+      "concepts": [],
+      "paths": []
+    },
+    {
+      "id": "new_historicism",
+      "label": "New Historicism and Cultural History",
+      "kind": "lens",
+      "description": "Reads texts and artifacts in relation to the cultural and historical conditions of their making.",
+      "fields": [
+        "humanities",
+        "arts"
+      ],
+      "concepts": [],
+      "paths": []
+    },
+    {
+      "id": "semiotics",
+      "label": "Semiotics and Visual Rhetoric",
+      "kind": "lens",
+      "description": "Analyzes how signs, images, and media make meaning.",
+      "fields": [
+        "humanities",
+        "arts",
+        "social_sciences"
+      ],
+      "concepts": [],
+      "paths": []
+    },
+    {
+      "id": "own_framework",
+      "label": "My own conceptual framework",
+      "kind": "own",
+      "description": "A framework you developed or adapted for this study. Describe it and list its concepts below.",
+      "fields": [
+        "education",
+        "social_sciences",
+        "humanities",
+        "arts"
+      ],
+      "concepts": [],
+      "paths": []
+    },
+    {
+      "id": "exploratory",
+      "label": "Exploratory or inductive (no framework chosen in advance)",
+      "kind": "exploratory",
+      "description": "Concepts emerge from the data, as in grounded theory or other inductive approaches. You can still list concepts or codes as they develop.",
+      "fields": [
+        "education",
+        "social_sciences",
+        "humanities",
+        "arts"
+      ],
+      "concepts": [],
+      "paths": []
+    }
+  ]
+}

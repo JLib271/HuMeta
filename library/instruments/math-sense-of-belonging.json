@@ -97,8 +97,7 @@
     "needs_check": [
       "Confirm item count, items per factor and response scale from the article.",
       "Add reliability evidence (alphas per factor and test-retest from Study 2) from the article.",
-      "Check reuse/adaptation terms with APA or the authors.",
-      "schema_config.json in this repo contains item wording attributed to this article; reconcile with the no-item-text rule."
+      "Check reuse/adaptation terms with APA or the authors."
     ]
   },
   "info_sources": [

@@ -329,3 +329,15 @@ def test_tooltips_carry_the_alignments(p):
     assert text.startswith(profile.element("resource.title", p)["definition"])
     assert "**Matches in other standards**" in text and "`titles.title`" in text and "`titl`" in text
     assert "answer options are defined by the HuMeta profile" in profile.alignment_help("study.population.human_participants", p)
+
+
+def test_theoretical_frameworks_are_validated_and_exported(lib, p):
+    record = copy.deepcopy(ARCHIVAL)
+    data = profile.to_datacite_json(record, lib, p)
+    fw = [s for s in data["subjects"] if s.get("subjectScheme") == "HuMeta Frameworks"]
+    assert [s["subject"] for s in fw] == ["New Historicism and Cultural History"]
+    assert fw[0]["valueUri"].endswith("frameworks.json#new_historicism")
+    methods = next(d["description"] for d in data["descriptions"] if d["descriptionType"] == "Methods")
+    assert "Theoretical framework: New Historicism and Cultural History." in methods
+    record["study"]["design"]["frameworks"] = ["not_a_framework"]
+    assert any(i.element == "study.design.frameworks" for i in profile.validate(record, lib, p))
