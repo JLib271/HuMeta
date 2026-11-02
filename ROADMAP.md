@@ -31,7 +31,7 @@ their data with common names and metadata, and sharing data responsibly.
 1. **Module 2 follow-ups.** Module 2 is now Framework and Measures, built on
    the library (frameworks, constructs, instruments, codebook). Next: let
    researchers pick individual library items, retire
-   `catalogs/measure_catalog.json`, add a downloadable R script (psych) for Module 5's analyses, and move
+   `catalogs/measure_catalog.json`, and move
    browsing (library, published studies, datasets) into one Explore page.
 2. **Test builder.** Assemble a form from items whose license allows it
    (respecting `requires_item_ids`), export to Qualtrics import format, a
@@ -44,7 +44,7 @@ their data with common names and metadata, and sharing data responsibly.
    sensitivity (direct identifiers, small cells, free text, dates), deposit
    packages (codebook + README) for repositories with access controls, and
    storing repository DOIs instead of hosting datasets in this repository.
-5. **Automatic column matching** in Module 5 using the shared variable names.
+5. **Module 5 next steps.** Done: automatic column matching, analysis by construct with pingouin, and an R script (psych). Next: confirmatory factor analysis (lavaan or semopy) and measurement invariance across groups, as recommended by researchers.
 
 ## Good first issues
 

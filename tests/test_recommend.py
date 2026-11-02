@@ -81,3 +81,11 @@ def test_suggestion_folders_are_allowed_for_pull_requests():
     allowed = next(ast.literal_eval(node.value) for node in ast.walk(ast.parse(source))
                    if isinstance(node, ast.Assign) and getattr(node.targets[0], "id", "") == "ALLOWED_PR_FOLDERS")
     assert set(R.FOLDERS.values()) <= set(allowed)
+
+
+def test_analysis_recommendation():
+    rec = R.analysis_recommendation(name="McDonald's omega", purpose="Reliability without tau-equivalence.",
+                                    software="psych::omega", doi="10.1037/met0000144")
+    assert R.analysis_problems(rec) == [] and R.file_for(rec)[0].startswith("suggestions/analyses/")
+    assert "psych::omega" in R.pr_description(rec)
+    assert R.analysis_problems(R.analysis_recommendation(name="", purpose="")) != []
