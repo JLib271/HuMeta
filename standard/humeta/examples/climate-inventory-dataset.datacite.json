@@ -233,6 +233,11 @@
       "schemeUri": "https://eric.ed.gov/?ti=all"
     },
     {
+      "subject": "Surveys",
+      "subjectScheme": "ERIC Thesaurus",
+      "schemeUri": "https://eric.ed.gov/?ti=all"
+    },
+    {
       "subject": "Data Analysis",
       "subjectScheme": "ERIC Thesaurus",
       "schemeUri": "https://eric.ed.gov/?ti=all"

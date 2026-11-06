@@ -392,7 +392,7 @@ Discipline(s) or subject area(s) the study is about; for education studies, also
 | `mathematics` | Mathematics and statistics | Mathematics Education |
 | `computer_science` | Computer science and computing | Computer Science Education |
 | `engineering` | Engineering | Engineering Education |
-| `general_stem` | General or interdisciplinary STEM | Science Education, STEM Education (unverified) |
+| `general_stem` | General or interdisciplinary STEM | Science Education, STEM Education |
 | `psychology` | Psychology |  |
 | `economics` | Economics and business |  |
 | `education_studies` | Education (as a subject: policy, foundations, teaching and learning) |  |
@@ -508,7 +508,7 @@ How instruction or participation was delivered.
 | Code | Label | ERIC descriptors |
 |---|---|---|
 | `in_person` | In person |  |
-| `online_synchronous` | Online, synchronous | Online Courses, Synchronous Communication (unverified) |
+| `online_synchronous` | Online, synchronous | Online Courses, Synchronous Communication |
 | `online_asynchronous` | Online, asynchronous | Online Courses, Asynchronous Communication |
 | `hybrid` | Hybrid / blended | Blended Learning |
 | `not_instructional` | Not an instructional setting |  |
@@ -525,7 +525,7 @@ The instructional setting in which learning or data collection took place.
 | `field` | Field course, field trip, or field site | Field Trips |
 | `online_course` | Online course environment | Online Courses |
 | `museum_exhibit` | Museum, exhibit, or science center | Museums, Informal Education |
-| `out_of_school_program` | Afterschool, summer, or out-of-school program | After School Programs, Summer Programs (unverified) |
+| `out_of_school_program` | Afterschool, summer, or out-of-school program | After School Programs, Summer Programs |
 | `community_or_public_space` | Community setting, public space, or event |  |
 | `home_family` | Home or family setting |  |
 | `workplace` | Workplace or professional setting |  |
@@ -544,7 +544,7 @@ Main instructional approach(es) used or studied (optional).
 | `inquiry_based` | Inquiry-based | Inquiry |
 | `problem_project_based` | Problem- or project-based | Problem Based Learning |
 | `flipped` | Flipped classroom | Flipped Classroom |
-| `student_centered` | Student-centered | Student Centered Learning (unverified) |
+| `student_centered` | Student-centered | Student Centered Learning |
 | `research_experience` | Course-based or apprenticed research experience | Undergraduate Study |
 | `other_pedagogy` | Other |  |
 
@@ -556,7 +556,7 @@ The design that produced the evidence in the resource.
 |---|---|---|
 | `cross_sectional` | Cross-sectional (single time point) |  |
 | `descriptive` | Descriptive | Educational Research |
-| `correlational` | Correlational | Correlation (unverified) |
+| `correlational` | Correlational | Correlation |
 | `quasi_experimental` | Quasi-experimental | Quasiexperimental Design |
 | `randomized_experiment` | Randomized experiment | Randomized Controlled Trials |
 | `longitudinal` | Longitudinal | Longitudinal Studies |
@@ -622,7 +622,7 @@ Kinds of reliability or validity evidence the resource provides, following the s
 
 | Code | Label | ERIC descriptors |
 |---|---|---|
-| `test_content` | Evidence based on test content | Content Validity (unverified), Test Validity |
+| `test_content` | Evidence based on test content | Content Validity, Test Validity |
 | `response_processes` | Evidence based on response processes | Test Validity |
 | `internal_structure` | Evidence based on internal structure | Construct Validity, Factor Analysis |
 | `relations_to_other_variables` | Evidence based on relations to other variables | Predictive Validity, Test Validity |
@@ -637,7 +637,7 @@ How data or sources were gathered. Each term maps to the DDI ModeOfCollection vo
 
 | Code | Label | ERIC descriptors |
 |---|---|---|
-| `survey` | Survey or questionnaire | Questionnaires, Surveys (unverified) |
+| `survey` | Survey or questionnaire | Questionnaires, Surveys |
 | `assessment` | Test or assessment | Tests |
 | `experiment` | Experiment (laboratory, field, or web-based) |  |
 | `interview` | Interview | Interviews |
@@ -652,7 +652,7 @@ How data or sources were gathered. Each term maps to the DDI ModeOfCollection vo
 | `corpus_collection` | Assembling a corpus of texts, images, or media (e.g., published works, news) |  |
 | `web_platform_data` | Web or platform data collection (API, scraping, data donation) |  |
 | `learning_analytics` | Learning analytics or system log data | Learning Analytics |
-| `institutional_records` | Institutional or administrative records | Student Records (unverified) |
+| `institutional_records` | Institutional or administrative records | Student Records |
 | `practice_based` | Practice-based or creative making (artworks, performances, designs) |  |
 | `other_method` | Other |  |
 
@@ -777,7 +777,7 @@ Kinds of sensitive information present in the underlying data.
 | `direct_identifiers` | Direct identifiers | Privacy |
 | `indirect_identifiers` | Indirect identifiers or small groups | Privacy |
 | `sensitive_information` | Sensitive personal information | Confidentiality |
-| `education_records` | Education records (FERPA) | Student Records (unverified), Privacy |
+| `education_records` | Education records (FERPA) | Student Records, Privacy |
 | `public_online_content` | Public online content that can be traced to its authors |  |
 
 ### <a id="online_data_practice"></a>Online data practices (`online_data_practice`)
@@ -898,27 +898,27 @@ Defined in [`library/constructs.json`](../../library/constructs.json).
 | `quantitative_reasoning` | Quantitative reasoning | Using numbers, graphs and mathematical relationships to make sense of disciplinary situations. | Numeracy, Mathematical Logic |
 | `self_efficacy` | Self-efficacy | A person's belief in their capability to succeed at specific tasks or in a specific domain. | Self Efficacy |
 | `perceived_behavioral_control` | Perceived behavioral control | Perceived ease or difficulty of performing a behavior, including access to needed resources (Theory of Planned Behavior). | Locus of Control |
-| `interest` | Interest | Enjoyment of and desire to engage with a subject, either in the moment (situational) or as an enduring disposition (individual). | Student Interests (unverified) |
+| `interest` | Interest | Enjoyment of and desire to engage with a subject, either in the moment (situational) or as an enduring disposition (individual). | Student Interests |
 | `task_value` | Task value | How interesting, important and useful a person judges a subject or task to be, and what it costs them to engage. | Values, Expectation |
 | `goal_orientation` | Goal orientation | The reasons a learner pursues academic tasks, such as mastering material versus demonstrating ability or earning grades. | Goal Orientation |
 | `anxiety` | Academic anxiety | Worry and emotional arousal related to a subject or to evaluation within it. | Anxiety, Test Anxiety, Mathematics Anxiety |
-| `attitude_toward_subject` | Attitude toward the subject or behavior | Overall positive or negative evaluation of a subject, activity or behavior. | Scientific Attitudes, Student Attitudes (unverified) |
+| `attitude_toward_subject` | Attitude toward the subject or behavior | Overall positive or negative evaluation of a subject, activity or behavior. | Scientific Attitudes, Student Attitudes |
 | `behavioral_intention` | Behavioral intention | Stated readiness or plan to perform a behavior, such as taking further courses or pursuing a major or career. | Intention, Academic Persistence |
 | `mindset` | Mindset / beliefs about ability | Beliefs about whether ability in a domain is fixed or can be developed, and about who can succeed. | Beliefs, Self Concept |
 | `sense_of_belonging` | Sense of belonging | Feeling accepted, valued and included as a member of a course, discipline, institution or community. | Sense of Belonging |
 | `disciplinary_identity` | Disciplinary identity | Seeing oneself, and being recognized by others, as the kind of person who does a discipline (e.g. a physics person, a scientist). | Professional Identity, Identification (Psychology) |
 | `subjective_norm` | Subjective norm | Perceived expectations from important others about whether one should perform a behavior. | Social Influences, Peer Influence |
-| `stereotype_perception` | Perceived stereotypes and climate | Awareness of stereotypes about who belongs or succeeds in a field, and perception of bias in the learning environment. | Stereotypes (unverified), Educational Environment |
+| `stereotype_perception` | Perceived stereotypes and climate | Awareness of stereotypes about who belongs or succeeds in a field, and perception of bias in the learning environment. | Stereotypes, Educational Environment |
 | `community_connectedness` | Classroom community | Perceived cohesion, trust and mutual support among learners and instructors in a learning setting. | Sense of Community |
 | `epistemological_beliefs` | Beliefs about the discipline and learning it | Beliefs about the nature of disciplinary knowledge and about what learning the discipline involves, often compared with expert views. | Epistemology, Beliefs |
 | `nature_of_science` | Understanding of the nature of science | Understanding of how scientific knowledge is generated, justified and revised. | Scientific Literacy, Epistemology |
 | `real_world_relevance` | Perceived real-world relevance | Seeing connections between disciplinary content and everyday life or societal issues. | Relevance (Education) |
 | `self_regulated_learning` | Self-regulated learning | Planning, monitoring and adjusting one's own learning, including metacognition and management of time and effort. | Metacognition, Self Management |
-| `learning_strategies` | Study and learning strategies | Specific cognitive and resource-management strategies used when studying, such as rehearsal, elaboration, organization and help seeking. | Learning Strategies, Study Habits (unverified) |
+| `learning_strategies` | Study and learning strategies | Specific cognitive and resource-management strategies used when studying, such as rehearsal, elaboration, organization and help seeking. | Learning Strategies, Study Habits |
 | `engagement` | Engagement | Behavioral, cognitive and emotional involvement in learning activities. | Learner Engagement |
-| `critical_thinking` | Critical thinking | Evaluating claims, evidence and arguments and applying prior knowledge to new problems. | Critical Thinking (unverified) |
+| `critical_thinking` | Critical thinking | Evaluating claims, evidence and arguments and applying prior knowledge to new problems. | Critical Thinking |
 | `teaching_practices` | Teaching practices | What instructors do during instruction, such as lecturing, posing questions, facilitating group work or giving feedback. | Teaching Methods |
-| `student_classroom_activity` | Student classroom activity | What students are observed doing during instruction, such as listening, discussing, working in groups or answering questions. | Classroom Observation Techniques, Student Behavior (unverified) |
-| `reformed_teaching` | Reformed / student-centered teaching | Degree to which instruction is inquiry-oriented and student-centered rather than transmission-oriented. | Active Learning, Inquiry, Student Centered Learning (unverified) |
+| `student_classroom_activity` | Student classroom activity | What students are observed doing during instruction, such as listening, discussing, working in groups or answering questions. | Classroom Observation Techniques, Student Behavior |
+| `reformed_teaching` | Reformed / student-centered teaching | Degree to which instruction is inquiry-oriented and student-centered rather than transmission-oriented. | Active Learning, Inquiry, Student Centered Learning |
 | `teaching_beliefs` | Instructor beliefs about teaching | Instructors' beliefs about how students learn and what effective teaching looks like. | Teacher Attitudes, Beliefs |
 | `learning_environment` | Learning environment perceptions | Learners' perceptions of course structure, support, fairness and climate. | Classroom Environment, Educational Environment |

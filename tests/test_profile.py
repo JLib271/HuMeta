@@ -1,4 +1,5 @@
 import copy
+import dataclasses
 import json
 import os
 import re
@@ -55,11 +56,17 @@ def test_every_eric_descriptor_has_a_status(p, lib):
     assert not used & set(status["rejected"]), "a rejected descriptor is still mapped"
 
 
-def test_eric_export_skips_unverified(lib):
-    verified_only = profile.eric_descriptors(EXAMPLE, lib)
-    everything = profile.eric_descriptors(EXAMPLE, lib, include_unverified=True)
+def test_eric_export_skips_unverified(p, lib):
+    # Every mapped descriptor is verified now, so mark one unverified for this test only.
+    status = copy.deepcopy(p.eric_status)
+    status["verified"] = [d for d in status["verified"] if d != "Surveys"]
+    status["unverified"] = [*status["unverified"], "Surveys"]
+    test_profile = dataclasses.replace(p, eric_status=status)
+    verified_only = profile.eric_descriptors(EXAMPLE, lib, test_profile)
+    everything = profile.eric_descriptors(EXAMPLE, lib, test_profile, include_unverified=True)
     assert "Surveys" in everything and "Surveys" not in verified_only
     assert "Climate" in verified_only
+    assert "Surveys" in profile.eric_descriptors(EXAMPLE, lib, p)
 
 
 @pytest.mark.parametrize("change, rule", [
