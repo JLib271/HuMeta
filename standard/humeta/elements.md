@@ -429,7 +429,7 @@ Who the participants are.
 | Code | Label | ERIC descriptors |
 |---|---|---|
 | `students` | Students / learners |  |
-| `educators` | Teachers, instructors, or teaching assistants |  |
+| `educators` | Teachers, instructors, or teaching assistants | Teachers, College Faculty, Teaching Assistants |
 | `professionals` | Researchers or other professionals |  |
 | `children_youth` | Children or youth |  |
 | `adults` | Adults | Adults |
@@ -571,7 +571,7 @@ The design that produced the evidence in the resource.
 | `secondary_analysis` | Secondary analysis of existing data | Data Analysis |
 | `meta_analysis` | Meta-analysis or systematic review | Meta Analysis |
 | `replication` | Replication | Replication (Evaluation) |
-| `ethnographic` | Ethnographic study |  |
+| `ethnographic` | Ethnographic study | Ethnography |
 | `historical` | Historical study |  |
 | `interpretive_critical` | Interpretive, critical, or theoretical study |  |
 | `practice_based` | Practice-based or creative research (e.g., making artworks, performances, designs) |  |
@@ -643,7 +643,7 @@ How data or sources were gathered. Each term maps to the DDI ModeOfCollection vo
 | `interview` | Interview | Interviews |
 | `focus_group` | Focus group | Focus Groups |
 | `observation` | Observation (non-participant) | Observation, Classroom Observation Techniques |
-| `ethnography` | Ethnography / participant observation |  |
+| `ethnography` | Ethnography / participant observation | Ethnography, Participant Observation |
 | `diaries` | Diaries, journals, or reflective writing |  |
 | `recording` | Audio or video recording |  |
 | `visual_methods` | Visual or arts-based methods (e.g., photo elicitation, photovoice, drawing) |  |

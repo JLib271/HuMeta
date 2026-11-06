@@ -2267,7 +2267,11 @@
         {
           "id": "educators",
           "label": "Teachers, instructors, or teaching assistants",
-          "eric": []
+          "eric": [
+            "Teachers",
+            "College Faculty",
+            "Teaching Assistants"
+          ]
         },
         {
           "id": "professionals",
@@ -2907,7 +2911,9 @@
         {
           "id": "ethnographic",
           "label": "Ethnographic study",
-          "eric": []
+          "eric": [
+            "Ethnography"
+          ]
         },
         {
           "id": "historical",
@@ -3347,7 +3353,10 @@
             "code": "Observation.Field.Participant",
             "match": "exact"
           },
-          "eric": []
+          "eric": [
+            "Ethnography",
+            "Participant Observation"
+          ]
         },
         {
           "id": "diaries",

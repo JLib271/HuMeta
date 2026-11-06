@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+* **ERIC descriptors for three terms that had none.** `study_design: ethnographic` →
+  Ethnography; `data_collection_method: ethnography` → Ethnography, Participant Observation;
+  `participant_role: educators` → Teachers, College Faculty, Teaching Assistants. Each was
+  checked on its ERIC Thesaurus page.
 * **All ERIC descriptors verified.** The 16 descriptors left unverified in
   1.0.0-draft.1 (Content Validity, Correlation, Critical Thinking, STEM
   Education, Stereotypes, Student Attitudes, Student Behavior, Student Centered
