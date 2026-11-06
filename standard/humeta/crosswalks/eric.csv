@@ -80,6 +80,9 @@ discipline,computer_science,Computer science and computing,Computer Science Educ
 discipline,engineering,Engineering,Engineering Education,verified
 discipline,general_stem,General or interdisciplinary STEM,Science Education,verified
 discipline,general_stem,General or interdisciplinary STEM,STEM Education,verified
+participant_role,educators,"Teachers, instructors, or teaching assistants",Teachers,verified
+participant_role,educators,"Teachers, instructors, or teaching assistants",College Faculty,verified
+participant_role,educators,"Teachers, instructors, or teaching assistants",Teaching Assistants,verified
 participant_role,adults,Adults,Adults,verified
 participant_role,visitors,"Museum, science-center, or event visitors",Museums,verified
 education_level,early_childhood,Early childhood / pre-K (ISCED 0),Early Childhood Education,verified
@@ -154,6 +157,7 @@ study_design,instrument_development,Instrument development or validation,Psychom
 study_design,secondary_analysis,Secondary analysis of existing data,Data Analysis,verified
 study_design,meta_analysis,Meta-analysis or systematic review,Meta Analysis,verified
 study_design,replication,Replication,Replication (Evaluation),verified
+study_design,ethnographic,Ethnographic study,Ethnography,verified
 measurement_evidence,test_content,Evidence based on test content,Content Validity,verified
 measurement_evidence,test_content,Evidence based on test content,Test Validity,verified
 measurement_evidence,response_processes,Evidence based on response processes,Test Validity,verified
@@ -172,6 +176,8 @@ data_collection_method,interview,Interview,Interviews,verified
 data_collection_method,focus_group,Focus group,Focus Groups,verified
 data_collection_method,observation,Observation (non-participant),Observation,verified
 data_collection_method,observation,Observation (non-participant),Classroom Observation Techniques,verified
+data_collection_method,ethnography,Ethnography / participant observation,Ethnography,verified
+data_collection_method,ethnography,Ethnography / participant observation,Participant Observation,verified
 data_collection_method,artifacts,"Work samples, documents, or artifacts produced by participants (e.g., student work)",Content Analysis,verified
 data_collection_method,learning_analytics,Learning analytics or system log data,Learning Analytics,verified
 data_collection_method,institutional_records,Institutional or administrative records,Student Records,verified
