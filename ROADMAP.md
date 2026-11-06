@@ -25,7 +25,7 @@ their data with common names and metadata, and sharing data responsibly.
 ## Next
 
 0. **HuMeta profile 1.0.** Public comment (including CARE review by Indigenous data governance experts),
-   confirm remaining ERIC descriptors, persistent term URIs, DOI, and society endorsements
+   persistent term URIs, DOI, and society endorsements
    (see `standard/humeta/endorsement/`).
 0b. **Field modules and a broader core.** Working groups for the Social Science module (done: DDI-based
    fields, a link to the study's DDI record, and DDI-Codebook 2.5 export; next: ELSST topics, and a

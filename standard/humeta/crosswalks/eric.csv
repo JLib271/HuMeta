@@ -13,7 +13,7 @@ construct,quantitative_reasoning,Quantitative reasoning,Numeracy,verified
 construct,quantitative_reasoning,Quantitative reasoning,Mathematical Logic,verified
 construct,self_efficacy,Self-efficacy,Self Efficacy,verified
 construct,perceived_behavioral_control,Perceived behavioral control,Locus of Control,verified
-construct,interest,Interest,Student Interests,unverified
+construct,interest,Interest,Student Interests,verified
 construct,task_value,Task value,Values,verified
 construct,task_value,Task value,Expectation,verified
 construct,goal_orientation,Goal orientation,Goal Orientation,verified
@@ -21,7 +21,7 @@ construct,anxiety,Academic anxiety,Anxiety,verified
 construct,anxiety,Academic anxiety,Test Anxiety,verified
 construct,anxiety,Academic anxiety,Mathematics Anxiety,verified
 construct,attitude_toward_subject,Attitude toward the subject or behavior,Scientific Attitudes,verified
-construct,attitude_toward_subject,Attitude toward the subject or behavior,Student Attitudes,unverified
+construct,attitude_toward_subject,Attitude toward the subject or behavior,Student Attitudes,verified
 construct,behavioral_intention,Behavioral intention,Intention,verified
 construct,behavioral_intention,Behavioral intention,Academic Persistence,verified
 construct,mindset,Mindset / beliefs about ability,Beliefs,verified
@@ -31,7 +31,7 @@ construct,disciplinary_identity,Disciplinary identity,Professional Identity,veri
 construct,disciplinary_identity,Disciplinary identity,Identification (Psychology),verified
 construct,subjective_norm,Subjective norm,Social Influences,verified
 construct,subjective_norm,Subjective norm,Peer Influence,verified
-construct,stereotype_perception,Perceived stereotypes and climate,Stereotypes,unverified
+construct,stereotype_perception,Perceived stereotypes and climate,Stereotypes,verified
 construct,stereotype_perception,Perceived stereotypes and climate,Educational Environment,verified
 construct,community_connectedness,Classroom community,Sense of Community,verified
 construct,epistemological_beliefs,Beliefs about the discipline and learning it,Epistemology,verified
@@ -42,15 +42,15 @@ construct,real_world_relevance,Perceived real-world relevance,Relevance (Educati
 construct,self_regulated_learning,Self-regulated learning,Metacognition,verified
 construct,self_regulated_learning,Self-regulated learning,Self Management,verified
 construct,learning_strategies,Study and learning strategies,Learning Strategies,verified
-construct,learning_strategies,Study and learning strategies,Study Habits,unverified
+construct,learning_strategies,Study and learning strategies,Study Habits,verified
 construct,engagement,Engagement,Learner Engagement,verified
-construct,critical_thinking,Critical thinking,Critical Thinking,unverified
+construct,critical_thinking,Critical thinking,Critical Thinking,verified
 construct,teaching_practices,Teaching practices,Teaching Methods,verified
 construct,student_classroom_activity,Student classroom activity,Classroom Observation Techniques,verified
-construct,student_classroom_activity,Student classroom activity,Student Behavior,unverified
+construct,student_classroom_activity,Student classroom activity,Student Behavior,verified
 construct,reformed_teaching,Reformed / student-centered teaching,Active Learning,verified
 construct,reformed_teaching,Reformed / student-centered teaching,Inquiry,verified
-construct,reformed_teaching,Reformed / student-centered teaching,Student Centered Learning,unverified
+construct,reformed_teaching,Reformed / student-centered teaching,Student Centered Learning,verified
 construct,teaching_beliefs,Instructor beliefs about teaching,Teacher Attitudes,verified
 construct,teaching_beliefs,Instructor beliefs about teaching,Beliefs,verified
 construct,learning_environment,Learning environment perceptions,Classroom Environment,verified
@@ -79,7 +79,7 @@ discipline,mathematics,Mathematics and statistics,Mathematics Education,verified
 discipline,computer_science,Computer science and computing,Computer Science Education,verified
 discipline,engineering,Engineering,Engineering Education,verified
 discipline,general_stem,General or interdisciplinary STEM,Science Education,verified
-discipline,general_stem,General or interdisciplinary STEM,STEM Education,unverified
+discipline,general_stem,General or interdisciplinary STEM,STEM Education,verified
 participant_role,adults,Adults,Adults,verified
 participant_role,visitors,"Museum, science-center, or event visitors",Museums,verified
 education_level,early_childhood,Early childhood / pre-K (ISCED 0),Early Childhood Education,verified
@@ -117,7 +117,7 @@ institution_type,online_provider,Online learning provider,Distance Education,ver
 locale,city,City (NCES 11–13),Urban Areas,verified
 locale,rural,Rural (NCES 41–43),Rural Areas,verified
 modality,online_synchronous,"Online, synchronous",Online Courses,verified
-modality,online_synchronous,"Online, synchronous",Synchronous Communication,unverified
+modality,online_synchronous,"Online, synchronous",Synchronous Communication,verified
 modality,online_asynchronous,"Online, asynchronous",Online Courses,verified
 modality,online_asynchronous,"Online, asynchronous",Asynchronous Communication,verified
 modality,hybrid,Hybrid / blended,Blended Learning,verified
@@ -131,16 +131,16 @@ learning_environment,online_course,Online course environment,Online Courses,veri
 learning_environment,museum_exhibit,"Museum, exhibit, or science center",Museums,verified
 learning_environment,museum_exhibit,"Museum, exhibit, or science center",Informal Education,verified
 learning_environment,out_of_school_program,"Afterschool, summer, or out-of-school program",After School Programs,verified
-learning_environment,out_of_school_program,"Afterschool, summer, or out-of-school program",Summer Programs,unverified
+learning_environment,out_of_school_program,"Afterschool, summer, or out-of-school program",Summer Programs,verified
 pedagogy,lecture_based,Lecture-based,Lecture Method,verified
 pedagogy,active_learning,Active learning,Active Learning,verified
 pedagogy,inquiry_based,Inquiry-based,Inquiry,verified
 pedagogy,problem_project_based,Problem- or project-based,Problem Based Learning,verified
 pedagogy,flipped,Flipped classroom,Flipped Classroom,verified
-pedagogy,student_centered,Student-centered,Student Centered Learning,unverified
+pedagogy,student_centered,Student-centered,Student Centered Learning,verified
 pedagogy,research_experience,Course-based or apprenticed research experience,Undergraduate Study,verified
 study_design,descriptive,Descriptive,Educational Research,verified
-study_design,correlational,Correlational,Correlation,unverified
+study_design,correlational,Correlational,Correlation,verified
 study_design,quasi_experimental,Quasi-experimental,Quasiexperimental Design,verified
 study_design,randomized_experiment,Randomized experiment,Randomized Controlled Trials,verified
 study_design,longitudinal,Longitudinal,Longitudinal Studies,verified
@@ -154,7 +154,7 @@ study_design,instrument_development,Instrument development or validation,Psychom
 study_design,secondary_analysis,Secondary analysis of existing data,Data Analysis,verified
 study_design,meta_analysis,Meta-analysis or systematic review,Meta Analysis,verified
 study_design,replication,Replication,Replication (Evaluation),verified
-measurement_evidence,test_content,Evidence based on test content,Content Validity,unverified
+measurement_evidence,test_content,Evidence based on test content,Content Validity,verified
 measurement_evidence,test_content,Evidence based on test content,Test Validity,verified
 measurement_evidence,response_processes,Evidence based on response processes,Test Validity,verified
 measurement_evidence,internal_structure,Evidence based on internal structure,Construct Validity,verified
@@ -166,7 +166,7 @@ measurement_evidence,reliability,Reliability / precision,Test Reliability,verifi
 measurement_evidence,fairness,Fairness / differential item functioning,Test Bias,verified
 measurement_evidence,irt_scaling,Item response theory scaling,Item Response Theory,verified
 data_collection_method,survey,Survey or questionnaire,Questionnaires,verified
-data_collection_method,survey,Survey or questionnaire,Surveys,unverified
+data_collection_method,survey,Survey or questionnaire,Surveys,verified
 data_collection_method,assessment,Test or assessment,Tests,verified
 data_collection_method,interview,Interview,Interviews,verified
 data_collection_method,focus_group,Focus group,Focus Groups,verified
@@ -174,7 +174,7 @@ data_collection_method,observation,Observation (non-participant),Observation,ver
 data_collection_method,observation,Observation (non-participant),Classroom Observation Techniques,verified
 data_collection_method,artifacts,"Work samples, documents, or artifacts produced by participants (e.g., student work)",Content Analysis,verified
 data_collection_method,learning_analytics,Learning analytics or system log data,Learning Analytics,verified
-data_collection_method,institutional_records,Institutional or administrative records,Student Records,unverified
+data_collection_method,institutional_records,Institutional or administrative records,Student Records,verified
 analysis_method,statistical,Statistical or quantitative analysis,Data Analysis,verified
 analysis_method,psychometric,"Psychometric or measurement modeling (e.g., factor analysis, IRT)",Psychometrics,verified
 analysis_method,thematic,Qualitative coding or thematic analysis,Qualitative Research,verified
@@ -185,6 +185,6 @@ consent,permission_and_assent,Parent/guardian permission and participant assent,
 sensitivity_flag,direct_identifiers,Direct identifiers,Privacy,verified
 sensitivity_flag,indirect_identifiers,Indirect identifiers or small groups,Privacy,verified
 sensitivity_flag,sensitive_information,Sensitive personal information,Confidentiality,verified
-sensitivity_flag,education_records,Education records (FERPA),Student Records,unverified
+sensitivity_flag,education_records,Education records (FERPA),Student Records,verified
 sensitivity_flag,education_records,Education records (FERPA),Privacy,verified
 indigenous_data,yes,Yes,Indigenous Populations,verified

@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+* **All ERIC descriptors verified.** The 16 descriptors left unverified in
+  1.0.0-draft.1 (Content Validity, Correlation, Critical Thinking, STEM
+  Education, Stereotypes, Student Attitudes, Student Behavior, Student Centered
+  Learning, Student Interests, Student Motivation, Student Records, Study
+  Habits, Study Skills, Summer Programs, Surveys, Synchronous Communication)
+  were checked against their ERIC Thesaurus term pages and are all current
+  descriptors. They are now included in ERIC and DataCite exports.
 * **Disciplines follow ANZSRC 2020 Fields of Research.** `study.discipline`
   now offers the 23 divisions and 213 groups of the ANZSRC 2020 FoR (from the
   official code set published by Stats NZ's research information system),
@@ -115,6 +122,6 @@ First public draft for community comment.
 
 * Public comment period, including review of the CARE elements by Indigenous
   data governance experts.
-* Confirm the remaining unverified ERIC descriptors.
+* ~~Confirm the remaining unverified ERIC descriptors.~~ Done.
 * Replace provisional GitHub URIs for terms with persistent identifiers.
 * Register a DOI for the 1.0.0 release.
