@@ -79,7 +79,8 @@
       "Confirm co-developers (Gold, Harris, McNeal, Bowles) agree with republishing.",
       "Add Rasch person and item reliability from Libarkin et al. (2018).",
       "Add evidence from Aksit et al. (2018), undergraduates in an introductory Earth science course.",
-      "A 2015 AGU abstract describes a 24-item draft reduced to 18; confirm how that relates to the published 21-item version."
+      "A 2015 AGU abstract describes a 24-item draft reduced to 18; confirm how that relates to the published 21-item version.",
+      "Developer to confirm the rubric review, and add expert review (V), student interviews or think-alouds (IV.G, VI), and item-writing (X) criteria if met."
     ]
   },
   "info_sources": [
@@ -88,5 +89,40 @@
     "https://agu.confex.com/agu/fm15/webprogram/Paper85366.html",
     "https://zendy.io/title/10.1002/tea.21430",
     "https://doi.org/10.1007/s10584-018-2279-y"
-  ]
+  ],
+  "development": {
+    "basis": "construct_definition",
+    "notes": "Built from published items, research on climate change conceptions, and instructor experience to measure understanding of basic climate change processes. No theory of the construct is named."
+  },
+  "rubric_review": {
+    "pre_item_content": {
+      "criteria": [
+        "A",
+        "D"
+      ],
+      "source": "Libarkin, J. C., Gold, A. U., Harris, S. E., McNeal, K. S., & Bowles, R. P. (2018). A new, valid measure of climate change understanding: Associations with risk perception. Climatic Change, 150(3-4), 403-416. doi:10.1007/s10584-018-2279-y",
+      "notes": "Items drew on research on climate change conceptions and on previously published items (as summarized in this record's description).",
+      "reviewed_by": "Drafted by maintainers from public sources; awaiting developer confirmation",
+      "reviewed_on": "2026-11-06"
+    },
+    "item_analysis": {
+      "criteria": [
+        "D",
+        "E"
+      ],
+      "source": "Libarkin, J. C., Gold, A. U., Harris, S. E., McNeal, K. S., & Bowles, R. (2015). Psychometric principles in measurement for geoscience education research: A climate change example. AGU Fall Meeting abstract (https://agu.confex.com/agu/fm15/webprogram/Paper85366.html)",
+      "notes": "Rasch analysis of more than 1,000 responses; five items removed for misfit.",
+      "reviewed_by": "Drafted by maintainers from public sources; awaiting developer confirmation",
+      "reviewed_on": "2026-11-06"
+    },
+    "criterion_construct": {
+      "criteria": [
+        "C"
+      ],
+      "source": "Libarkin, J. C., Gold, A. U., Harris, S. E., McNeal, K. S., & Bowles, R. P. (2018). A new, valid measure of climate change understanding: Associations with risk perception. Climatic Change, 150(3-4), 403-416. doi:10.1007/s10584-018-2279-y",
+      "notes": "Inventory scores were modeled with worldview, values, and other variables to predict climate change risk perception, which the authors present as concurrent validity.",
+      "reviewed_by": "Drafted by maintainers from public sources; awaiting developer confirmation",
+      "reviewed_on": "2026-11-06"
+    }
+  }
 }

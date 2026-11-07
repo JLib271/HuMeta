@@ -63,15 +63,15 @@ def test_inter_rater_is_reliability_outside_the_rubric(lib):
 
 def test_rubric_review_and_independence(lib):
     lib2 = copy.deepcopy(lib)
-    inst = lib2.instruments["gci"]
-    inst["rubric_review"] = {"pre_item_content": {"criteria": ["G"], "source": "Libarkin & Anderson (2006)"}}
+    inst = lib2.instruments["mslq"]
+    inst["rubric_review"] = {"pre_item_content": {"criteria": ["G"], "source": "a test source"}}
     for e in lib2.evidence:
-        if e["instrument_id"] == "gci":
+        if e["instrument_id"] == "mslq":
             e["source"]["independent"] = True
-    prof = EV.profile(lib2, "gci")
+    prof = EV.profile(lib2, "mslq")
     assert _crit(prof, "pre_item_content", "G").status == "met"
     assert prof.coverage("validity")[0] == 1
-    assert prof.independent == 1 and "independent" in prof.tags
+    assert prof.independent == 15 and "independent" in prof.tags
     assert not any("developers" in f for f in prof.flags)
 
 
@@ -86,3 +86,9 @@ def test_no_evidence(lib):
     prof = EV.profile(lib, "class")
     assert prof.flags == ["No reliability or validity evidence is recorded yet."]
     assert EV.summary_line(prof).startswith("Reliability 0/3 · Validity 0/6")
+
+
+def test_gci_review_counts(lib):
+    prof = EV.profile(lib, "gci")
+    assert _crit(prof, "communication", "A").status == "met"
+    assert prof.coverage("validity")[0] >= 4

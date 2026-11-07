@@ -518,6 +518,15 @@ class Site:
                 cell = '<span class="note">Not reported</span>'
             rows.append([f'<strong>{h(cat.numeral)}.</strong> {h(cat.label)}', h(EV.KIND_LABELS[cat.kind]), cell])
         out.append(self.table(["Category", "Kind", "Criteria with evidence"], rows, cls="profile"))
+        review = inst.get("rubric_review") or {}
+        if review:
+            names = {c["id"]: f'{c["numeral"]}. {c["label"]}' for c in self.lib.rubric}
+            first = next(iter(review.values()))
+            items = "".join(f'<li><strong>{h(names.get(cat, cat))}</strong> ({h(", ".join(r.get("criteria", [])))}): '
+                            f'{h(r.get("notes", ""))} <span class="note">Source: {h(r.get("source"))}</span></li>'
+                            for cat, r in review.items())
+            out.append(f'<details><summary>Rubric review: sources and notes</summary><ul>{items}</ul>'
+                       f'<p class="note">{h(first.get("reviewed_by", ""))}{", " + h(first["reviewed_on"]) if first.get("reviewed_on") else ""}.</p></details>')
         if prof.other_reliability:
             out.append('<p class="note">Also recorded, outside the rubric: '
                        + "; ".join(f'{h(label(e["evidence_type"]))} ({h(e["statistic"].get("notes") or e["statistic"].get("value"))})'
@@ -556,7 +565,7 @@ class Site:
         legend = "".join(f'<li><strong>{h(c["numeral"])}</strong> {h(c["label"])}</li>' for c in cats)
         parts = ['<h1>Compare instruments</h1>',
                  '<p class="lead">Which kinds of reliability and validity evidence each instrument has, checked against the '
-                 f'library\'s <a href="{root}about/#rubric">rubric</a>. Letters are the rubric criteria with evidence; a '
+                 f'library\'s <a href="{root}about/#rubric">rubric</a>{" (by " + h(json.loads((self.lib.root / "evidence_rubric.json").read_text(encoding="utf-8")).get("credit", "")) + ")" if json.loads((self.lib.root / "evidence_rubric.json").read_text(encoding="utf-8")).get("credit") else ""}. Letters are the rubric criteria with evidence; a '
                  'shaded cell means some reported values fall below the rubric\'s threshold; a blank cell means nothing is '
                  'recorded yet.</p>',
                  '<p class="note">The library does not combine these into one score: a missing category may mean the work '
@@ -735,8 +744,13 @@ class Site:
                  f'<h2>Cite</h2><p>HuMeta Instrument Library, HuMeta Portal. {h(LIBRARY_SITE_URL)} (accessed {self.today}).</p>']
         self.write_page("about/", "About the HuMeta Library", "\n".join(parts))
 
+    def lib_rubric_credit(self) -> str:
+        doc = json.loads((self.lib.root / "evidence_rubric.json").read_text(encoding="utf-8"))
+        return doc.get("title", "Reliability and validity rubric") + (f", by {doc['credit']}" if doc.get("credit") else "")
+
     def rubric_section(self) -> str:
         out = ['<h2 id="rubric">Reliability and validity rubric</h2>',
+               f'<p class="note">Rubric: {h(self.lib_rubric_credit())}.</p>',
                '<p>Each instrument\'s evidence profile checks its recorded evidence against this rubric. Instruments do not '
                'need a theory behind them to be included; they need a clear account of what they measure, and the profile '
                'shows how well the evidence supports using them. Item writing categories apply only to multiple-choice or '
