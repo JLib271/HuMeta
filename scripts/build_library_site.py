@@ -39,6 +39,15 @@ ASSETS = REPO / "library_site"
 REPO_URL = "https://github.com/JLib271/HuMeta"
 COMMONS_URL = "https://stemedplus.hcommons.org/"
 CONTRIBUTE_URL = f"{REPO_URL}/blob/main/CONTRIBUTING.md"
+RECOMMEND_URL = f"{REPO_URL}/issues/new?template=instrument_submission.yml"
+SIGNUP_URL = "https://github.com/signup"
+
+
+def correction_url(record_name: str, page_url: str) -> str:
+    """GitHub issue form for a correction, with the record filled in."""
+    from urllib.parse import quote
+    return (f"{REPO_URL}/issues/new?template=library_correction.yml&title={quote('Correction: ' + record_name)}"
+            f"&record={quote(record_name + ' (' + page_url + ')')}")
 
 # --------------------------------------------------------------- labels
 LABELS = {
@@ -183,7 +192,7 @@ class Site:
 <a class="skip" href="#main">Skip to content</a>
 <header class="top"><div class="wrap">
 <a class="brand" href="{root}">HuMeta Library</a>
-<nav aria-label="Library sections"><a href="{root}#instrument">Instruments</a> <a href="{root}#theory">Theories and lenses</a> <a href="{root}#construct">Constructs</a> <a href="{root}compare/">Compare instruments</a> <a href="{root}reference/">Scales and variables</a> <a href="{root}about/">About</a></nav>
+<nav aria-label="Library sections"><a href="{root}#instrument">Instruments</a> <a href="{root}#theory">Theories and lenses</a> <a href="{root}#construct">Constructs</a> <a href="{root}compare/">Compare instruments</a> <a href="{root}reference/">Scales and variables</a> <a href="{root}about/">About</a> <a class="navbtn" href="{root}recommend/">Recommend an instrument</a></nav>
 </div></header>
 <main id="main" class="wrap">
 {body}
@@ -209,11 +218,11 @@ class Site:
         if not rel.endswith(".html"):
             self.pages.append(rel)
 
-    def recommend_note(self, what: str) -> str:
-        where = (f'the {ext(PORTAL_URL, "HuMeta Portal")} (Module 2, Recommend tabs)' if PORTAL_URL
-                 else "the HuMeta Portal (Module 2, Recommend tabs)")
-        return (f'<p class="note">Spot a mistake or something missing in this {what}? Suggest a correction in {where}, '
-                f'or see {ext(CONTRIBUTE_URL, "how to contribute")}. Suggestions are reviewed before they are added.</p>')
+    def recommend_note(self, what: str, name: str = "", page: str = "") -> str:
+        fix = ext(correction_url(name, LIBRARY_SITE_URL + page), "Suggest a correction") if name else \
+            ext(f"{REPO_URL}/issues/new?template=library_correction.yml", "Suggest a correction")
+        return (f'<p class="note">Spot a mistake or something missing in this {what}? {fix} (a short form on GitHub; a free '
+                f'account is needed). Suggestions are reviewed before they are added.</p>')
 
     # ---------- relationships
     def construct_instruments(self, cid: str) -> list[tuple[dict, list[str]]]:
@@ -405,7 +414,8 @@ class Site:
             parts.append("<p><strong>Information drawn from:</strong></p><ul>"
                          + "".join(f"<li>{ext(u)}</li>" for u in inst["info_sources"]) + "</ul>")
         parts.append(self.record_footer("instrument record", f"data/instruments/{iid}.json", root,
-                                         extra=f' · <a href="{root}data/evidence/{iid}.json">Evidence (JSON)</a>' if ev else ""))
+                                         extra=f' · <a href="{root}data/evidence/{iid}.json">Evidence (JSON)</a>' if ev else "",
+                                         name=title, page=self.url("instruments", iid)))
         self.write_page(self.url("instruments", iid), title, "\n".join(parts), inst.get("description", ""))
 
     def items_block(self, inst: dict, vid: str, vlabel: str, rec: dict, text_ok: bool, key_ok: bool) -> str:
@@ -532,6 +542,37 @@ class Site:
                                    for e in prof.other_reliability) + ".</p>")
         return "\n".join(out)
 
+    def recommend_page(self) -> None:
+        root = "../"
+        example = next((i for i in self.lib.instruments.values() if i.get("rubric_review")), None)
+        parts = ['<h1>Recommend an instrument</h1>',
+                 '<p class="lead">Know a research instrument that should be in the library? Tell us about it. Only three '
+                 'things are required: its name, where it was published, and what it measures.</p>',
+                 f'<p><a class="btn" href="{h(RECOMMEND_URL)}" target="_blank" rel="noopener noreferrer">Open the recommendation '
+                 'form<span class="vh"> (opens in a new tab)</span></a></p>',
+                 f'<p class="note">The form is on GitHub, so you need a free GitHub account ({ext(SIGNUP_URL, "sign up")}). '
+                 'Submissions are public; do not include item text unless the instrument\'s license allows it.</p>',
+                 '<h2>What counts</h2><ul>'
+                 '<li><strong>Any instrument with a clear account of what it measures.</strong> It does not need a theory behind '
+                 'it, and it does not need complete evidence: the library shows what evidence exists so researchers can judge '
+                 'for themselves.</li>'
+                 '<li>Concept inventories and knowledge tests, attitude and belief surveys, self-report scales, observation '
+                 'protocols, interview protocols, and rubrics, in education, the social sciences, and the humanities.</li>'
+                 '<li>New versions, translations, or adaptations of instruments already in the library are welcome too.</li></ul>',
+                 f'<h2>Helpful extras</h2><p>The form also asks, optionally, how the instrument was developed, how to get it, and '
+                 f'which parts of the library\'s <a href="{root}about/#rubric">reliability and validity rubric</a> the developers '
+                 'or later studies addressed, with citations. Leave out anything you are not sure about; a maintainer checks '
+                 'the sources and fills in the rest.</p>'
+                 + (f'<p class="note">For an example of a complete record, see the <a href="{root}{self.url("instruments", example["id"])}">'
+                    f'{h(example["name"])}</a>.</p>' if example else ""),
+                 '<h2>What happens next</h2><ol><li>A maintainer checks the citation and sources.</li>'
+                 '<li>They add the instrument to the library as a <strong>Draft</strong> record, with its evidence profile.</li>'
+                 '<li>Experts in the field review it over time; corrections are always welcome.</li></ol>',
+                 '<h2>Fixing an existing record</h2><p>Use the <strong>Suggest a correction</strong> link at the bottom of any '
+                 'instrument, theory, or construct page. The form opens with the record already filled in.</p>']
+        self.write_page("recommend/", "Recommend an instrument", "\n".join(parts),
+                        "Recommend a research instrument for the HuMeta Library.")
+
     def compare_page(self) -> None:
         root = "../"
         cats = [c for c in self.lib.rubric]
@@ -577,6 +618,7 @@ class Site:
                  '<option value="samples">Number of samples</option><option value="ind">Independent records</option></select></div>',
                  '<p class="note scroll-hint">On a narrow screen, scroll the table sideways to see every column.</p>',
                  f'<div class="tbl compare"><table id="compare"><thead><tr>{th}</tr></thead><tbody>{body}</tbody></table></div>',
+                 f'<p>Know an instrument that is missing? <a href="{root}recommend/">Recommend it</a>.</p>',
                  f'<h2>Rubric categories</h2><ol class="legend">{legend}</ol>',
                  f'<p class="dl">Download: <a href="{root}data/evidence_profiles.csv">Evidence profiles (CSV)</a> · '
                  f'<a href="{root}data/evidence_rubric.json">Rubric (JSON)</a></p>']
@@ -638,7 +680,8 @@ class Site:
                          'check that an instrument fits how this theory defines the construct.</p><ul>'
                          + "".join(f'<li><a href="{root}{self.url("instruments", i)}">{h(insts[i]["name"])}</a></li>'
                                    for i in sorted(insts, key=lambda k: insts[k]["name"].lower())) + "</ul>")
-        parts.append(self.record_footer("theory record", "data/frameworks.json", root))
+        parts.append(self.record_footer("theory record", "data/frameworks.json", root, name=fw["label"],
+                                         page=self.url("frameworks", fid)))
         self.write_page(self.url("frameworks", fid), fw["label"], "\n".join(parts), fw.get("description", ""))
 
     # ---------- constructs
@@ -676,7 +719,8 @@ class Site:
                 for f, fc in fws) + "</ul>")
         else:
             parts.append("<p>No theories in the library are linked to this construct yet.</p>")
-        parts.append(self.record_footer("construct", "data/constructs.json", root))
+        parts.append(self.record_footer("construct", "data/constructs.json", root, name=c["label"],
+                                         page=self.url("constructs", cid)))
         self.write_page(self.url("constructs", cid), c["label"], "\n".join(parts), c.get("definition", ""))
 
     # ---------- reference
@@ -743,7 +787,8 @@ class Site:
                  f'<a href="{root}data/instruments.csv">instruments</a>, <a href="{root}data/frameworks.csv">theories and lenses</a>, '
                  f'<a href="{root}data/constructs.csv">constructs</a>, <a href="{root}data/evidence.csv">evidence</a>. '
                  f'The record format is published as JSON Schemas in the {ext(REPO_URL + "/tree/main/library/schema", "library schema folder")}.</p>',
-                 '<h2>Contribute</h2>' + self.recommend_note("library").replace('<p class="note">', "<p>"),
+                 f'<h2>Contribute</h2><p><a href="{root}recommend/">Recommend an instrument</a> that is missing, or use the '
+                 '"Suggest a correction" link at the bottom of any record. Suggestions are reviewed before they are added.</p>',
                  f'<h2>Cite</h2><p>HuMeta Instrument Library, HuMeta Portal. {h(LIBRARY_SITE_URL)} (accessed {self.today}).</p>']
         self.write_page("about/", "About the HuMeta Library", "\n".join(parts))
 
@@ -797,6 +842,7 @@ class Site:
         body = f"""<div class="hero">
 <h1>HuMeta Library</h1>
 <p class="lead">Research instruments, theories, and constructs for education, social science, and humanities research: what each instrument measures, how to get it, and the evidence reported for it.</p>
+<p class="cta"><a class="btn secondary" href="recommend/">Recommend an instrument</a> <a href="compare/">Compare instruments by their evidence</a></p>
 </div>
 <form class="controls" role="search" onsubmit="return false">
 <div class="search"><label for="q">Search</label><input id="q" type="search" placeholder="Try belonging, self-efficacy, climate, Rasch…" autocomplete="off"></div>
@@ -831,9 +877,9 @@ class Site:
         body = "".join("<tr>" + "".join(f"<td>{c}</td>" for c in r) + "</tr>" for r in rows)
         return f'<div class="tbl {cls}"><table><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table></div>'
 
-    def record_footer(self, what: str, data_path: str, root: str, extra: str = "") -> str:
+    def record_footer(self, what: str, data_path: str, root: str, extra: str = "", name: str = "", page: str = "") -> str:
         return (f'<p class="dl">Download: <a href="{root}{data_path}">This {h(what.split()[0])} data (JSON)</a>{extra}</p>'
-                + self.recommend_note(what))
+                + self.recommend_note(what, name, page))
 
     # ---------- data
     def write_data(self) -> None:
@@ -939,6 +985,7 @@ class Site:
         for c in self.lib.constructs.values():
             self.construct_page(c)
         self.compare_page()
+        self.recommend_page()
         self.reference_page()
         self.about_page()
         self.home_page(self.index_records())
