@@ -208,12 +208,13 @@ class Site:
 <a class="brand" href="{root}">HuMeta Library</a>
 <nav aria-label="Library sections"><a href="{root}#instrument">Instruments</a> <a href="{root}#theory">Theories and lenses</a> <a href="{root}#construct">Constructs</a> <a href="{root}compare/">Compare instruments</a> <a href="{root}reference/">Scales and variables</a> <a href="{root}about/">About</a> <a class="navbtn" href="{root}recommend/">Recommend an instrument</a></nav>
 </div></header>
+<div class="wrap top-join">{self.join_box("top")}</div>
 <main id="main" class="wrap">
 {body}
 </main>
 <footer><div class="wrap">
 <p>Library records are licensed <a href="{REPO_URL}/blob/main/library/LICENSE.md">CC BY-SA 4.0</a>; item text carries the license shown on each instrument. Built {self.today} from the <a href="{REPO_URL}/tree/main/library">library folder</a> of the HuMeta repository.</p>
-<div class="join"><p><strong>The HuMeta Library is part of STEMEd+ Commons.</strong> Join free to deposit instruments in the {ext(COLLECTION_URL, "HuMeta Instrument Library collection")}, share your work in the {ext(STEMEDPLUS_COLLECTION_URL, "STEMEd+ collection")}, follow new work, and connect with STEM+ education researchers. You can sign in with GitHub, Google, ORCID, or your institution.</p><p>{ext(COMMONS_URL, "Visit STEMEd+ Commons")} · {ext(KC_JOIN_URL, "How to join")}</p></div>
+{self.join_box("bottom")}
 <h2><a href="{COMMONS_URL}">More from STEMEd+ Commons</a></h2>
 <ul>
 {portal}
@@ -232,6 +233,15 @@ class Site:
         path.write_text(page, encoding="utf-8")
         if not rel.endswith(".html"):
             self.pages.append(rel)
+
+    @staticmethod
+    def join_box(where: str) -> str:
+        """The STEMEd+ Commons invitation shown at the top and bottom of every page."""
+        return (f'<div class="join join-{where}" role="note"><p><strong>The HuMeta Library is part of STEMEd+ Commons.</strong> '
+                f'Join free to deposit instruments in the {ext(COLLECTION_URL, "HuMeta Instrument Library collection")}, share '
+                f'your work in the {ext(STEMEDPLUS_COLLECTION_URL, "STEMEd+ collection")}, follow new work, and connect with '
+                'STEM+ education researchers. You can sign in with GitHub, Google, ORCID, or your institution.</p>'
+                f'<p>{ext(COMMONS_URL, "Visit STEMEd+ Commons")} · {ext(KC_JOIN_URL, "How to join")}</p></div>')
 
     def recommend_note(self, what: str, name: str = "", page: str = "") -> str:
         fix = ext(correction_url(name, LIBRARY_SITE_URL + page), "Suggest a correction") if name else \
