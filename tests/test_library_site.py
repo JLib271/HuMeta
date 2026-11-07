@@ -153,4 +153,4 @@ def test_commons_deposits(site):
     import yaml
     form = yaml.safe_load((ROOT / ".github" / "ISSUE_TEMPLATE" / "instrument_submission.yml").read_text(encoding="utf-8"))
     ids = {b.get("id") for b in form["body"]}
-    assert {"commons_link", "commons_kind", "rights_holder"} <= ids and "commons_license" not in ids
+    assert {"commons_link", "commons_contents", "rights_holder"} <= ids and "commons_license" not in ids

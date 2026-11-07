@@ -361,7 +361,7 @@
     },
     "commons_records": {
       "type": "array",
-      "description": "Deposits about this instrument on Knowledge Commons (KCWorks), ideally in the STEMEd+ collection: the instrument itself, its manual, a validation paper, or a link record.",
+      "description": "Deposits about this instrument on Knowledge Commons (KCWorks), ideally one record in the STEMEd+ collection holding the instrument, its manual, item and scoring files, and a paper where the license allows.",
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -402,6 +402,21 @@
           "deposited_by_rights_holder": {
             "type": "boolean",
             "description": "true when the depositor holds the rights (e.g. the developer), so the license applies to the deposited content."
+          },
+          "contents": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "instrument",
+                "manual",
+                "paper",
+                "item_files",
+                "scoring",
+                "other"
+              ]
+            },
+            "description": "What the deposit holds when it bundles several files in one record (the recommended way)."
           }
         }
       }

@@ -26,10 +26,20 @@ import kcworks_lookup as K  # noqa: E402
 
 MARKER = "<!-- humeta-deposit-check -->"
 LINK_HEADING = "Link to the deposit on Knowledge Commons (KCWorks)"
-KIND_HEADING = "What did you deposit?"
+CONTENTS_HEADING = "What's in the deposit?"
 RIGHTS_HEADING = "Rights"
-KINDS = {"The instrument itself": "instrument", "Its manual or user guide": "manual", "A paper about it": "paper",
-         "A link record": "link"}
+CONTENTS = {"The instrument": "instrument", "Manual or user guide": "manual", "Item, image, or scoring files": "item_files",
+            "A paper about it": "paper"}
+
+
+def ticked(answer: str) -> list[str]:
+    """Contents ticked in the form's checkbox list."""
+    out = []
+    for line in answer.splitlines():
+        m = re.match(r"\s*-\s*\[[xX]\]\s*(.+)", line)
+        if m:
+            out += [v for k, v in CONTENTS.items() if m.group(1).startswith(k)]
+    return out
 
 
 def form_field(body: str, heading: str) -> str:
@@ -45,7 +55,7 @@ def safe(text: str) -> str:
 
 def build_comment(body: str, fetch=K.get_json) -> str:
     link = form_field(body, LINK_HEADING)
-    kind_answer = form_field(body, KIND_HEADING)
+    contents = ticked(form_field(body, CONTENTS_HEADING))
     holder = "[x]" in form_field(body, RIGHTS_HEADING).lower()
     lines = [MARKER, "### STEMEd+ Commons deposit check"]
     if not link:
@@ -67,9 +77,10 @@ def build_comment(body: str, fetch=K.get_json) -> str:
             f"- **License:** {lic_text}",
             "- **In the STEMEd+ collection:** " + ("yes (" + ", ".join(s["in_collections"]) + ")" if s["in_collections"]
                                                  else "not yet (it may be awaiting approval, or was not added)"),
-            f"- **Files public:** {'yes' if s['files_public'] else 'no'}"]
+            f"- **Files public:** {'yes' if s['files_public'] else 'no'}",
+            "- **Files:** " + (", ".join(safe(f) for f in s.get("files", [])) or "none listed")]
     lines.append("\n".join(rows))
-    kind = KINDS.get(kind_answer, "other")
+    kind = "instrument" if "instrument" in contents else (contents[0] if contents and contents[0] != "item_files" else "other")
     notes = []
     if kind == "instrument" and lic and all(K.is_open(x["id"]) for x in lic):
         if holder:
@@ -82,9 +93,14 @@ def build_comment(body: str, fetch=K.get_json) -> str:
             notes.append("The license forbids derivatives (ND), so translations and adaptations are not allowed.")
     if not s["in_collections"]:
         notes.append("Collection admins: approve the deposit into the STEMEd+ collection.")
+    if len(s.get("files", [])) == 1 and len(contents) > 1:
+        notes.append("Only one file is in the record, but several kinds of content were ticked. Please put each in the same "
+                     "record as a separate file.")
     if notes:
         lines.append("\n".join(f"- {n}" for n in notes))
     entry = K.commons_record(s, kind)
+    if contents:
+        entry["contents"] = contents
     if kind == "instrument" and holder:
         entry["deposited_by_rights_holder"] = True
     lines.append("For maintainers, a `commons_records` entry for the instrument record:\n\n```json\n"

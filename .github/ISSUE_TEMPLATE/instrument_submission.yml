@@ -35,23 +35,23 @@ body:
     attributes:
       value: |
         ### STEMEd+ Commons deposit (recommended)
-        Before you submit, deposit the instrument, its manual, or a paper about it in the [STEMEd+ collection on Knowledge Commons](https://works.hcommons.org/collections/stemedplus/) ([how to deposit](https://jlib271.github.io/HuMeta/recommend/#deposit)). Its Library page will link to the deposit.
+        Before you submit, make **one deposit** in the [STEMEd+ collection on Knowledge Commons](https://works.hcommons.org/collections/stemedplus/) holding everything as separate files: the instrument, its manual, item or scoring files, and a paper if you may share it ([how to deposit](https://jlib271.github.io/HuMeta/recommend/#deposit)). Its Library page will link to the deposit.
   - type: input
     id: commons_link
     attributes:
       label: "Link to the deposit on Knowledge Commons (KCWorks)"
       description: "We read the license, DOI, and collection from the deposit automatically and post them on this issue."
       placeholder: "https://works.hcommons.org/records/... or https://doi.org/10.17613/..."
-  - type: dropdown
-    id: commons_kind
+  - type: checkboxes
+    id: commons_contents
     attributes:
-      label: "What did you deposit?"
+      label: "What's in the deposit?"
+      description: "Please put everything in one record, as separate files."
       options:
-        - "The instrument itself"
-        - "Its manual or user guide"
-        - "A paper about it"
-        - "A link record"
-        - "Not deposited"
+        - label: "The instrument (questionnaire, test, protocol, or rubric)"
+        - label: "Manual or user guide"
+        - label: "Item, image, or scoring files"
+        - label: "A paper about it"
   - type: checkboxes
     id: rights_holder
     attributes:

@@ -106,7 +106,7 @@ LABELS = {
     "behavioral_strategy": "Behavior and strategy", "instructional_practice": "Instructional practice",
     "discipline_general": "General (any discipline)",
     "instrument": "The instrument", "manual": "Manual or user guide", "paper": "Paper",
-    "item_set": "Item set", "link": "Link record",
+    "item_set": "Item set", "link": "Link record", "item_files": "item, image, or scoring files",
     "construct_definition": "Built from a definition of what to measure (no theory named)",
     "practical_need": "Built for a practical or instructional need",
     "not_reported": "Not reported in the sources",
@@ -505,7 +505,10 @@ class Site:
         if recs:
             items = []
             for r in recs:
-                bits = [h(label(r.get("kind")))]
+                kinds = {"instrument": "instrument", "manual": "manual", "paper": "paper", "item_files": "item files",
+                         "scoring": "scoring files", "other": "other files"}
+                bits = [("Holds: " + ", ".join(kinds.get(c, c) for c in r["contents"])) if r.get("contents")
+                        else h(label(r.get("kind")))]
                 if r.get("license"):
                     bits.append(h(r["license"]))
                 if r.get("in_stemedplus_collection"):
@@ -514,7 +517,8 @@ class Site:
             out.append("<ul>" + "".join(items) + "</ul>")
         else:
             out.append("<p>Nothing deposited yet.</p>")
-        out.append(f'<p class="note">Developers and users can deposit the instrument, its manual, or a validation paper in the '
+        out.append(f'<p class="note">Developers and users can make one deposit holding the instrument, its manual, item and scoring files, and a '
+                   f'paper in the '
                    f'{ext(COLLECTION_URL, "STEMEd+ collection")} on Knowledge Commons: it gets a DOI, a Creative Commons '
                    f'license you choose, and a link from this page. <a href="{root}recommend/#deposit">How to deposit</a>.</p>')
         return "\n".join(out)
@@ -579,17 +583,25 @@ class Site:
                  '<p class="lead">Know a research instrument that should be in the library? Two steps: deposit it on STEMEd+ '
                  'Commons, then tell us about it.</p>',
                  '<h2 id="deposit">Step 1. Deposit it in the STEMEd+ collection</h2>',
-                 f'<p>Upload the instrument, its manual, or a paper about it to {ext(COLLECTION_URL, "the STEMEd+ collection")} '
-                 'on Knowledge Commons Works (KCWorks). The deposit gets a DOI and a permanent home, its Library page links to it, '
-                 'and it reaches the STEMEd+ community.</p><ol>'
+                 f'<p>Make <strong>one deposit</strong> in {ext(COLLECTION_URL, "the STEMEd+ collection")} on Knowledge Commons '
+                 'Works (KCWorks) that holds everything about the instrument, each as a separate file: the instrument itself, its '
+                 'manual or user guide, item, image, or scoring files, and a paper about it if you may share it. The deposit gets '
+                 'a DOI and a permanent home, its Library page links to it, and it reaches the STEMEd+ community.</p><ol>'
                  f'<li>Sign in to Knowledge Commons, or join free ({ext(KC_JOIN_URL, "how to join")}); you can use GitHub, Google, '
                  'ORCID, or your institution\'s login.</li>'
-                 f'<li>Start a {ext(KCWORKS_UPLOAD_URL, "new upload")}. In the <strong>Collections &amp; Access</strong> box, add '
-                 'the <strong>STEMEd+</strong> collection. A collection admin approves it.</li>'
+                 f'<li>Start a {ext(KCWORKS_UPLOAD_URL, "new upload")} and add all the files to it.</li>'
+                 '<li>For the resource type, choose <strong>Text document → Other</strong> (KCWorks has no type for research '
+                 'instruments). Add <strong>research instrument</strong> as a keyword, and begin the description with what it is, '
+                 'e.g. "A 21-item concept inventory measuring understanding of climate change processes."</li>'
+                 '<li>In the <strong>Collections &amp; Access</strong> box, add the <strong>STEMEd+</strong> collection. A '
+                 'collection admin approves it.</li>'
                  '<li>Choose a <strong>license</strong>. For an instrument, CC BY 4.0 lets others use, translate, and adapt it with '
                  'credit; CC BY-SA asks that adaptations be shared the same way; licenses with <strong>No Derivatives (ND)</strong> '
                  'forbid translations and adaptations. An open license on the instrument itself also lets the library show its '
                  'items.</li></ol>'
+                 '<p><strong>One license covers every file in the deposit.</strong> If a publisher holds the rights to a paper '
+                 'about the instrument, leave the paper out and list it under the deposit\'s related works (with its DOI) '
+                 'instead.</p>'
                  '<p class="note">Only deposit what you have the right to share. If you are not the instrument\'s developer, or '
                  'a publisher holds the rights, deposit a link record or a version of the paper you are allowed to post instead, '
                  'and do not put a new license on someone else\'s instrument.</p>',

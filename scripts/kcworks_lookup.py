@@ -108,7 +108,17 @@ def summarize(record: dict, fetch=get_json) -> dict:
     stemed = collection_ids(fetch)
     in_stemed = sorted({stemed[i] for i in ids if i in stemed} | (slugs & set(STEMEDPLUS_COLLECTIONS)))
     creators = [((c.get("person_or_org") or {}).get("name") or "") for c in md.get("creators", [])]
-    return {"id": record.get("id"), "url": url, "doi": doi, "title": md.get("title"), "creators": [c for c in creators if c],
+    files = []
+    entries = (record.get("files") or {}).get("entries")
+    if isinstance(entries, dict):
+        files = sorted(entries)
+    elif record.get("id"):
+        try:
+            data = fetch(f"{API}/records/{record['id']}/files")
+            files = sorted(e.get("key") for e in data.get("entries", []) if e.get("key"))
+        except Exception:  # noqa: BLE001 - restricted or metadata-only records have no file list
+            files = []
+    return {"id": record.get("id"), "url": url, "files": files, "doi": doi, "title": md.get("title"), "creators": [c for c in creators if c],
             "resource_type": ((md.get("resource_type") or {}).get("title") or {}).get("en") or (md.get("resource_type") or {}).get("id"),
             "licenses": licenses(record), "files_public": (record.get("access") or {}).get("files") == "public",
             "in_collections": in_stemed}
@@ -128,7 +138,7 @@ def commons_record(summary: dict, kind: str) -> dict:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("link")
-    ap.add_argument("--kind", default="paper", choices=["instrument", "manual", "paper", "item_set", "link", "other"])
+    ap.add_argument("--kind", default="instrument", choices=["instrument", "manual", "paper", "item_set", "link", "other"])
     args = ap.parse_args(argv)
     try:
         summary = summarize(find_record(args.link))
