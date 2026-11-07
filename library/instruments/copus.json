@@ -83,7 +83,6 @@
   "review": {
     "status": "draft",
     "needs_check": [
-      "Add inter-rater reliability (Cohen's kappa) values and observer groups from Smith et al. (2013).",
       "The paper form also has an optional engagement rating; decide whether to model it as a third dimension.",
       "Code descriptions should be taken from the CC-licensed article or CWSEI summary, and the item file marked CC BY-NC-SA 3.0.",
       "Code split (13 student, 12 instructor) taken from the CHIRAL review of COPUS; confirm against Smith et al. (2013), Figure 1."

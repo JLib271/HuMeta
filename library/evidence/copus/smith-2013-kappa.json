@@ -1,0 +1,30 @@
+{
+  "id": "smith-2013-kappa",
+  "instrument_id": "copus",
+  "version_id": "copus-v1",
+  "dimension_id": null,
+  "evidence_type": "inter_rater",
+  "statistic": {
+    "name": "cohen_kappa",
+    "value": null,
+    "notes": "Cohen's kappa ranged from 0.79 to 0.87."
+  },
+  "sample": {
+    "n": null,
+    "education_level": "undergraduate",
+    "setting": "formal_classroom",
+    "description": "Observers coding undergraduate STEM classes in the development study: 16 K-12 teachers observing 23 classes at one university, and 7 STEM faculty observing 8 classes at a second university after 1.5 hours of training."
+  },
+  "source": {
+    "kind": "published",
+    "citation": "Smith, M. K., Jones, F. H. M., Gilbert, S. L., & Wieman, C. E. (2013). The Classroom Observation Protocol for Undergraduate STEM (COPUS): A new instrument to characterize university STEM classroom practices. CBE-Life Sciences Education, 12(4), 618-627.",
+    "doi": "10.1187/cbe.13-08-0154",
+    "contributed_by": "Julie C. Libarkin, 2026-11-06"
+  },
+  "review": {
+    "status": "draft",
+    "needs_check": [
+      "Record which observer group(s) the 0.79-0.87 range covers, and the kappa for each group if reported separately."
+    ]
+  }
+}
