@@ -616,6 +616,7 @@ class Site:
             lists.append(f'<section class="all" id="{k}"><h2>{h(title)} <span class="count">({len(items)})</span></h2><ul>'
                          + "".join(f'<li><a href="{h(r["url"])}">{h(r["title"])}</a></li>' for r in items) + "</ul></section>")
         fields = sorted({f for r in index for f in r.get("fields", [])})
+        index_json = json.dumps(index, ensure_ascii=False).replace("</", "<\\/")
         body = f"""<div class="hero">
 <h1>HuMeta Library</h1>
 <p class="lead">Research instruments, theories, and constructs for education, social science, and humanities research: what each instrument measures, how to get it, and the evidence reported for it.</p>
@@ -630,7 +631,7 @@ class Site:
 <div id="browse">
 {"".join(lists)}
 </div>
-<script type="application/json" id="index">{json.dumps(index, ensure_ascii=False).replace("</", "<\\/")}</script>"""
+<script type="application/json" id="index">{index_json}</script>"""
         self.write_page("", "HuMeta Library", body, depth=0)
 
     # ---------- shared bits
