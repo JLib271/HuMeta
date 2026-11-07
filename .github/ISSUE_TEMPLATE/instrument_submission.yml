@@ -40,6 +40,7 @@ body:
     id: commons_link
     attributes:
       label: "Link to the deposit on Knowledge Commons (KCWorks)"
+      description: "We read the license, DOI, and collection from the deposit automatically and post them on this issue."
       placeholder: "https://works.hcommons.org/records/... or https://doi.org/10.17613/..."
   - type: dropdown
     id: commons_kind
@@ -51,21 +52,6 @@ body:
         - "A paper about it"
         - "A link record"
         - "Not deposited"
-  - type: dropdown
-    id: commons_license
-    attributes:
-      label: "License you chose for the deposit"
-      description: "CC BY lets others use, translate, and adapt with credit. No Derivatives (ND) licenses forbid translations and adaptations."
-      options:
-        - "CC BY 4.0"
-        - "CC BY-SA 4.0"
-        - "CC BY-NC 4.0"
-        - "CC BY-NC-SA 4.0"
-        - "CC BY-ND 4.0"
-        - "CC BY-NC-ND 4.0"
-        - "CC0 (public domain)"
-        - "All rights reserved"
-        - "Other or not sure"
   - type: checkboxes
     id: rights_holder
     attributes:

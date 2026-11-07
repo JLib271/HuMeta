@@ -94,6 +94,10 @@ manual, a paper, or a link record, with the license chosen at deposit. When the
 rights holder deposits the instrument itself under an open license, that
 deposit can serve as the `access.item_text_basis` (basis `open_license`, with
 the deposit as the evidence).
+To fill in an entry from a deposit link (title, DOI, license, collection):
+`python scripts/kcworks_lookup.py <link> --kind manual`. When someone recommends
+an instrument through the issue form, a workflow runs the same lookup and
+comments on the issue.
 
 **Development basis.** An instrument does not need a theory. `development.basis`
 records whether it was built from a theory (`framework_ids` or `theory_named`),
