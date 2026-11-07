@@ -10,7 +10,7 @@
     "notes": "Rasch item separation reliability from the GCI v.1.0 item-bank analysis. Applies to the 2014 items carried over from v.1.0 (numbering is preserved), not to items added later."
   },
   "sample": {
-    "n": null,
+    "n": 3595,
     "education_level": "undergraduate",
     "discipline": "geoscience",
     "setting": "formal_classroom",
@@ -25,8 +25,6 @@
   },
   "review": {
     "status": "draft",
-    "needs_check": [
-      "Add sample n from the 2006 chapter."
-    ]
+    "needs_check": []
   }
 }
