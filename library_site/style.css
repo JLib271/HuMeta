@@ -94,3 +94,11 @@ ul.rubric { margin: 4px 0 10px; }
 .bar { display: flex; gap: 8px; align-items: center; margin: 10px 0; } .bar select { width: auto; }
 @media (max-width: 1000px) { .scroll-hint { display: block; } }
 @media (max-width: 760px) { fieldset.facets { grid-template-columns: 1fr 1fr; } ol.legend { columns: 1; } }
+
+.btn { display: inline-block; padding: 9px 16px; border-radius: 6px; background: var(--accent); color: #fff; font-weight: 600; text-decoration: none; }
+.btn.secondary { background: var(--card); color: var(--accent); border: 1px solid var(--accent); }
+.btn:hover { filter: brightness(1.08); }
+.cta { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin: 6px 0 4px; }
+header nav a.navbtn { font-weight: 600; }
+.join { background: var(--soft); border: 1px solid var(--softline, #c9dcea); border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; color: var(--ink); }
+.join p { margin: 4px 0; }

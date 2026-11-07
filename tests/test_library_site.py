@@ -126,3 +126,31 @@ def test_compare_page_and_profiles(site):
     assert 'id="profile"' in page and "15 values, 0.52 to 0.93; guide &gt; 0.7" in page
     assert (site / "data" / "evidence_profiles.csv").is_file()
     assert 'id="rubric"' in (site / "about" / "index.html").read_text(encoding="utf-8")
+
+
+def test_recommend_page_and_issue_forms(site):
+    import yaml
+    page = (site / "recommend" / "index.html").read_text(encoding="utf-8")
+    assert "issues/new?template=instrument_submission.yml" in page
+    assert "library_correction.yml" in (site / "instruments" / "gci" / "index.html").read_text(encoding="utf-8")
+    form = yaml.safe_load((ROOT / ".github" / "ISSUE_TEMPLATE" / "instrument_submission.yml").read_text(encoding="utf-8"))
+    ids = {b.get("id") for b in form["body"]}
+    required = {b["id"] for b in form["body"] if b.get("validations", {}).get("required")}
+    assert required == {"name", "citation", "measures"}
+    lib = Library.load()
+    for cat in lib.rubric:  # the form's evidence checklist follows the rubric
+        block = next(b for b in form["body"] if b.get("id") == f"rubric_{cat['id']}")
+        assert [o["label"][0] for o in block["attributes"]["options"]] == [c["id"] for c in cat["criteria"]]
+    assert "confirm" in ids
+    assert (ROOT / ".github" / "ISSUE_TEMPLATE" / "library_correction.yml").is_file()
+
+
+def test_commons_deposits(site):
+    page = (site / "instruments" / "gci" / "index.html").read_text(encoding="utf-8")
+    assert 'id="commons"' in page and "10.17613/wnm5z-00x75" in page
+    assert "works.hcommons.org/collections/humetainstrumentlibrary" in (site / "recommend" / "index.html").read_text(encoding="utf-8")
+    assert "Join free" in (site / "index.html").read_text(encoding="utf-8")
+    import yaml
+    form = yaml.safe_load((ROOT / ".github" / "ISSUE_TEMPLATE" / "instrument_submission.yml").read_text(encoding="utf-8"))
+    ids = {b.get("id") for b in form["body"]}
+    assert {"commons_link", "commons_contents", "rights_holder"} <= ids and "commons_license" not in ids

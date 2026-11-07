@@ -1,0 +1,42 @@
+name: Suggest a correction to a library record
+description: Fix or add to an instrument, theory, or construct already in the HuMeta Library.
+title: "Correction: "
+labels: [library correction]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks! Say what should change and give a source for it. A maintainer checks the source before changing the record. Submissions are public.
+  - type: input
+    id: record
+    attributes:
+      label: "Which record?"
+      description: "The name of the instrument, theory, or construct, or the link to its Library page."
+    validations:
+      required: true
+  - type: textarea
+    id: change
+    attributes:
+      label: "What should change?"
+      description: "e.g. a wrong citation, a missing subscale, a reliability value, new evidence from another study, a rubric criterion the instrument meets."
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: "Source"
+      description: "A citation, DOI, or link that supports the change."
+    validations:
+      required: true
+  - type: dropdown
+    id: relationship
+    attributes:
+      label: "Your relationship to it"
+      options: ["I am a developer", "I have used it", "Other"]
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: "Before you submit"
+      options:
+        - label: "This contains no item text I lack permission to share and no confidential information."
+          required: true

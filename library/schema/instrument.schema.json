@@ -358,6 +358,68 @@
           }
         }
       }
+    },
+    "commons_records": {
+      "type": "array",
+      "description": "Deposits about this instrument on Knowledge Commons (KCWorks), ideally one record in the HuMeta Instrument Library collection holding the instrument, its manual, item and scoring files, and a paper where the license allows.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "url",
+          "kind"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "doi": {
+            "type": "string",
+            "pattern": "^10\\.\\d{4,9}/\\S+$"
+          },
+          "kind": {
+            "enum": [
+              "instrument",
+              "manual",
+              "paper",
+              "item_set",
+              "link",
+              "other"
+            ]
+          },
+          "label": {
+            "type": "string"
+          },
+          "in_stemedplus_collection": {
+            "type": "boolean",
+            "description": "true once the deposit has been approved into the HuMeta Instrument Library collection (or its parent, STEMEd+)."
+          },
+          "license": {
+            "type": "string",
+            "description": "License chosen at deposit, e.g. CC BY 4.0, CC BY-SA 4.0, CC BY-NC 4.0, CC0, All rights reserved."
+          },
+          "deposited_by_rights_holder": {
+            "type": "boolean",
+            "description": "true when the depositor holds the rights (e.g. the developer), so the license applies to the deposited content."
+          },
+          "contents": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "instrument",
+                "manual",
+                "paper",
+                "item_files",
+                "scoring",
+                "other"
+              ]
+            },
+            "description": "What the deposit holds when it bundles several files in one record (the recommended way)."
+          }
+        }
+      }
     }
   },
   "$defs": {

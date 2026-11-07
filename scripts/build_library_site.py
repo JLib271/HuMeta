@@ -38,7 +38,20 @@ from oem.vocab import LIBRARY_SITE_URL, PORTAL_URL  # noqa: E402
 ASSETS = REPO / "library_site"
 REPO_URL = "https://github.com/JLib271/HuMeta"
 COMMONS_URL = "https://stemedplus.hcommons.org/"
+COLLECTION_URL = "https://works.hcommons.org/collections/humetainstrumentlibrary/"
+STEMEDPLUS_COLLECTION_URL = "https://works.hcommons.org/collections/stemedplus/"
+KCWORKS_UPLOAD_URL = "https://works.hcommons.org/uploads/new"
+KC_JOIN_URL = "https://support.hcommons.org/profiles/login-and-registration/"
 CONTRIBUTE_URL = f"{REPO_URL}/blob/main/CONTRIBUTING.md"
+RECOMMEND_URL = f"{REPO_URL}/issues/new?template=instrument_submission.yml"
+SIGNUP_URL = "https://github.com/signup"
+
+
+def correction_url(record_name: str, page_url: str) -> str:
+    """GitHub issue form for a correction, with the record filled in."""
+    from urllib.parse import quote
+    return (f"{REPO_URL}/issues/new?template=library_correction.yml&title={quote('Correction: ' + record_name)}"
+            f"&record={quote(record_name + ' (' + page_url + ')')}")
 
 # --------------------------------------------------------------- labels
 LABELS = {
@@ -93,6 +106,8 @@ LABELS = {
     "environment": "Environment", "epistemological": "Epistemological", "cognitive": "Cognitive",
     "behavioral_strategy": "Behavior and strategy", "instructional_practice": "Instructional practice",
     "discipline_general": "General (any discipline)",
+    "instrument": "The instrument", "manual": "Manual or user guide", "paper": "Paper",
+    "item_set": "Item set", "link": "Link record", "item_files": "item, image, or scoring files",
     "construct_definition": "Built from a definition of what to measure (no theory named)",
     "practical_need": "Built for a practical or instructional need",
     "not_reported": "Not reported in the sources",
@@ -183,13 +198,14 @@ class Site:
 <a class="skip" href="#main">Skip to content</a>
 <header class="top"><div class="wrap">
 <a class="brand" href="{root}">HuMeta Library</a>
-<nav aria-label="Library sections"><a href="{root}#instrument">Instruments</a> <a href="{root}#theory">Theories and lenses</a> <a href="{root}#construct">Constructs</a> <a href="{root}compare/">Compare instruments</a> <a href="{root}reference/">Scales and variables</a> <a href="{root}about/">About</a></nav>
+<nav aria-label="Library sections"><a href="{root}#instrument">Instruments</a> <a href="{root}#theory">Theories and lenses</a> <a href="{root}#construct">Constructs</a> <a href="{root}compare/">Compare instruments</a> <a href="{root}reference/">Scales and variables</a> <a href="{root}about/">About</a> <a class="navbtn" href="{root}recommend/">Recommend an instrument</a></nav>
 </div></header>
 <main id="main" class="wrap">
 {body}
 </main>
 <footer><div class="wrap">
 <p>Library records are licensed <a href="{REPO_URL}/blob/main/library/LICENSE.md">CC BY-SA 4.0</a>; item text carries the license shown on each instrument. Built {self.today} from the <a href="{REPO_URL}/tree/main/library">library folder</a> of the HuMeta repository.</p>
+<div class="join"><p><strong>The HuMeta Library is part of STEMEd+ Commons.</strong> Join free to deposit instruments in the {ext(COLLECTION_URL, "HuMeta Instrument Library collection")}, share your work in the {ext(STEMEDPLUS_COLLECTION_URL, "STEMEd+ collection")}, follow new work, and connect with STEM+ education researchers. You can sign in with GitHub, Google, ORCID, or your institution.</p><p>{ext(COMMONS_URL, "Visit STEMEd+ Commons")} · {ext(KC_JOIN_URL, "How to join")}</p></div>
 <h2><a href="{COMMONS_URL}">More from STEMEd+ Commons</a></h2>
 <ul>
 {portal}
@@ -209,11 +225,11 @@ class Site:
         if not rel.endswith(".html"):
             self.pages.append(rel)
 
-    def recommend_note(self, what: str) -> str:
-        where = (f'the {ext(PORTAL_URL, "HuMeta Portal")} (Module 2, Recommend tabs)' if PORTAL_URL
-                 else "the HuMeta Portal (Module 2, Recommend tabs)")
-        return (f'<p class="note">Spot a mistake or something missing in this {what}? Suggest a correction in {where}, '
-                f'or see {ext(CONTRIBUTE_URL, "how to contribute")}. Suggestions are reviewed before they are added.</p>')
+    def recommend_note(self, what: str, name: str = "", page: str = "") -> str:
+        fix = ext(correction_url(name, LIBRARY_SITE_URL + page), "Suggest a correction") if name else \
+            ext(f"{REPO_URL}/issues/new?template=library_correction.yml", "Suggest a correction")
+        return (f'<p class="note">Spot a mistake or something missing in this {what}? {fix} (a short form on GitHub; a free '
+                f'account is needed). Suggestions are reviewed before they are added.</p>')
 
     # ---------- relationships
     def construct_instruments(self, cid: str) -> list[tuple[dict, list[str]]]:
@@ -315,6 +331,9 @@ class Site:
                          + (f'<p>Granted by {h(basis["granted_by"])}, {h(basis.get("granted_on"))}.</p>' if basis.get("granted_by") else "")
                          + "</details>")
 
+        # STEMEd+ Commons deposits
+        parts.append(self.commons_section(inst, root))
+
         # versions
         versions = inst.get("versions", [])
         if versions:
@@ -405,7 +424,8 @@ class Site:
             parts.append("<p><strong>Information drawn from:</strong></p><ul>"
                          + "".join(f"<li>{ext(u)}</li>" for u in inst["info_sources"]) + "</ul>")
         parts.append(self.record_footer("instrument record", f"data/instruments/{iid}.json", root,
-                                         extra=f' · <a href="{root}data/evidence/{iid}.json">Evidence (JSON)</a>' if ev else ""))
+                                         extra=f' · <a href="{root}data/evidence/{iid}.json">Evidence (JSON)</a>' if ev else "",
+                                         name=title, page=self.url("instruments", iid)))
         self.write_page(self.url("instruments", iid), title, "\n".join(parts), inst.get("description", ""))
 
     def items_block(self, inst: dict, vid: str, vlabel: str, rec: dict, text_ok: bool, key_ok: bool) -> str:
@@ -479,6 +499,31 @@ class Site:
             shutil.copyfile(src, dest)
         return rel
 
+    # ---------- STEMEd+ Commons
+    def commons_section(self, inst: dict, root: str) -> str:
+        recs = inst.get("commons_records") or []
+        out = ['<h2 id="commons">On STEMEd+ Commons</h2>']
+        if recs:
+            items = []
+            for r in recs:
+                kinds = {"instrument": "instrument", "manual": "manual", "paper": "paper", "item_files": "item files",
+                         "scoring": "scoring files", "other": "other files"}
+                bits = [("Holds: " + ", ".join(kinds.get(c, c) for c in r["contents"])) if r.get("contents")
+                        else h(label(r.get("kind")))]
+                if r.get("license"):
+                    bits.append(h(r["license"]))
+                if r.get("in_stemedplus_collection"):
+                    bits.append("in the HuMeta Instrument Library collection")
+                items.append(f'<li>{ext(r["url"], r.get("label") or r["url"])}<span class="note"> ({"; ".join(bits)})</span></li>')
+            out.append("<ul>" + "".join(items) + "</ul>")
+        else:
+            out.append("<p>Nothing deposited yet.</p>")
+        out.append(f'<p class="note">Developers and users can make one deposit holding the instrument, its manual, item and scoring files, and a '
+                   f'paper in the '
+                   f'{ext(COLLECTION_URL, "HuMeta Instrument Library collection")} on Knowledge Commons: it gets a DOI, a Creative Commons '
+                   f'license you choose, and a link from this page. <a href="{root}recommend/#deposit">How to deposit</a>.</p>')
+        return "\n".join(out)
+
     # ---------- evidence profile
     def evidence_profile(self, inst: dict, root: str) -> str:
         prof = EV.profile(self.lib, inst["id"])
@@ -532,6 +577,63 @@ class Site:
                                    for e in prof.other_reliability) + ".</p>")
         return "\n".join(out)
 
+    def recommend_page(self) -> None:
+        root = "../"
+        example = next((i for i in self.lib.instruments.values() if i.get("rubric_review")), None)
+        parts = ['<h1>Recommend an instrument</h1>',
+                 '<p class="lead">Know a research instrument that should be in the library? Two steps: deposit it on STEMEd+ '
+                 'Commons, then tell us about it.</p>',
+                 '<h2 id="deposit">Step 1. Deposit it in the HuMeta Instrument Library collection</h2>',
+                 f'<p>Make <strong>one deposit</strong> in {ext(COLLECTION_URL, "the HuMeta Instrument Library collection")} on Knowledge Commons '
+                 'Works (KCWorks) that holds everything about the instrument, each as a separate file: the instrument itself, its '
+                 'manual or user guide, item, image, or scoring files, and a paper about it if you may share it. The deposit gets '
+                 'a DOI and a permanent home, its Library page links to it, and it reaches the STEMEd+ community.</p><ol>'
+                 f'<li>Sign in to Knowledge Commons, or join free ({ext(KC_JOIN_URL, "how to join")}); you can use GitHub, Google, '
+                 'ORCID, or your institution\'s login.</li>'
+                 f'<li>Start a {ext(KCWORKS_UPLOAD_URL, "new upload")} and add all the files to it.</li>'
+                 '<li>For the resource type, choose <strong>Text document → Other</strong> (KCWorks has no type for research '
+                 'instruments). Add <strong>research instrument</strong> as a keyword, and begin the description with what it is, '
+                 'e.g. "A 21-item concept inventory measuring understanding of climate change processes."</li>'
+                 '<li>In the <strong>Collections &amp; Access</strong> box, add the <strong>HuMeta Instrument Library</strong> collection (part of STEMEd+). A '
+                 'collection admin approves it.</li>'
+                 '<li>Choose a <strong>license</strong>. For an instrument, CC BY 4.0 lets others use, translate, and adapt it with '
+                 'credit; CC BY-SA asks that adaptations be shared the same way; licenses with <strong>No Derivatives (ND)</strong> '
+                 'forbid translations and adaptations. An open license on the instrument itself also lets the library show its '
+                 'items.</li></ol>'
+                 '<p><strong>One license covers every file in the deposit.</strong> If a publisher holds the rights to a paper '
+                 'about the instrument, leave the paper out and list it under the deposit\'s related works (with its DOI) '
+                 'instead.</p>'
+                 '<p class="note">Only deposit what you have the right to share. If you are not the instrument\'s developer, or '
+                 'a publisher holds the rights, deposit a link record or a version of the paper you are allowed to post instead, '
+                 'and do not put a new license on someone else\'s instrument.</p>',
+                 '<h2>Step 2. Tell us about it</h2>',
+                 f'<p><a class="btn" href="{h(RECOMMEND_URL)}" target="_blank" rel="noopener noreferrer">Open the recommendation '
+                 'form<span class="vh"> (opens in a new tab)</span></a></p>',
+                 '<p>Paste the link to your deposit. Only three things are required: the instrument\'s name, where it was '
+                 'published, and what it measures.</p>',
+                 f'<p class="note">The form is on GitHub, so you need a free GitHub account ({ext(SIGNUP_URL, "sign up")}). '
+                 'Submissions are public; do not include item text unless the instrument\'s license allows it.</p>',
+                 '<h2>What counts</h2><ul>'
+                 '<li><strong>Any instrument with a clear account of what it measures.</strong> It does not need a theory behind '
+                 'it, and it does not need complete evidence: the library shows what evidence exists so researchers can judge '
+                 'for themselves.</li>'
+                 '<li>Concept inventories and knowledge tests, attitude and belief surveys, self-report scales, observation '
+                 'protocols, interview protocols, and rubrics, in education, the social sciences, and the humanities.</li>'
+                 '<li>New versions, translations, or adaptations of instruments already in the library are welcome too.</li></ul>',
+                 f'<h2>Helpful extras</h2><p>The form also asks, optionally, how the instrument was developed, how to get it, and '
+                 f'which parts of the library\'s <a href="{root}about/#rubric">reliability and validity rubric</a> the developers '
+                 'or later studies addressed, with citations. Leave out anything you are not sure about; a maintainer checks '
+                 'the sources and fills in the rest.</p>'
+                 + (f'<p class="note">For an example of a complete record, see the <a href="{root}{self.url("instruments", example["id"])}">'
+                    f'{h(example["name"])}</a>.</p>' if example else ""),
+                 '<h2>What happens next</h2><ol><li>A maintainer checks the citation and sources.</li>'
+                 '<li>They add the instrument to the library as a <strong>Draft</strong> record, with its evidence profile.</li>'
+                 '<li>Experts in the field review it over time; corrections are always welcome.</li></ol>',
+                 '<h2>Fixing an existing record</h2><p>Use the <strong>Suggest a correction</strong> link at the bottom of any '
+                 'instrument, theory, or construct page. The form opens with the record already filled in.</p>']
+        self.write_page("recommend/", "Recommend an instrument", "\n".join(parts),
+                        "Recommend a research instrument for the HuMeta Library.")
+
     def compare_page(self) -> None:
         root = "../"
         cats = [c for c in self.lib.rubric]
@@ -577,6 +679,7 @@ class Site:
                  '<option value="samples">Number of samples</option><option value="ind">Independent records</option></select></div>',
                  '<p class="note scroll-hint">On a narrow screen, scroll the table sideways to see every column.</p>',
                  f'<div class="tbl compare"><table id="compare"><thead><tr>{th}</tr></thead><tbody>{body}</tbody></table></div>',
+                 f'<p>Know an instrument that is missing? <a href="{root}recommend/">Recommend it</a>.</p>',
                  f'<h2>Rubric categories</h2><ol class="legend">{legend}</ol>',
                  f'<p class="dl">Download: <a href="{root}data/evidence_profiles.csv">Evidence profiles (CSV)</a> · '
                  f'<a href="{root}data/evidence_rubric.json">Rubric (JSON)</a></p>']
@@ -638,7 +741,8 @@ class Site:
                          'check that an instrument fits how this theory defines the construct.</p><ul>'
                          + "".join(f'<li><a href="{root}{self.url("instruments", i)}">{h(insts[i]["name"])}</a></li>'
                                    for i in sorted(insts, key=lambda k: insts[k]["name"].lower())) + "</ul>")
-        parts.append(self.record_footer("theory record", "data/frameworks.json", root))
+        parts.append(self.record_footer("theory record", "data/frameworks.json", root, name=fw["label"],
+                                         page=self.url("frameworks", fid)))
         self.write_page(self.url("frameworks", fid), fw["label"], "\n".join(parts), fw.get("description", ""))
 
     # ---------- constructs
@@ -676,7 +780,8 @@ class Site:
                 for f, fc in fws) + "</ul>")
         else:
             parts.append("<p>No theories in the library are linked to this construct yet.</p>")
-        parts.append(self.record_footer("construct", "data/constructs.json", root))
+        parts.append(self.record_footer("construct", "data/constructs.json", root, name=c["label"],
+                                         page=self.url("constructs", cid)))
         self.write_page(self.url("constructs", cid), c["label"], "\n".join(parts), c.get("definition", ""))
 
     # ---------- reference
@@ -743,7 +848,8 @@ class Site:
                  f'<a href="{root}data/instruments.csv">instruments</a>, <a href="{root}data/frameworks.csv">theories and lenses</a>, '
                  f'<a href="{root}data/constructs.csv">constructs</a>, <a href="{root}data/evidence.csv">evidence</a>. '
                  f'The record format is published as JSON Schemas in the {ext(REPO_URL + "/tree/main/library/schema", "library schema folder")}.</p>',
-                 '<h2>Contribute</h2>' + self.recommend_note("library").replace('<p class="note">', "<p>"),
+                 f'<h2>Contribute</h2><p><a href="{root}recommend/">Recommend an instrument</a> that is missing, or use the '
+                 '"Suggest a correction" link at the bottom of any record. Suggestions are reviewed before they are added.</p>',
                  f'<h2>Cite</h2><p>HuMeta Instrument Library, HuMeta Portal. {h(LIBRARY_SITE_URL)} (accessed {self.today}).</p>']
         self.write_page("about/", "About the HuMeta Library", "\n".join(parts))
 
@@ -797,6 +903,7 @@ class Site:
         body = f"""<div class="hero">
 <h1>HuMeta Library</h1>
 <p class="lead">Research instruments, theories, and constructs for education, social science, and humanities research: what each instrument measures, how to get it, and the evidence reported for it.</p>
+<p class="cta"><a class="btn secondary" href="recommend/">Recommend an instrument</a> <a href="compare/">Compare instruments by their evidence</a></p>
 </div>
 <form class="controls" role="search" onsubmit="return false">
 <div class="search"><label for="q">Search</label><input id="q" type="search" placeholder="Try belonging, self-efficacy, climate, Rasch…" autocomplete="off"></div>
@@ -831,9 +938,9 @@ class Site:
         body = "".join("<tr>" + "".join(f"<td>{c}</td>" for c in r) + "</tr>" for r in rows)
         return f'<div class="tbl {cls}"><table><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table></div>'
 
-    def record_footer(self, what: str, data_path: str, root: str, extra: str = "") -> str:
+    def record_footer(self, what: str, data_path: str, root: str, extra: str = "", name: str = "", page: str = "") -> str:
         return (f'<p class="dl">Download: <a href="{root}{data_path}">This {h(what.split()[0])} data (JSON)</a>{extra}</p>'
-                + self.recommend_note(what))
+                + self.recommend_note(what, name, page))
 
     # ---------- data
     def write_data(self) -> None:
@@ -939,6 +1046,7 @@ class Site:
         for c in self.lib.constructs.values():
             self.construct_page(c)
         self.compare_page()
+        self.recommend_page()
         self.reference_page()
         self.about_page()
         self.home_page(self.index_records())

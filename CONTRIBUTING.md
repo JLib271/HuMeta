@@ -61,7 +61,12 @@ The easiest way is in the app: **Module 2 → Recommend a theory or framework**,
 **Recommend an instrument**, or **Suggest a correction**. You sign in, fill in a
 short structured form, and the app opens a pull request for review. You don't
 need a GitHub account. People who use GitHub can use the matching issue
-forms instead. Maintainers review recommendations using
+forms instead: the [Library website's Recommend page](https://jlib271.github.io/HuMeta/recommend/)
+links to the [instrument recommendation form](../../issues/new?template=instrument_submission.yml),
+which asks only for the name, citation, and what it measures (the rubric
+checklist and other details are optional), and every Library record links to a
+[correction form](../../issues/new?template=library_correction.yml) with the
+record filled in. Maintainers review recommendations using
 [suggestions/README.md](suggestions/README.md) before adding them to the
 library.
 

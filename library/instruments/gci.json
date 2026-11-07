@@ -166,5 +166,13 @@
       "reviewed_by": "J. Libarkin (developer)",
       "reviewed_on": "2026-11-06"
     }
-  }
+  },
+  "commons_records": [
+    {
+      "url": "https://doi.org/10.17613/wnm5z-00x75",
+      "doi": "10.17613/wnm5z-00x75",
+      "kind": "paper",
+      "label": "Libarkin & Anderson (2006), The Geoscience Concept Inventory: Application of Rasch analysis to concept inventory development in higher education"
+    }
+  ]
 }
