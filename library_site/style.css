@@ -102,3 +102,4 @@ ul.rubric { margin: 4px 0 10px; }
 header nav a.navbtn { font-weight: 600; }
 .join { background: var(--soft); border: 1px solid var(--softline, #c9dcea); border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; color: var(--ink); }
 .join p { margin: 4px 0; }
+.top-join .join { margin: 16px 0 0; font-size: .93rem; }
