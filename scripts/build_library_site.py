@@ -535,13 +535,13 @@ class Site:
     def compare_page(self) -> None:
         root = "../"
         cats = [c for c in self.lib.rubric]
-        head = ["Instrument", "Type", "Development"] + [f'{c["numeral"]}' for c in cats] + ["Samples", "Independent", "Cautions"]
+        head = ["Instrument"] + [f'{c["numeral"]}' for c in cats] + ["Samples", "Independent", "Cautions"]
         rows = []
         for inst in sorted(self.lib.instruments.values(), key=lambda i: i["name"].lower()):
             prof = EV.profile(self.lib, inst["id"])
-            cells = [f'<a href="{root}{self.url("instruments", inst["id"])}">{h(inst["name"])}</a>',
-                     h(label(inst.get("instrument_type"))),
-                     h(DEV_SHORT[(inst.get("development") or {}).get("basis", "")])]
+            cells = [f'<a href="{root}{self.url("instruments", inst["id"])}">{h(inst["name"])}</a>'
+                     f'<span class="sub">{h(label(inst.get("instrument_type")))} · '
+                     f'{h(DEV_SHORT[(inst.get("development") or {}).get("basis", "")])}</span>']
             for cat in prof.categories:
                 if not cat.applies:
                     cells.append('<span class="na" title="Does not apply">–</span>')
@@ -558,8 +558,11 @@ class Site:
             rel, val = prof.coverage("reliability"), prof.coverage("validity")
             rows.append((cells, {"rel": rel[0], "val": val[0], "samples": prof.samples, "ind": prof.independent,
                                  "name": inst["name"].lower()}))
-        th = "".join(f'<th scope="col"{" title=" + chr(34) + h(c["label"]) + chr(34) if i >= 3 and i < 3 + len(cats) else ""}>'
-                     f'{h(x)}</th>' for i, (x, c) in enumerate(zip(head, [None] * 3 + cats + [None] * 3)))
+        tips = [None] + [c["label"] for c in cats] + ["Distinct samples in the evidence records",
+                                                     "Evidence records by researchers other than the developers",
+                                                     "Number of cautions on the instrument page"]
+        th = "".join(f'<th scope="col"{" title=" + chr(34) + h(t) + chr(34) if t else ""}>{h(x)}</th>'
+                     for x, t in zip(head, tips))
         body = "".join("<tr " + " ".join(f'data-{k}="{h(v)}"' for k, v in meta.items()) + ">"
                        + "".join(f"<td>{c}</td>" for c in cells) + "</tr>" for cells, meta in rows)
         legend = "".join(f'<li><strong>{h(c["numeral"])}</strong> {h(c["label"])}</li>' for c in cats)
@@ -572,6 +575,7 @@ class Site:
                  '<div class="bar"><label for="sort">Sort by</label> <select id="sort"><option value="name">Name</option>'
                  '<option value="val">Validity categories with evidence</option><option value="rel">Reliability categories with evidence</option>'
                  '<option value="samples">Number of samples</option><option value="ind">Independent records</option></select></div>',
+                 '<p class="note scroll-hint">On a narrow screen, scroll the table sideways to see every column.</p>',
                  f'<div class="tbl compare"><table id="compare"><thead><tr>{th}</tr></thead><tbody>{body}</tbody></table></div>',
                  f'<h2>Rubric categories</h2><ol class="legend">{legend}</ol>',
                  f'<p class="dl">Download: <a href="{root}data/evidence_profiles.csv">Evidence profiles (CSV)</a> · '
