@@ -44,7 +44,7 @@
         "type": "likert",
         "scale_points": 6,
         "anchors": "1 = strongly disagree, 6 = strongly agree",
-        "notes": "Each item follows the stem 'When I am in a math setting'. Study 1 describes a 6-point scale; the article's appendix prints the scale with 30 items and an 8-point response scale."
+        "notes": "Each item follows the stem 'When I am in a math setting'. The library records the 28-item, 6-point form analyzed in the article; the article's appendix prints a 30-item version (adding 'I feel like an outsider' and 'I feel like I fit in') with an 8-point response scale."
       },
       "scoring": {
         "method": "sum_or_mean",
@@ -110,7 +110,6 @@
   "review": {
     "status": "draft",
     "needs_check": [
-      "The article analyzes 28 items on a 6-point scale, but its appendix prints 30 items (adding 'I feel like an outsider' and 'I feel like I fit in') with an 8-point scale. Decide which form the library records, or record both as versions.",
       "Check reuse/adaptation terms with APA or the authors."
     ]
   },

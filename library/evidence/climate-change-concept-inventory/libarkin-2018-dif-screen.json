@@ -10,11 +10,11 @@
     "notes": "Rasch-Welch t-test DIF contrasts by gender (male vs. female) and ethnicity (Caucasian vs. non-Caucasian); contrasts >.64 and statistically significant counted as substantial. Of 22 items, 21 showed negligible DIF; one item with substantial DIF on both (and poor OUTFIT) was removed, giving the 21-item scale."
   },
   "sample": {
-    "n": 1111,
+    "n": 1053,
     "education_level": "general_public",
     "discipline": "climate_science",
     "country": "US",
-    "description": "General public sample from the development study; 58 persons with extreme INFIT/OUTFIT were excluded before item analysis."
+    "description": "General public sample from the development study: 1,111 respondents, of whom 58 with extreme INFIT/OUTFIT were excluded, leaving 1,053 for the item analysis."
   },
   "source": {
     "kind": "published",
@@ -24,8 +24,6 @@
   },
   "review": {
     "status": "draft",
-    "needs_check": [
-      "Confirm whether n = 1111 counts respondents before or after the 58 exclusions."
-    ]
+    "needs_check": []
   }
 }
