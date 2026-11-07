@@ -23,8 +23,8 @@ import urllib.request
 
 API = "https://works.hcommons.org/api"
 SITE = "https://works.hcommons.org"
-#: KCWorks collections (InvenioRDM community slugs) that count as STEMEd+; add the HuMeta subcollection's slug here
-STEMEDPLUS_COLLECTIONS = ("stemedplus",)
+#: KCWorks collections (InvenioRDM community slugs) that count: the HuMeta Instrument Library subcollection and its parent
+STEMEDPLUS_COLLECTIONS = ("humetainstrumentlibrary", "stemedplus")
 KCWORKS_DOI_PREFIX = "10.17613/"
 USER_AGENT = "HuMeta-Library (https://github.com/JLib271/HuMeta)"
 

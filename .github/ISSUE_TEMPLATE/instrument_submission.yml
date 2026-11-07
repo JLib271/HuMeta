@@ -35,7 +35,7 @@ body:
     attributes:
       value: |
         ### STEMEd+ Commons deposit (recommended)
-        Before you submit, make **one deposit** in the [STEMEd+ collection on Knowledge Commons](https://works.hcommons.org/collections/stemedplus/) holding everything as separate files: the instrument, its manual, item or scoring files, and a paper if you may share it ([how to deposit](https://jlib271.github.io/HuMeta/recommend/#deposit)). Its Library page will link to the deposit.
+        Before you submit, make **one deposit** in the [HuMeta Instrument Library collection on Knowledge Commons](https://works.hcommons.org/collections/humetainstrumentlibrary/) holding everything as separate files: the instrument, its manual, item or scoring files, and a paper if you may share it ([how to deposit](https://jlib271.github.io/HuMeta/recommend/#deposit)). Its Library page will link to the deposit.
   - type: input
     id: commons_link
     attributes:

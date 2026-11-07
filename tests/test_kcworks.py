@@ -28,8 +28,10 @@ RECORD = {
 
 
 def fake_fetch(url):
+    if url.endswith("/communities/humetainstrumentlibrary"):
+        return {"id": STEMED_ID, "slug": "humetainstrumentlibrary"}
     if url.endswith("/communities/stemedplus"):
-        return {"id": STEMED_ID, "slug": "stemedplus"}
+        return {"id": "99999999-0000-0000-0000-000000000000", "slug": "stemedplus"}
     if "/records/abcde-12345" in url:
         return RECORD
     if "/records?q=" in url:
@@ -49,7 +51,7 @@ def test_parse_link(link, expected):
 
 def test_summary_reads_license_and_collection():
     s = K.summarize(K.find_record("https://doi.org/10.17613/abcde-12345", fake_fetch), fake_fetch)
-    assert s["licenses"][0]["id"] == "cc-by-4.0" and s["in_collections"] == ["stemedplus"]
+    assert s["licenses"][0]["id"] == "cc-by-4.0" and s["in_collections"] == ["humetainstrumentlibrary"]
     assert s["files"] == ["inventory.pdf", "manual.pdf", "scoring.xlsx"]
     entry = K.commons_record(s, "instrument")
     assert entry == {"url": "https://doi.org/10.17613/abcde-12345", "kind": "instrument", "label": "Example Concept Inventory",
@@ -76,7 +78,7 @@ def _body(link="", contents=("The instrument (questionnaire, test, protocol, or 
 
 def test_comment_with_deposit():
     text = C.build_comment(_body("https://works.hcommons.org/records/abcde-12345"), fake_fetch)
-    assert C.MARKER in text and "Creative Commons Attribution 4.0" in text and "yes (stemedplus)" in text
+    assert C.MARKER in text and "Creative Commons Attribution 4.0" in text and "yes (humetainstrumentlibrary)" in text
     assert "item_text_basis" in text and '"deposited_by_rights_holder": true' in text
     assert "inventory.pdf, manual.pdf, scoring.xlsx" in text and '"instrument",\n    "manual"' in text
 

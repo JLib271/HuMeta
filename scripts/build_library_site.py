@@ -38,7 +38,8 @@ from oem.vocab import LIBRARY_SITE_URL, PORTAL_URL  # noqa: E402
 ASSETS = REPO / "library_site"
 REPO_URL = "https://github.com/JLib271/HuMeta"
 COMMONS_URL = "https://stemedplus.hcommons.org/"
-COLLECTION_URL = "https://works.hcommons.org/collections/stemedplus/"
+COLLECTION_URL = "https://works.hcommons.org/collections/humetainstrumentlibrary/"
+STEMEDPLUS_COLLECTION_URL = "https://works.hcommons.org/collections/stemedplus/"
 KCWORKS_UPLOAD_URL = "https://works.hcommons.org/uploads/new"
 KC_JOIN_URL = "https://support.hcommons.org/profiles/login-and-registration/"
 CONTRIBUTE_URL = f"{REPO_URL}/blob/main/CONTRIBUTING.md"
@@ -204,7 +205,7 @@ class Site:
 </main>
 <footer><div class="wrap">
 <p>Library records are licensed <a href="{REPO_URL}/blob/main/library/LICENSE.md">CC BY-SA 4.0</a>; item text carries the license shown on each instrument. Built {self.today} from the <a href="{REPO_URL}/tree/main/library">library folder</a> of the HuMeta repository.</p>
-<div class="join"><p><strong>The HuMeta Library is part of STEMEd+ Commons.</strong> Join free to deposit instruments and papers in the {ext(COLLECTION_URL, "STEMEd+ collection")}, follow new work, and connect with STEM+ education researchers. You can sign in with GitHub, Google, ORCID, or your institution.</p><p>{ext(COMMONS_URL, "Visit STEMEd+ Commons")} · {ext(KC_JOIN_URL, "How to join")}</p></div>
+<div class="join"><p><strong>The HuMeta Library is part of STEMEd+ Commons.</strong> Join free to deposit instruments in the {ext(COLLECTION_URL, "HuMeta Instrument Library collection")}, share your work in the {ext(STEMEDPLUS_COLLECTION_URL, "STEMEd+ collection")}, follow new work, and connect with STEM+ education researchers. You can sign in with GitHub, Google, ORCID, or your institution.</p><p>{ext(COMMONS_URL, "Visit STEMEd+ Commons")} · {ext(KC_JOIN_URL, "How to join")}</p></div>
 <h2><a href="{COMMONS_URL}">More from STEMEd+ Commons</a></h2>
 <ul>
 {portal}
@@ -512,14 +513,14 @@ class Site:
                 if r.get("license"):
                     bits.append(h(r["license"]))
                 if r.get("in_stemedplus_collection"):
-                    bits.append("in the STEMEd+ collection")
+                    bits.append("in the HuMeta Instrument Library collection")
                 items.append(f'<li>{ext(r["url"], r.get("label") or r["url"])}<span class="note"> ({"; ".join(bits)})</span></li>')
             out.append("<ul>" + "".join(items) + "</ul>")
         else:
             out.append("<p>Nothing deposited yet.</p>")
         out.append(f'<p class="note">Developers and users can make one deposit holding the instrument, its manual, item and scoring files, and a '
                    f'paper in the '
-                   f'{ext(COLLECTION_URL, "STEMEd+ collection")} on Knowledge Commons: it gets a DOI, a Creative Commons '
+                   f'{ext(COLLECTION_URL, "HuMeta Instrument Library collection")} on Knowledge Commons: it gets a DOI, a Creative Commons '
                    f'license you choose, and a link from this page. <a href="{root}recommend/#deposit">How to deposit</a>.</p>')
         return "\n".join(out)
 
@@ -582,8 +583,8 @@ class Site:
         parts = ['<h1>Recommend an instrument</h1>',
                  '<p class="lead">Know a research instrument that should be in the library? Two steps: deposit it on STEMEd+ '
                  'Commons, then tell us about it.</p>',
-                 '<h2 id="deposit">Step 1. Deposit it in the STEMEd+ collection</h2>',
-                 f'<p>Make <strong>one deposit</strong> in {ext(COLLECTION_URL, "the STEMEd+ collection")} on Knowledge Commons '
+                 '<h2 id="deposit">Step 1. Deposit it in the HuMeta Instrument Library collection</h2>',
+                 f'<p>Make <strong>one deposit</strong> in {ext(COLLECTION_URL, "the HuMeta Instrument Library collection")} on Knowledge Commons '
                  'Works (KCWorks) that holds everything about the instrument, each as a separate file: the instrument itself, its '
                  'manual or user guide, item, image, or scoring files, and a paper about it if you may share it. The deposit gets '
                  'a DOI and a permanent home, its Library page links to it, and it reaches the STEMEd+ community.</p><ol>'
@@ -593,7 +594,7 @@ class Site:
                  '<li>For the resource type, choose <strong>Text document → Other</strong> (KCWorks has no type for research '
                  'instruments). Add <strong>research instrument</strong> as a keyword, and begin the description with what it is, '
                  'e.g. "A 21-item concept inventory measuring understanding of climate change processes."</li>'
-                 '<li>In the <strong>Collections &amp; Access</strong> box, add the <strong>STEMEd+</strong> collection. A '
+                 '<li>In the <strong>Collections &amp; Access</strong> box, add the <strong>HuMeta Instrument Library</strong> collection (part of STEMEd+). A '
                  'collection admin approves it.</li>'
                  '<li>Choose a <strong>license</strong>. For an instrument, CC BY 4.0 lets others use, translate, and adapt it with '
                  'credit; CC BY-SA asks that adaptations be shared the same way; licenses with <strong>No Derivatives (ND)</strong> '

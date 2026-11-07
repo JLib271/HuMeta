@@ -148,7 +148,7 @@ def test_recommend_page_and_issue_forms(site):
 def test_commons_deposits(site):
     page = (site / "instruments" / "gci" / "index.html").read_text(encoding="utf-8")
     assert 'id="commons"' in page and "10.17613/wnm5z-00x75" in page
-    assert "works.hcommons.org/collections/stemedplus" in (site / "recommend" / "index.html").read_text(encoding="utf-8")
+    assert "works.hcommons.org/collections/humetainstrumentlibrary" in (site / "recommend" / "index.html").read_text(encoding="utf-8")
     assert "Join free" in (site / "index.html").read_text(encoding="utf-8")
     import yaml
     form = yaml.safe_load((ROOT / ".github" / "ISSUE_TEMPLATE" / "instrument_submission.yml").read_text(encoding="utf-8"))

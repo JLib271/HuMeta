@@ -361,7 +361,7 @@
     },
     "commons_records": {
       "type": "array",
-      "description": "Deposits about this instrument on Knowledge Commons (KCWorks), ideally one record in the STEMEd+ collection holding the instrument, its manual, item and scoring files, and a paper where the license allows.",
+      "description": "Deposits about this instrument on Knowledge Commons (KCWorks), ideally one record in the HuMeta Instrument Library collection holding the instrument, its manual, item and scoring files, and a paper where the license allows.",
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -393,7 +393,7 @@
           },
           "in_stemedplus_collection": {
             "type": "boolean",
-            "description": "true once the deposit has been approved into the STEMEd+ collection."
+            "description": "true once the deposit has been approved into the HuMeta Instrument Library collection (or its parent, STEMEd+)."
           },
           "license": {
             "type": "string",

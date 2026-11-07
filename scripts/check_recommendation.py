@@ -5,7 +5,7 @@
 Run by .github/workflows/recommendation-check.yml when a "Recommend an instrument" issue is opened or
 edited. It finds the deposit link in the issue form, looks the record up on Knowledge Commons Works,
 and posts (or updates) one comment with the deposit's title, DOI, license, and whether it is in the
-STEMEd+ collection, plus a ready-to-paste ``commons_records`` entry. The issue text is untrusted: only
+HuMeta Instrument Library collection (part of STEMEd+), plus a ready-to-paste ``commons_records`` entry. The issue text is untrusted: only
 a link is extracted from it, and nothing from it is run.
 
 Environment: ISSUE_BODY, ISSUE_NUMBER, GITHUB_REPOSITORY, GITHUB_TOKEN. With --dry-run, prints the comment.
@@ -59,8 +59,8 @@ def build_comment(body: str, fetch=K.get_json) -> str:
     holder = "[x]" in form_field(body, RIGHTS_HEADING).lower()
     lines = [MARKER, "### STEMEd+ Commons deposit check"]
     if not link:
-        lines += ["No deposit link was given. Depositing the instrument, its manual, or a paper about it in the "
-                  "[STEMEd+ collection](https://works.hcommons.org/collections/stemedplus/) gives it a DOI and a link "
+        lines += ["No deposit link was given. Depositing the instrument, its manual, and its other files in one record in the "
+                  "[HuMeta Instrument Library collection](https://works.hcommons.org/collections/humetainstrumentlibrary/) gives it a DOI and a link "
                   "from its Library page ([how to deposit](https://jlib271.github.io/HuMeta/recommend/#deposit)). "
                   "Edit this issue to add the link and this check will run again."]
         return "\n\n".join(lines)
@@ -75,7 +75,7 @@ def build_comment(body: str, fetch=K.get_json) -> str:
     rows = [f"- **Title:** {safe(s['title'])}",
             f"- **Link:** {s['url']}" + (f" (DOI [{s['doi']}](https://doi.org/{s['doi']}))" if s.get("doi") else ""),
             f"- **License:** {lic_text}",
-            "- **In the STEMEd+ collection:** " + ("yes (" + ", ".join(s["in_collections"]) + ")" if s["in_collections"]
+            "- **In the HuMeta Instrument Library collection:** " + ("yes (" + ", ".join(s["in_collections"]) + ")" if s["in_collections"]
                                                  else "not yet (it may be awaiting approval, or was not added)"),
             f"- **Files public:** {'yes' if s['files_public'] else 'no'}",
             "- **Files:** " + (", ".join(safe(f) for f in s.get("files", [])) or "none listed")]
@@ -92,7 +92,7 @@ def build_comment(body: str, fetch=K.get_json) -> str:
         if not all(K.allows_adaptation(x["id"]) for x in lic):
             notes.append("The license forbids derivatives (ND), so translations and adaptations are not allowed.")
     if not s["in_collections"]:
-        notes.append("Collection admins: approve the deposit into the STEMEd+ collection.")
+        notes.append("Collection admins: approve the deposit into the HuMeta Instrument Library collection.")
     if len(s.get("files", [])) == 1 and len(contents) > 1:
         notes.append("Only one file is in the record, but several kinds of content were ticked. Please put each in the same "
                      "record as a separate file.")
