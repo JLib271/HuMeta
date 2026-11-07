@@ -1,7 +1,7 @@
 {
   "vocabulary_version": 1,
   "title": "Reliability and validity rubric for quantitative research",
-  "note": "The library's evidence profile. Each instrument is checked against these categories and criteria. A criterion counts when the evidence was gathered: for statistics, when a value was measured and reported. Values in criteria are guides, not cut-offs: the profile shows the reported values next to the guide rather than passing or failing them.",
+  "note": "The library's evidence profile. Each instrument is checked against these categories and criteria. A criterion counts when the evidence was gathered: for statistics, when a value was measured and reported. Values in criteria are guides, not cut-offs: the profile shows the reported values next to the guide rather than passing or failing them. Each category (and a few criteria) lists the HuMeta measurement_evidence terms it counts as, so an instrument's evidence can be compared with a dataset's.",
   "categories": [
     {
       "id": "item_reliability",
@@ -9,6 +9,9 @@
       "kind": "reliability",
       "label": "Item reliability",
       "description": "Measure of intercorrelation and internal consistency of items.",
+      "humeta_evidence": [
+        "reliability"
+      ],
       "criteria": [
         {
           "id": "A",
@@ -41,7 +44,11 @@
               "rasch_item_reliability"
             ],
             "above": 0.9
-          }
+          },
+          "humeta_evidence": [
+            "reliability",
+            "irt_scaling"
+          ]
         },
         {
           "id": "E",
@@ -52,7 +59,11 @@
               "rasch_person_reliability"
             ],
             "above": 0.7
-          }
+          },
+          "humeta_evidence": [
+            "reliability",
+            "irt_scaling"
+          ]
         }
       ]
     },
@@ -62,6 +73,9 @@
       "kind": "reliability",
       "label": "Forms reliability",
       "description": "Measure of replicability of responses on form(s) over time.",
+      "humeta_evidence": [
+        "reliability"
+      ],
       "criteria": [
         {
           "id": "A",
@@ -83,6 +97,9 @@
       "kind": "reliability",
       "label": "Item analysis",
       "description": "The extent to which items are precise ability measures and cover the full ability range of a population.",
+      "humeta_evidence": [
+        "internal_structure"
+      ],
       "criteria": [
         {
           "id": "A",
@@ -102,12 +119,20 @@
         {
           "id": "D",
           "approach": "IRT",
-          "label": "Item fit"
+          "label": "Item fit",
+          "humeta_evidence": [
+            "internal_structure",
+            "irt_scaling"
+          ]
         },
         {
           "id": "E",
           "approach": "IRT",
-          "label": "Removal of misfit items"
+          "label": "Removal of misfit items",
+          "humeta_evidence": [
+            "internal_structure",
+            "irt_scaling"
+          ]
         }
       ]
     },
@@ -117,6 +142,9 @@
       "kind": "validity",
       "label": "Pre-item content validity",
       "description": "Alignment of item content with discipline, expert, and student views of the domain.",
+      "humeta_evidence": [
+        "test_content"
+      ],
       "criteria": [
         {
           "id": "A",
@@ -154,6 +182,9 @@
       "kind": "validity",
       "label": "Post-item content validity",
       "description": "Analysis of items after development.",
+      "humeta_evidence": [
+        "test_content"
+      ],
       "criteria": [
         {
           "id": "A",
@@ -171,6 +202,9 @@
       "kind": "validity",
       "label": "Communication validity",
       "description": "The extent to which test-takers interpret the items in the same way as intended by the test developer(s) (Lopez, 1996).",
+      "humeta_evidence": [
+        "response_processes"
+      ],
       "criteria": [
         {
           "id": "A",
@@ -196,6 +230,9 @@
       "kind": "validity",
       "label": "Cultural validity",
       "description": "The extent to which items perform equally across subgroups within the population.",
+      "humeta_evidence": [
+        "fairness"
+      ],
       "criteria": [
         {
           "id": "A",
@@ -217,6 +254,9 @@
       "kind": "validity",
       "label": "Scale analysis",
       "description": "Evaluation of whether items measure one variable or several.",
+      "humeta_evidence": [
+        "internal_structure"
+      ],
       "criteria": [
         {
           "id": "A",
@@ -237,12 +277,20 @@
         {
           "id": "C",
           "approach": "IRT",
-          "label": "Unidimensionality analysis"
+          "label": "Unidimensionality analysis",
+          "humeta_evidence": [
+            "internal_structure",
+            "irt_scaling"
+          ]
         },
         {
           "id": "D",
           "approach": "IRT",
-          "label": "Wright map"
+          "label": "Wright map",
+          "humeta_evidence": [
+            "internal_structure",
+            "irt_scaling"
+          ]
         }
       ]
     },
@@ -252,6 +300,9 @@
       "kind": "validity",
       "label": "Criterion and construct validity",
       "description": "The extent to which a scale is associated with a separate and strong measure of the variable, and the extent to which a scale acts as expected with respect to other measures associated with the theoretical latent.",
+      "humeta_evidence": [
+        "relations_to_other_variables"
+      ],
       "criteria": [
         {
           "id": "A",
@@ -277,6 +328,9 @@
         "multiple_choice",
         "multiple_response",
         "dichotomous"
+      ],
+      "humeta_evidence": [
+        "test_content"
       ],
       "criteria": [
         {
@@ -330,6 +384,9 @@
       "applies_to": [
         "likert",
         "rating_scale"
+      ],
+      "humeta_evidence": [
+        "test_content"
       ],
       "criteria": [
         {

@@ -11,8 +11,10 @@
   },
   "sample": {
     "n": 1053,
-    "education_level": "general_public",
-    "discipline": "climate_science",
+    "participants": [
+      "community_members"
+    ],
+    "discipline": "anzsrc_3702",
     "country": "US",
     "description": "General public sample from the development study: 1,111 respondents, of whom 58 with extreme INFIT/OUTFIT were excluded, leaving 1,053 for the item analysis."
   },

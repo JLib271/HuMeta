@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+* **New discipline term `discipline_general`** ("Not specific to a discipline")
+  for instruments, theories, and studies that apply across subject areas. It
+  has no ANZSRC or FOS code, so it is not exported as an ANZSRC or FOS subject.
+* **The instrument library uses HuMeta vocabularies.** Instruments and evidence
+  samples now record education levels (`education_level`), settings
+  (`learning_environment`), who the instrument gathers data about
+  (`participant_role`), disciplines (`discipline`, current ANZSRC terms only),
+  and institution types (`institution_type`) with HuMeta terms; library-only
+  terms were converted. Instrument types map to `data_collection_method`, and
+  the library's reliability and validity rubric maps to `measurement_evidence`.
+* **Instrument records export to DataCite 4.7** (typed `Text`, "Research
+  instrument"), with the same subject schemes as study records, so a dataset's
+  `IsCollectedBy` link points at an instrument described in the same terms.
+
 * **ERIC descriptors for three terms that had none.** `study_design: ethnographic` →
   Ethnography; `data_collection_method: ethnography` → Ethnography, Participant Observation;
   `participant_role: educators` → Teachers, College Faculty, Teaching Assistants. Each was

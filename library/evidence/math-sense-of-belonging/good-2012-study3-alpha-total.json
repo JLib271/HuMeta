@@ -12,12 +12,15 @@
   },
   "sample": {
     "n": 492,
-    "education_level": "undergraduate",
-    "discipline": "mathematics",
-    "setting": "formal_classroom",
+    "education_level": "bachelors",
+    "discipline": "anzsrc_49",
+    "setting": "postsecondary_classroom",
     "country": "US",
-    "institution_type": "highly selective university",
-    "description": "Study 3, Time 3 (end of semester): college calculus students at a highly selective East Coast university (296 women, 196 men; 1,005 took part at some time point)."
+    "institution_type": "four_year_college",
+    "description": "Study 3, Time 3 (end of semester): college calculus students at a highly selective East Coast university (296 women, 196 men; 1,005 took part at some time point).",
+    "participants": [
+      "students"
+    ]
   },
   "source": {
     "kind": "published",

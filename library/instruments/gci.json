@@ -2,10 +2,18 @@
   "id": "gci",
   "name": "Geoscience Concept Inventory",
   "acronym": "GCI",
+  "developers": [
+    {
+      "name": "Libarkin, J. C."
+    },
+    {
+      "name": "Anderson, S. W."
+    }
+  ],
   "variable_prefix": "gci",
   "instrument_type": "concept_inventory",
-  "respondent": [
-    "student"
+  "participants": [
+    "students"
   ],
   "description": "Bank of multiple-choice questions on core Earth science concepts for entry-level college geoscience courses. Wrong answers come from alternative conceptions found in student interviews and open-ended questionnaires. Rather than one fixed test, instructors assemble a subtest matched to their course; Rasch scaling places scores from different subtests on a common scale. The bank was expanded by a community of contributing authors.",
   "construct_ids": [
@@ -16,13 +24,13 @@
     "note": "Recorded by maintainers; awaiting governance committee review."
   },
   "disciplines": [
-    "geoscience"
+    "anzsrc_37"
   ],
   "education_levels": [
-    "undergraduate"
+    "bachelors"
   ],
   "settings": [
-    "formal_classroom"
+    "postsecondary_classroom"
   ],
   "original_citation": {
     "text": "Libarkin, J. C., & Anderson, S. W. (2005). Assessment of learning in entry-level geoscience courses: Results from the Geoscience Concept Inventory. Journal of Geoscience Education, 53(4), 394-401."
@@ -122,7 +130,7 @@
       "criteria": [
         "B"
       ],
-      "source": "Geocognition Research Laboratory, The Geoscience Concept Inventory (https://geocognitionresearchlaboratory.com/2018/11/20/the-geoscience-concept-inventory/); Libarkin, J. C., & Anderson, S. W. (2005). Assessment of learning in entry-level geoscience courses: Results from the Geoscience Concept Inventory. Journal of Geoscience Education, 53(4), 394-401. doi:10.5408/1089-9995-53.4.394",
+      "source": "Geocognition Research Laboratory, The Geoscience Concept Inventory (https://geocognitionresearchlaboratory.com/2018/11/20/the-geoscience-concept-inventory/); Libarkin, J. C., & Anderson, S. W. (2005). Assessment of learning in entry-level geoscience courses: Results from the Geoscience Concept Inventory. Journal of Geoscience Education, 53(4), 394-401",
       "notes": "Piloted at more than 40 institutions nationwide with about 5,000 students to support generalizability to entry-level college students.",
       "reviewed_by": "J. Libarkin (developer)",
       "reviewed_on": "2026-11-06"

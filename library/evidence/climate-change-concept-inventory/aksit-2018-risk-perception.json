@@ -11,11 +11,14 @@
   },
   "sample": {
     "n": null,
-    "education_level": "undergraduate",
-    "discipline": "geoscience",
-    "setting": "formal_classroom",
+    "education_level": "bachelors",
+    "discipline": "anzsrc_37",
+    "setting": "postsecondary_classroom",
     "country": "US",
-    "description": "Undergraduates in an introductory Earth science course."
+    "description": "Undergraduates in an introductory Earth science course.",
+    "participants": [
+      "students"
+    ]
   },
   "source": {
     "kind": "published",

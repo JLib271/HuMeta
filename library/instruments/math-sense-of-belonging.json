@@ -1,10 +1,21 @@
 {
   "id": "math-sense-of-belonging",
   "name": "Sense of Belonging to Math Scale",
+  "developers": [
+    {
+      "name": "Good, C."
+    },
+    {
+      "name": "Rattan, A."
+    },
+    {
+      "name": "Dweck, C. S."
+    }
+  ],
   "variable_prefix": "sbm",
   "instrument_type": "self_report_scale",
-  "respondent": [
-    "student"
+  "participants": [
+    "students"
   ],
   "description": "Self-report scale of how much a student feels like an accepted, valued member of the math community. Developed with college students and shown to predict intent to continue in math beyond other predictors.",
   "construct_ids": [
@@ -15,13 +26,13 @@
     "note": "Recorded by maintainers; awaiting governance committee review."
   },
   "disciplines": [
-    "mathematics"
+    "anzsrc_49"
   ],
   "education_levels": [
-    "undergraduate"
+    "bachelors"
   ],
   "settings": [
-    "formal_classroom"
+    "postsecondary_classroom"
   ],
   "original_citation": {
     "text": "Good, C., Rattan, A., & Dweck, C. S. (2012). Why do women opt out? Sense of belonging and women's representation in mathematics. Journal of Personality and Social Psychology, 102(4), 700-717.",

@@ -383,6 +383,7 @@ Discipline(s) or subject area(s) the study is about; for education studies, also
 | `anzsrc_5204` | Cognitive and computational psychology |  |
 | `anzsrc_5205` | Social and personality psychology |  |
 | `anzsrc_5299` | Other psychology |  |
+| `discipline_general` | Not specific to a discipline |  |
 | `biology` | Biology and life sciences | Biology |
 | `chemistry` | Chemistry | Chemistry |
 | `physics` | Physics | Physics |

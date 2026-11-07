@@ -11,9 +11,13 @@
   },
   "sample": {
     "n": null,
-    "education_level": "undergraduate",
-    "setting": "formal_classroom",
-    "description": "Observers coding undergraduate STEM classes in the development study: 16 K-12 teachers observing 23 classes at one university, and 7 STEM faculty observing 8 classes at a second university after 1.5 hours of training."
+    "education_level": "bachelors",
+    "setting": "postsecondary_classroom",
+    "description": "Observers coding undergraduate STEM classes in the development study: 16 K-12 teachers observing 23 classes at one university, and 7 STEM faculty observing 8 classes at a second university after 1.5 hours of training.",
+    "participants": [
+      "students",
+      "educators"
+    ]
   },
   "source": {
     "kind": "published",

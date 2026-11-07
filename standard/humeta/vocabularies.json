@@ -1930,6 +1930,12 @@
           "division": "anzsrc_52"
         },
         {
+          "id": "discipline_general",
+          "label": "Not specific to a discipline",
+          "definition": "Applies across disciplines rather than to one subject area, e.g. a general motivation or learning-strategies questionnaire. ANZSRC has no code for this, so it is not exported as an ANZSRC or FOS subject.",
+          "eric": []
+        },
+        {
           "id": "biology",
           "label": "Biology and life sciences",
           "fos": "1.6",

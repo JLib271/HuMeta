@@ -17,12 +17,15 @@
   },
   "sample": {
     "n": 498,
-    "education_level": "undergraduate",
-    "discipline": "mathematics",
-    "setting": "formal_classroom",
+    "education_level": "bachelors",
+    "discipline": "anzsrc_49",
+    "setting": "postsecondary_classroom",
     "country": "US",
-    "institution_type": "highly selective university",
-    "description": "Study 1, confirmatory half: 498 calculus students (241 men, 257 women) at a highly selective university in the Northeast US."
+    "institution_type": "four_year_college",
+    "description": "Study 1, confirmatory half: 498 calculus students (241 men, 257 women) at a highly selective university in the Northeast US.",
+    "participants": [
+      "students"
+    ]
   },
   "source": {
     "kind": "published",
