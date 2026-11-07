@@ -66,7 +66,8 @@
       "basis": "coding_category",
       "construct_ids": [
         "student_classroom_activity"
-      ]
+      ],
+      "item_count": 13
     },
     {
       "dimension_id": "instructor-doing",
@@ -74,17 +75,18 @@
       "basis": "coding_category",
       "construct_ids": [
         "teaching_practices"
-      ]
+      ],
+      "item_count": 12
     }
   ],
   "related_instrument_ids": [],
   "review": {
     "status": "draft",
     "needs_check": [
-      "Confirm split of the 25 codes between students and instructor.",
       "Add inter-rater reliability (Cohen's kappa) values and observer groups from Smith et al. (2013).",
       "The paper form also has an optional engagement rating; decide whether to model it as a third dimension.",
-      "Code descriptions should be taken from the CC-licensed article or CWSEI summary, and the item file marked CC BY-NC-SA 3.0."
+      "Code descriptions should be taken from the CC-licensed article or CWSEI summary, and the item file marked CC BY-NC-SA 3.0.",
+      "Code split (13 student, 12 instructor) taken from the CHIRAL review of COPUS; confirm against Smith et al. (2013), Figure 1."
     ]
   },
   "info_sources": [
@@ -92,6 +94,7 @@
     "https://cwsei.ubc.ca/resources/tools/copus",
     "https://www.physport.org/assessments/guides/Open.cfm?G=66",
     "https://cwsei.ubc.ca/node/1291",
-    "https://www.compadre.org/portal/items/detail.cfm?ID=13381"
+    "https://www.compadre.org/portal/items/detail.cfm?ID=13381",
+    "https://chiral.chemedx.org/instrument/classroom-observation-protocol-undergraduate-stem"
   ]
 }

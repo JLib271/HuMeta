@@ -1,0 +1,30 @@
+{
+  "id": "pintrich-1991-alpha-test-anxiety",
+  "instrument_id": "mslq",
+  "version_id": "mslq-1991-en",
+  "dimension_id": "test-anxiety",
+  "evidence_type": "internal_consistency",
+  "statistic": {
+    "name": "cronbach_alpha",
+    "value": 0.8,
+    "occasion": "single administration"
+  },
+  "sample": {
+    "n": 380,
+    "education_level": "undergraduate",
+    "setting": "formal_classroom",
+    "country": "US",
+    "description": "380 Midwestern college students surveyed in 1990: 356 at a public four-year university and 24 at a community college, in 37 classrooms spanning 14 subject domains in natural science, humanities, social science, computer science, and foreign languages. The 1993 article (Pintrich et al., Educational and Psychological Measurement 53(3), 801-813) reports the same scales and alphas."
+  },
+  "source": {
+    "kind": "published",
+    "citation": "Pintrich, P. R., Smith, D. A. F., Garcia, T., & McKeachie, W. J. (1991). A manual for the use of the Motivated Strategies for Learning Questionnaire (MSLQ). University of Michigan, National Center for Research to Improve Postsecondary Teaching and Learning.",
+    "url": "https://files.eric.ed.gov/fulltext/ED338122.pdf"
+  },
+  "review": {
+    "status": "draft",
+    "needs_check": [
+      "Sample details and alpha read from secondary copies (the manual's introduction as reproduced online, and Table 1 of Holland et al., 2018, SAGE Open); confirm both against the manual on ERIC (ED338122)."
+    ]
+  }
+}

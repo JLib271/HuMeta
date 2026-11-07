@@ -129,7 +129,8 @@
       "basis": "empirical_factor",
       "construct_ids": [
         "learning_strategies"
-      ]
+      ],
+      "item_count": 4
     },
     {
       "dimension_id": "elaboration",
@@ -137,7 +138,8 @@
       "basis": "empirical_factor",
       "construct_ids": [
         "learning_strategies"
-      ]
+      ],
+      "item_count": 6
     },
     {
       "dimension_id": "organization",
@@ -145,7 +147,8 @@
       "basis": "empirical_factor",
       "construct_ids": [
         "learning_strategies"
-      ]
+      ],
+      "item_count": 4
     },
     {
       "dimension_id": "critical-thinking",
@@ -153,7 +156,8 @@
       "basis": "empirical_factor",
       "construct_ids": [
         "critical_thinking"
-      ]
+      ],
+      "item_count": 5
     },
     {
       "dimension_id": "metacognitive-self-regulation",
@@ -161,7 +165,8 @@
       "basis": "empirical_factor",
       "construct_ids": [
         "self_regulated_learning"
-      ]
+      ],
+      "item_count": 12
     },
     {
       "dimension_id": "time-study-environment",
@@ -169,7 +174,8 @@
       "basis": "empirical_factor",
       "construct_ids": [
         "self_regulated_learning"
-      ]
+      ],
+      "item_count": 8
     },
     {
       "dimension_id": "effort-regulation",
@@ -177,7 +183,8 @@
       "basis": "empirical_factor",
       "construct_ids": [
         "self_regulated_learning"
-      ]
+      ],
+      "item_count": 4
     },
     {
       "dimension_id": "peer-learning",
@@ -185,7 +192,8 @@
       "basis": "empirical_factor",
       "construct_ids": [
         "learning_strategies"
-      ]
+      ],
+      "item_count": 3
     },
     {
       "dimension_id": "help-seeking",
@@ -193,17 +201,17 @@
       "basis": "empirical_factor",
       "construct_ids": [
         "learning_strategies"
-      ]
+      ],
+      "item_count": 4
     }
   ],
   "related_instrument_ids": [],
   "review": {
     "status": "draft",
     "needs_check": [
-      "Add item counts for the nine learning-strategies subscales from the manual.",
       "Confirm reuse terms with the manual or the University of Michigan.",
-      "Confirm which sample (n = 380?) the 1993 alphas come from.",
-      "Confirm public-domain status in the 1991 manual itself (secondary sources only so far)."
+      "Confirm public-domain status in the 1991 manual itself (secondary sources only so far).",
+      "Learning-strategies item counts (31 + 19 = 50 items) taken from Table 1 of Holland et al. (2018); confirm against the manual."
     ]
   },
   "info_sources": [
@@ -212,6 +220,7 @@
     "https://core.ac.uk/download/287211724.pdf",
     "https://www.improvewithmetacognition.com/the-motivated-strategies-for-learning-questionnaire/",
     "https://core.ac.uk/download/287211724.pdf",
-    "https://learningscientists.org/blog/2024/7/2/digest-174"
+    "https://learningscientists.org/blog/2024/7/2/digest-174",
+    "https://scholarworks.uttyler.edu/hrd_fac/5"
   ]
 }
