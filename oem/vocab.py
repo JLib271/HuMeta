@@ -15,6 +15,15 @@ PUBLISHED_DIR = APP_DIR / "published"
 PUBLISHED_SUMMARIES_DIR = PUBLISHED_DIR / "study_summaries"
 PUBLISHED_DATASETS_DIR = PUBLISHED_DIR / "datasets"
 DEFAULT_GITHUB_REPO = "JLib271/HuMeta"
+#: The HuMeta Library website, built from library/ by scripts/build_library_site.py
+LIBRARY_SITE_URL = "https://jlib271.github.io/HuMeta/"
+#: The deployed HuMeta Portal (Streamlit) app; leave empty until it has an address
+PORTAL_URL = ""
+
+
+def library_page_url(kind: str, record_id: str) -> str:
+    """Address of a record's page on the Library website (kind: instruments, frameworks or constructs)."""
+    return f"{LIBRARY_SITE_URL}{kind}/{record_id.replace('_', '-')}/"
 PUBLIC_DATASET_MAX_MB = 25
 PROJECT_FILE_FORMAT = "humeta-project"
 #: earlier project-file format names that still load

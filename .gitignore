@@ -218,3 +218,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Library website build output (scripts/build_library_site.py)
+/_site

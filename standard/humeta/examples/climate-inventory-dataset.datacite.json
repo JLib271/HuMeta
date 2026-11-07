@@ -337,7 +337,7 @@
   ],
   "relatedIdentifiers": [
     {
-      "relatedIdentifier": "https://github.com/JLib271/HuMeta/blob/main/library/instruments/climate-change-concept-inventory.json",
+      "relatedIdentifier": "https://jlib271.github.io/HuMeta/instruments/climate-change-concept-inventory/",
       "relatedIdentifierType": "URL",
       "relationType": "IsCollectedBy"
     },
