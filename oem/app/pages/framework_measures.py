@@ -20,7 +20,9 @@ import streamlit as st
 
 from oem import plan as P
 from oem import profile
+from oem import evidence as EV
 from oem import recommend as R
+from oem.vocab import library_page_url
 from oem.app.common import (APP_DIR, context_search_terms, current_project,
                             load_published_summaries, open_review_pull_request, public_submission_warning,
                             render_project_download, safe_slug)
@@ -191,6 +193,9 @@ def _browse_frameworks(lib, picker_key: str, v: int) -> None:
                     cite += f" [doi:{fw['doi']}](https://doi.org/{fw['doi']})"
                 if cite:
                     st.caption(f"Key source: {cite}")
+                if fw.get("kind") not in ("own", "exploratory"):
+                    st.caption(f"[Library page]({library_page_url('frameworks', fw['id'])}): constructs, relationships, "
+                               "and instruments that measure them")
                 if fw.get("status") == "draft":
                     st.caption("Draft: please check the constructs and relationships, and suggest changes in the "
                                f"**{TABS[3]}** tab.")
@@ -383,7 +388,11 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
                 cite = (inst.get("original_citation") or {}).get("text") or ""
                 status = P.MAPPING_STATUS[P.mapping_status(inst)]
                 st.markdown(f"**{inst['name']}**. {text_ok}. Access: {access.get('terms_summary', access.get('access_type', ''))} "
-                            f"{cite} *Construct mapping: {status}.*")
+                            f"{cite} *Construct mapping: {status}.* "
+                            f"[Library page]({library_page_url('instruments', iid)})")
+                prof = EV.profile(lib, iid)
+                st.caption("Evidence profile: " + EV.summary_line(prof)
+                           + (". " + " ".join(prof.flags) if prof.flags else ""))
 
     # ------------------------------------------------------------ Step 4
     st.subheader("Step 4 · Standard variables and timepoints")
@@ -635,6 +644,11 @@ def _recommend_instrument(lib, publish_disabled: bool, publish_hint: str | None)
         access = c1.selectbox("How can researchers get it? *", list(R.ACCESS_OPTIONS), format_func=R.ACCESS_OPTIONS.get)
         access_details = c2.text_input("License or terms of use (if known)")
         evidence = st.text_area("Reliability and validity evidence, with citations (optional)")
+        c1, c2 = st.columns(2)
+        development = c1.selectbox("How was it developed?", list(R.DEVELOPMENT_OPTIONS), format_func=R.DEVELOPMENT_OPTIONS.get,
+                                   help="A theory is not required. Many instruments are built from a clear definition of what "
+                                        "to measure.")
+        theory = c2.text_input("Theory or framework it was built on (optional)")
         permission = st.checkbox("I am a developer and I am willing to share item text under an open license "
                                  "(a maintainer will contact you to confirm).")
         notes = st.text_area("Anything else (versions, translations, adaptations)?")
@@ -651,7 +665,8 @@ def _recommend_instrument(lib, publish_disabled: bool, publish_hint: str | None)
             name=name, acronym=acronym, citation=citation, doi=doi, url=url, alignment=rows,
             respondents=respondents, populations=populations, item_count=item_count,
             response_format=response_format, access=access, access_details=access_details, evidence=evidence,
-            relationship=relationship, item_text_permission=permission, construct=construct, notes=notes)
+            relationship=relationship, item_text_permission=permission, construct=construct, notes=notes,
+            development=development, theory=theory)
         issues = R.instrument_problems(rec, lib) + ([] if consent else ["Tick the confirmation box."])
         _send(rec, issues)
 

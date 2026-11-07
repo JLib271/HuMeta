@@ -1,0 +1,66 @@
+name: Library website
+
+# Builds the HuMeta Library website from library/ and publishes it to GitHub Pages
+# (https://jlib271.github.io/HuMeta/). Pull requests build the site as a check; only
+# main is published.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "library/**"
+      - "library_site/**"
+      - "scripts/build_library_site.py"
+      - "oem/library.py"
+      - "oem/vocab.py"
+      - "standard/humeta/vocabularies.json"
+      - ".github/workflows/library-site.yml"
+  pull_request:
+    paths:
+      - "library/**"
+      - "library_site/**"
+      - "scripts/build_library_site.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: library-site-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: pip install "jsonschema[format]>=4.18"
+      - name: Validate the library
+        run: python scripts/validate_library.py
+      - name: Build the site
+        run: python scripts/build_library_site.py --out _site
+      - uses: actions/configure-pages@v6
+        if: github.event_name != 'pull_request'
+      - uses: actions/upload-pages-artifact@v5
+        if: github.event_name != 'pull_request'
+        with:
+          path: _site
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

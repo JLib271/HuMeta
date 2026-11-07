@@ -76,6 +76,21 @@ def main(library: Path) -> int:
                 if path.get("from") not in theory_construct_ids or path.get("to") not in theory_construct_ids:
                     problems.append(f"{label}: path {path.get('from')} -> {path.get('to')} uses an unknown construct")
 
+    # Reliability and validity rubric
+    rubric_criteria: dict[str, set[str]] = {}
+    rubric_path = library / "evidence_rubric.json"
+    if rubric_path.exists():
+        rubric_doc = load(rubric_path)
+        problems += schema_errors(Draft202012Validator(load(schemas / "evidence_rubric.schema.json"), format_checker=fmt),
+                                  rubric_doc, "evidence_rubric.json")
+        for cat in rubric_doc.get("categories", []):
+            rubric_criteria[cat.get("id")] = {c.get("id") for c in cat.get("criteria", [])}
+
+    def check_rubric_refs(pairs, label: str):
+        for cat, crit in pairs:
+            if rubric_criteria and crit not in rubric_criteria.get(cat, set()):
+                problems.append(f"{label}: rubric category {cat} has no criterion {crit}")
+
     def check_review(review: dict, label: str):
         if review.get("status") == "source_verified" and review.get("needs_check"):
             problems.append(f"{label}: status is source_verified but needs_check is not empty")
@@ -112,6 +127,14 @@ def main(library: Path) -> int:
         for cid in sorted(set(refs) - construct_ids):
             problems.append(f"{label}: unknown construct id '{cid}' (add it to constructs.json)")
         check_review(data.get("review", {}), label)
+        check_rubric_refs([(cat, crit) for cat, r in (data.get("rubric_review") or {}).items() for crit in r.get("criteria", [])],
+                          label)
+        dev = data.get("development") or {}
+        for fid in dev.get("framework_ids", []):
+            if frameworks_path.exists() and fid not in seen_fw:
+                problems.append(f"{label}: development lists unknown framework '{fid}'")
+        if dev.get("framework_ids") and dev.get("basis") != "theory":
+            problems.append(f"{label}: development lists frameworks but its basis is not 'theory'")
 
     for iid, data in instruments.items():
         for rid in data.get("related_instrument_ids", []):
@@ -130,6 +153,7 @@ def main(library: Path) -> int:
         if eid in evidence_ids:
             problems.append(f"{label}: duplicate evidence id {eid}")
         evidence_ids.add(eid)
+        check_rubric_refs([(r.get("category"), r.get("criterion")) for r in data.get("rubric", [])], label)
         iid = data.get("instrument_id")
         if iid != path.parent.name:
             problems.append(f"{label}: instrument_id '{iid}' does not match folder name")

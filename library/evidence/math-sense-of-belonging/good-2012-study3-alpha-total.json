@@ -1,0 +1,32 @@
+{
+  "id": "good-2012-study3-alpha-total",
+  "instrument_id": "math-sense-of-belonging",
+  "version_id": "good-2012-en",
+  "dimension_id": null,
+  "evidence_type": "internal_consistency",
+  "statistic": {
+    "name": "cronbach_alpha",
+    "value": 0.84,
+    "occasion": "end of semester (Time 3)",
+    "notes": "Composite measure. Subscale alphas ranged from .77 to .97."
+  },
+  "sample": {
+    "n": 492,
+    "education_level": "undergraduate",
+    "discipline": "mathematics",
+    "setting": "formal_classroom",
+    "country": "US",
+    "institution_type": "highly selective university",
+    "description": "Study 3, Time 3 (end of semester): college calculus students at a highly selective East Coast university (296 women, 196 men; 1,005 took part at some time point)."
+  },
+  "source": {
+    "kind": "published",
+    "citation": "Good, C., Rattan, A., & Dweck, C. S. (2012). Why do women opt out? Sense of belonging and women's representation in mathematics. Journal of Personality and Social Psychology, 102(4), 700-717.",
+    "doi": "10.1037/a0026659",
+    "independent": false
+  },
+  "review": {
+    "status": "draft",
+    "needs_check": []
+  }
+}

@@ -69,7 +69,7 @@
   </dates>
   <language>en</language>
   <relatedIdentifiers>
-    <relatedIdentifier relatedIdentifierType="URL" relationType="IsCollectedBy">https://github.com/JLib271/HuMeta/blob/main/library/instruments/climate-change-concept-inventory.json</relatedIdentifier>
+    <relatedIdentifier relatedIdentifierType="URL" relationType="IsCollectedBy">https://jlib271.github.io/HuMeta/instruments/climate-change-concept-inventory/</relatedIdentifier>
     <relatedIdentifier relatedIdentifierType="DOI" relationType="References">10.1007/s10584-018-2279-y</relatedIdentifier>
   </relatedIdentifiers>
   <sizes>

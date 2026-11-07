@@ -5,86 +5,284 @@
   "description": "One piece of reliability or validity evidence for one instrument version (and optionally one dimension) in one sample. Published and platform-derived evidence use the same format.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id", "instrument_id", "version_id", "evidence_type", "statistic", "sample", "source", "review"],
+  "required": [
+    "id",
+    "instrument_id",
+    "version_id",
+    "evidence_type",
+    "statistic",
+    "sample",
+    "source",
+    "review"
+  ],
   "properties": {
-    "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$", "description": "Must match the file name." },
-    "instrument_id": { "type": "string" },
-    "version_id": { "type": "string" },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "description": "Must match the file name."
+    },
+    "instrument_id": {
+      "type": "string"
+    },
+    "version_id": {
+      "type": "string"
+    },
     "dimension_id": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "description": "null = whole instrument."
     },
     "evidence_type": {
       "enum": [
-        "internal_consistency", "test_retest", "inter_rater", "factor_structure",
-        "measurement_invariance", "item_bias", "response_process", "test_content",
-        "relations_to_other_variables", "item_analysis", "irt_scaling"
+        "internal_consistency",
+        "test_retest",
+        "inter_rater",
+        "factor_structure",
+        "measurement_invariance",
+        "item_bias",
+        "response_process",
+        "test_content",
+        "relations_to_other_variables",
+        "item_analysis",
+        "irt_scaling",
+        "alternate_forms",
+        "split_half",
+        "item_fit",
+        "readability",
+        "expert_review",
+        "known_groups"
       ]
     },
     "statistic": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["name", "value"],
+      "required": [
+        "name",
+        "value"
+      ],
       "properties": {
         "name": {
           "enum": [
-            "cronbach_alpha", "kr20", "mcdonald_omega", "cohen_kappa", "icc", "pearson_r", "cfa_fit",
-            "rasch_person_reliability", "rasch_item_reliability", "rasch_separation", "mantel_haenszel_dif", "other"
+            "cronbach_alpha",
+            "kr20",
+            "mcdonald_omega",
+            "cohen_kappa",
+            "icc",
+            "pearson_r",
+            "cfa_fit",
+            "rasch_person_reliability",
+            "rasch_item_reliability",
+            "rasch_separation",
+            "mantel_haenszel_dif",
+            "item_total_correlation",
+            "factor_loading",
+            "spearman_brown",
+            "other"
           ]
         },
-        "value": { "type": ["number", "null"] },
-        "occasion": { "type": "string", "description": "e.g. pretest, posttest, single administration." },
-        "notes": { "type": "string" }
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "occasion": {
+          "type": "string",
+          "description": "e.g. pretest, posttest, single administration."
+        },
+        "notes": {
+          "type": "string"
+        },
+        "min": {
+          "type": "number",
+          "description": "Lowest value when a range is reported (e.g. across subscales or rater pairs)."
+        },
+        "max": {
+          "type": "number",
+          "description": "Highest value when a range is reported."
+        },
+        "fit": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Model fit indices for factor analyses.",
+          "properties": {
+            "rmsea": {
+              "type": "number"
+            },
+            "cfi": {
+              "type": "number"
+            },
+            "tli": {
+              "type": "number"
+            },
+            "srmr": {
+              "type": "number"
+            },
+            "chi_square": {
+              "type": "number"
+            },
+            "df": {
+              "type": "number"
+            }
+          }
+        }
       }
     },
     "sample": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["n", "education_level", "description"],
+      "required": [
+        "n",
+        "education_level",
+        "description"
+      ],
       "properties": {
-        "n": { "type": ["integer", "null"], "minimum": 1 },
-        "education_level": { "type": "string" },
-        "discipline": { "type": "string" },
-        "setting": { "type": "string" },
-        "country": { "type": "string" },
-        "institution_type": { "type": "string" },
-        "description": { "type": "string" }
+        "n": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "education_level": {
+          "type": "string"
+        },
+        "discipline": {
+          "type": "string"
+        },
+        "setting": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "institution_type": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
       }
     },
     "source": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["kind"],
+      "required": [
+        "kind"
+      ],
       "properties": {
         "kind": {
-          "enum": ["published", "platform_derived", "developer_reported"],
+          "enum": [
+            "published",
+            "platform_derived",
+            "developer_reported"
+          ],
           "description": "developer_reported = provided directly by the instrument's developer; replace with a published citation when one exists."
         },
-        "citation": { "type": "string" },
-        "doi": { "type": "string", "pattern": "^10\\.\\d{4,9}/\\S+$" },
-        "url": { "type": "string", "format": "uri" },
+        "citation": {
+          "type": "string"
+        },
+        "doi": {
+          "type": "string",
+          "pattern": "^10\\.\\d{4,9}/\\S+$"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
         "study_discovery_id": {
           "type": "string",
           "description": "For platform_derived evidence: the study's id in study_discovery, only if the owner chose to be named."
         },
-        "contributed_by": { "type": "string" }
+        "contributed_by": {
+          "type": "string"
+        },
+        "independent": {
+          "type": "boolean",
+          "description": "true when none of the instrument's developers are authors of this evidence; false when they are."
+        }
       },
       "allOf": [
         {
-          "if": { "properties": { "kind": { "const": "published" } } },
-          "then": { "required": ["citation"] }
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "published"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "citation"
+            ]
+          }
         }
       ]
     },
     "review": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["status", "needs_check"],
+      "required": [
+        "status",
+        "needs_check"
+      ],
       "properties": {
-        "status": { "enum": ["draft", "community_submitted", "maintainer_reviewed", "source_verified"] },
-        "reviewed_by": { "type": "string" },
-        "reviewed_on": { "type": "string", "format": "date" },
-        "needs_check": { "type": "array", "items": { "type": "string" } }
+        "status": {
+          "enum": [
+            "draft",
+            "community_submitted",
+            "maintainer_reviewed",
+            "source_verified"
+          ]
+        },
+        "reviewed_by": {
+          "type": "string"
+        },
+        "reviewed_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "needs_check": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "rubric": {
+      "type": "array",
+      "description": "Rubric criteria (library/evidence_rubric.json) this evidence supports, beyond those inferred from evidence_type and statistic.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "category",
+          "criterion"
+        ],
+        "properties": {
+          "category": {
+            "enum": [
+              "item_reliability",
+              "forms_reliability",
+              "item_analysis",
+              "pre_item_content",
+              "post_item_content",
+              "communication",
+              "cultural",
+              "scale_analysis",
+              "criterion_construct",
+              "mc_item_writing",
+              "likert_item_writing"
+            ]
+          },
+          "criterion": {
+            "type": "string",
+            "pattern": "^[A-Z]$"
+          }
+        }
       }
     }
   }

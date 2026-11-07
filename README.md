@@ -26,6 +26,30 @@ The modules follow a study from design to sharing. Study metadata uses one stand
 5. **Descriptive & Scale Analytics (Module 5):** Analyze data by construct, using the variable plan from Module 2. Try example data (shaped like your Module 2 plan, or a built-in sample plan if you have none), upload a private dataset (held in memory for the browser session only and never saved), or pick a published dataset. Columns are matched to the plan by their shared variable names (adjustable); without a plan you define scales by hand. For each construct and measure, and each timepoint: descriptives, a scale score (mean or sum), and Cronbach's alpha with a 95% confidence interval, corrected item-total correlations, and alpha if item deleted; codes show how often each is present. Then relationships and comparisons: correlations of scale scores (n, r, 95% CI, p); group comparisons (Welch's t-test and Mann-Whitney U for two groups; ANOVA, Welch's ANOVA, Kruskal-Wallis, and Games-Howell follow-ups for three or more); before-and-after comparisons (paired t-test and Wilcoxon signed-rank, with pre/post pairs suggested from the plan's timepoints); chi-square tests of association with Cramér's V; and linear or logistic regression with confidence intervals (and odds ratios). Each test reports an effect size and a plain-language summary. Statistics are computed with [pingouin](https://pingouin-stats.org/) (Vallat, 2018). Downloads: scale scores, results tables, a PDF report, and an R script (psych and base R) that reproduces the analyses, including McDonald's omega and the tests chosen, on the researcher's own computer. Links point to other free tools (R, psych, lavaan, JASP, jamovi), and researchers can recommend analyses for the module.
 6. **Published Repository Viewer (Module 6):** Browse the published study summaries, the public dataset catalog, and the research measure catalog, and download any of them as CSV.
 
+### HuMeta Library website
+
+The instrument library in [`library/`](library/README.md) is also published as a
+static website at **https://jlib271.github.io/HuMeta/**. It has one page per
+instrument, theory or lens, and construct, with the links between them, a
+search page, a reference page for response scales and standard variables, and
+downloads (each record as JSON; lists as CSV). Item text, item images and answer
+keys appear only where an instrument's `access` record allows it, the same rules
+`scripts/validate_library.py` enforces. Module 2 links each instrument and
+theory to its Library page.
+
+The [Library website workflow](.github/workflows/library-site.yml) validates the
+library, runs `scripts/build_library_site.py`, and publishes the result
+whenever `library/` changes on `main`. To publish it the first time, set
+**Settings → Pages → Source** to **GitHub Actions**. To preview locally:
+
+```bash
+python scripts/build_library_site.py          # writes _site/
+python -m http.server -d _site 8000           # open http://localhost:8000
+```
+
+When the HuMeta Portal has a public address, set `PORTAL_URL` in
+`oem/vocab.py` so the Library pages link to it.
+
 ### Research measure catalog
 
 Module 2 reads the versioned JSON catalog at

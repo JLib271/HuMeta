@@ -30,13 +30,13 @@ from typing import Any
 from xml.etree import ElementTree as ET
 
 from oem.library import Library
+from oem.vocab import library_page_url
 
 ROOT = Path(__file__).resolve().parent.parent
 PROFILE_DIR = ROOT / "standard" / "humeta"
 CONSTRUCTS_URI = "https://github.com/JLib271/HuMeta/blob/main/library/constructs.json#"
 FRAMEWORKS_URI = "https://github.com/JLib271/HuMeta/blob/main/library/frameworks.json#"
 VOCAB_URI = "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#"
-LIBRARY_RECORD_URI = "https://github.com/JLib271/HuMeta/blob/main/library/instruments/"
 DATACITE_NS = "http://datacite.org/schema/kernel-4"
 DATACITE_XSD = "http://schema.datacite.org/meta/kernel-4.7/metadata.xsd"
 ERIC_SCHEME = "ERIC Thesaurus"
@@ -792,8 +792,8 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
         if iid and iid not in seen_instruments and iid in lib.instruments:
             seen_instruments.add(iid)
             if res["resource_type"] == "Dataset":
-                # The instrument itself (its library record) collected the data ...
-                related.append({"relatedIdentifier": f"{LIBRARY_RECORD_URI}{iid}.json",
+                # The instrument itself (its Library page) collected the data ...
+                related.append({"relatedIdentifier": library_page_url("instruments", iid),
                                 "relatedIdentifierType": "URL", "relationType": "IsCollectedBy"})
             doi = lib.instruments[iid].get("original_citation", {}).get("doi")
             if doi:

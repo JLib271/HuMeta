@@ -1,0 +1,33 @@
+{
+  "id": "good-2012-study2-predictive",
+  "instrument_id": "math-sense-of-belonging",
+  "version_id": "good-2012-en",
+  "dimension_id": null,
+  "evidence_type": "relations_to_other_variables",
+  "statistic": {
+    "name": "other",
+    "value": null,
+    "notes": "Standardized regression coefficients for Sense of Belonging, controlling for psychological sense of school membership, trait anxiety, and math identification: math anxiety -.70, usefulness of math .59, math confidence .77, intent to pursue math .42 (all p < .001; Table 6). Sense of Belonging was the strongest predictor of intent to pursue math."
+  },
+  "sample": {
+    "n": 73,
+    "education_level": "undergraduate",
+    "discipline": "mathematics",
+    "setting": "other",
+    "country": "US",
+    "institution_type": "highly selective university",
+    "description": "Study 2: students at a highly selective university in the Northeast US who attended both lab sessions (30 men, 43 women; 133 attended the first)."
+  },
+  "source": {
+    "kind": "published",
+    "citation": "Good, C., Rattan, A., & Dweck, C. S. (2012). Why do women opt out? Sense of belonging and women's representation in mathematics. Journal of Personality and Social Psychology, 102(4), 700-717.",
+    "doi": "10.1037/a0026659",
+    "independent": false
+  },
+  "review": {
+    "status": "draft",
+    "needs_check": [
+      "Confirm the n for the regression analyses (the other scales report n = 77-78)."
+    ]
+  }
+}

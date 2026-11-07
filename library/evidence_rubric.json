@@ -1,0 +1,359 @@
+{
+  "vocabulary_version": 1,
+  "title": "Reliability and validity rubric for quantitative research",
+  "note": "The library's evidence profile. Each instrument is checked against these categories and criteria. A criterion counts when the evidence was gathered: for statistics, when a value was measured and reported. Values in criteria are guides, not cut-offs: the profile shows the reported values next to the guide rather than passing or failing them.",
+  "categories": [
+    {
+      "id": "item_reliability",
+      "numeral": "I",
+      "kind": "reliability",
+      "label": "Item reliability",
+      "description": "Measure of intercorrelation and internal consistency of items.",
+      "criteria": [
+        {
+          "id": "A",
+          "approach": "CTT",
+          "label": "Cronbach's alpha, Kuder-Richardson"
+        },
+        {
+          "id": "B",
+          "approach": "CTT",
+          "label": "Cronbach's alpha reported (guide: > 0.7)",
+          "threshold": {
+            "statistics": [
+              "cronbach_alpha",
+              "kr20"
+            ],
+            "above": 0.7
+          }
+        },
+        {
+          "id": "C",
+          "approach": "CTT",
+          "label": "Item-total correlation / inter-item correlation"
+        },
+        {
+          "id": "D",
+          "approach": "IRT",
+          "label": "Item separation reliability reported (guide: > 0.9)",
+          "threshold": {
+            "statistics": [
+              "rasch_item_reliability"
+            ],
+            "above": 0.9
+          }
+        },
+        {
+          "id": "E",
+          "approach": "IRT",
+          "label": "Person separation reliability reported (guide: > 0.7)",
+          "threshold": {
+            "statistics": [
+              "rasch_person_reliability"
+            ],
+            "above": 0.7
+          }
+        }
+      ]
+    },
+    {
+      "id": "forms_reliability",
+      "numeral": "II",
+      "kind": "reliability",
+      "label": "Forms reliability",
+      "description": "Measure of replicability of responses on form(s) over time.",
+      "criteria": [
+        {
+          "id": "A",
+          "label": "Alternate forms"
+        },
+        {
+          "id": "B",
+          "label": "Split-half"
+        },
+        {
+          "id": "C",
+          "label": "Test-retest"
+        }
+      ]
+    },
+    {
+      "id": "item_analysis",
+      "numeral": "III",
+      "kind": "reliability",
+      "label": "Item analysis",
+      "description": "The extent to which items are precise ability measures and cover the full ability range of a population.",
+      "criteria": [
+        {
+          "id": "A",
+          "approach": "CTT",
+          "label": "Item difficulty"
+        },
+        {
+          "id": "B",
+          "approach": "CTT",
+          "label": "Item discrimination"
+        },
+        {
+          "id": "C",
+          "approach": "CTT",
+          "label": "Removal of misfit items"
+        },
+        {
+          "id": "D",
+          "approach": "IRT",
+          "label": "Item fit"
+        },
+        {
+          "id": "E",
+          "approach": "IRT",
+          "label": "Removal of misfit items"
+        }
+      ]
+    },
+    {
+      "id": "pre_item_content",
+      "numeral": "IV",
+      "kind": "validity",
+      "label": "Pre-item content validity",
+      "description": "Alignment of item content with discipline, expert, and student views of the domain.",
+      "criteria": [
+        {
+          "id": "A",
+          "label": "Literature review"
+        },
+        {
+          "id": "B",
+          "label": "Textbook, lab manual, or course syllabi review"
+        },
+        {
+          "id": "C",
+          "label": "Review of discipline standards"
+        },
+        {
+          "id": "D",
+          "label": "Existing items used"
+        },
+        {
+          "id": "E",
+          "label": "Delphi method"
+        },
+        {
+          "id": "F",
+          "label": "Expert interviews, focus groups, or surveys"
+        },
+        {
+          "id": "G",
+          "label": "Student interviews, focus groups, or surveys"
+        }
+      ]
+    },
+    {
+      "id": "post_item_content",
+      "numeral": "V",
+      "kind": "validity",
+      "label": "Post-item content validity",
+      "description": "Analysis of items after development.",
+      "criteria": [
+        {
+          "id": "A",
+          "label": "Expert review of items"
+        },
+        {
+          "id": "B",
+          "label": "Revision of items"
+        }
+      ]
+    },
+    {
+      "id": "communication",
+      "numeral": "VI",
+      "kind": "validity",
+      "label": "Communication validity",
+      "description": "The extent to which test-takers interpret the items in the same way as intended by the test developer(s) (Lopez, 1996).",
+      "criteria": [
+        {
+          "id": "A",
+          "label": "Think-alouds with students during testing"
+        },
+        {
+          "id": "B",
+          "label": "Interviews or focus groups with students after testing"
+        },
+        {
+          "id": "C",
+          "label": "Open-ended reasoning prompts as part of the test"
+        },
+        {
+          "id": "D",
+          "label": "Revision of items"
+        }
+      ]
+    },
+    {
+      "id": "cultural",
+      "numeral": "VII",
+      "kind": "validity",
+      "label": "Cultural validity",
+      "description": "The extent to which items perform equally across subgroups within the population.",
+      "criteria": [
+        {
+          "id": "A",
+          "label": "Readability in terms of reading level and language"
+        },
+        {
+          "id": "B",
+          "label": "Piloting with a representative sample"
+        },
+        {
+          "id": "C",
+          "label": "Between-group comparisons such as differential item functioning (DIF) analysis or unpaired t-test equivalents"
+        }
+      ]
+    },
+    {
+      "id": "scale_analysis",
+      "numeral": "VIII",
+      "kind": "validity",
+      "label": "Scale analysis",
+      "description": "Evaluation of whether items measure one variable or several.",
+      "criteria": [
+        {
+          "id": "A",
+          "approach": "CTT",
+          "label": "Unidimensionality analysis (often factor analysis)"
+        },
+        {
+          "id": "B",
+          "approach": "CTT",
+          "label": "Factor loadings reported (guide: > .32 or similar)",
+          "threshold": {
+            "statistics": [
+              "factor_loading"
+            ],
+            "above": 0.32
+          }
+        },
+        {
+          "id": "C",
+          "approach": "IRT",
+          "label": "Unidimensionality analysis"
+        },
+        {
+          "id": "D",
+          "approach": "IRT",
+          "label": "Wright map"
+        }
+      ]
+    },
+    {
+      "id": "criterion_construct",
+      "numeral": "IX",
+      "kind": "validity",
+      "label": "Criterion and construct validity",
+      "description": "The extent to which a scale is associated with a separate and strong measure of the variable, and the extent to which a scale acts as expected with respect to other measures associated with the theoretical latent.",
+      "criteria": [
+        {
+          "id": "A",
+          "label": "Content experts achieve high scores on the test"
+        },
+        {
+          "id": "B",
+          "label": "Discriminant validity (group differences)"
+        },
+        {
+          "id": "C",
+          "label": "Scores correlate with other measures"
+        }
+      ]
+    },
+    {
+      "id": "mc_item_writing",
+      "numeral": "X",
+      "kind": "item_writing",
+      "label": "Multiple-choice item writing validity",
+      "description": "The extent to which items are written in accordance with research-based best practices (Frey, Haladyna, and others).",
+      "applies_to": [
+        "multiple_choice",
+        "multiple_response",
+        "dichotomous"
+      ],
+      "criteria": [
+        {
+          "id": "A",
+          "label": "Stems do not have blanks"
+        },
+        {
+          "id": "B",
+          "label": "Stems are complete sentences"
+        },
+        {
+          "id": "C",
+          "label": "No excess material included"
+        },
+        {
+          "id": "D",
+          "label": "No extra terms in parentheses"
+        },
+        {
+          "id": "E",
+          "label": "Type K questions avoided"
+        },
+        {
+          "id": "F",
+          "label": "Complex response option formats avoided"
+        },
+        {
+          "id": "G",
+          "label": "\"All of the above\" options avoided"
+        },
+        {
+          "id": "H",
+          "label": "\"None of the above\" options avoided"
+        },
+        {
+          "id": "I",
+          "label": "Response options are parallel; the right answer does not stick out"
+        },
+        {
+          "id": "J",
+          "label": "3-5 response options"
+        }
+      ]
+    },
+    {
+      "id": "likert_item_writing",
+      "numeral": "XI",
+      "kind": "item_writing",
+      "label": "Likert-type item writing validity",
+      "description": "The extent to which items are written in accordance with research-based best practices (DeVellis and others).",
+      "applies_to": [
+        "likert",
+        "rating_scale"
+      ],
+      "criteria": [
+        {
+          "id": "A",
+          "label": "Stems are one statement (no double-barreled items)"
+        },
+        {
+          "id": "B",
+          "label": "Options are aligned with the construct"
+        },
+        {
+          "id": "C",
+          "label": "Options are exhaustive"
+        },
+        {
+          "id": "D",
+          "label": "Options go beyond agree/disagree where that fits"
+        },
+        {
+          "id": "E",
+          "label": "Even or odd scale chosen deliberately"
+        }
+      ]
+    }
+  ],
+  "credit": "J. Libarkin"
+}
