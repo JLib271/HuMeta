@@ -11,12 +11,15 @@
   },
   "sample": {
     "n": 73,
-    "education_level": "undergraduate",
-    "discipline": "mathematics",
-    "setting": "other",
+    "education_level": "bachelors",
+    "discipline": "anzsrc_49",
+    "setting": "other_environment",
     "country": "US",
-    "institution_type": "highly selective university",
-    "description": "Study 2: students at a highly selective university in the Northeast US who attended both lab sessions (30 men, 43 women; 133 attended the first)."
+    "institution_type": "four_year_college",
+    "description": "Study 2: students at a highly selective university in the Northeast US who attended both lab sessions (30 men, 43 women; 133 attended the first).",
+    "participants": [
+      "students"
+    ]
   },
   "source": {
     "kind": "published",

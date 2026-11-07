@@ -32,6 +32,7 @@ REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO))
 
 from oem import evidence as EV  # noqa: E402
+from oem import instrument_metadata as IM  # noqa: E402
 from oem.library import Library  # noqa: E402
 from oem.vocab import LIBRARY_SITE_URL, PORTAL_URL  # noqa: E402
 
@@ -161,10 +162,13 @@ def status_tag(status: str | None) -> str:
 
 # ---------------------------------------------------------------- site
 class Site:
-    def __init__(self, lib: Library, out: Path, disciplines: dict[str, str]):
+    def __init__(self, lib: Library, out: Path, vocab: dict[str, dict[str, str]]):
         self.lib = lib
         self.out = out
-        self.disciplines = disciplines
+        self.vocab = vocab
+        from oem import profile as P
+        self.profile = P.load()
+        self.disciplines = vocab.get("discipline", {})
         self.pages: list[str] = []
         self.today = date.today().isoformat()
 
@@ -175,6 +179,10 @@ class Site:
 
     def disc(self, d: str) -> str:
         return self.disciplines.get(d) or label(d)
+
+    def term(self, vocabulary: str, term_id: str | None) -> str:
+        """Label of a HuMeta vocabulary term."""
+        return self.vocab.get(vocabulary, {}).get(term_id or "", "") or label(term_id)
 
     # ---------- page frame
     def write_page(self, rel: str, title: str, body: str, description: str = "", depth: int | None = None) -> None:
@@ -268,9 +276,11 @@ class Site:
                  f'<div class="tags"><span class="tag k">{h(label(inst.get("instrument_type")))}</span>{status_tag(review.get("status"))}</div>',
                  f'<p class="lead">{h(inst.get("description"))}</p>']
 
-        facts = [("Respondents", ", ".join(label(r) for r in inst.get("respondent", []))),
-                 ("Education levels", ", ".join(label(x) for x in inst.get("education_levels", []))),
-                 ("Settings", ", ".join(label(x) for x in inst.get("settings", []))),
+        method = IM.DATA_COLLECTION_METHOD.get(inst.get("instrument_type"))
+        facts = [("Gathers data about", ", ".join(self.term("participant_role", r) for r in inst.get("participants", []))),
+                 ("Data collection", self.term("data_collection_method", method) if method else ""),
+                 ("Education levels", ", ".join(self.term("education_level", x) for x in inst.get("education_levels", []))),
+                 ("Settings", ", ".join(self.term("learning_environment", x) for x in inst.get("settings", []))),
                  ("Disciplines", ", ".join(self.disc(d) for d in inst.get("disciplines", []))),
                  ("Variable prefix", f'<code>{h(inst.get("variable_prefix"))}</code>')]
         related = [r for r in inst.get("related_instrument_ids", []) if r in self.lib.instruments]
@@ -387,7 +397,8 @@ class Site:
                     stat += f". {st['notes']}"
                 sm = e.get("sample", {})
                 sample = ", ".join(x for x in [f"n = {sm['n']}" if sm.get("n") else "n not recorded",
-                                               label(sm.get("education_level")) if sm.get("education_level") else "",
+                                               self.term("education_level", sm.get("education_level")) if sm.get("education_level")
+                                               else ", ".join(self.term("participant_role", x) for x in sm.get("participants", [])),
                                                sm.get("country") or ""] if x)
                 if sm.get("description"):
                     sample += f". {sm['description']}"
@@ -424,8 +435,11 @@ class Site:
             parts.append("<p><strong>Information drawn from:</strong></p><ul>"
                          + "".join(f"<li>{ext(u)}</li>" for u in inst["info_sources"]) + "</ul>")
         parts.append(self.record_footer("instrument record", f"data/instruments/{iid}.json", root,
-                                         extra=f' · <a href="{root}data/evidence/{iid}.json">Evidence (JSON)</a>' if ev else "",
+                                         extra=(f' · <a href="{root}data/evidence/{iid}.json">Evidence (JSON)</a>' if ev else "")
+                                         + f' · <a href="{root}data/datacite/{iid}.json">DataCite metadata (JSON)</a>',
                                          name=title, page=self.url("instruments", iid)))
+        ld = json.dumps(IM.to_schema_org(self.lib, iid, self.profile), ensure_ascii=False).replace("</", "<\\/")
+        parts.append(f'<script type="application/ld+json">{ld}</script>')
         self.write_page(self.url("instruments", iid), title, "\n".join(parts), inst.get("description", ""))
 
     def items_block(self, inst: dict, vid: str, vlabel: str, rec: dict, text_ok: bool, key_ok: bool) -> str:
@@ -541,6 +555,10 @@ class Site:
         chips.append(f'<span class="chip {"ok" if prof.independent else "none"}">{prof.independent} independent '
                      f'record{"s" if prof.independent != 1 else ""}</span>')
         out.append('<div class="chips">' + "".join(chips) + "</div>")
+        terms = IM.measurement_evidence(self.lib, inst["id"])
+        out.append('<p class="note">In HuMeta\'s measurement evidence terms: '
+                   + (", ".join(h(self.term("measurement_evidence", t)) for t in terms) or "none recorded yet")
+                   + '. These are the terms a dataset\'s HuMeta record uses, so the two can be compared.</p>')
         if prof.flags:
             out.append('<div class="cautions"><p><strong>Cautions</strong></p><ul>'
                        + "".join(f"<li>{h(f)}</li>" for f in prof.flags) + "</ul></div>")
@@ -895,8 +913,8 @@ class Site:
                     f'<option value="">{h(everything)}</option>{opts}</select></div>')
 
         facets = "".join([facet_select("itype", "Instrument type", "Any type", label),
-                          facet_select("resp", "Who responds", "Anyone", label),
-                          facet_select("level", "Education level", "Any level", label),
+                          facet_select("part", "Gathers data about", "Anyone", lambda v: self.term("participant_role", v)),
+                          facet_select("level", "Education level", "Any level", lambda v: self.term("education_level", v)),
                           facet_select("disc", "Discipline", "Any discipline", self.disc),
                           facet_select("evid", "Evidence", "Any evidence", lambda v: EVID_LABELS.get(v, v)),
                           facet_select("dev", "How it was developed", "Any basis", lambda v: DEV_SHORT.get(v, v))])
@@ -952,6 +970,10 @@ class Site:
             ev = self.lib.evidence_for(iid)
             if ev:
                 (data / "evidence" / f"{iid}.json").write_text(json.dumps(ev, indent=2, ensure_ascii=False), encoding="utf-8")
+        (data / "datacite").mkdir(parents=True, exist_ok=True)
+        for iid in self.lib.instruments:
+            (data / "datacite" / f"{iid}.json").write_text(
+                json.dumps(IM.to_datacite_json(self.lib, iid, self.profile), indent=2, ensure_ascii=False), encoding="utf-8")
         for (iid, vid), rec in self.lib.item_files.items():
             clean = {k: v for k, v in rec.items() if not k.startswith("_")}
             dest = data / "items" / iid / f"{vid}.json"
@@ -968,10 +990,12 @@ class Site:
             (data / name).write_text(buf.getvalue(), encoding="utf-8")
 
         write_csv("instruments.csv",
-                  ["id", "name", "acronym", "type", "constructs", "respondents", "education_levels", "access", "item_text_shareable",
+                  ["id", "name", "acronym", "type", "data_collection_method", "constructs", "participants", "education_levels", "settings",
+                   "access", "item_text_shareable",
                    "versions", "evidence_records", "review_status", "page"],
-                  [[i["id"], i["name"], i.get("acronym", ""), i.get("instrument_type", ""), ";".join(i.get("construct_ids", [])),
-                    ";".join(i.get("respondent", [])), ";".join(i.get("education_levels", [])),
+                  [[i["id"], i["name"], i.get("acronym", ""), i.get("instrument_type", ""),
+                    IM.DATA_COLLECTION_METHOD.get(i.get("instrument_type"), ""), ";".join(i.get("construct_ids", [])),
+                    ";".join(i.get("participants", [])), ";".join(i.get("education_levels", [])), ";".join(i.get("settings", [])),
                     i.get("access", {}).get("access_type", ""), bool(i.get("access", {}).get("item_text_shareable")),
                     len(i.get("versions", [])), len(self.lib.evidence_for(i["id"])), i.get("review", {}).get("status", ""),
                     LIBRARY_SITE_URL + self.url("instruments", i["id"])] for i in self.lib.instruments.values()])
@@ -989,17 +1013,19 @@ class Site:
             prof = EV.profile(self.lib, i["id"])
             row = [i["id"], i["name"], (i.get("development") or {}).get("basis", "")]
             row += ["n/a" if not c.applies else "".join(c.met_letters) for c in prof.categories]
-            row += [prof.samples, prof.independent, " | ".join(prof.flags)]
+            row += [prof.samples, prof.independent, ";".join(IM.measurement_evidence(self.lib, i["id"])), " | ".join(prof.flags)]
             prof_rows.append(row)
         write_csv("evidence_profiles.csv",
                   ["id", "name", "development_basis"] + [f"{c['numeral']} {c['label']}" for c in self.lib.rubric]
-                  + ["samples", "independent_records", "cautions"], prof_rows)
+                  + ["samples", "independent_records", "humeta_measurement_evidence", "cautions"], prof_rows)
         write_csv("evidence.csv",
-                  ["id", "instrument_id", "version_id", "dimension_id", "evidence_type", "statistic", "value", "sample_n",
-                   "education_level", "country", "source_kind", "citation", "doi", "review_status"],
+                  ["id", "instrument_id", "version_id", "dimension_id", "evidence_type", "humeta_measurement_evidence", "statistic",
+                   "value", "sample_n", "education_level", "participants", "country", "source_kind", "citation", "doi", "review_status"],
                   [[e["id"], e.get("instrument_id"), e.get("version_id"), e.get("dimension_id", ""), e.get("evidence_type"),
+                    ";".join(IM.record_evidence(self.lib, e)),
                     e.get("statistic", {}).get("name"), e.get("statistic", {}).get("value"), e.get("sample", {}).get("n"),
-                    e.get("sample", {}).get("education_level", ""), e.get("sample", {}).get("country", ""),
+                    e.get("sample", {}).get("education_level", ""), ";".join(e.get("sample", {}).get("participants", [])),
+                    e.get("sample", {}).get("country", ""),
                     e.get("source", {}).get("kind"), e.get("source", {}).get("citation", ""), e.get("source", {}).get("doi", ""),
                     (e.get("review") or {}).get("status", "")] for e in self.lib.evidence])
 
@@ -1013,7 +1039,7 @@ class Site:
                         "url": self.url("instruments", i["id"]), "kind": label(i.get("instrument_type")),
                         "status": label(i.get("review", {}).get("status")), "summary": i.get("description", ""),
                         "fields": ["education"], "text": " ".join(words),
-                        "facets": {"itype": [i.get("instrument_type", "")], "resp": i.get("respondent", []),
+                        "facets": {"itype": [i.get("instrument_type", "")], "part": i.get("participants", []),
                                    "level": i.get("education_levels", []), "disc": i.get("disciplines", []),
                                    "evid": EV.profile(self.lib, i["id"]).tags,
                                    "dev": [(i.get("development") or {}).get("basis", "")]}})
@@ -1061,9 +1087,10 @@ class Site:
         (self.out / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {LIBRARY_SITE_URL}sitemap.xml\n", encoding="utf-8")
 
 
-def discipline_labels() -> dict[str, str]:
+def humeta_labels() -> dict[str, dict[str, str]]:
+    """Term labels of every HuMeta vocabulary: {vocabulary: {term id: label}}."""
     vocab = json.loads((REPO / "standard" / "humeta" / "vocabularies.json").read_text(encoding="utf-8"))
-    return {t["id"]: t["label"] for t in vocab["vocabularies"]["discipline"]["terms"]}
+    return {name: {t["id"]: t["label"] for t in v.get("terms", [])} for name, v in vocab["vocabularies"].items()}
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -1071,7 +1098,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--out", type=Path, default=REPO / "_site")
     ap.add_argument("--library", type=Path, default=None, help="library folder (default: library/)")
     args = ap.parse_args(argv)
-    site = Site(Library.load(args.library), args.out, discipline_labels())
+    site = Site(Library.load(args.library), args.out, humeta_labels())
     site.build()
     print(f"Built {len(site.pages)} pages in {args.out}")
     return 0

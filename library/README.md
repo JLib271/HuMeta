@@ -27,6 +27,38 @@ library/
 scripts/validate_library.py    run before opening a PR
 ```
 
+## Speaking HuMeta
+
+The library describes instruments and evidence samples with the HuMeta
+standard's own vocabularies (`standard/humeta/vocabularies.json`), so an
+instrument and a study described with HuMeta use the same words:
+
+| Library field | HuMeta vocabulary |
+|---|---|
+| `disciplines` (instruments, theories, evidence samples) | `discipline` (ANZSRC 2020 Fields of Research, or `discipline_general`) |
+| `education_levels`, evidence `sample.education_level` | `education_level` (ISCED-based) |
+| `settings`, evidence `sample.setting` | `learning_environment` |
+| `participants`, evidence `sample.participants` | `participant_role`: who the instrument gathers data about (for an observation protocol, the people observed) |
+| evidence `sample.institution_type` | `institution_type` |
+| `instrument_type` (library's own, finer) | maps to `data_collection_method` (`oem/instrument_metadata.py`) |
+| rubric categories and criteria | map to `measurement_evidence` (`humeta_evidence` in `evidence_rubric.json`) |
+
+`scripts/validate_library.py` rejects terms that are not current (unknown or
+deprecated) in the HuMeta vocabulary. To add a term the library needs, add it to
+the HuMeta vocabulary, with a changelog entry, rather than to the library.
+
+**DataCite.** Each instrument record is also published as DataCite 4.7 metadata
+(`oem/instrument_metadata.py`; `data/datacite/<id>.json` on the Library
+website), and its Library page embeds a schema.org description. The instrument
+is typed `Text` with resource type "Research instrument: ..." (KCWorks files
+instruments as Text document > Other; DataCite's `Instrument` type is meant for
+physical devices). Creators come from `developers`; subjects are the HuMeta
+constructs, disciplines (with ANZSRC and FOS codes), education levels (with
+ISCED), settings, participants, data collection method, and measurement
+evidence; related identifiers link its papers (IsDescribedBy) and KCWorks
+deposit. A dataset collected with the instrument points back to it
+(IsCollectedBy), as the HuMeta Portal's dataset export already does.
+
 ## The three record types
 
 **Constructs** (`constructs.json`) are the shared vocabulary that links

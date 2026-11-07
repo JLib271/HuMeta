@@ -135,7 +135,6 @@
       "additionalProperties": false,
       "required": [
         "n",
-        "education_level",
         "description"
       ],
       "properties": {
@@ -147,24 +146,49 @@
           "minimum": 1
         },
         "education_level": {
-          "type": "string"
+          "type": "string",
+          "description": "HuMeta education_level term."
+        },
+        "participants": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          },
+          "description": "HuMeta participant_role terms: who the sample was."
         },
         "discipline": {
-          "type": "string"
+          "type": "string",
+          "description": "HuMeta discipline term (e.g. anzsrc_37)."
         },
         "setting": {
-          "type": "string"
+          "type": "string",
+          "description": "HuMeta learning_environment term."
         },
         "country": {
-          "type": "string"
+          "type": "string",
+          "description": "ISO 3166-1 alpha-2 code."
         },
         "institution_type": {
-          "type": "string"
+          "type": "string",
+          "description": "HuMeta institution_type term."
         },
         "description": {
           "type": "string"
         }
-      }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "education_level"
+          ]
+        },
+        {
+          "required": [
+            "participants"
+          ]
+        }
+      ]
     },
     "source": {
       "type": "object",

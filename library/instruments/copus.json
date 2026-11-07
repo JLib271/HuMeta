@@ -2,10 +2,25 @@
   "id": "copus",
   "name": "Classroom Observation Protocol for Undergraduate STEM",
   "acronym": "COPUS",
+  "developers": [
+    {
+      "name": "Smith, M. K."
+    },
+    {
+      "name": "Jones, F. H. M."
+    },
+    {
+      "name": "Gilbert, S. L."
+    },
+    {
+      "name": "Wieman, C. E."
+    }
+  ],
   "variable_prefix": "copus",
   "instrument_type": "observation_protocol",
-  "respondent": [
-    "observer"
+  "participants": [
+    "students",
+    "educators"
   ],
   "description": "Observers mark which student and instructor activities happen in each 2-minute interval of a class session. The result describes how class time is spent; it is explicitly not a rating of teaching quality. Designed so faculty can use it reliably after a short training. Adapted from the Teaching Dimensions Observation Protocol (TDOP).",
   "construct_ids": [
@@ -17,13 +32,18 @@
     "note": "Recorded by maintainers; awaiting governance committee review."
   },
   "disciplines": [
-    "general_stem"
+    "anzsrc_31",
+    "anzsrc_34",
+    "anzsrc_37",
+    "anzsrc_46",
+    "anzsrc_49",
+    "anzsrc_51"
   ],
   "education_levels": [
-    "undergraduate"
+    "bachelors"
   ],
   "settings": [
-    "formal_classroom"
+    "postsecondary_classroom"
   ],
   "original_citation": {
     "text": "Smith, M. K., Jones, F. H. M., Gilbert, S. L., & Wieman, C. E. (2013). The Classroom Observation Protocol for Undergraduate STEM (COPUS): A new instrument to characterize university STEM classroom practices. CBE-Life Sciences Education, 12(4), 618-627.",

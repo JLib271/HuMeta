@@ -663,6 +663,41 @@ def _methods_text(record: dict, p: Profile, lib: Library | None = None) -> str |
     return " ".join(parts) or None
 
 
+def vocab_subjects(p: Profile, vocab_id: str, scheme: str, term_ids: list[str]) -> list[dict]:
+    """DataCite subjects for HuMeta vocabulary terms: ANZSRC and TaDiRAH terms with their own concept URIs,
+    others with the HuMeta vocabulary URI (plus an ISCED subject for education levels)."""
+    subjects: list[dict] = []
+    for term_id in term_ids:
+        anzsrc = p.term(vocab_id, term_id).get("anzsrc")
+        if anzsrc:
+            subjects.append({"subject": p.label(vocab_id, term_id).removesuffix(" (all)"), "subjectScheme": ANZSRC_SCHEME,
+                             "schemeUri": ANZSRC_URI, "valueUri": f"{ANZSRC_URI}/{anzsrc}", "classificationCode": anzsrc})
+            continue
+        tadirah = p.term(vocab_id, term_id).get("tadirah")
+        if tadirah:
+            subjects.append({"subject": p.label(vocab_id, term_id), "subjectScheme": scheme,
+                             "schemeUri": TADIRAH_URI, "valueUri": TADIRAH_URI + tadirah})
+            continue
+        subjects.append({"subject": p.label(vocab_id, term_id), "subjectScheme": scheme,
+                         "schemeUri": VOCAB_URI.rstrip("#"), "valueUri": f"{VOCAB_URI}{vocab_id}.{term_id}"})
+        isced = p.term(vocab_id, term_id).get("isced")
+        if isced is not None:
+            subjects.append({"subject": f"ISCED level {isced}: {ISCED_LEVELS[isced]}",
+                             "subjectScheme": ISCED_SCHEME, "schemeUri": ISCED_SCHEME_URI})
+    return subjects
+
+
+def fos_subjects(p: Profile, terms: list[tuple[str, str]]) -> list[dict]:
+    """OECD Fields of Science subjects for (vocabulary, term) pairs that carry a FOS code, without duplicates."""
+    codes: list[str] = []
+    for vocab_id, term_id in terms:
+        code = p.term(vocab_id, term_id).get("fos")
+        if code and code not in codes:
+            codes.append(code)
+    return [{"subject": f"FOS: {FOS_LABELS[c]}", "subjectScheme": FOS_SCHEME, "schemeUri": FOS_SCHEME_URI,
+             "classificationCode": c} for c in codes]
+
+
 def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile | None = None) -> dict:
     """DataCite 4.7 metadata in the JSON 'attributes' form used by the DataCite REST API."""
     p = profile or load()
@@ -705,34 +740,10 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
             subjects.append({"subject": framework["label"], "subjectScheme": "HuMeta Frameworks",
                              "schemeUri": FRAMEWORKS_URI.rstrip("#"), "valueUri": FRAMEWORKS_URI + fid})
     for path, (vocab_id, scheme) in VOCAB_FIELDS.items():
-        if not scheme:
-            continue
-        for term_id in get(record, path) or []:
-            anzsrc = p.term(vocab_id, term_id).get("anzsrc")
-            if anzsrc:
-                subjects.append({"subject": p.label(vocab_id, term_id).removesuffix(" (all)"), "subjectScheme": ANZSRC_SCHEME,
-                                 "schemeUri": ANZSRC_URI, "valueUri": f"{ANZSRC_URI}/{anzsrc}", "classificationCode": anzsrc})
-                continue
-            tadirah = p.term(vocab_id, term_id).get("tadirah")
-            if tadirah:
-                subjects.append({"subject": p.label(vocab_id, term_id), "subjectScheme": scheme,
-                                 "schemeUri": TADIRAH_URI, "valueUri": TADIRAH_URI + tadirah})
-                continue
-            subjects.append({"subject": p.label(vocab_id, term_id), "subjectScheme": scheme,
-                             "schemeUri": VOCAB_URI.rstrip("#"), "valueUri": f"{VOCAB_URI}{vocab_id}.{term_id}"})
-            isced = p.term(vocab_id, term_id).get("isced")
-            if isced is not None:
-                subjects.append({"subject": f"ISCED level {isced}: {ISCED_LEVELS[isced]}",
-                                 "subjectScheme": ISCED_SCHEME, "schemeUri": ISCED_SCHEME_URI})
-    fos_codes: list[str] = []
-    for vocab_id, path in (("research_field", ("study", "fields")), ("discipline", ("study", "discipline"))):
-        for term_id in get(record, path) or []:
-            code = p.term(vocab_id, term_id).get("fos")
-            if code and code not in fos_codes:
-                fos_codes.append(code)
-    for code in fos_codes:
-        subjects.append({"subject": f"FOS: {FOS_LABELS[code]}", "subjectScheme": FOS_SCHEME,
-                         "schemeUri": FOS_SCHEME_URI, "classificationCode": code})
+        if scheme:
+            subjects += vocab_subjects(p, vocab_id, scheme, get(record, path) or [])
+    subjects += fos_subjects(p, [("research_field", t) for t in get(record, ("study", "fields")) or []]
+                             + [("discipline", t) for t in get(record, ("study", "discipline")) or []])
     for term in eric_descriptors(record, lib, p):
         subjects.append({"subject": term, "subjectScheme": ERIC_SCHEME, "schemeUri": ERIC_SCHEME_URI})
     if (res.get("description") or "").strip():

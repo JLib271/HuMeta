@@ -76,6 +76,25 @@ def main(library: Path) -> int:
                 if path.get("from") not in theory_construct_ids or path.get("to") not in theory_construct_ids:
                     problems.append(f"{label}: path {path.get('from')} -> {path.get('to')} uses an unknown construct")
 
+    # HuMeta vocabularies: the library describes instruments and samples with the standard's own terms
+    vocab_path = Path(__file__).resolve().parent.parent / "standard" / "humeta" / "vocabularies.json"
+    humeta: dict[str, set[str]] = {}
+    if vocab_path.exists():
+        humeta = {name: {t["id"] for t in voc.get("terms", []) if not t.get("deprecated")}
+                  for name, voc in load(vocab_path)["vocabularies"].items()}
+
+    def check_terms(values, vocabulary: str, label: str, field: str):
+        if not humeta:
+            return
+        for value in values if isinstance(values, list) else [values]:
+            if value is not None and value not in humeta.get(vocabulary, set()):
+                problems.append(f"{label}: {field} '{value}' is not a current term in the HuMeta {vocabulary} vocabulary"
+                                f" (unknown or deprecated)")
+
+    if frameworks_path.exists():
+        for fw in fw_doc.get("frameworks", []):
+            check_terms(fw.get("disciplines", []), "discipline", f"frameworks.json: {fw.get('id')}", "discipline")
+
     # Reliability and validity rubric
     rubric_criteria: dict[str, set[str]] = {}
     rubric_path = library / "evidence_rubric.json"
@@ -127,6 +146,10 @@ def main(library: Path) -> int:
         for cid in sorted(set(refs) - construct_ids):
             problems.append(f"{label}: unknown construct id '{cid}' (add it to constructs.json)")
         check_review(data.get("review", {}), label)
+        check_terms(data.get("disciplines", []), "discipline", label, "discipline")
+        check_terms(data.get("education_levels", []), "education_level", label, "education level")
+        check_terms(data.get("settings", []), "learning_environment", label, "setting")
+        check_terms(data.get("participants", []), "participant_role", label, "participant")
         check_rubric_refs([(cat, crit) for cat, r in (data.get("rubric_review") or {}).items() for crit in r.get("criteria", [])],
                           label)
         dev = data.get("development") or {}
@@ -154,6 +177,12 @@ def main(library: Path) -> int:
             problems.append(f"{label}: duplicate evidence id {eid}")
         evidence_ids.add(eid)
         check_rubric_refs([(r.get("category"), r.get("criterion")) for r in data.get("rubric", [])], label)
+        sample = data.get("sample", {})
+        check_terms(sample.get("education_level"), "education_level", label, "sample education level")
+        check_terms(sample.get("participants", []), "participant_role", label, "sample participant")
+        check_terms(sample.get("discipline"), "discipline", label, "sample discipline")
+        check_terms(sample.get("setting"), "learning_environment", label, "sample setting")
+        check_terms(sample.get("institution_type"), "institution_type", label, "sample institution type")
         iid = data.get("instrument_id")
         if iid != path.parent.name:
             problems.append(f"{label}: instrument_id '{iid}' does not match folder name")

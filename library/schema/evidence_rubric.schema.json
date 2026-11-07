@@ -29,7 +29,8 @@
           "kind",
           "label",
           "description",
-          "criteria"
+          "criteria",
+          "humeta_evidence"
         ],
         "properties": {
           "id": {
@@ -102,9 +103,45 @@
                     }
                   },
                   "description": "A guide value shown next to reported values; not a pass mark."
+                },
+                "humeta_evidence": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {
+                    "enum": [
+                      "test_content",
+                      "response_processes",
+                      "internal_structure",
+                      "relations_to_other_variables",
+                      "consequences",
+                      "fairness",
+                      "reliability",
+                      "irt_scaling"
+                    ]
+                  },
+                  "description": "Overrides the category's terms for this criterion."
                 }
               }
             }
+          },
+          "humeta_evidence": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "test_content",
+                "response_processes",
+                "internal_structure",
+                "relations_to_other_variables",
+                "consequences",
+                "fairness",
+                "reliability",
+                "irt_scaling"
+              ]
+            },
+            "description": "HuMeta measurement_evidence terms this counts as."
           }
         }
       }

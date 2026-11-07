@@ -1,11 +1,28 @@
 {
   "id": "climate-change-concept-inventory",
   "name": "Climate Change Concept Inventory (Libarkin et al.)",
+  "developers": [
+    {
+      "name": "Libarkin, J. C."
+    },
+    {
+      "name": "Gold, A. U."
+    },
+    {
+      "name": "Harris, S. E."
+    },
+    {
+      "name": "McNeal, K. S."
+    },
+    {
+      "name": "Bowles, R. P."
+    }
+  ],
   "variable_prefix": "ccci",
   "instrument_type": "concept_inventory",
-  "respondent": [
-    "student",
-    "community_member"
+  "participants": [
+    "students",
+    "community_members"
   ],
   "description": "Test of understanding of basic climate change processes, built from published items, conceptions research and instructor experience and refined with Rasch analysis. Validated with both undergraduates and members of the general public, and used alongside measures of risk perception, worldview and values. Not to be confused with the high school climate change concept inventory developed in Australia by Jarrett and colleagues (2012).",
   "construct_ids": [
@@ -16,16 +33,15 @@
     "note": "Mapped to Climate change conceptual understanding at the developer's direction (2026-11-02); awaiting governance committee review."
   },
   "disciplines": [
-    "geoscience",
-    "climate_science"
+    "anzsrc_37",
+    "anzsrc_3702"
   ],
   "education_levels": [
-    "undergraduate",
-    "general_public"
+    "bachelors"
   ],
   "settings": [
-    "formal_classroom",
-    "other"
+    "postsecondary_classroom",
+    "other_environment"
   ],
   "original_citation": {
     "text": "Libarkin, J. C., Gold, A. U., Harris, S. E., McNeal, K. S., & Bowles, R. P. (2018). A new, valid measure of climate change understanding: Associations with risk perception. Climatic Change, 150(3-4), 403-416.",

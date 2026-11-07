@@ -405,4 +405,6 @@ def test_old_discipline_terms_move_to_anzsrc(lib, p):
     moved = profile.migrate(record, p)["study"]["discipline"]
     assert moved[0] == "anzsrc_4410" and "anzsrc_49" in moved and "sociology" not in moved and len(moved) == len(set(moved))
     active = p.active_ids("discipline")
-    assert len(active) == 236 and all(p.term("discipline", d).get("fos") in profile.FOS_LABELS for d in active)
+    # 236 ANZSRC divisions and groups, each with an OECD FOS code, plus discipline_general (no ANZSRC or FOS code)
+    assert len(active) == 237 and "discipline_general" in active
+    assert all(p.term("discipline", d).get("fos") in profile.FOS_LABELS for d in active if d != "discipline_general")

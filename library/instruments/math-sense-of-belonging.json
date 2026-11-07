@@ -1,10 +1,21 @@
 {
   "id": "math-sense-of-belonging",
   "name": "Sense of Belonging to Math Scale",
+  "developers": [
+    {
+      "name": "Good, C."
+    },
+    {
+      "name": "Rattan, A."
+    },
+    {
+      "name": "Dweck, C. S."
+    }
+  ],
   "variable_prefix": "sbm",
   "instrument_type": "self_report_scale",
-  "respondent": [
-    "student"
+  "participants": [
+    "students"
   ],
   "description": "Self-report scale of how much a student feels like an accepted, valued member of the math community. Developed with college students and shown to predict intent to continue in math beyond other predictors.",
   "construct_ids": [
@@ -15,13 +26,13 @@
     "note": "Recorded by maintainers; awaiting governance committee review."
   },
   "disciplines": [
-    "mathematics"
+    "anzsrc_49"
   ],
   "education_levels": [
-    "undergraduate"
+    "bachelors"
   ],
   "settings": [
-    "formal_classroom"
+    "postsecondary_classroom"
   ],
   "original_citation": {
     "text": "Good, C., Rattan, A., & Dweck, C. S. (2012). Why do women opt out? Sense of belonging and women's representation in mathematics. Journal of Personality and Social Psychology, 102(4), 700-717.",
@@ -44,7 +55,7 @@
         "type": "likert",
         "scale_points": 6,
         "anchors": "1 = strongly disagree, 6 = strongly agree",
-        "notes": "Each item follows the stem 'When I am in a math setting'. Study 1 describes a 6-point scale; the article's appendix prints the scale with 30 items and an 8-point response scale."
+        "notes": "Each item follows the stem 'When I am in a math setting'. The library records the 28-item, 6-point form analyzed in the article; the article's appendix prints a 30-item version (adding 'I feel like an outsider' and 'I feel like I fit in') with an 8-point response scale."
       },
       "scoring": {
         "method": "sum_or_mean",
@@ -110,7 +121,6 @@
   "review": {
     "status": "draft",
     "needs_check": [
-      "The article analyzes 28 items on a 6-point scale, but its appendix prints 30 items (adding 'I feel like an outsider' and 'I feel like I fit in') with an 8-point scale. Decide which form the library records, or record both as versions.",
       "Check reuse/adaptation terms with APA or the authors."
     ]
   },

@@ -11,10 +11,13 @@
   },
   "sample": {
     "n": 380,
-    "education_level": "undergraduate",
-    "setting": "formal_classroom",
+    "education_level": "bachelors",
+    "setting": "postsecondary_classroom",
     "country": "US",
-    "description": "380 Midwestern college students surveyed in 1990: 356 at a public four-year university and 24 at a community college, in 37 classrooms spanning 14 subject domains in natural science, humanities, social science, computer science, and foreign languages. The 1993 article (Pintrich et al., Educational and Psychological Measurement 53(3), 801-813) reports the same scales and alphas."
+    "description": "380 Midwestern college students surveyed in 1990: 356 at a public four-year university and 24 at a community college, in 37 classrooms spanning 14 subject domains in natural science, humanities, social science, computer science, and foreign languages. The 1993 article (Pintrich et al., Educational and Psychological Measurement 53(3), 801-813) reports the same scales and alphas.",
+    "participants": [
+      "students"
+    ]
   },
   "source": {
     "kind": "published",
