@@ -38,6 +38,9 @@ from oem.vocab import LIBRARY_SITE_URL, PORTAL_URL  # noqa: E402
 ASSETS = REPO / "library_site"
 REPO_URL = "https://github.com/JLib271/HuMeta"
 COMMONS_URL = "https://stemedplus.hcommons.org/"
+COLLECTION_URL = "https://works.hcommons.org/collections/stemedplus/"
+KCWORKS_UPLOAD_URL = "https://works.hcommons.org/uploads/new"
+KC_JOIN_URL = "https://support.hcommons.org/profiles/login-and-registration/"
 CONTRIBUTE_URL = f"{REPO_URL}/blob/main/CONTRIBUTING.md"
 RECOMMEND_URL = f"{REPO_URL}/issues/new?template=instrument_submission.yml"
 SIGNUP_URL = "https://github.com/signup"
@@ -102,6 +105,8 @@ LABELS = {
     "environment": "Environment", "epistemological": "Epistemological", "cognitive": "Cognitive",
     "behavioral_strategy": "Behavior and strategy", "instructional_practice": "Instructional practice",
     "discipline_general": "General (any discipline)",
+    "instrument": "The instrument", "manual": "Manual or user guide", "paper": "Paper",
+    "item_set": "Item set", "link": "Link record",
     "construct_definition": "Built from a definition of what to measure (no theory named)",
     "practical_need": "Built for a practical or instructional need",
     "not_reported": "Not reported in the sources",
@@ -199,6 +204,7 @@ class Site:
 </main>
 <footer><div class="wrap">
 <p>Library records are licensed <a href="{REPO_URL}/blob/main/library/LICENSE.md">CC BY-SA 4.0</a>; item text carries the license shown on each instrument. Built {self.today} from the <a href="{REPO_URL}/tree/main/library">library folder</a> of the HuMeta repository.</p>
+<div class="join"><p><strong>The HuMeta Library is part of STEMEd+ Commons.</strong> Join free to deposit instruments and papers in the {ext(COLLECTION_URL, "STEMEd+ collection")}, follow new work, and connect with STEM+ education researchers. You can sign in with GitHub, Google, ORCID, or your institution.</p><p>{ext(COMMONS_URL, "Visit STEMEd+ Commons")} · {ext(KC_JOIN_URL, "How to join")}</p></div>
 <h2><a href="{COMMONS_URL}">More from STEMEd+ Commons</a></h2>
 <ul>
 {portal}
@@ -323,6 +329,9 @@ class Site:
             parts.append(f'<details><summary>Basis for republishing item text</summary><p>{h(basis["evidence"])}</p>'
                          + (f'<p>Granted by {h(basis["granted_by"])}, {h(basis.get("granted_on"))}.</p>' if basis.get("granted_by") else "")
                          + "</details>")
+
+        # STEMEd+ Commons deposits
+        parts.append(self.commons_section(inst, root))
 
         # versions
         versions = inst.get("versions", [])
@@ -489,6 +498,27 @@ class Site:
             shutil.copyfile(src, dest)
         return rel
 
+    # ---------- STEMEd+ Commons
+    def commons_section(self, inst: dict, root: str) -> str:
+        recs = inst.get("commons_records") or []
+        out = ['<h2 id="commons">On STEMEd+ Commons</h2>']
+        if recs:
+            items = []
+            for r in recs:
+                bits = [h(label(r.get("kind")))]
+                if r.get("license"):
+                    bits.append(h(r["license"]))
+                if r.get("in_stemedplus_collection"):
+                    bits.append("in the STEMEd+ collection")
+                items.append(f'<li>{ext(r["url"], r.get("label") or r["url"])}<span class="note"> ({"; ".join(bits)})</span></li>')
+            out.append("<ul>" + "".join(items) + "</ul>")
+        else:
+            out.append("<p>Nothing deposited yet.</p>")
+        out.append(f'<p class="note">Developers and users can deposit the instrument, its manual, or a validation paper in the '
+                   f'{ext(COLLECTION_URL, "STEMEd+ collection")} on Knowledge Commons: it gets a DOI, a Creative Commons '
+                   f'license you choose, and a link from this page. <a href="{root}recommend/#deposit">How to deposit</a>.</p>')
+        return "\n".join(out)
+
     # ---------- evidence profile
     def evidence_profile(self, inst: dict, root: str) -> str:
         prof = EV.profile(self.lib, inst["id"])
@@ -546,10 +576,28 @@ class Site:
         root = "../"
         example = next((i for i in self.lib.instruments.values() if i.get("rubric_review")), None)
         parts = ['<h1>Recommend an instrument</h1>',
-                 '<p class="lead">Know a research instrument that should be in the library? Tell us about it. Only three '
-                 'things are required: its name, where it was published, and what it measures.</p>',
+                 '<p class="lead">Know a research instrument that should be in the library? Two steps: deposit it on STEMEd+ '
+                 'Commons, then tell us about it.</p>',
+                 '<h2 id="deposit">Step 1. Deposit it in the STEMEd+ collection</h2>',
+                 f'<p>Upload the instrument, its manual, or a paper about it to {ext(COLLECTION_URL, "the STEMEd+ collection")} '
+                 'on Knowledge Commons Works (KCWorks). The deposit gets a DOI and a permanent home, its Library page links to it, '
+                 'and it reaches the STEMEd+ community.</p><ol>'
+                 f'<li>Sign in to Knowledge Commons, or join free ({ext(KC_JOIN_URL, "how to join")}); you can use GitHub, Google, '
+                 'ORCID, or your institution\'s login.</li>'
+                 f'<li>Start a {ext(KCWORKS_UPLOAD_URL, "new upload")}. In the <strong>Collections &amp; Access</strong> box, add '
+                 'the <strong>STEMEd+</strong> collection. A collection admin approves it.</li>'
+                 '<li>Choose a <strong>license</strong>. For an instrument, CC BY 4.0 lets others use, translate, and adapt it with '
+                 'credit; CC BY-SA asks that adaptations be shared the same way; licenses with <strong>No Derivatives (ND)</strong> '
+                 'forbid translations and adaptations. An open license on the instrument itself also lets the library show its '
+                 'items.</li></ol>'
+                 '<p class="note">Only deposit what you have the right to share. If you are not the instrument\'s developer, or '
+                 'a publisher holds the rights, deposit a link record or a version of the paper you are allowed to post instead, '
+                 'and do not put a new license on someone else\'s instrument.</p>',
+                 '<h2>Step 2. Tell us about it</h2>',
                  f'<p><a class="btn" href="{h(RECOMMEND_URL)}" target="_blank" rel="noopener noreferrer">Open the recommendation '
                  'form<span class="vh"> (opens in a new tab)</span></a></p>',
+                 '<p>Paste the link to your deposit. Only three things are required: the instrument\'s name, where it was '
+                 'published, and what it measures.</p>',
                  f'<p class="note">The form is on GitHub, so you need a free GitHub account ({ext(SIGNUP_URL, "sign up")}). '
                  'Submissions are public; do not include item text unless the instrument\'s license allows it.</p>',
                  '<h2>What counts</h2><ul>'

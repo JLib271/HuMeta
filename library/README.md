@@ -87,6 +87,14 @@ the number of samples, and independent evidence. It does not combine them into
 one score. Inter-rater agreement is reliability evidence the rubric does not
 score (it was written for tests and surveys), so it is shown alongside.
 
+**STEMEd+ Commons deposits** (`commons_records`). Links to deposits about the
+instrument on Knowledge Commons Works, ideally in the STEMEd+ collection
+(https://works.hcommons.org/collections/stemedplus/): the instrument, its
+manual, a paper, or a link record, with the license chosen at deposit. When the
+rights holder deposits the instrument itself under an open license, that
+deposit can serve as the `access.item_text_basis` (basis `open_license`, with
+the deposit as the evidence).
+
 **Development basis.** An instrument does not need a theory. `development.basis`
 records whether it was built from a theory (`framework_ids` or `theory_named`),
 from a definition of what to measure, or for a practical need, or that the

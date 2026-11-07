@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for helping the library grow. **Only the first three questions are required**; fill in what you know and a maintainer will do the rest.
+        Thanks for helping the library grow. **Only the first three questions are required.** We recommend depositing the instrument on STEMEd+ Commons first (see below). Fill in what you know and a maintainer will do the rest.
         An instrument does not need a theory behind it, or a complete set of validity and reliability evidence, to be included. The library shows each instrument's evidence so researchers can judge it for themselves.
         **Do not paste item text** unless the instrument's license allows it. Submissions are public.
   - type: input
@@ -31,6 +31,47 @@ body:
       placeholder: "Whole instrument: understanding of plate tectonics\nor\nSelf-efficacy subscale (8 items): confidence in learning the course material"
     validations:
       required: true
+  - type: markdown
+    attributes:
+      value: |
+        ### STEMEd+ Commons deposit (recommended)
+        Before you submit, deposit the instrument, its manual, or a paper about it in the [STEMEd+ collection on Knowledge Commons](https://works.hcommons.org/collections/stemedplus/) ([how to deposit](https://jlib271.github.io/HuMeta/recommend/#deposit)). Its Library page will link to the deposit.
+  - type: input
+    id: commons_link
+    attributes:
+      label: "Link to the deposit on Knowledge Commons (KCWorks)"
+      placeholder: "https://works.hcommons.org/records/... or https://doi.org/10.17613/..."
+  - type: dropdown
+    id: commons_kind
+    attributes:
+      label: "What did you deposit?"
+      options:
+        - "The instrument itself"
+        - "Its manual or user guide"
+        - "A paper about it"
+        - "A link record"
+        - "Not deposited"
+  - type: dropdown
+    id: commons_license
+    attributes:
+      label: "License you chose for the deposit"
+      description: "CC BY lets others use, translate, and adapt with credit. No Derivatives (ND) licenses forbid translations and adaptations."
+      options:
+        - "CC BY 4.0"
+        - "CC BY-SA 4.0"
+        - "CC BY-NC 4.0"
+        - "CC BY-NC-SA 4.0"
+        - "CC BY-ND 4.0"
+        - "CC BY-NC-ND 4.0"
+        - "CC0 (public domain)"
+        - "All rights reserved"
+        - "Other or not sure"
+  - type: checkboxes
+    id: rights_holder
+    attributes:
+      label: "Rights"
+      options:
+        - label: "I hold the rights to what I deposited (for example, I am the instrument's developer), so the license applies to it"
   - type: markdown
     attributes:
       value: |
@@ -225,12 +266,6 @@ body:
         - "I am a developer"
         - "I have used it"
         - "I know of it"
-  - type: checkboxes
-    id: item_text
-    attributes:
-      label: "Item text"
-      options:
-        - label: "I am a developer and would share the item text under an open license (a maintainer will contact you)"
   - type: textarea
     id: notes
     attributes:

@@ -100,3 +100,5 @@ ul.rubric { margin: 4px 0 10px; }
 .btn:hover { filter: brightness(1.08); }
 .cta { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin: 6px 0 4px; }
 header nav a.navbtn { font-weight: 600; }
+.join { background: var(--soft); border: 1px solid var(--softline, #c9dcea); border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; color: var(--ink); }
+.join p { margin: 4px 0; }
