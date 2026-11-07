@@ -29,12 +29,12 @@ def test_rubric_loaded(lib):
     assert [c["numeral"] for c in lib.rubric] == ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"]
 
 
-def test_alpha_threshold_counts_low_subscales(lib):
+def test_guide_values_are_shown_not_judged(lib):
     prof = EV.profile(lib, "mslq")
     assert _crit(prof, "item_reliability", "A").status == "met"
     b = _crit(prof, "item_reliability", "B")
-    assert b.status == "partly" and b.detail.startswith("9 of 15 values above 0.7")
-    assert any("below the rubric" in f for f in prof.flags)
+    assert b.status == "met" and b.detail == "15 values, 0.52 to 0.93; guide > 0.7"
+    assert not any("below" in f for f in prof.flags)
 
 
 def test_types_and_tags_map_to_criteria(lib):
@@ -75,11 +75,12 @@ def test_rubric_review_and_independence(lib):
     assert not any("developers" in f for f in prof.flags)
 
 
-def test_range_judged_on_lowest_value(lib):
+def test_range_shows_lowest_value(lib):
     lib2 = copy.deepcopy(lib)
     e = next(e for e in lib2.evidence if e["instrument_id"] == "gci")
     e["statistic"].update({"min": 0.85, "max": 0.99})
-    assert _crit(EV.profile(lib2, "gci"), "item_reliability", "D").status == "not_met"
+    d = _crit(EV.profile(lib2, "gci"), "item_reliability", "D")
+    assert d.status == "met" and d.detail.startswith("0.85")
 
 
 def test_no_evidence(lib):

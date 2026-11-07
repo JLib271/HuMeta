@@ -69,9 +69,11 @@ Multiple-choice item writing, XI Likert-type item writing), each with lettered
 criteria. `oem/evidence.py` builds the profile:
 
 - Evidence records meet criteria through their type and statistic (a
-  `cronbach_alpha` record meets I.A and is judged against I.B, alpha > 0.7; a
-  `test_retest` record meets II.C; `item_bias` meets VII.C). When a range is
-  reported (`statistic.min`/`max`), the lowest value is judged.
+  `cronbach_alpha` record meets I.A and I.B; a `test_retest` record meets II.C;
+  `item_bias` meets VII.C). Numbers in the rubric (alpha > 0.7, item
+  separation > 0.9) are guides, not cut-offs: a criterion counts when a value
+  was measured, and the reported values (or range, `statistic.min`/`max`) are
+  shown next to the guide.
 - An evidence record can list further criteria in `rubric`
   (e.g. `{"category": "scale_analysis", "criterion": "B"}`).
 - Criteria that are not statistics (literature review, think-alouds, expert
@@ -80,7 +82,7 @@ criteria. `oem/evidence.py` builds the profile:
 - `source.independent` says whether the evidence comes from the instrument's
   developers (`false`) or from others (`true`).
 
-The profile reports which categories have evidence, values below thresholds,
+The profile reports which categories have evidence, the reported values,
 the number of samples, and independent evidence. It does not combine them into
 one score. Inter-rater agreement is reliability evidence the rubric does not
 score (it was written for tests and surveys), so it is shown alongside.

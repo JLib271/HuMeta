@@ -1,0 +1,32 @@
+{
+  "id": "aksit-2018-risk-perception",
+  "instrument_id": "climate-change-concept-inventory",
+  "version_id": "ccci-2018",
+  "dimension_id": null,
+  "evidence_type": "relations_to_other_variables",
+  "statistic": {
+    "name": "other",
+    "value": null,
+    "notes": "Inventory scores (climate change content knowledge) significantly predicted undergraduates' climate change risk perception, while cultural worldviews and political orientation did not."
+  },
+  "sample": {
+    "n": null,
+    "education_level": "undergraduate",
+    "discipline": "geoscience",
+    "setting": "formal_classroom",
+    "country": "US",
+    "description": "Undergraduates in an introductory Earth science course."
+  },
+  "source": {
+    "kind": "published",
+    "citation": "Aksit, O., McNeal, K. S., Gold, A. U., Libarkin, J. C., & Harris, S. (2018). The influence of instruction, prior knowledge, and values on climate change risk perception among undergraduates. Journal of Research in Science Teaching, 55(4), 550-572.",
+    "doi": "10.1002/tea.21430",
+    "independent": false
+  },
+  "review": {
+    "status": "draft",
+    "needs_check": [
+      "Add the sample size and any reliability values reported for the inventory in this sample."
+    ]
+  }
+}

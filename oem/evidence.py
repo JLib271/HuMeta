@@ -5,13 +5,14 @@
 The rubric (``library/evidence_rubric.json``) has categories (Item reliability, Forms reliability, ... ,
 Likert-type item writing validity), each with lettered criteria. An instrument meets a criterion when
 
-* an evidence record implies it (a Cronbach's alpha record meets Item reliability A; a test-retest record
-  meets Forms reliability C), and for criteria with a threshold (alpha > 0.7) the reported values pass it;
+* an evidence record implies it (a Cronbach's alpha record meets Item reliability A and B; a test-retest
+  record meets Forms reliability C). Guide values in the rubric (alpha > 0.7) are shown next to the reported
+  values, not used as pass marks;
 * an evidence record lists it in its ``rubric`` tags; or
 * the instrument's ``rubric_review`` (a reviewer's checklist with a source) lists it.
 
 No single score is computed: the profile shows which categories have evidence, whether values pass the
-rubric's thresholds, how many samples, and whether anyone other than the developers has tested it.
+rubric's guide values, how many samples, and whether anyone other than the developers has tested it.
 Nothing here imports Streamlit.
 """
 
@@ -120,9 +121,6 @@ class Profile:
             tags.append("independent")
         if self.samples > 1:
             tags.append("multi_sample")
-        if not any("below" in f for f in self.flags) and any(
-                v for c in self.categories for cr in c.criteria for v in cr.values):
-            tags.append("meets_thresholds")
         return tags
 
 
@@ -190,18 +188,14 @@ def profile(lib: Library, instrument_id: str) -> Profile:
                 c.status = "met"  # a reviewer tagged it (e.g. loadings reported in a note)
                 c.detail = "tagged by a reviewer"
 
-    # thresholds
+    # values: a criterion with a guide value is met when a value was measured; the values are shown, not judged
     for category in cats.values():
         for c in category.criteria:
             if c.threshold and c.values:
-                passing = sum(1 for _, ok, _ in c.values if ok)
-                total = len(c.values)
-                c.status = "met" if passing == total else ("partly" if passing else "not_met")
-                c.detail = (f"{passing} of {total} values above {c.threshold['above']:g}"
-                            if total > 1 else f"value {c.values[0][0]:g}")
-                low = [f"{part} ({v:g})" for v, ok, part in c.values if not ok]
-                if low:
-                    c.detail += "; below: " + ", ".join(low)
+                vals = sorted(v for v, _, _ in c.values)
+                c.status = "met"
+                shown = f"{vals[0]:g}" if len(vals) == 1 else f"{len(vals)} values, {vals[0]:g} to {vals[-1]:g}"
+                c.detail = f"{shown}; guide > {c.threshold['above']:g}"
 
     # reviewer checklist
     for cat, review in (inst.get("rubric_review") or {}).items():
@@ -237,8 +231,6 @@ def profile(lib: Library, instrument_id: str) -> Profile:
         flags.append("All recorded evidence comes from the instrument's developers; no independent studies yet.")
     if len(keys) == 1:
         flags.append("All recorded evidence comes from a single sample.")
-    if any(c.status in ("partly", "not_met") for cat in prof.categories for c in cat.criteria):
-        flags.append("Some reported values are below the rubric's thresholds.")
     if samples_without_n:
         flags.append("Some samples have no recorded size.")
     prof.flags = flags

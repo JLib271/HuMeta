@@ -1,7 +1,7 @@
 {
   "vocabulary_version": 1,
   "title": "Reliability and validity rubric for quantitative research",
-  "note": "The library's evidence profile. Each instrument is checked against these categories and criteria. Criteria marked with a threshold are judged from the values in evidence records; the others are recorded in the instrument's rubric review, with a source. A category counts as reported when at least one of its criteria is met.",
+  "note": "The library's evidence profile. Each instrument is checked against these categories and criteria. A criterion counts when the evidence was gathered: for statistics, when a value was measured and reported. Values in criteria are guides, not cut-offs: the profile shows the reported values next to the guide rather than passing or failing them.",
   "categories": [
     {
       "id": "item_reliability",
@@ -18,7 +18,7 @@
         {
           "id": "B",
           "approach": "CTT",
-          "label": "Cronbach's alpha > 0.7",
+          "label": "Cronbach's alpha reported (guide: > 0.7)",
           "threshold": {
             "statistics": [
               "cronbach_alpha",
@@ -35,7 +35,7 @@
         {
           "id": "D",
           "approach": "IRT",
-          "label": "Item separation reliability (> 0.9)",
+          "label": "Item separation reliability reported (guide: > 0.9)",
           "threshold": {
             "statistics": [
               "rasch_item_reliability"
@@ -46,7 +46,7 @@
         {
           "id": "E",
           "approach": "IRT",
-          "label": "Person separation reliability (> 0.7)",
+          "label": "Person separation reliability reported (guide: > 0.7)",
           "threshold": {
             "statistics": [
               "rasch_person_reliability"
@@ -226,7 +226,13 @@
         {
           "id": "B",
           "approach": "CTT",
-          "label": "Factor loadings (> .32 or similar)"
+          "label": "Factor loadings reported (guide: > .32 or similar)",
+          "threshold": {
+            "statistics": [
+              "factor_loading"
+            ],
+            "above": 0.32
+          }
         },
         {
           "id": "C",

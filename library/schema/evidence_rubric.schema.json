@@ -100,7 +100,8 @@
                     "above": {
                       "type": "number"
                     }
-                  }
+                  },
+                  "description": "A guide value shown next to reported values; not a pass mark."
                 }
               }
             }

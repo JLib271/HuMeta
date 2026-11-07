@@ -103,7 +103,6 @@ LABELS = {
 DEV_SHORT = {"theory": "Theory-based", "construct_definition": "Construct definition", "practical_need": "Practical need",
              "not_reported": "Not reported", "": "Not recorded yet"}
 EVID_LABELS = {"reliability": "Has reliability evidence", "validity": "Has validity evidence",
-               "meets_thresholds": "Reported values meet the rubric thresholds",
                "multi_sample": "Tested in more than one sample", "independent": "Tested by independent researchers"}
 
 BASIS_HELP = {
@@ -485,8 +484,8 @@ class Site:
         prof = EV.profile(self.lib, inst["id"])
         out = ['<h2 id="profile">Evidence profile</h2>',
                f'<p class="note">Checked against the library\'s <a href="{root}about/#rubric">reliability and validity rubric</a>. '
-               'Criteria with a threshold are judged from the values in the evidence records below; the others come from '
-               'the evidence records or a reviewer\'s checklist.</p>']
+               'A criterion counts when the evidence was gathered; for statistics, reported values are shown next to the rubric\'s '
+               'guide value, not judged against it. Criteria come from the evidence records below or a reviewer\'s checklist.</p>']
         chips = []
         for kind in ("reliability", "validity", "item_writing"):
             got, total = prof.coverage(kind)
@@ -551,7 +550,8 @@ class Site:
                 partly = any(c.status in ("partly", "not_met") for c in cat.criteria)
                 if letters:
                     cells.append(f'<span class="cell {"partly" if partly else "met"}" title="{h(cat.label)}: criteria '
-                                 f'{h(", ".join(letters))}{" (some values below threshold)" if partly else ""}">{h("".join(letters))}</span>')
+                                 f'{h(", ".join(letters))}{" (some values below threshold)" if partly else ""}">'
+                                 f'{"All" if len(letters) == len(cat.criteria) and len(letters) > 3 else h("".join(letters))}</span>')
                 else:
                     cells.append(f'<span class="cell none" title="{h(cat.label)}: not reported"><span class="vh">not reported</span></span>')
             cells += [str(prof.samples), str(prof.independent), str(len(prof.flags))]
@@ -566,8 +566,7 @@ class Site:
         parts = ['<h1>Compare instruments</h1>',
                  '<p class="lead">Which kinds of reliability and validity evidence each instrument has, checked against the '
                  f'library\'s <a href="{root}about/#rubric">rubric</a>{" (by " + h(json.loads((self.lib.root / "evidence_rubric.json").read_text(encoding="utf-8")).get("credit", "")) + ")" if json.loads((self.lib.root / "evidence_rubric.json").read_text(encoding="utf-8")).get("credit") else ""}. Letters are the rubric criteria with evidence; a '
-                 'shaded cell means some reported values fall below the rubric\'s threshold; a blank cell means nothing is '
-                 'recorded yet.</p>',
+                 'blank cell means nothing is recorded yet.</p>',
                  '<p class="note">The library does not combine these into one score: a missing category may mean the work '
                  'was never done, or only that it has not been entered yet. Open an instrument to see the evidence itself.</p>',
                  '<div class="bar"><label for="sort">Sort by</label> <select id="sort"><option value="name">Name</option>'
@@ -754,8 +753,9 @@ class Site:
                '<p>Each instrument\'s evidence profile checks its recorded evidence against this rubric. Instruments do not '
                'need a theory behind them to be included; they need a clear account of what they measure, and the profile '
                'shows how well the evidence supports using them. Item writing categories apply only to multiple-choice or '
-               'Likert-type instruments. Thresholds are rules of thumb, not pass marks: a value just below one is weaker '
-               'evidence, not proof that an instrument is unusable.</p>']
+               'Likert-type instruments. Numbers in the rubric (alpha > 0.7, item separation > 0.9) are guides, not cut-offs: '
+               'the profile records that a value was measured and shows it next to the guide, so readers can judge it in '
+               'context.</p>']
         for c in self.lib.rubric:
             out.append(f'<h3>{h(c["numeral"])}. {h(c["label"])} <span class="tag k">{h(EV.KIND_LABELS[c["kind"]])}</span></h3>'
                        f'<p class="note">{h(c["description"])}</p><ul class="rubric">')

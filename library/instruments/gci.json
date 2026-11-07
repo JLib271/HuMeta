@@ -72,9 +72,7 @@
   ],
   "review": {
     "status": "draft",
-    "needs_check": [
-      "Developer to confirm the rubric review, and add item analysis (III), IRT unidimensionality or Wright map (VIII.C-D), and item-writing (X) criteria if met (Libarkin & Anderson, 2006)."
-    ]
+    "needs_check": []
   },
   "info_sources": [
     "https://geocognitionresearchlaboratory.com/2018/11/20/the-geoscience-concept-inventory/",
@@ -97,7 +95,7 @@
       ],
       "source": "Libarkin, J. C., Ward, E. M. G., Anderson, S. W., Kortemeyer, G., & Raeburn, S. P. (2011). Revisiting the Geoscience Concept Inventory: A call to the community. GSA Today, 21(8), 26-28. doi:10.1130/G110GW.1; Geocognition Research Laboratory, The Geoscience Concept Inventory (https://geocognitionresearchlaboratory.com/2018/11/20/the-geoscience-concept-inventory/)",
       "notes": "Textbook review for initial concepts (GSA Today 2011); about 75 student interviews and nearly 1,000 open-ended questionnaires grounded the item content (lab page).",
-      "reviewed_by": "Drafted by maintainers from public sources; awaiting developer confirmation",
+      "reviewed_by": "J. Libarkin (developer)",
       "reviewed_on": "2026-11-06"
     },
     "post_item_content": {
@@ -107,7 +105,7 @@
       ],
       "source": "Geocognition Research Laboratory, The Geoscience Concept Inventory (https://geocognitionresearchlaboratory.com/2018/11/20/the-geoscience-concept-inventory/)",
       "notes": "External review of items by scientists and educators, followed by revision.",
-      "reviewed_by": "Drafted by maintainers from public sources; awaiting developer confirmation",
+      "reviewed_by": "J. Libarkin (developer)",
       "reviewed_on": "2026-11-06"
     },
     "communication": {
@@ -117,7 +115,7 @@
       ],
       "source": "Geocognition Research Laboratory, The Geoscience Concept Inventory (https://geocognitionresearchlaboratory.com/2018/11/20/the-geoscience-concept-inventory/)",
       "notes": "Think-aloud interviews with students during piloting, then item revision and re-piloting.",
-      "reviewed_by": "Drafted by maintainers from public sources; awaiting developer confirmation",
+      "reviewed_by": "J. Libarkin (developer)",
       "reviewed_on": "2026-11-06"
     },
     "cultural": {
@@ -126,16 +124,46 @@
       ],
       "source": "Geocognition Research Laboratory, The Geoscience Concept Inventory (https://geocognitionresearchlaboratory.com/2018/11/20/the-geoscience-concept-inventory/); Libarkin, J. C., & Anderson, S. W. (2005). Assessment of learning in entry-level geoscience courses: Results from the Geoscience Concept Inventory. Journal of Geoscience Education, 53(4), 394-401. doi:10.5408/1089-9995-53.4.394",
       "notes": "Piloted at more than 40 institutions nationwide with about 5,000 students to support generalizability to entry-level college students.",
-      "reviewed_by": "Drafted by maintainers from public sources; awaiting developer confirmation",
+      "reviewed_by": "J. Libarkin (developer)",
       "reviewed_on": "2026-11-06"
     },
     "scale_analysis": {
       "criteria": [
-        "A"
+        "A",
+        "C",
+        "D"
       ],
-      "source": "Geocognition Research Laboratory, The Geoscience Concept Inventory (https://geocognitionresearchlaboratory.com/2018/11/20/the-geoscience-concept-inventory/)",
-      "notes": "Items analyzed with standard factor analysis as well as item response theory.",
-      "reviewed_by": "Drafted by maintainers from public sources; awaiting developer confirmation",
+      "source": "Geocognition Research Laboratory, The Geoscience Concept Inventory (https://geocognitionresearchlaboratory.com/2018/11/20/the-geoscience-concept-inventory/); Libarkin, J. C., & Anderson, S. W. (2006). The Geoscience Concept Inventory: Application of Rasch analysis to concept inventory development in higher education. In X. Liu & W. J. Boone (Eds.), Applications of Rasch Measurement in Science Education (pp. 45-73). JAM Press. doi:10.17613/wnm5z-00x75",
+      "notes": "Items analyzed with standard factor analysis and with Rasch unidimensionality analysis; a Wright map places items and students on one scale.",
+      "reviewed_by": "J. Libarkin (developer)",
+      "reviewed_on": "2026-11-06"
+    },
+    "item_analysis": {
+      "criteria": [
+        "D",
+        "E"
+      ],
+      "source": "Libarkin, J. C., & Anderson, S. W. (2006). The Geoscience Concept Inventory: Application of Rasch analysis to concept inventory development in higher education. In X. Liu & W. J. Boone (Eds.), Applications of Rasch Measurement in Science Education (pp. 45-73). JAM Press. doi:10.17613/wnm5z-00x75",
+      "notes": "Rasch item analysis, including item fit and removal of misfitting items.",
+      "reviewed_by": "J. Libarkin (developer)",
+      "reviewed_on": "2026-11-06"
+    },
+    "mc_item_writing": {
+      "criteria": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J"
+      ],
+      "source": "Libarkin, J. C., & Anderson, S. W. (2006). The Geoscience Concept Inventory: Application of Rasch analysis to concept inventory development in higher education. In X. Liu & W. J. Boone (Eds.), Applications of Rasch Measurement in Science Education (pp. 45-73). JAM Press. doi:10.17613/wnm5z-00x75",
+      "notes": "Items follow all the multiple-choice item-writing rules.",
+      "reviewed_by": "J. Libarkin (developer)",
       "reviewed_on": "2026-11-06"
     }
   }

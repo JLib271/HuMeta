@@ -123,6 +123,6 @@ def test_compare_page_and_profiles(site):
     lib = Library.load()
     assert html.count("<tr data-") == len(lib.instruments)
     page = (site / "instruments" / "mslq" / "index.html").read_text(encoding="utf-8")
-    assert 'id="profile"' in page and "9 of 15 values above 0.7" in page
+    assert 'id="profile"' in page and "15 values, 0.52 to 0.93; guide &gt; 0.7" in page
     assert (site / "data" / "evidence_profiles.csv").is_file()
     assert 'id="rubric"' in (site / "about" / "index.html").read_text(encoding="utf-8")
