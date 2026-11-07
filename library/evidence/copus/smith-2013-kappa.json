@@ -7,7 +7,7 @@
   "statistic": {
     "name": "cohen_kappa",
     "value": null,
-    "notes": "Cohen's kappa ranged from 0.79 to 0.87."
+    "notes": "Cohen's kappa ranged from 0.79 to 0.87, covering both observer groups (K-12 teachers and STEM faculty)."
   },
   "sample": {
     "n": null,
@@ -23,8 +23,6 @@
   },
   "review": {
     "status": "draft",
-    "needs_check": [
-      "Record which observer group(s) the 0.79-0.87 range covers, and the kappa for each group if reported separately."
-    ]
+    "needs_check": []
   }
 }
