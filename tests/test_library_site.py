@@ -108,3 +108,11 @@ def test_answer_keys_never_shown_without_permission(site):
         if not inst.get("access", {}).get("answer_key_shareable"):
             html = (site / "instruments" / B.slug(iid) / "index.html").read_text(encoding="utf-8")
             assert ">correct</span>" not in html
+
+
+def test_instrument_filters(site):
+    html = (site / "index.html").read_text(encoding="utf-8")
+    for facet in ("itype", "resp", "level", "disc"):
+        assert f'data-facet="{facet}"' in html
+    index = json.loads(re.search(r'id="index">(.*?)</script>', html, re.S).group(1))
+    assert all("facets" in r for r in index if r["type"] == "instrument")

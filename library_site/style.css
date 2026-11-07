@@ -48,6 +48,8 @@ ul.paths li { margin: 3px 0; }
 .dl { margin-top: 28px; padding-top: 12px; border-top: 1px solid var(--line); font-size: .93rem; }
 .hero { margin-bottom: 8px; }
 .controls { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; margin: 14px 0 6px; }
+fieldset.facets { grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px 12px; margin-top: 4px; }
+fieldset.facets legend { font-size: .85rem; font-weight: 600; padding: 0 4px; }
 label { display: block; font-size: .8rem; font-weight: 600; color: var(--muted); margin-bottom: 4px; }
 input, select { width: 100%; padding: 9px 10px; font: inherit; border: 1px solid var(--line); border-radius: 6px; background: var(--card); color: var(--ink); }
 input:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
@@ -63,7 +65,7 @@ footer ul { margin: 4px 0; padding-left: 18px; }
 .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 @media (max-width: 760px) {
   main.wrap { padding: 18px 16px 26px; margin-top: 12px; border-radius: 0; }
-  .controls { grid-template-columns: 1fr 1fr; } .controls .search { grid-column: 1 / -1; }
+  .controls, fieldset.facets { grid-template-columns: 1fr 1fr; } .controls .search { grid-column: 1 / -1; }
   section.all ul { columns: 1; }
   dl.facts { grid-template-columns: 1fr; } dl.facts dd { margin-bottom: 6px; }
 }

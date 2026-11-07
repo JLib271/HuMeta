@@ -5,6 +5,7 @@
   var records = JSON.parse(data.textContent);
   var q = document.getElementById('q'), type = document.getElementById('type'), field = document.getElementById('field');
   var results = document.getElementById('results'), browse = document.getElementById('browse'), count = document.getElementById('count');
+  var facets = Array.prototype.slice.call(document.querySelectorAll('select[data-facet]'));
   var names = { instrument: 'Instrument', theory: 'Theory or lens', construct: 'Construct' };
 
   function norm(s) { return (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
@@ -18,10 +19,16 @@
     if (q.value.trim()) params.set('q', q.value.trim());
     if (t) params.set('type', t);
     if (f) params.set('field', f);
+    var chosen = facets.filter(function (s) { return s.value; });
+    chosen.forEach(function (s) { params.set(s.dataset.facet, s.value); });
     var qs = params.toString();
     history.replaceState(null, '', qs ? '?' + qs : location.pathname);
-    if (!words.length && !t && !f) { results.hidden = true; browse.hidden = false; count.textContent = ''; return; }
+    if (!words.length && !t && !f && !chosen.length) { results.hidden = true; browse.hidden = false; count.textContent = ''; return; }
     var hits = records.filter(function (r) {
+      if (chosen.length && !r.facets) return false;
+      for (var i = 0; i < chosen.length; i++) {
+        if ((r.facets[chosen[i].dataset.facet] || []).indexOf(chosen[i].value) < 0) return false;
+      }
       return (!t || r.type === t) && (!f || r.fields.indexOf(f) >= 0) &&
         words.every(function (w) { return r._hay.indexOf(w) >= 0; });
     });
@@ -50,6 +57,7 @@
   q.value = params.get('q') || ''; type.value = params.get('type') || ''; field.value = params.get('field') || '';
   var timer;
   q.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(render, 120); });
+  facets.forEach(function (s) { s.value = params.get(s.dataset.facet) || ''; s.addEventListener('change', render); });
   type.addEventListener('change', render); field.addEventListener('change', render);
   render();
 })();

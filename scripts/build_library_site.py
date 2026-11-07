@@ -617,6 +617,17 @@ class Site:
                          + "".join(f'<li><a href="{h(r["url"])}">{h(r["title"])}</a></li>' for r in items) + "</ul></section>")
         fields = sorted({f for r in index for f in r.get("fields", [])})
         index_json = json.dumps(index, ensure_ascii=False).replace("</", "<\\/")
+
+        def facet_select(key: str, name: str, everything: str, labeller) -> str:
+            values = sorted({v for r in index for v in r.get("facets", {}).get(key, []) if v}, key=lambda v: labeller(v).lower())
+            opts = "".join(f'<option value="{h(v)}">{h(labeller(v))}</option>' for v in values)
+            return (f'<div><label for="f-{key}">{h(name)}</label><select id="f-{key}" data-facet="{key}">'
+                    f'<option value="">{h(everything)}</option>{opts}</select></div>')
+
+        facets = "".join([facet_select("itype", "Instrument type", "Any type", label),
+                          facet_select("resp", "Who responds", "Anyone", label),
+                          facet_select("level", "Education level", "Any level", label),
+                          facet_select("disc", "Discipline", "Any discipline", self.disc)])
         body = f"""<div class="hero">
 <h1>HuMeta Library</h1>
 <p class="lead">Research instruments, theories, and constructs for education, social science, and humanities research: what each instrument measures, how to get it, and the evidence reported for it.</p>
@@ -626,6 +637,7 @@ class Site:
 <div><label for="type">Show</label><select id="type"><option value="">Everything</option><option value="instrument">Instruments</option><option value="theory">Theories and lenses</option><option value="construct">Constructs</option></select></div>
 <div><label for="field">Field</label><select id="field"><option value="">All fields</option>{"".join(f'<option value="{h(f)}">{h(label(f))}</option>' for f in fields)}</select></div>
 </form>
+<fieldset class="controls facets"><legend>Instrument filters <span class="note">(show instruments only)</span></legend>{facets}</fieldset>
 <p id="count" class="note" aria-live="polite"></p>
 <ol id="results" class="results" hidden></ol>
 <div id="browse">
@@ -716,7 +728,9 @@ class Site:
             out.append({"type": "instrument", "title": i["name"] + (f" ({i['acronym']})" if i.get("acronym") else ""),
                         "url": self.url("instruments", i["id"]), "kind": label(i.get("instrument_type")),
                         "status": label(i.get("review", {}).get("status")), "summary": i.get("description", ""),
-                        "fields": ["education"], "text": " ".join(words)})
+                        "fields": ["education"], "text": " ".join(words),
+                        "facets": {"itype": [i.get("instrument_type", "")], "resp": i.get("respondent", []),
+                                   "level": i.get("education_levels", []), "disc": i.get("disciplines", [])}})
         for f in sorted(self.lib.frameworks.values(), key=lambda x: x["label"].lower()):
             if f.get("kind") in ("own", "exploratory"):
                 continue
