@@ -274,6 +274,90 @@
       "type": "string",
       "pattern": "^[a-z][a-z0-9]{1,9}$",
       "description": "Short prefix for generated variable names (e.g. 'gci' -> gci_q05). Must be unique across the library and never change once data exist."
+    },
+    "development": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "basis"
+      ],
+      "description": "How the instrument was conceived. A theory is not required: many instruments are built from a definition of what to measure.",
+      "properties": {
+        "basis": {
+          "enum": [
+            "theory",
+            "construct_definition",
+            "practical_need",
+            "not_reported"
+          ],
+          "description": "theory = built from a named theory or framework; construct_definition = built from a definition of the construct, with no theory named; practical_need = built to answer a practical or instructional question; not_reported = the sources do not say."
+        },
+        "framework_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          },
+          "description": "Theories or frameworks in library/frameworks.json the instrument was built on."
+        },
+        "theory_named": {
+          "type": "string",
+          "description": "A theory not (yet) in the library, as named by the developers."
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "rubric_review": {
+      "type": "object",
+      "description": "Rubric criteria met, as judged by a reviewer from the instrument's development and validation sources. Keys are rubric category ids.",
+      "propertyNames": {
+        "enum": [
+          "item_reliability",
+          "forms_reliability",
+          "item_analysis",
+          "pre_item_content",
+          "post_item_content",
+          "communication",
+          "cultural",
+          "scale_analysis",
+          "criterion_construct",
+          "mc_item_writing",
+          "likert_item_writing"
+        ]
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "criteria",
+          "source"
+        ],
+        "properties": {
+          "criteria": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Z]$"
+            }
+          },
+          "source": {
+            "type": "string",
+            "description": "Citation or link documenting the criteria."
+          },
+          "notes": {
+            "type": "string"
+          },
+          "reviewed_by": {
+            "type": "string"
+          },
+          "reviewed_on": {
+            "type": "string"
+          }
+        }
+      }
     }
   },
   "$defs": {

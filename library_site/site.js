@@ -1,3 +1,17 @@
+// HuMeta Library: sorting on the compare page.
+(function () {
+  var sel = document.getElementById('sort'), table = document.getElementById('compare');
+  if (!sel || !table) return;
+  sel.addEventListener('change', function () {
+    var key = sel.value, body = table.tBodies[0];
+    var rows = Array.prototype.slice.call(body.rows);
+    rows.sort(function (a, b) {
+      if (key === 'name') return a.dataset.name.localeCompare(b.dataset.name);
+      return (+b.dataset[key]) - (+a.dataset[key]) || a.dataset.name.localeCompare(b.dataset.name);
+    });
+    rows.forEach(function (r) { body.appendChild(r); });
+  });
+})();
 // HuMeta Library: search on the home page. Every page works without this script.
 (function () {
   var data = document.getElementById('index');

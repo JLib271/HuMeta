@@ -116,3 +116,13 @@ def test_instrument_filters(site):
         assert f'data-facet="{facet}"' in html
     index = json.loads(re.search(r'id="index">(.*?)</script>', html, re.S).group(1))
     assert all("facets" in r for r in index if r["type"] == "instrument")
+
+
+def test_compare_page_and_profiles(site):
+    html = (site / "compare" / "index.html").read_text(encoding="utf-8")
+    lib = Library.load()
+    assert html.count("<tr data-") == len(lib.instruments)
+    page = (site / "instruments" / "mslq" / "index.html").read_text(encoding="utf-8")
+    assert 'id="profile"' in page and "9 of 15 values above 0.7" in page
+    assert (site / "data" / "evidence_profiles.csv").is_file()
+    assert 'id="rubric"' in (site / "about" / "index.html").read_text(encoding="utf-8")

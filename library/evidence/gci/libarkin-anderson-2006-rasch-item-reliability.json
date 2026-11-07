@@ -21,7 +21,8 @@
     "kind": "published",
     "citation": "Libarkin, J. C., & Anderson, S. W. (2006). The Geoscience Concept Inventory: Application of Rasch analysis to concept inventory development in higher education. In X. Liu & W. J. Boone (Eds.), Applications of Rasch Measurement in Science Education (pp. 45-73). JAM Press.",
     "doi": "10.17613/wnm5z-00x75",
-    "contributed_by": "Julie C. Libarkin (GCI developer), 2026-10-31"
+    "contributed_by": "Julie C. Libarkin (GCI developer), 2026-10-31",
+    "independent": false
   },
   "review": {
     "status": "draft",

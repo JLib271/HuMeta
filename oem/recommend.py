@@ -169,12 +169,22 @@ def framework_problems(rec: dict, lib: Library | None = None) -> list[str]:
 
 
 # ----------------------------------------------------------- instruments
+#: How an instrument was conceived; a theory is optional (library/schema/instrument.schema.json, development.basis)
+DEVELOPMENT_OPTIONS = {
+    "construct_definition": "From a definition of what to measure (no theory named)",
+    "theory": "From a theory or framework",
+    "practical_need": "For a practical or instructional need",
+    "not_reported": "Not sure / not reported",
+}
+
+
 def instrument_recommendation(*, name: str, citation: str, alignment: list[dict], acronym: str = "", doi: str = "",
                               respondents: str = "",
                               populations: str = "", item_count: str = "", response_format: str = "",
                               access: str = "not_sure", access_details: str = "", url: str = "",
                               evidence: str = "", relationship: str = "aware", item_text_permission: bool = False,
-                              construct: str = "", notes: str = "") -> dict:
+                              construct: str = "", notes: str = "", development: str = "not_reported",
+                              theory: str = "") -> dict:
     return {
         "recommendation": "instrument",
         "format_version": 1,
@@ -195,6 +205,8 @@ def instrument_recommendation(*, name: str, citation: str, alignment: list[dict]
         "submitter_relationship": relationship,
         "developer_offers_item_text": bool(item_text_permission and relationship == "developer"),
         "for_construct": construct.strip(),
+        "development_basis": development if development in DEVELOPMENT_OPTIONS else "not_reported",
+        "theory": theory.strip(),
         "notes": notes.strip(),
     }
 

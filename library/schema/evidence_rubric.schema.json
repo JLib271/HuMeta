@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/JLib271/HuMeta/library/schema/evidence_rubric.schema.json",
+  "title": "Reliability and validity rubric",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "vocabulary_version",
+    "categories"
+  ],
+  "properties": {
+    "vocabulary_version": {
+      "type": "integer"
+    },
+    "title": {
+      "type": "string"
+    },
+    "note": {
+      "type": "string"
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "numeral",
+          "kind",
+          "label",
+          "description",
+          "criteria"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          },
+          "numeral": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "reliability",
+              "validity",
+              "item_writing"
+            ]
+          },
+          "label": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "applies_to": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Response format types the category applies to; absent = all instruments."
+          },
+          "criteria": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "label"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[A-Z]$"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "approach": {
+                  "enum": [
+                    "CTT",
+                    "IRT"
+                  ]
+                },
+                "threshold": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "statistics",
+                    "above"
+                  ],
+                  "properties": {
+                    "statistics": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "above": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

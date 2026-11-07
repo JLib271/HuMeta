@@ -59,6 +59,7 @@ class Library:
     standard_variables: dict[str, dict] = field(default_factory=dict)
     evidence: list[dict] = field(default_factory=list)
     frameworks: dict[str, dict] = field(default_factory=dict)
+    rubric: list[dict] = field(default_factory=list)
 
     # ------------------------------------------------------------------ load
     @classmethod
@@ -100,6 +101,9 @@ class Library:
         if frameworks_path.exists():
             for framework in _load_json(frameworks_path)["frameworks"]:
                 lib.frameworks[framework["id"]] = framework
+        rubric_path = root / "evidence_rubric.json"
+        if rubric_path.exists():
+            lib.rubric = _load_json(rubric_path)["categories"]
         evidence_dir = root / "evidence"
         if evidence_dir.is_dir():
             lib.evidence = [_load_json(p) for p in sorted(evidence_dir.glob("*/*.json"))]

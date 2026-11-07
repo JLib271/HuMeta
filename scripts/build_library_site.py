@@ -31,6 +31,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO))
 
+from oem import evidence as EV  # noqa: E402
 from oem.library import Library  # noqa: E402
 from oem.vocab import LIBRARY_SITE_URL, PORTAL_URL  # noqa: E402
 
@@ -92,8 +93,18 @@ LABELS = {
     "environment": "Environment", "epistemological": "Epistemological", "cognitive": "Cognitive",
     "behavioral_strategy": "Behavior and strategy", "instructional_practice": "Instructional practice",
     "discipline_general": "General (any discipline)",
+    "construct_definition": "Built from a definition of what to measure (no theory named)",
+    "practical_need": "Built for a practical or instructional need",
+    "not_reported": "Not reported in the sources",
     "sensitive": "Sensitive", "quasi_identifier": "Quasi-identifier", "direct_identifier": "Direct identifier",
 }
+
+
+DEV_SHORT = {"theory": "Theory-based", "construct_definition": "Construct definition", "practical_need": "Practical need",
+             "not_reported": "Not reported", "": "Not recorded yet"}
+EVID_LABELS = {"reliability": "Has reliability evidence", "validity": "Has validity evidence",
+               "meets_thresholds": "Reported values meet the rubric thresholds",
+               "multi_sample": "Tested in more than one sample", "independent": "Tested by independent researchers"}
 
 BASIS_HELP = {
     "empirical_factor": "supported by factor analysis",
@@ -173,7 +184,7 @@ class Site:
 <a class="skip" href="#main">Skip to content</a>
 <header class="top"><div class="wrap">
 <a class="brand" href="{root}">HuMeta Library</a>
-<nav aria-label="Library sections"><a href="{root}#instrument">Instruments</a> <a href="{root}#theory">Theories and lenses</a> <a href="{root}#construct">Constructs</a> <a href="{root}reference/">Scales and variables</a> <a href="{root}about/">About</a></nav>
+<nav aria-label="Library sections"><a href="{root}#instrument">Instruments</a> <a href="{root}#theory">Theories and lenses</a> <a href="{root}#construct">Constructs</a> <a href="{root}compare/">Compare instruments</a> <a href="{root}reference/">Scales and variables</a> <a href="{root}about/">About</a></nav>
 </div></header>
 <main id="main" class="wrap">
 {body}
@@ -252,6 +263,26 @@ class Site:
             facts.append(("Related instruments", ", ".join(
                 f'<a href="{root}{self.url("instruments", r)}">{h(self.lib.instruments[r]["name"])}</a>' for r in related)))
         parts.append(self.facts(facts, raw_keys={"Variable prefix", "Related instruments"}))
+
+        # how it was developed
+        dev = inst.get("development") or {}
+        parts.append('<h2 id="development">How it was developed</h2>')
+        if dev:
+            txt = h(label(dev.get("basis")))
+            fws = [f'<a href="{root}{self.url("frameworks", f)}">{h(self.lib.frameworks[f]["label"])}</a>'
+                   for f in dev.get("framework_ids", []) if f in self.lib.frameworks]
+            if fws:
+                txt += ": " + ", ".join(fws)
+            if dev.get("theory_named"):
+                txt += (", " if fws else ": ") + h(dev["theory_named"])
+            parts.append(f"<p>{txt}.</p>" + (f'<p class="note">{h(dev["notes"])}</p>' if dev.get("notes") else ""))
+        else:
+            parts.append('<p>Not recorded yet.</p>')
+        parts.append('<p class="note">A theory is not required: many instruments are built from a clear definition of what '
+                     'to measure. What matters for choosing one is the evidence below.</p>')
+
+        # evidence profile
+        parts.append(self.evidence_profile(inst, root))
 
         # what it measures
         parts.append('<h2 id="measures">What it measures</h2>')
@@ -449,6 +480,96 @@ class Site:
             shutil.copyfile(src, dest)
         return rel
 
+    # ---------- evidence profile
+    def evidence_profile(self, inst: dict, root: str) -> str:
+        prof = EV.profile(self.lib, inst["id"])
+        out = ['<h2 id="profile">Evidence profile</h2>',
+               f'<p class="note">Checked against the library\'s <a href="{root}about/#rubric">reliability and validity rubric</a>. '
+               'Criteria with a threshold are judged from the values in the evidence records below; the others come from '
+               'the evidence records or a reviewer\'s checklist.</p>']
+        chips = []
+        for kind in ("reliability", "validity", "item_writing"):
+            got, total = prof.coverage(kind)
+            if total:
+                chips.append(f'<span class="chip {"ok" if got else "none"}"><strong>{got} of {total}</strong> '
+                             f'{h(EV.KIND_LABELS[kind].lower())} categories</span>')
+        chips.append(f'<span class="chip">{prof.samples} sample{"s" if prof.samples != 1 else ""}</span>')
+        chips.append(f'<span class="chip {"ok" if prof.independent else "none"}">{prof.independent} independent '
+                     f'record{"s" if prof.independent != 1 else ""}</span>')
+        out.append('<div class="chips">' + "".join(chips) + "</div>")
+        if prof.flags:
+            out.append('<div class="cautions"><p><strong>Cautions</strong></p><ul>'
+                       + "".join(f"<li>{h(f)}</li>" for f in prof.flags) + "</ul></div>")
+        rows = []
+        for cat in prof.categories:
+            if not cat.applies:
+                continue
+            met = [c for c in cat.criteria if c.status != "none"]
+            if met:
+                items = []
+                for c in met:
+                    mark = {"met": "✓", "partly": "◐", "not_met": "✗"}[c.status]
+                    word = {"met": "met", "partly": "partly met", "not_met": "not met"}[c.status]
+                    items.append(f'<li class="{c.status}"><span aria-hidden="true">{mark}</span><span class="vh">{word}: </span> '
+                                 f'<strong>{h(c.id)}.</strong> {h(c.label)}'
+                                 + (f'<span class="note"> ({h(c.detail)})</span>' if c.detail else "") + "</li>")
+                cell = '<ul class="crit">' + "".join(items) + "</ul>"
+            else:
+                cell = '<span class="note">Not reported</span>'
+            rows.append([f'<strong>{h(cat.numeral)}.</strong> {h(cat.label)}', h(EV.KIND_LABELS[cat.kind]), cell])
+        out.append(self.table(["Category", "Kind", "Criteria with evidence"], rows, cls="profile"))
+        if prof.other_reliability:
+            out.append('<p class="note">Also recorded, outside the rubric: '
+                       + "; ".join(f'{h(label(e["evidence_type"]))} ({h(e["statistic"].get("notes") or e["statistic"].get("value"))})'
+                                   for e in prof.other_reliability) + ".</p>")
+        return "\n".join(out)
+
+    def compare_page(self) -> None:
+        root = "../"
+        cats = [c for c in self.lib.rubric]
+        head = ["Instrument", "Type", "Development"] + [f'{c["numeral"]}' for c in cats] + ["Samples", "Independent", "Cautions"]
+        rows = []
+        for inst in sorted(self.lib.instruments.values(), key=lambda i: i["name"].lower()):
+            prof = EV.profile(self.lib, inst["id"])
+            cells = [f'<a href="{root}{self.url("instruments", inst["id"])}">{h(inst["name"])}</a>',
+                     h(label(inst.get("instrument_type"))),
+                     h(DEV_SHORT[(inst.get("development") or {}).get("basis", "")])]
+            for cat in prof.categories:
+                if not cat.applies:
+                    cells.append('<span class="na" title="Does not apply">–</span>')
+                    continue
+                letters = cat.met_letters
+                partly = any(c.status in ("partly", "not_met") for c in cat.criteria)
+                if letters:
+                    cells.append(f'<span class="cell {"partly" if partly else "met"}" title="{h(cat.label)}: criteria '
+                                 f'{h(", ".join(letters))}{" (some values below threshold)" if partly else ""}">{h("".join(letters))}</span>')
+                else:
+                    cells.append(f'<span class="cell none" title="{h(cat.label)}: not reported"><span class="vh">not reported</span></span>')
+            cells += [str(prof.samples), str(prof.independent), str(len(prof.flags))]
+            rel, val = prof.coverage("reliability"), prof.coverage("validity")
+            rows.append((cells, {"rel": rel[0], "val": val[0], "samples": prof.samples, "ind": prof.independent,
+                                 "name": inst["name"].lower()}))
+        th = "".join(f'<th scope="col"{" title=" + chr(34) + h(c["label"]) + chr(34) if i >= 3 and i < 3 + len(cats) else ""}>'
+                     f'{h(x)}</th>' for i, (x, c) in enumerate(zip(head, [None] * 3 + cats + [None] * 3)))
+        body = "".join("<tr " + " ".join(f'data-{k}="{h(v)}"' for k, v in meta.items()) + ">"
+                       + "".join(f"<td>{c}</td>" for c in cells) + "</tr>" for cells, meta in rows)
+        legend = "".join(f'<li><strong>{h(c["numeral"])}</strong> {h(c["label"])}</li>' for c in cats)
+        parts = ['<h1>Compare instruments</h1>',
+                 '<p class="lead">Which kinds of reliability and validity evidence each instrument has, checked against the '
+                 f'library\'s <a href="{root}about/#rubric">rubric</a>. Letters are the rubric criteria with evidence; a '
+                 'shaded cell means some reported values fall below the rubric\'s threshold; a blank cell means nothing is '
+                 'recorded yet.</p>',
+                 '<p class="note">The library does not combine these into one score: a missing category may mean the work '
+                 'was never done, or only that it has not been entered yet. Open an instrument to see the evidence itself.</p>',
+                 '<div class="bar"><label for="sort">Sort by</label> <select id="sort"><option value="name">Name</option>'
+                 '<option value="val">Validity categories with evidence</option><option value="rel">Reliability categories with evidence</option>'
+                 '<option value="samples">Number of samples</option><option value="ind">Independent records</option></select></div>',
+                 f'<div class="tbl compare"><table id="compare"><thead><tr>{th}</tr></thead><tbody>{body}</tbody></table></div>',
+                 f'<h2>Rubric categories</h2><ol class="legend">{legend}</ol>',
+                 f'<p class="dl">Download: <a href="{root}data/evidence_profiles.csv">Evidence profiles (CSV)</a> · '
+                 f'<a href="{root}data/evidence_rubric.json">Rubric (JSON)</a></p>']
+        self.write_page("compare/", "Compare instruments", "\n".join(parts))
+
     # ---------- frameworks
     def framework_page(self, fw: dict) -> None:
         root = "../../"
@@ -489,6 +610,12 @@ class Site:
                 parts.append(f'<li>{h(a)} <span aria-hidden="true">→</span><span class="vh"> to </span> {h(b)}'
                              + (f'<span class="note">: {h(p.get("relationship"))}</span>' if p.get("relationship") else "") + "</li>")
             parts.append("</ul>")
+        built = sorted((i for i in self.lib.instruments.values()
+                        if fid in (i.get("development") or {}).get("framework_ids", [])), key=lambda i: i["name"].lower())
+        if built:
+            parts.append('<h2 id="built">Instruments built on this theory</h2><ul>'
+                         + "".join(f'<li><a href="{root}{self.url("instruments", i["id"])}">{h(i["name"])}</a></li>' for i in built)
+                         + "</ul>")
         insts: dict[str, dict] = {}
         for c in cons.values():
             if c.get("shared_construct_id"):
@@ -596,6 +723,7 @@ class Site:
                  'still needs to settle. Construct mappings are <strong>provisional</strong> until a governance committee '
                  'approves them. The library describes instruments; it does not establish that an instrument is valid for '
                  'your study or grant permission to use it.</p>',
+                 self.rubric_section(),
                  '<h2>Item text</h2><p>The library describes instruments and never republishes item text unless the instrument\'s '
                  'terms allow it. Even freely downloadable instruments are linked, not copied, unless there is an open license, '
                  'public-domain status, or written permission. Answer keys are shared only where that is allowed too.</p>',
@@ -606,6 +734,22 @@ class Site:
                  '<h2>Contribute</h2>' + self.recommend_note("library").replace('<p class="note">', "<p>"),
                  f'<h2>Cite</h2><p>HuMeta Instrument Library, HuMeta Portal. {h(LIBRARY_SITE_URL)} (accessed {self.today}).</p>']
         self.write_page("about/", "About the HuMeta Library", "\n".join(parts))
+
+    def rubric_section(self) -> str:
+        out = ['<h2 id="rubric">Reliability and validity rubric</h2>',
+               '<p>Each instrument\'s evidence profile checks its recorded evidence against this rubric. Instruments do not '
+               'need a theory behind them to be included; they need a clear account of what they measure, and the profile '
+               'shows how well the evidence supports using them. Item writing categories apply only to multiple-choice or '
+               'Likert-type instruments. Thresholds are rules of thumb, not pass marks: a value just below one is weaker '
+               'evidence, not proof that an instrument is unusable.</p>']
+        for c in self.lib.rubric:
+            out.append(f'<h3>{h(c["numeral"])}. {h(c["label"])} <span class="tag k">{h(EV.KIND_LABELS[c["kind"]])}</span></h3>'
+                       f'<p class="note">{h(c["description"])}</p><ul class="rubric">')
+            for x in c["criteria"]:
+                out.append(f'<li><strong>{h(x["id"])}.</strong> {h(x["label"])}'
+                           + (f' <span class="tag k">{h(x["approach"])}</span>' if x.get("approach") else "") + "</li>")
+            out.append("</ul>")
+        return "".join(out)
 
     # ---------- home
     def home_page(self, index: list[dict]) -> None:
@@ -620,6 +764,8 @@ class Site:
 
         def facet_select(key: str, name: str, everything: str, labeller) -> str:
             values = sorted({v for r in index for v in r.get("facets", {}).get(key, []) if v}, key=lambda v: labeller(v).lower())
+            if not values:
+                return ""
             opts = "".join(f'<option value="{h(v)}">{h(labeller(v))}</option>' for v in values)
             return (f'<div><label for="f-{key}">{h(name)}</label><select id="f-{key}" data-facet="{key}">'
                     f'<option value="">{h(everything)}</option>{opts}</select></div>')
@@ -627,7 +773,9 @@ class Site:
         facets = "".join([facet_select("itype", "Instrument type", "Any type", label),
                           facet_select("resp", "Who responds", "Anyone", label),
                           facet_select("level", "Education level", "Any level", label),
-                          facet_select("disc", "Discipline", "Any discipline", self.disc)])
+                          facet_select("disc", "Discipline", "Any discipline", self.disc),
+                          facet_select("evid", "Evidence", "Any evidence", lambda v: EVID_LABELS.get(v, v)),
+                          facet_select("dev", "How it was developed", "Any basis", lambda v: DEV_SHORT.get(v, v))])
         body = f"""<div class="hero">
 <h1>HuMeta Library</h1>
 <p class="lead">Research instruments, theories, and constructs for education, social science, and humanities research: what each instrument measures, how to get it, and the evidence reported for it.</p>
@@ -710,6 +858,17 @@ class Site:
                   [[c["id"], c["label"], c.get("domain", ""), c.get("definition", ""), ";".join(c.get("synonyms", [])),
                     ";".join(c.get("eric", [])), LIBRARY_SITE_URL + self.url("constructs", c["id"])]
                    for c in self.lib.constructs.values()])
+        shutil.copyfile(self.lib.root / "evidence_rubric.json", data / "evidence_rubric.json")
+        prof_rows = []
+        for i in self.lib.instruments.values():
+            prof = EV.profile(self.lib, i["id"])
+            row = [i["id"], i["name"], (i.get("development") or {}).get("basis", "")]
+            row += ["n/a" if not c.applies else "".join(c.met_letters) for c in prof.categories]
+            row += [prof.samples, prof.independent, " | ".join(prof.flags)]
+            prof_rows.append(row)
+        write_csv("evidence_profiles.csv",
+                  ["id", "name", "development_basis"] + [f"{c['numeral']} {c['label']}" for c in self.lib.rubric]
+                  + ["samples", "independent_records", "cautions"], prof_rows)
         write_csv("evidence.csv",
                   ["id", "instrument_id", "version_id", "dimension_id", "evidence_type", "statistic", "value", "sample_n",
                    "education_level", "country", "source_kind", "citation", "doi", "review_status"],
@@ -730,7 +889,9 @@ class Site:
                         "status": label(i.get("review", {}).get("status")), "summary": i.get("description", ""),
                         "fields": ["education"], "text": " ".join(words),
                         "facets": {"itype": [i.get("instrument_type", "")], "resp": i.get("respondent", []),
-                                   "level": i.get("education_levels", []), "disc": i.get("disciplines", [])}})
+                                   "level": i.get("education_levels", []), "disc": i.get("disciplines", []),
+                                   "evid": EV.profile(self.lib, i["id"]).tags,
+                                   "dev": [(i.get("development") or {}).get("basis", "")]}})
         for f in sorted(self.lib.frameworks.values(), key=lambda x: x["label"].lower()):
             if f.get("kind") in ("own", "exploratory"):
                 continue
@@ -759,6 +920,7 @@ class Site:
                 self.framework_page(fw)
         for c in self.lib.constructs.values():
             self.construct_page(c)
+        self.compare_page()
         self.reference_page()
         self.about_page()
         self.home_page(self.index_records())

@@ -7,7 +7,13 @@
   "statistic": {
     "name": "cfa_fit",
     "value": null,
-    "notes": "A second-order model fit poorly (RMSEA = .09, TLI = .72). A first-order model with one Sense of Belonging factor indicated by the five subscale means fit well: RMSEA = .056, TLI = .95, chi-square(5) = 12.86 (ratio 2.57). Loadings: Membership .56, Acceptance .94, Affect .78, Desire to Fade .71, Trust .49. Composite alpha = .78."
+    "notes": "A second-order model fit poorly (RMSEA = .09, TLI = .72). A first-order model with one Sense of Belonging factor indicated by the five subscale means fit well: RMSEA = .056, TLI = .95, chi-square(5) = 12.86 (ratio 2.57). Loadings: Membership .56, Acceptance .94, Affect .78, Desire to Fade .71, Trust .49. Composite alpha = .78. In the second-order model every item loaded above .49 on its subscale.",
+    "fit": {
+      "rmsea": 0.056,
+      "tli": 0.95,
+      "chi_square": 12.86,
+      "df": 5
+    }
   },
   "sample": {
     "n": 498,
@@ -21,10 +27,17 @@
   "source": {
     "kind": "published",
     "citation": "Good, C., Rattan, A., & Dweck, C. S. (2012). Why do women opt out? Sense of belonging and women's representation in mathematics. Journal of Personality and Social Psychology, 102(4), 700-717.",
-    "doi": "10.1037/a0026659"
+    "doi": "10.1037/a0026659",
+    "independent": false
   },
   "review": {
     "status": "draft",
     "needs_check": []
-  }
+  },
+  "rubric": [
+    {
+      "category": "scale_analysis",
+      "criterion": "B"
+    }
+  ]
 }

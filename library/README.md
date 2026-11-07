@@ -60,6 +60,36 @@ version (and optionally one dimension), in one sample, from one source.
 (contributed from a study run through the HuMeta Portal). Both use the
 same format, so evidence across populations can be compared side by side.
 
+**Evidence profile and rubric** (`evidence_rubric.json`). Every instrument is
+checked against a reliability and validity rubric with eleven categories (I Item
+reliability, II Forms reliability, III Item analysis, IV Pre-item content
+validity, V Post-item content validity, VI Communication validity, VII Cultural
+validity, VIII Scale analysis, IX Criterion and construct validity, X
+Multiple-choice item writing, XI Likert-type item writing), each with lettered
+criteria. `oem/evidence.py` builds the profile:
+
+- Evidence records meet criteria through their type and statistic (a
+  `cronbach_alpha` record meets I.A and is judged against I.B, alpha > 0.7; a
+  `test_retest` record meets II.C; `item_bias` meets VII.C). When a range is
+  reported (`statistic.min`/`max`), the lowest value is judged.
+- An evidence record can list further criteria in `rubric`
+  (e.g. `{"category": "scale_analysis", "criterion": "B"}`).
+- Criteria that are not statistics (literature review, think-alouds, expert
+  review, item-writing rules) go in the instrument's `rubric_review`, with a
+  source.
+- `source.independent` says whether the evidence comes from the instrument's
+  developers (`false`) or from others (`true`).
+
+The profile reports which categories have evidence, values below thresholds,
+the number of samples, and independent evidence. It does not combine them into
+one score. Inter-rater agreement is reliability evidence the rubric does not
+score (it was written for tests and surveys), so it is shown alongside.
+
+**Development basis.** An instrument does not need a theory. `development.basis`
+records whether it was built from a theory (`framework_ids` or `theory_named`),
+from a definition of what to measure, or for a practical need, or that the
+sources do not say.
+
 **Item files** (`items/<instrument-id>/<version-id>.json`) list a version's
 items by stable `item_id` and position `number`. An unchanged item keeps the
 same `item_id` in every version's file, so items line up across versions

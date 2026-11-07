@@ -19,7 +19,8 @@
     "kind": "published",
     "citation": "Smith, M. K., Jones, F. H. M., Gilbert, S. L., & Wieman, C. E. (2013). The Classroom Observation Protocol for Undergraduate STEM (COPUS): A new instrument to characterize university STEM classroom practices. CBE-Life Sciences Education, 12(4), 618-627.",
     "doi": "10.1187/cbe.13-08-0154",
-    "contributed_by": "Julie C. Libarkin, 2026-11-06"
+    "contributed_by": "Julie C. Libarkin, 2026-11-06",
+    "independent": false
   },
   "review": {
     "status": "draft",
