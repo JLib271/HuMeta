@@ -205,6 +205,7 @@ class Site:
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="top"><div class="wrap">
+<a class="stemedplus" href="https://stemedplus.org" title="STEMEd+ Commons"><img src="{root}assets/stemedplus-commons-logo.png" alt="STEMEd+ Commons" width="139" height="48"></a>
 <a class="brand" href="{root}">HuMeta Library</a>
 <nav aria-label="Library sections"><a href="{root}#instrument">Instruments</a> <a href="{root}#theory">Theories and lenses</a> <a href="{root}#construct">Constructs</a> <a href="{root}compare/">Compare instruments</a> <a href="{root}reference/">Scales and variables</a> <a href="{root}about/">About</a> <a class="navbtn" href="{root}recommend/">Recommend an instrument</a></nav>
 </div></header>

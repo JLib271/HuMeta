@@ -7,6 +7,7 @@ a { color: var(--accent); }
 .skip { position: absolute; left: -999px; top: 0; background: var(--card); padding: 8px 12px; z-index: 10; }
 .skip:focus { left: 10px; top: 10px; }
 header.top { background: var(--card); border-bottom: 1px solid var(--line); }
+.stemedplus { display: inline-block; } .stemedplus img { display: block; height: 48px; width: auto; }
 header.top .wrap { display: flex; flex-wrap: wrap; gap: 8px 22px; align-items: center; padding-top: 14px; padding-bottom: 14px; }
 .brand { font-weight: 700; font-size: 1.1rem; text-decoration: none; color: var(--ink); }
 header nav { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: .93rem; }

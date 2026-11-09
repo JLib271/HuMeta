@@ -55,6 +55,7 @@ def test_patterns_compile_and_match_examples():
         "science_education": "Science teacher education",
         "history_philosophy_of_science": "Assistant Professor, History of Science",
         "science_health_communication": "Health communication postdoc",
+        "human_dimensions": "Assistant Professor, Human Dimensions of Forestry",
     }
     for i, text in examples.items():
         assert rules[i].search(text), i
@@ -63,3 +64,6 @@ def test_patterns_compile_and_match_examples():
     assert not rules["science_health_communication"].search("excellent communication skills")
     assert not rules["science_health_communication"].search("Crisis communications manager")
     assert not rules["history_philosophy_of_science"].search("medical history required")
+    assert not rules["human_dimensions"].search("using the socio-ecological model of health")
+    assert not rules["science_education"].search("Animal Science Teaching Professor")
+    assert rules["agriculture"].search("Assistant Professor of Entomology")
