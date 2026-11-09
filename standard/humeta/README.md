@@ -75,6 +75,7 @@ module.
 | `crosswalks/eric.csv` | Vocabulary-to-ERIC descriptor crosswalk with verification status (generated) |
 | `crosswalks/eric_descriptor_status.json` | Which ERIC descriptors have been verified, and how |
 | `examples/` | Example record with its DataCite JSON and XML (fictional study) |
+| `stemedplus_disciplines.json` | **Source.** The STEMEd+ disciplines (ids, labels, definitions, matching words, and the HuMeta discipline terms each corresponds to) that STEMEd+ Jobs, Funding, Digest, and Graduate Programs build from; schema in `schema/stemedplus_disciplines.schema.json` |
 | `endorsement/` | Process and materials for community endorsement of version 1.0 |
 | `CHANGELOG.md` | Version history |
 
@@ -336,6 +337,12 @@ data, adding a crosswalk does not change the profile.
 * **`oem/profile.py`**: reference Python implementation (validation, DataCite
   JSON/XML, ERIC descriptors), with tests in `tests/test_profile.py`.
 * **JSON Schema** for use in any language.
+* **STEMEd+ Commons sites** (STEMEd+ Jobs, Funding, Digest, and STEM+ Education
+  Research Graduate Programs) share one discipline list,
+  `stemedplus_disciplines.json`. Each site keeps a copy and replaces it with
+  this file's current version when it builds, keeping its copy if the download
+  fails or the file is not valid. A change here reaches every site at its next
+  build.
 
 ## 8. Versioning and governance
 

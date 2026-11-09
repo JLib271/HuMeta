@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+* **Shared STEMEd+ discipline list** (`stemedplus_disciplines.json`, with a
+  JSON Schema). The ten disciplines used by STEMEd+ Jobs, Funding, Digest, and
+  Graduate Programs now live here, each with an id, label, definition, the
+  words that match it, and the HuMeta (ANZSRC) discipline terms it corresponds
+  to. The sites build from it, so they define disciplines the same way.
+* **Two new STEMEd+ disciplines** (list version 2): History & Philosophy of
+  Science (HPS, history of medicine, science and technology studies, nature of
+  science; ANZSRC 5002 and 4410) and Science & Health Communication (science,
+  health, risk, climate, and environmental communication, public engagement,
+  science and health journalism; ANZSRC 4701 and 4206). Unlike the others, both
+  include the field itself, not only education in it.
 * **New discipline term `discipline_general`** ("Not specific to a discipline")
   for instruments, theories, and studies that apply across subject areas. It
   has no ANZSRC or FOS code, so it is not exported as an ANZSRC or FOS subject.
