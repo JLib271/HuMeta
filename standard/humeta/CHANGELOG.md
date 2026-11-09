@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+* **STEMEd+ disciplines, list version 3:** Engineering now includes computing
+  (computer science, computing, computational thinking, cybersecurity) on every
+  STEMEd+ site, not only STEMEd+ Funding. Mathematics also matches "math".
 * **Shared STEMEd+ discipline list** (`stemedplus_disciplines.json`, with a
   JSON Schema). The ten disciplines used by STEMEd+ Jobs, Funding, Digest, and
   Graduate Programs now live here, each with an id, label, definition, the
