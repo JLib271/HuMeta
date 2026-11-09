@@ -65,5 +65,7 @@ def test_patterns_compile_and_match_examples():
     assert not rules["science_health_communication"].search("Crisis communications manager")
     assert not rules["history_philosophy_of_science"].search("medical history required")
     assert not rules["human_dimensions"].search("using the socio-ecological model of health")
+    assert not rules["human_dimensions"].search("Human Dimensions of Organizations - Faculty Pool")
+    assert rules["human_dimensions"].search("human dimensions of wildlife management")
     assert not rules["science_education"].search("Animal Science Teaching Professor")
     assert rules["agriculture"].search("Assistant Professor of Entomology")

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+* **STEMEd+ disciplines, list version 5:** Human Dimensions no longer matches
+  non-environmental uses such as "Human Dimensions of Organizations".
 * **STEMEd+ disciplines, list version 4:** new **Human Dimensions** discipline
   (scope "field"; ANZSRC 4104 and 4406): human dimensions of natural resources,
   forestry, wildlife, fisheries, conservation, and climate change,
