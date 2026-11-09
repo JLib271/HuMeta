@@ -219,6 +219,7 @@ class Site:
 <h2><a href="{COMMONS_URL}">More from STEMEd+ Commons</a></h2>
 <ul>
 {portal}
+<li>{ext("https://jlib271.github.io/stemed-conferences/", "STEMEd+ Conferences")}: meetings, proposal deadlines, and travel support for STEM+ education</li>
 <li>{ext("https://jlib271.github.io/STEMEd-Digest/", "STEMEd+ Digest")}: new journal articles, preprints, and dissertations</li>
 <li>{ext("https://jlib271.github.io/stemed-funding/", "STEMEd+ Funding")}: open calls and deadlines for STEM+ education</li>
 <li>{ext("https://jlib271.github.io/stem-ed-research-programs/", "STEM+ Education Research Graduate Programs")}: where to study STEM+ education research</li>
