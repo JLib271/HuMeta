@@ -53,8 +53,13 @@ def test_patterns_compile_and_match_examples():
         "mathematics": "Mathematics education",
         "physics": "PER group",
         "science_education": "Science teacher education",
+        "history_philosophy_of_science": "Assistant Professor, History of Science",
+        "science_health_communication": "Health communication postdoc",
     }
     for i, text in examples.items():
         assert rules[i].search(text), i
     assert not rules["physics"].search("$50 per year")
     assert not rules["health_education"].search("medical, dental and vision coverage")
+    assert not rules["science_health_communication"].search("excellent communication skills")
+    assert not rules["science_health_communication"].search("Crisis communications manager")
+    assert not rules["history_philosophy_of_science"].search("medical history required")

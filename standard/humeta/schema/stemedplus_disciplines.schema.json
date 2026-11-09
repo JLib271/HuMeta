@@ -37,7 +37,8 @@
           "label",
           "definition",
           "humeta_disciplines",
-          "match"
+          "match",
+          "scope"
         ],
         "properties": {
           "id": {
@@ -84,9 +85,19 @@
                 "type": "string"
               }
             }
+          },
+          "scope": {
+            "enum": [
+              "education",
+              "field"
+            ],
+            "description": "education: education and education research in the field. field: also the field itself."
           }
         }
       }
+    },
+    "scope_note": {
+      "type": "string"
     }
   }
 }
