@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+* **STEMEd+ disciplines, list version 4:** new **Human Dimensions** discipline
+  (scope "field"; ANZSRC 4104 and 4406): human dimensions of natural resources,
+  forestry, wildlife, fisheries, conservation, and climate change,
+  social-ecological systems, environmental social science. Agriculture now
+  covers agronomy, horticulture, crop, soil, weed, range, plant, and animal
+  sciences, entomology, forestry, fisheries, food science, aquaculture, and
+  Cooperative Extension (soil science stays Earth Science too; entomology and
+  plant and animal sciences stay Bioscience too). "[Field] Science Teaching
+  Professor" is no longer Science Education.
 * **STEMEd+ disciplines, list version 3:** Engineering now includes computing
   (computer science, computing, computational thinking, cybersecurity) on every
   STEMEd+ site, not only STEMEd+ Funding. Mathematics also matches "math".
