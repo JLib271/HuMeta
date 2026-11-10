@@ -201,11 +201,12 @@ class Site:
 <meta name="description" content="{h(description or 'Research instruments, theories, and constructs for education, social science, and humanities research.')}">
 <link rel="canonical" href="{h(canonical)}">
 <link rel="stylesheet" href="{root}assets/style.css">
+<link rel="stylesheet" href="{root}assets/stemedplus-theme.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
+<div class="sp-bar"><div class="sp-in"><a class="sp-logo" href="https://stemedplus.org/"><img src="{root}assets/stemedplus-commons-logo-white.png" alt="STEMEd+ Commons home" width="162" height="56"></a><nav class="sp-nav" aria-label="STEMEd+ Commons"><a href="https://stemedplus.org/">Home</a><a href="https://jlib271.github.io/stemed-jobs/">Jobs</a><a href="https://jlib271.github.io/stemed-funding/">Funding</a><a href="https://jlib271.github.io/stemed-conferences/">Conferences</a><a href="https://jlib271.github.io/STEMEd-Digest/">Digest</a><a href="https://jlib271.github.io/stem-ed-research-programs/">Graduate Programs</a><a href="https://jlib271.github.io/HuMeta/" aria-current="page">Instrument Library</a><a class="sp-join" href="https://stemedplus.hcommons.org/">Join STEMEd+</a></nav></div></div>
 <header class="top"><div class="wrap">
-<a class="stemedplus" href="https://stemedplus.org" title="STEMEd+ Commons"><img src="{root}assets/stemedplus-commons-logo.png" alt="STEMEd+ Commons" width="139" height="48"></a>
 <a class="brand" href="{root}">HuMeta Library</a>
 <nav aria-label="Library sections"><a href="{root}#instrument">Instruments</a> <a href="{root}#theory">Theories and lenses</a> <a href="{root}#construct">Constructs</a> <a href="{root}compare/">Compare instruments</a> <a href="{root}reference/">Scales and variables</a> <a href="{root}about/">About</a> <a class="navbtn" href="{root}recommend/">Recommend an instrument</a></nav>
 </div></header>
