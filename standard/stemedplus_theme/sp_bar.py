@@ -15,14 +15,15 @@ import sys
 LOGIN = "https://stemedplus.org/wp-login.php"
 MENU = [
     ("Features", "https://stemedplus.org/stemed-features/", [
+        ("STEMEd+ Library", "https://works.hcommons.org/collections/stemedplus/records?q=&l=list&p=1&s=10&sort=newest"),
         ("STEMEd+ Sites", "https://stemedplus.org/sites/"),
-        ("STEMEd+ Groups", "https://stemedplus.org/stemed-groups/"),
         ("STEMEd+ Members", "https://stemedplus.profile.hcommons.org/members/"),
-        ("STEMEd+ Collection", "https://works.hcommons.org/collections/stemedplus/records?q=&l=list&p=1&s=10&sort=newest"),
+        ("STEMEd+ Groups", "https://stemedplus.org/stemed-groups/"),
     ]),
     ("Resources", "https://stemedplus.org/stemed-resources/", [
-        ("The Seekers’ Hub: Job Board", "https://theseekershub.stemedplus.org/"),
-        ("STEMEd+ Funding", "https://jlib271.github.io/stemed-funding/"),
+        ("The Seekers’ Hub: A Job Board", "https://theseekershub.stemedplus.org/"),
+        ("Find Collaborators", "https://stemedplus.org/stemed-collaborators/"),
+        ("Find Funding", "https://jlib271.github.io/stemed-funding/"),
         ("STEMEd+ Digest", "https://jlib271.github.io/STEMEd-Digest/"),
         ("STEMEd+ Graduate Programs", "https://jlib271.github.io/stem-ed-research-programs/"),
         ("STEMEd+ Conferences", "https://jlib271.github.io/stemed-conferences/"),
@@ -61,7 +62,7 @@ def bar(current: str = "", logo: str = "stemedplus-commons-logo-white.png") -> s
             items.append(f"<li>{a(label, url)}</li>")
     return (
         '<div class="sp-bar"><div class="sp-in">'
-        f'<a class="sp-logo" href="https://stemedplus.org/"><img src="{logo}" alt="STEMEd+ Commons home" width="300" height="104"></a>'
+        f'<a class="sp-logo" href="https://stemedplus.org/"><img src="{logo}" alt="STEMEd+ Commons home" width="263" height="91"></a>'
         '<input type="checkbox" id="sp-menu-toggle" class="sp-toggle">'
         '<label for="sp-menu-toggle" class="sp-burger"><span class="sp-burger-icon" aria-hidden="true"></span>Menu</label>'
         f'<nav class="sp-nav" aria-label="STEMEd+ Commons"><ul class="sp-top">{"".join(items)}</ul></nav>'
