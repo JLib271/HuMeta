@@ -28,6 +28,7 @@ MENU = [
         ("STEMEd+ Graduate Programs", "https://jlib271.github.io/stem-ed-research-programs/"),
         ("STEMEd+ Conferences", "https://jlib271.github.io/stemed-conferences/"),
         ("STEMEd+ Professional Learning", "https://jlib271.github.io/stemed-professional-learning/"),
+        ("STEMEd+ Faculty Development", "https://jlib271.github.io/stemed-faculty-development/"),
     ]),
     ("Learn More", "https://stemedplus.org/about/", [
         ("About", "https://stemedplus.org/about/"),
