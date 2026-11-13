@@ -39,7 +39,10 @@ theory to its Library page.
 
 The [Library website workflow](.github/workflows/library-site.yml) validates the
 library, runs `scripts/build_library_site.py`, and publishes the result
-whenever `library/` changes on `main`. To publish it the first time, set
+whenever `library/` changes on `main`. It shares the STEMEd+ Commons look (the green menu band, colors and
+font) with the other STEMEd+ sites. That look now lives in its own repository,
+[stemedplus-theme](https://github.com/JLib271/stemedplus-theme); the workflow refreshes
+the copies in `library_site/` from it before each build. To publish it the first time, set
 **Settings → Pages → Source** to **GitHub Actions**. To preview locally:
 
 ```bash
