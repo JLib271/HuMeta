@@ -1,0 +1,11 @@
+{
+  "asset_dirs": [
+    "library_site"
+  ],
+  "bars": [
+    {
+      "file": "scripts/build_library_site.py",
+      "logo": "{root}assets/stemedplus-commons-logo-white.png"
+    }
+  ]
+}
