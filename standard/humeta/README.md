@@ -60,13 +60,35 @@ The profile began as the STEMEd+ Metadata Application Profile for STEM
 education research. Its education-specific elements are now the Education
 module.
 
-## Contents of this folder
+## This repository
+
+This repository is the home of the HuMeta profile, kept separate from the
+software that implements it so the standard has its own versions, releases,
+and public comment.
+
+* **Versions.** Each release is a tag, such as `v1.0.0-draft.1`, with a
+  GitHub release and a [CHANGELOG](CHANGELOG.md) entry. `main` holds the
+  next version in progress; cite and implement a tagged release.
+* **Comment or propose a change** by opening an
+  [issue](https://github.com/JLib271/humeta-profile/issues/new/choose).
+  Proposals stay open for at least 14 days of comment. See
+  [CONTRIBUTING.md](CONTRIBUTING.md).
+* **Implementations use a released version.** The
+  [HuMeta Portal](https://github.com/JLib271/HuMeta) keeps a copy of one
+  release in its `standard/humeta/` folder and records which one in its
+  `humeta-profile.json`; it moves to a new release by pull request.
+* **Generated files** are built by the HuMeta Portal's reference
+  implementation:
+  `python HuMeta/scripts/build_profile_artifacts.py --profile-dir .`.
+  The Check workflow fails if they are out of date.
+
+## Contents of this repository
 
 | File | What it is |
 |---|---|
 | `profile.json` | **Source.** Element definitions, obligations, DataCite mappings, rules |
 | `vocabularies.json` | **Source.** Controlled vocabularies with permanent term codes and ERIC mappings |
-| `../../library/constructs.json` | **Source.** The construct vocabulary (shared with the instrument library) |
+| [`library/constructs.json`](https://github.com/JLib271/HuMeta/blob/main/library/constructs.json) in HuMeta | **Source.** The construct vocabulary (shared with the instrument library) |
 | [`elements.md`](elements.md) | Readable reference for every element, rule, and vocabulary (generated) |
 | `schema/humeta-record.schema.json` | JSON Schema for records (generated) |
 | `crosswalks/datacite-4.7.csv` | Element-to-DataCite crosswalk (generated) |
@@ -79,8 +101,8 @@ module.
 | `endorsement/` | Process and materials for community endorsement of version 1.0 |
 | `CHANGELOG.md` | Version history |
 
-Generated files are rebuilt with `python scripts/build_profile_artifacts.py`;
-CI fails if they are out of date.
+Generated files are rebuilt with HuMeta's `scripts/build_profile_artifacts.py`
+(see [CONTRIBUTING.md](CONTRIBUTING.md)); CI fails if they are out of date.
 
 ## 1. Scope
 
@@ -318,7 +340,7 @@ ERIC descriptors (`crosswalks/eric.csv`). Descriptors were checked against the
 ERIC Thesaurus on 2026-11-01; retired descriptors (shown in ERIC in italics
 with a year) are replaced by their current equivalents. Descriptors that could
 not yet be confirmed are marked *unverified* and are **excluded from exports**
-until confirmed with `scripts/verify_eric_descriptors.py` against the official
+until confirmed with HuMeta's [`scripts/verify_eric_descriptors.py`](https://github.com/JLib271/HuMeta/blob/main/scripts/verify_eric_descriptors.py) against the official
 thesaurus download.
 
 ### Other targets
@@ -329,18 +351,18 @@ data, adding a crosswalk does not change the profile.
 
 ## 7. Implementations
 
-* **HuMeta Portal** (this repository's app): Module 1 is the
+* **[HuMeta Portal](https://github.com/JLib271/HuMeta)**: Module 1 is the
   profile form for a study; researchers start by choosing their fields, which adds the matching modules; Module 3
   adds the constructs measured (suggested from the Module 2 variable plan),
   checks the rules, and exports DataCite, ERIC, and DDI-Codebook 2.5 metadata (study and variable
   level, validated against the official DDI-Codebook 2.5.1 schema).
-* **`oem/profile.py`**: reference Python implementation (validation, DataCite
+* **`oem/profile.py`** in the HuMeta Portal: reference Python implementation (validation, DataCite
   JSON/XML, ERIC descriptors), with tests in `tests/test_profile.py`.
 * **JSON Schema** for use in any language.
 * **STEMEd+ Commons sites** (STEMEd+ Jobs, Funding, Digest, and STEM+ Education
   Research Graduate Programs) share one discipline list,
   `stemedplus_disciplines.json`. Each site keeps a copy and replaces it with
-  this file's current version when it builds, keeping its copy if the download
+  this file's current version on `main` when it builds, keeping its copy if the download
   fails or the file is not valid. A change here reaches every site at its next
   build.
 
@@ -351,19 +373,19 @@ crosswalk entries; **minor** releases add optional elements or vocabulary
 terms; **major** releases change mandatory elements or remove anything.
 Field modules are developed by working groups of researchers from each field,
 and each module is versioned with the profile. Proposed changes are opened as
-issues labeled `proposal` and left open for at least 14 days of comment (see [GOVERNANCE.md](../../GOVERNANCE.md)). Version
+issues labeled `proposal` and left open for at least 14 days of comment (see [CONTRIBUTING.md](CONTRIBUTING.md) and [GOVERNANCE.md](https://github.com/JLib271/HuMeta/blob/main/GOVERNANCE.md)). Version
 1.0.0 will be released after a public comment period and submitted for
 endorsement; see [`endorsement/`](endorsement/).
 
 ## 9. License and citation
 
-The profile (this folder and the construct vocabulary) is licensed under
-[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), like the rest
-of the library. Code implementing it is AGPL-3.0-or-later. Cite as:
+The profile (this repository, and the construct vocabulary in HuMeta's `library/constructs.json`) is licensed under
+[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) ([LICENSE.md](LICENSE.md)), like the rest
+of the HuMeta library. Code implementing it, such as the [HuMeta Portal](https://github.com/JLib271/HuMeta), is AGPL-3.0-or-later. Cite as:
 
 > Libarkin, J. C., & HuMeta contributors. (2026). *HuMeta: The
 > Social Science, Humanities, and Education Study Metadata Profile* (Version
-> 1.0.0-draft.1). https://github.com/JLib271/HuMeta/tree/main/standard/humeta
+> 1.0.0-draft.1). https://github.com/JLib271/humeta-profile
 
 A DOI will be registered for version 1.0.0 (DataCite resourceTypeGeneral
 `Standard`).

@@ -37,5 +37,7 @@ jobs:
         run: python -m pytest -v
       - name: Validate instrument library
         run: python scripts/validate_library.py
+      - name: standard/humeta/ matches the pinned humeta-profile release
+        run: python scripts/update_profile.py --check
       - name: HuMeta profile artifacts are up to date
         run: python scripts/build_profile_artifacts.py --check

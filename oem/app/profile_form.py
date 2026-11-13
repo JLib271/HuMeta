@@ -18,7 +18,7 @@ from oem import profile
 from oem.app.common import LICENSE_HELP, current_project
 from oem.library import Library
 
-SPEC_URL = "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md"
+SPEC_URL = "https://github.com/JLib271/humeta-profile/blob/main/README.md"
 ISSUES_URL = "https://github.com/JLib271/HuMeta/issues"
 DDI_URL = "https://ddialliance.org/"
 KCWORKS_URL = "https://works.hcommons.org/"

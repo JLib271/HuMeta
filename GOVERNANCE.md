@@ -27,6 +27,10 @@ Current maintainers are listed in [`.github/CODEOWNERS`](.github/CODEOWNERS).
 * Larger changes (data model, naming rules, licensing, privacy behavior,
   anything affecting how research data are handled) are proposed in an issue
   labeled `proposal` and left open for comment for at least **14 days**.
+* Changes to the HuMeta profile itself (elements, vocabularies, crosswalks)
+  are proposed and released in its own repository,
+  [humeta-profile](https://github.com/JLib271/humeta-profile); `standard/humeta/`
+  here is a copy of a release and is not edited directly.
 * Changes to library vocabularies that would rename existing variables or
   codes are not allowed once data may exist; add a new entry instead.
 * If consensus cannot be reached, the project lead decides and records the
