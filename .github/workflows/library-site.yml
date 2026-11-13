@@ -1,25 +1,17 @@
-name: Library website
+name: Old Library website address
 
-# Builds the HuMeta Library website from library/ and publishes it to GitHub Pages
-# (https://jlib271.github.io/HuMeta/). Pull requests build the site as a check; only
-# main is published.
+# The HuMeta Library website moved to https://jlib271.github.io/humeta-library/ (built in
+# JLib271/humeta-library). This keeps its old address, https://jlib271.github.io/HuMeta/, working:
+# every page forwards to the same page at the new address.
 
 on:
   push:
     branches: [main]
     paths:
       - "library/**"
-      - "library_site/**"
-      - "scripts/build_library_site.py"
-      - "oem/library.py"
+      - "scripts/build_library_redirects.py"
       - "oem/vocab.py"
-      - "standard/humeta/vocabularies.json"
       - ".github/workflows/library-site.yml"
-  pull_request:
-    paths:
-      - "library/**"
-      - "library_site/**"
-      - "scripts/build_library_site.py"
   workflow_dispatch:
 
 permissions:
@@ -39,25 +31,14 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-      - name: Refresh the shared STEMEd+ look
-        continue-on-error: true
-        run: |
-          git clone --depth 1 https://github.com/JLib271/stemedplus-theme.git "$RUNNER_TEMP/stemedplus-theme"
-          python "$RUNNER_TEMP/stemedplus-theme/apply.py" .
-      - run: pip install "jsonschema[format]>=4.18"
-      - name: Validate the library
-        run: python scripts/validate_library.py
-      - name: Build the site
-        run: python scripts/build_library_site.py --out _site
+      - name: Build the forwarding pages
+        run: python scripts/build_library_redirects.py --out _site
       - uses: actions/configure-pages@v6
-        if: github.event_name != 'pull_request'
       - uses: actions/upload-pages-artifact@v5
-        if: github.event_name != 'pull_request'
         with:
           path: _site
 
   deploy:
-    if: github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     permissions:

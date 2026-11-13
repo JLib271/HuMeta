@@ -58,9 +58,15 @@ US_STATES = ["AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "
              "OK", "OR", "PA", "PR", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY"]
 
 
-@st.cache_resource(show_spinner=False)
 def library() -> Library:
-    return Library.load()
+    """The library in use (published or snapshot), loaded once per version."""
+    from oem.library import default_root
+    return _library_at(str(default_root()))
+
+
+@st.cache_resource(show_spinner=False, max_entries=3)
+def _library_at(root: str) -> Library:
+    return Library.load(root)
 
 
 def current_record() -> dict | None:

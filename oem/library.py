@@ -1,9 +1,12 @@
 # Copyright (C) 2026 Julie C. Libarkin
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Read-only access to the instrument library in ``library/``.
+"""Read-only access to the HuMeta Instrument Library.
 
 The library is the single source of truth for instruments, items, constructs,
-frameworks (theories and lenses), response scales and standard variables. Load it once and look things up by ID::
+frameworks (theories and lenses), response scales and standard variables. It is
+kept in its own repository, https://github.com/JLib271/humeta-library, whose
+website publishes the library's files as ``data/library.tar.gz``. Load it once
+and look things up by ID::
 
     from oem.library import Library
     lib = Library.load()
@@ -11,18 +14,104 @@ frameworks (theories and lenses), response scales and standard variables. Load i
     items = lib.items("gci", "gci-v4-2014")
     agree5 = lib.scale("agree5")
 
-The app wraps ``Library.load`` in ``st.cache_data``; nothing here imports
-Streamlit.
+``Library.load()`` reads the snapshot in ``library/`` (a copy of a published
+library, refreshed with ``scripts/update_library.py``) unless
+``use_published()`` has switched it to the current published library, which
+the app does at startup. Tests and scripts use the snapshot, so they never
+depend on the network. Nothing here imports Streamlit.
 """
 
 from __future__ import annotations
 
+import hashlib
+import io
 import json
+import os
+import shutil
+import tarfile
+import tempfile
+import urllib.request
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+#: The snapshot of the library kept with the app
 DEFAULT_LIBRARY_DIR = Path(__file__).resolve().parent.parent / "library"
+#: Where the HuMeta Library website publishes library.json and library.tar.gz
+PUBLISHED_DATA_URL = "https://jlib271.github.io/humeta-library/data/"
+#: Library.load() with no folder reads this; None means the snapshot
+_default_root: Path | None = None
+
+
+def default_root() -> Path:
+    """The folder Library.load() reads when given none: the published copy in use, or the snapshot."""
+    return _default_root or DEFAULT_LIBRARY_DIR
+
+
+def use_snapshot() -> Path:
+    """Go back to reading the snapshot in library/."""
+    global _default_root
+    _default_root = None
+    return DEFAULT_LIBRARY_DIR
+
+
+def _fetch(url: str, timeout: float) -> bytes:
+    with urllib.request.urlopen(url, timeout=timeout) as response:
+        return response.read()
+
+
+def unpack_archive(packed: bytes, dest: Path) -> Path:
+    """Unpack a library.tar.gz into dest and return its library/ folder, after checking it loads."""
+    with tarfile.open(fileobj=io.BytesIO(packed), mode="r:gz") as tar:
+        names = tar.getnames()
+        if not names or not all(n == "library" or n.startswith("library/") for n in names):
+            raise ValueError("not a HuMeta library archive")
+        tar.extractall(dest, filter="data")
+    root = dest / "library"
+    lib = Library.load(root)
+    if not lib.instruments or not lib.constructs:
+        raise ValueError("the archive holds no instruments or constructs")
+    return root
+
+
+def use_published(base_url: str = PUBLISHED_DATA_URL, cache_dir: Path | str | None = None,
+                  timeout: float = 15) -> Path:
+    """Make Library.load() read the library the website currently publishes; return the folder used.
+
+    Reads ``library.json`` to learn the archive's checksum, reuses a cached copy with that checksum,
+    and otherwise downloads ``library.tar.gz``, checks the checksum and that it loads, and caches it.
+    On any problem (offline, a bad download) it keeps whatever Library.load() read before: the last
+    good published copy, or the snapshot. Setting HUMETA_LIBRARY_SNAPSHOT keeps the snapshot.
+    """
+    global _default_root
+    if os.environ.get("HUMETA_LIBRARY_SNAPSHOT") and cache_dir is None:
+        return default_root()  # pinned to the snapshot (the tests set this)
+    cache = Path(cache_dir) if cache_dir else Path(tempfile.gettempdir()) / "humeta-library"
+    try:
+        manifest = json.loads(_fetch(base_url + "library.json", timeout).decode("utf-8"))
+        digest = manifest["sha256"]
+        target = cache / digest / "library"
+        if not (target / "constructs.json").is_file():
+            packed = _fetch(base_url + manifest.get("archive", "library.tar.gz"), timeout)
+            if hashlib.sha256(packed).hexdigest() != digest:
+                raise ValueError("the downloaded archive does not match library.json")
+            staging = Path(tempfile.mkdtemp(prefix="unpack-", dir=_ensure(cache)))
+            try:
+                unpack_archive(packed, staging)
+                (cache / digest).mkdir(exist_ok=True)
+                if not target.exists():
+                    (staging / "library").rename(target)
+            finally:
+                shutil.rmtree(staging, ignore_errors=True)
+        _default_root = target
+    except Exception:  # noqa: BLE001 - the app must keep working with the copy it has
+        pass
+    return default_root()
+
+
+def _ensure(path: Path) -> Path:
+    path.mkdir(parents=True, exist_ok=True)
+    return path
 
 
 class LibraryError(LookupError):
@@ -64,7 +153,7 @@ class Library:
     # ------------------------------------------------------------------ load
     @classmethod
     def load(cls, root: Path | str | None = None) -> "Library":
-        root = Path(root) if root else DEFAULT_LIBRARY_DIR
+        root = Path(root) if root else default_root()
         lib = cls(root=root)
         for path in sorted((root / "instruments").glob("*.json")):
             record = _load_json(path)

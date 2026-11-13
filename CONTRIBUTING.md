@@ -31,7 +31,6 @@ Before opening a pull request, run the same checks CI runs:
 
 ```bash
 python -m pytest -v                       # unit tests + opens every app page headlessly
-python scripts/validate_library.py        # instrument library checks
 ruff check --select F,E9 openscience.py oem tests scripts
 ```
 
@@ -41,7 +40,7 @@ ruff check --select F,E9 openscience.py oem tests scripts
   `codebook.py`, `vocab.py`). Put new logic here and test it in `tests/`.
 * `oem/app/pages/` holds one file per app module, each with a `render()`
   function. Keep pages thin: they should collect input and call into `oem/`.
-* `library/` is data, not code. See [library/README.md](library/README.md).
+* `library/` is a snapshot of the published [HuMeta Instrument Library](https://github.com/JLib271/humeta-library); change the library there.
 
 ## Pull request workflow
 
@@ -60,31 +59,19 @@ Commits should describe *why* a change was made. We use squash merges.
 The easiest way is in the app: **Module 2 → Recommend a theory or framework**,
 **Recommend an instrument**, or **Suggest a correction**. You sign in, fill in a
 short structured form, and the app opens a pull request for review. You don't
-need a GitHub account. People who use GitHub can use the matching issue
-forms instead: the [Library website's Recommend page](https://jlib271.github.io/HuMeta/recommend/)
-links to the [instrument recommendation form](../../issues/new?template=instrument_submission.yml),
-which asks only for the name, citation, and what it measures (the rubric
-checklist and other details are optional), and every Library record links to a
-[correction form](../../issues/new?template=library_correction.yml) with the
-record filled in. Maintainers review recommendations using
-[suggestions/README.md](suggestions/README.md) before adding them to the
-library.
+need a GitHub account. The pull request opens in the
+[HuMeta Instrument Library](https://github.com/JLib271/humeta-library) (analysis
+recommendations open here, in `suggestions/analyses/`). People who use GitHub
+can use the library's issue forms instead, from the
+[Library website's Recommend page](https://jlib271.github.io/humeta-library/recommend/).
 
 ## Contributing to the instrument library
 
-1. Copy an existing file in `library/instruments/` as a template.
-2. Take every fact from the primary publication, list the pages you used in
-   `info_sources`, and write descriptions in your own words.
-3. Put anything you could not confirm in `review.needs_check` rather than
-   guessing; use `null` for unknown numbers.
-4. **Never add item text** unless the instrument's license or its developer
-   permits it, and record that in `access.item_text_basis`. Never add answer
-   keys unless `access.answer_key_shareable` is true.
-5. Run `python scripts/validate_library.py`.
-
-Library content is licensed CC BY-SA 4.0 (item text follows each instrument's
-own license; see [library/LICENSE.md](library/LICENSE.md)). By contributing
-library content you agree to release it under those terms.
+The library has its own repository,
+[humeta-library](https://github.com/JLib271/humeta-library); see its
+[CONTRIBUTING.md](https://github.com/JLib271/humeta-library/blob/main/CONTRIBUTING.md).
+`library/` here is a snapshot of the published library: don't edit it here
+(refresh it with `python scripts/update_library.py`).
 
 ## Data and privacy rules (important)
 

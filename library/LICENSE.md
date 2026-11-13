@@ -1,7 +1,8 @@
 # Instrument Library content license
 
-The HuMeta Portal application code is under the GNU AGPL v3.0 (see `/LICENSE`).
-The contents of this `library/` folder are licensed separately, as follows.
+The HuMeta Instrument Library's content is licensed as follows. Code in this
+repository (`scripts/`, `tests/`, and the website files in `site/`) is under the
+GNU AGPL v3.0 or later; see [`LICENSE-CODE`](https://github.com/JLib271/humeta-library/blob/main/LICENSE-CODE).
 
 ## 1. Library records: CC BY-SA 4.0
 
@@ -12,17 +13,17 @@ are licensed under the
 You may reuse and adapt them, including commercially, if you credit the
 library and release adapted material under the same license.
 
-Suggested attribution: *HuMeta Instrument Library, HuMeta Portal
-(https://github.com/JLib271/HuMeta).*
+Suggested attribution: *HuMeta Instrument Library
+(https://github.com/JLib271/humeta-library).*
 
-The JSON Schemas in `library/schema/` are part of the library content and
-are also CC BY-SA 4.0, so others can adopt the record format. The validator in
-`scripts/` is code and falls under the repository's AGPL v3.0.
+The JSON Schemas in `schema/` are part of the library content and
+are also CC BY-SA 4.0, so others can adopt the record format. The validator and
+site builder in `scripts/` are code and fall under the AGPL v3.0.
 
 ## 2. Item text: each instrument's own license
 
 Item text (question stems, answer options and figures in
-`library/items/`) is **not** covered by section 1. Each instrument's item text
+`items/`) is **not** covered by section 1. Each instrument's item text
 is released under the license recorded in its instrument record at
 `access.item_text_basis.license`, and you must follow that license when
 reusing it. Item text is included only when that field is filled in.

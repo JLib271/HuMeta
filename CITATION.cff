@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "If you use this software or its instrument library, please cite it as below. To cite the HuMeta profile itself, see https://github.com/JLib271/humeta-profile."
+message: "If you use this software, please cite it as below. To cite the HuMeta profile, see https://github.com/JLib271/humeta-profile; the instrument library, https://github.com/JLib271/humeta-library."
 title: "HuMeta: The Social Science, Humanities, and Education Study Metadata Profile, and the HuMeta Portal"
 type: software
 authors:

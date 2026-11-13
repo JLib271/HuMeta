@@ -5,8 +5,10 @@
 Researchers recommend theories, lenses, and frameworks, or instruments for
 measuring constructs, from Module 2 (or through GitHub issue forms). Each
 recommendation becomes one JSON file in ``suggestions/<kind>/`` on a pull
-request, reviewed against ``suggestions/README.md`` before anything is added
-to ``library/``.
+request. Theories, instruments, and corrections go to the HuMeta Instrument
+Library's repository (JLib271/humeta-library), reviewed against its
+``suggestions/README.md`` before anything is added to the library; analyses
+(for Module 5) stay in this repository's ``suggestions/analyses/``.
 
 Recommendations state their alignment explicitly: a framework lists its
 constructs (and, optionally, the shared construct and instruments for each);
@@ -303,7 +305,7 @@ def pr_description(rec: dict) -> str:
                                      f"{c.get('instruments', '')} |" for c in rec["constructs"]))
         checklist = ["Citation checked against the source", "Constructs and relationships match the source",
                      "Governance committee decided the links to shared constructs and instruments",
-                     "Added to library/frameworks.json (citation_status: verified) and validate_library.py passes"]
+                     "Added to frameworks.json (citation_status: verified) and validate_library.py passes"]
     elif rec["recommendation"] == "instrument":
         lines = [f"**Recommended instrument:** {rec['name']}" + (f" ({rec['acronym']})" if rec["acronym"] else ""),
                  f"**Citation:** {rec['citation']}" + (f" https://doi.org/{rec['doi']}" if rec["doi"] else ""),
@@ -318,7 +320,7 @@ def pr_description(rec: dict) -> str:
         checklist = ["Citation and DOI checked", "Subscales and items match the source",
                      "Governance committee decided which constructs each part maps to",
                      "Access and license terms confirmed; no item text added without documented permission",
-                     "Added as library/instruments/<id>.json and validate_library.py passes"]
+                     "Added as instruments/<id>.json and validate_library.py passes"]
     elif rec["recommendation"] == "analysis":
         lines = [f"**Recommended analysis for Module 5:** {rec['name']}", rec["purpose"],
                  f"**When to use:** {rec['when_to_use']}" if rec["when_to_use"] else "",

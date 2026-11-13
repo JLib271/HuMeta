@@ -43,7 +43,8 @@ to the shared construct list, will be decided by a **governance committee**,
 not by one person. Until the committee is formed, every mapping in the library
 is marked `provisional`. Researchers always decide whether an instrument fits
 their own construct; the library shows mappings as candidates with their
-status. See [suggestions/README.md](suggestions/README.md).
+status. Recommendations are reviewed in the library's repository; see
+[humeta-library's suggestions/README.md](https://github.com/JLib271/humeta-library/blob/main/suggestions/README.md).
 
 ## Becoming a maintainer or curator
 

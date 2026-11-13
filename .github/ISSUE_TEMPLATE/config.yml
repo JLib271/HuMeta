@@ -1,5 +1,11 @@
 blank_issues_enabled: true
 contact_links:
+  - name: Recommend an instrument or theory, or correct a library record
+    url: https://github.com/JLib271/humeta-library/issues/new/choose
+    about: The HuMeta Instrument Library has its own repository and website (https://jlib271.github.io/humeta-library/).
+  - name: Comment on or propose a change to the HuMeta profile
+    url: https://github.com/JLib271/humeta-profile/issues/new/choose
+    about: The HuMeta metadata standard has its own repository.
   - name: Security or privacy problem
     url: https://github.com/JLib271/HuMeta/security/policy
     about: Report vulnerabilities or exposed personal information privately, not as a public issue.

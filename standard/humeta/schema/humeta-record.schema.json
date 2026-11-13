@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/JLib271/humeta-profile/blob/main/schema/humeta-record.schema.json",
-  "title": "HuMeta profile record (1.0.0-draft.1)",
+  "title": "HuMeta profile record (1.0.0-draft.2)",
   "description": "Generated from standard/humeta/profile.json and vocabularies.json by scripts/build_profile_artifacts.py. Do not edit by hand.",
   "type": "object",
   "additionalProperties": false,

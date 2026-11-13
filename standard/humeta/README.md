@@ -1,6 +1,6 @@
 # HuMeta: The Social Science, Humanities, and Education Study Metadata Profile
 
-**Version:** 1.0.0-draft.1 · **Status:** Draft for community comment · **Namespace prefix:** `humeta`
+**Version:** 1.0.0-draft.2 · **Status:** Draft for community comment · **Namespace prefix:** `humeta`
 
 The HuMeta profile is a shared way to describe research studies
 and the data, instruments, and records they produce across the social
@@ -88,7 +88,7 @@ and public comment.
 |---|---|
 | `profile.json` | **Source.** Element definitions, obligations, DataCite mappings, rules |
 | `vocabularies.json` | **Source.** Controlled vocabularies with permanent term codes and ERIC mappings |
-| [`library/constructs.json`](https://github.com/JLib271/HuMeta/blob/main/library/constructs.json) in HuMeta | **Source.** The construct vocabulary (shared with the instrument library) |
+| [`constructs.json`](https://github.com/JLib271/humeta-library/blob/main/constructs.json) in the [HuMeta Instrument Library](https://github.com/JLib271/humeta-library) | **Source.** The construct vocabulary (shared with the instrument library) |
 | [`elements.md`](elements.md) | Readable reference for every element, rule, and vocabulary (generated) |
 | `schema/humeta-record.schema.json` | JSON Schema for records (generated) |
 | `crosswalks/datacite-4.7.csv` | Element-to-DataCite crosswalk (generated) |
@@ -242,8 +242,9 @@ to these elements should be made with Indigenous data governance experts.
 
 ## 5. Vocabularies
 
-Vocabularies are in `vocabularies.json` and the construct vocabulary is in
-`library/constructs.json`. Rules for maintaining them:
+Vocabularies are in `vocabularies.json` and the construct vocabulary is in the
+HuMeta Instrument Library's
+[`constructs.json`](https://github.com/JLib271/humeta-library/blob/main/constructs.json). Rules for maintaining them:
 
 * Term codes are **permanent**. A code is never renamed or reused; a term that
   is no longer needed is marked deprecated in a later version.
@@ -379,13 +380,13 @@ endorsement; see [`endorsement/`](endorsement/).
 
 ## 9. License and citation
 
-The profile (this repository, and the construct vocabulary in HuMeta's `library/constructs.json`) is licensed under
+The profile (this repository, and the construct vocabulary in the [HuMeta Instrument Library](https://github.com/JLib271/humeta-library)'s `constructs.json`) is licensed under
 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) ([LICENSE.md](LICENSE.md)), like the rest
 of the HuMeta library. Code implementing it, such as the [HuMeta Portal](https://github.com/JLib271/HuMeta), is AGPL-3.0-or-later. Cite as:
 
 > Libarkin, J. C., & HuMeta contributors. (2026). *HuMeta: The
 > Social Science, Humanities, and Education Study Metadata Profile* (Version
-> 1.0.0-draft.1). https://github.com/JLib271/humeta-profile
+> 1.0.0-draft.2). https://github.com/JLib271/humeta-profile
 
 A DOI will be registered for version 1.0.0 (DataCite resourceTypeGeneral
 `Standard`).

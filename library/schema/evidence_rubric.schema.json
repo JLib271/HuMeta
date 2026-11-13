@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/JLib271/HuMeta/library/schema/evidence_rubric.schema.json",
+  "$id": "https://github.com/JLib271/humeta-library/blob/main/schema/evidence_rubric.schema.json",
   "title": "Reliability and validity rubric",
   "type": "object",
   "additionalProperties": false,

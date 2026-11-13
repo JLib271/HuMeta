@@ -9,7 +9,7 @@ shared helpers in ``oem/app/common.py``; Streamlit-free logic in ``oem/``.
 from __future__ import annotations
 import streamlit as st
 import json
-from oem.app.common import (auth_is_configured, render_feedback_box, current_project, empty_project, navigate_to_module, parse_project_file, render_project_download, render_value_card, researcher_display_name, researcher_is_signed_in, value_propositions)
+from oem.app.common import (auth_is_configured, render_feedback_box, current_project, empty_project, navigate_to_module, parse_project_file, render_project_download, render_value_card, researcher_display_name, researcher_is_signed_in, use_published_library, value_propositions)
 from oem.app.pages import (
     analytics,
     data_repository,
@@ -30,6 +30,7 @@ from oem.app.pages import (
 
 # App configuration and session setup
 st.set_page_config(page_title="HuMeta Portal", layout="wide")
+use_published_library()
 if "session_instruments" not in st.session_state:
     st.session_state.session_instruments = []
 

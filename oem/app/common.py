@@ -14,7 +14,8 @@ import uuid
 from pathlib import Path
 from github import Github
 from oem import feedback
-from oem.vocab import (APP_DIR, DEFAULT_GITHUB_REPO, LEGACY_PROJECT_FILE_FORMATS, PROJECT_FILE_FORMAT, PUBLISHED_DATASETS_DIR, PUBLISHED_SUMMARIES_DIR)
+from oem import library as library_source
+from oem.vocab import (APP_DIR, DEFAULT_GITHUB_REPO, DEFAULT_LIBRARY_REPO, DEFAULT_PROFILE_REPO, LEGACY_PROJECT_FILE_FORMATS, PROJECT_FILE_FORMAT, PUBLISHED_DATASETS_DIR, PUBLISHED_SUMMARIES_DIR)
 
 
 # Storage model (no database):
@@ -130,6 +131,19 @@ def _read_json_files(folder: Path) -> list[dict]:
             record["_file"] = path.name
             records.append(record)
     return records
+
+
+@st.cache_resource(ttl=3600, show_spinner=False)
+def _switch_to_published_library() -> str:
+    return str(library_source.use_published())
+
+
+def use_published_library() -> None:
+    """Read the instrument library the HuMeta Library website publishes (checked at most hourly).
+
+    If it can't be reached, the app keeps the last good copy, or the snapshot in library/.
+    """
+    _switch_to_published_library()
 
 
 @st.cache_data(ttl=300, show_spinner=False)
@@ -290,9 +304,11 @@ value_propositions = [
     ),
 ]
 
-ALLOWED_PR_FOLDERS = ("suggestions/", "suggestions/frameworks/", "suggestions/instruments/", "suggestions/corrections/",
+ALLOWED_PR_FOLDERS = ("suggestions/frameworks/", "suggestions/instruments/", "suggestions/corrections/",
                       "suggestions/analyses/",
                       "published/study_summaries/", "published/datasets/")
+#: Folders that live in the HuMeta Instrument Library's repository rather than this one
+LIBRARY_PR_FOLDERS = ("suggestions/frameworks/", "suggestions/instruments/", "suggestions/corrections/")
 
 
 LICENSE_GUIDE_URL = "https://creativecommons.org/share-your-work/cclicenses/"
@@ -341,6 +357,9 @@ def open_review_pull_request(
     ``files`` maps repository paths to content. Paths are restricted to the
     folders in ALLOWED_PR_FOLDERS and their file names are sanitized, so
     researcher-entered text cannot write elsewhere in the repository.
+    Library recommendations (``LIBRARY_PR_FOLDERS``) go to the library's
+    repository (secret ``LIBRARY_GITHUB_REPO``, default JLib271/humeta-library),
+    so the ``GITHUB_PAT`` needs access to it as well as to this repository.
     """
     try:
         if not researcher_is_signed_in():
@@ -361,9 +380,15 @@ def open_review_pull_request(
         if not files and not delete_paths:
             return "❌ Nothing to submit."
 
-        repo = Github(str(st.secrets["GITHUB_PAT"]).strip()).get_repo(
-            str(st.secrets.get("GITHUB_REPO", DEFAULT_GITHUB_REPO)).strip()
-        )
+        # Library recommendations go to the HuMeta Instrument Library's repository; analysis
+        # recommendations and published study summaries and datasets go to the portal's own repository.
+        paths = [*files, *delete_paths]
+        to_library = all(path.startswith(LIBRARY_PR_FOLDERS) for path in paths)
+        if not to_library and any(path.startswith(LIBRARY_PR_FOLDERS) for path in paths):
+            raise ValueError("A library recommendation can't be submitted with other files.")
+        repo_name = (st.secrets.get("LIBRARY_GITHUB_REPO", DEFAULT_LIBRARY_REPO) if to_library
+                     else st.secrets.get("GITHUB_REPO", DEFAULT_GITHUB_REPO))
+        repo = Github(str(st.secrets["GITHUB_PAT"]).strip()).get_repo(str(repo_name).strip())
         base_branch = repo.default_branch
         unique_timestamp = int(time.time())
         new_branch_name = (
@@ -413,6 +438,35 @@ def _secret_flag(name: str) -> bool:
         return str(st.secrets.get(name, "")).strip().lower() in ("1", "true", "yes")
     except Exception:
         return False
+
+
+def open_profile_proposal(title: str, body: str) -> str:
+    """File a proposed change to the HuMeta profile as a `proposal` issue in its repository.
+
+    Goes to the secret PROFILE_GITHUB_REPO (default JLib271/humeta-profile), where proposals stay open
+    for at least 14 days of comment. Needs sign-in, and a GITHUB_PAT with Issues: Read and write there.
+    """
+    try:
+        if not researcher_is_signed_in():
+            return "❌ Sign in with Google before submitting a proposal."
+        if "GITHUB_PAT" not in st.secrets:
+            return "❌ Missing 'GITHUB_PAT' in the app's secrets."
+        repo = Github(str(st.secrets["GITHUB_PAT"]).strip()).get_repo(
+            str(st.secrets.get("PROFILE_GITHUB_REPO", DEFAULT_PROFILE_REPO)).strip()
+        )
+        labels = []
+        try:
+            labels = [repo.get_label("proposal")]
+        except Exception:
+            try:
+                labels = [repo.create_label("proposal", "0e8a16")]
+            except Exception:
+                pass  # a missing label must not lose the proposal
+        body = f"{body}\n\nSubmitted by {researcher_display_name()}."
+        created = repo.create_issue(title=title[:250], body=body, labels=labels)
+        return f"🎉 Thank you! Your proposal is open for comment: {created.html_url}"
+    except Exception as git_error:
+        return f"❌ Could not submit the proposal: {git_error}"
 
 
 def open_feedback_issue(issue: "feedback.Issue") -> str:
@@ -482,18 +536,6 @@ def render_feedback_box(page: str) -> None:
                 return
             result = open_feedback_issue(issue)
             (st.success if result.startswith("🎉") else st.error)(result)
-
-
-def automate_github_pull_request(suggestion_type: str, file_name: str, file_content: str, title_summary: str) -> str:
-    """Submit a suggestion file into suggestions/ as a pull request."""
-    # File names are built from researcher-typed titles; flatten any "/" so the
-    # file always lands directly in suggestions/.
-    flat_name = re.sub(r"[^A-Za-z0-9_.-]", "_", str(file_name)).strip("._")
-    return open_review_pull_request(
-        suggestion_type=f"{suggestion_type} Proposal",
-        title_summary=title_summary,
-        files={f"suggestions/{flat_name or uuid.uuid4().hex[:12]}": file_content},
-    )
 
 
 def navigate_to_module(module: str) -> None:

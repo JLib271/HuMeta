@@ -17,7 +17,7 @@ The platform is deployed on Streamlit Community Cloud.
 
 ## 🛠️ Key Architectural Layout (Modules 1–6)
 
-The modules follow a study from design to sharing. Study metadata uses one standard throughout: the [HuMeta profile](https://github.com/JLib271/humeta-profile), which has its own repository, versions, and public comment; the portal uses release v1.0.0-draft.1 (copy in [`standard/humeta/`](standard/humeta/README.md)). It has a core for every study plus optional field modules for Education, Social Science, and Arts and Humanities, each a starting point to be developed with researchers in those fields. The Social Science module uses DDI, the field's existing standard, and links to a study's full DDI documentation rather than recreating it.
+The modules follow a study from design to sharing. Study metadata uses one standard throughout: the [HuMeta profile](https://github.com/JLib271/humeta-profile), which has its own repository, versions, and public comment; the portal uses release v1.0.0-draft.2 (copy in [`standard/humeta/`](standard/humeta/README.md)). It has a core for every study plus optional field modules for Education, Social Science, and Arts and Humanities, each a starting point to be developed with researchers in those fields. The Social Science module uses DDI, the field's existing standard, and links to a study's full DDI documentation rather than recreating it.
 
 1. **Study Metadata Profile (Module 1):** Start by choosing the study's fields (Education, Social sciences, Arts and humanities, or Other field), which sets its research field and adds a short section for each of the first three; the discipline list (ANZSRC 2020 Fields of Research, mapped to the OECD fields DataCite uses) follows. Then describe the study with the HuMeta profile: title and team (with ORCID iDs), research fields and disciplines, design (topic, research questions, study design, unit of analysis, sampling, data collection and analysis methods), people and place (including studies with no participants), sources (texts, archives, images, artworks, media, online content, objects), the field sections (Education: education level, institution type, instructional setting; Social science: kind of data, universe, geographic unit, response rate, weighting, and a link to the study's DDI documentation; Arts and humanities: TaDiRAH research activities, works or objects studied, languages of the sources, editorial or encoding standards), ethics review, consent for participation and for data sharing, identifiability and access, practices for public online data, and Indigenous data governance (CARE). Answers use the profile's controlled vocabularies. Researchers without a DOI are pointed to [KCWorks](https://works.hcommons.org/), the free open-access repository of Knowledge Commons (hosted at Michigan State University), which assigns a DataCite DOI to every public deposit; restricted data go to an archive such as ICPSR. Saving puts the study profile into a **project file** the researcher downloads and keeps; governance fields are researcher-reported and are not approval or sharing determinations.
 2. **Framework and Measures (Module 2):** Theory organizes the module. (1) Choose the framework that guides the study: a theory (e.g., Self-Determination Theory, Social Capital Theory, Framing Theory, Cognitive Load Theory), a theoretical lens (e.g., critical race theory, hermeneutics, material culture studies), your own conceptual framework, or an exploratory/inductive approach. The library of 50 theories and lenses can be browsed by field, kind, and discipline, and searched by name, idea, construct, or author; each shows its constructs and key source before you add it. All theories and lenses are marked **Draft** until experts in each field review them. (2) The framework supplies its constructs, optionally linked to the shared construct list; keep the ones your study addresses and add your own. (3) Give each construct a measure: a library instrument or subscale (shown as candidates with their mapping status; the researcher decides whether one fits, and a governance committee will decide which instruments map to which constructs), researcher-written questions, or codes in a coding scheme for texts, images, media, or interviews. (4) Add standard and demographic variables and the timepoints at which measures are repeated. (5) The framework's expected relationships draw the diagram, which you can edit. (6) Review the generated codebook (shared variable names) and save the **variable plan** to the project file. The framework is also recorded in the study profile. Downloads: codebook (CSV/JSON), variable matrix for Module 5, and the diagram. Researchers can opt in to publish a limited study summary. Module 2's **Recommend** tabs are the place to recommend theories, conceptual models, frameworks, and instruments (with an explicit table of what each part of an instrument measures), or to suggest corrections. Each opens a reviewed pull request that adds a structured file to `suggestions/`, and no GitHub account is needed.
@@ -26,29 +26,39 @@ The modules follow a study from design to sharing. Study metadata uses one stand
 5. **Descriptive & Scale Analytics (Module 5):** Analyze data by construct, using the variable plan from Module 2. Try example data (shaped like your Module 2 plan, or a built-in sample plan if you have none), upload a private dataset (held in memory for the browser session only and never saved), or pick a published dataset. Columns are matched to the plan by their shared variable names (adjustable); without a plan you define scales by hand. For each construct and measure, and each timepoint: descriptives, a scale score (mean or sum), and Cronbach's alpha with a 95% confidence interval, corrected item-total correlations, and alpha if item deleted; codes show how often each is present. Then relationships and comparisons: correlations of scale scores (n, r, 95% CI, p); group comparisons (Welch's t-test and Mann-Whitney U for two groups; ANOVA, Welch's ANOVA, Kruskal-Wallis, and Games-Howell follow-ups for three or more); before-and-after comparisons (paired t-test and Wilcoxon signed-rank, with pre/post pairs suggested from the plan's timepoints); chi-square tests of association with Cramér's V; and linear or logistic regression with confidence intervals (and odds ratios). Each test reports an effect size and a plain-language summary. Statistics are computed with [pingouin](https://pingouin-stats.org/) (Vallat, 2018). Downloads: scale scores, results tables, a PDF report, and an R script (psych and base R) that reproduces the analyses, including McDonald's omega and the tests chosen, on the researcher's own computer. Links point to other free tools (R, psych, lavaan, JASP, jamovi), and researchers can recommend analyses for the module.
 6. **Published Repository Viewer (Module 6):** Browse the published study summaries, the public dataset catalog, and the research measure catalog, and download any of them as CSV.
 
-### HuMeta Library website
+### HuMeta Instrument Library
 
-The instrument library in [`library/`](library/README.md) is also published as a
-static website at **https://jlib271.github.io/HuMeta/**. It has one page per
-instrument, theory or lens, and construct, with the links between them, a
-search page, a reference page for response scales and standard variables, and
-downloads (each record as JSON; lists as CSV). Item text, item images and answer
-keys appear only where an instrument's `access` record allows it, the same rules
-`scripts/validate_library.py` enforces. Module 2 links each instrument and
-theory to its Library page.
+The instrument library has its own repository,
+**[humeta-library](https://github.com/JLib271/humeta-library)**, for instrument
+experts and reviewers: the records, the community recommendations waiting for
+review, the validator, and the
+**[HuMeta Library website](https://jlib271.github.io/humeta-library/)** (one
+page per instrument, theory or lens, and construct, with search and downloads).
+Module 2 links each instrument and theory to its Library page, and its
+**Recommend** tabs send recommendations there as pull requests.
 
-The [Library website workflow](.github/workflows/library-site.yml) validates the
-library, runs `scripts/build_library_site.py`, and publishes the result
-whenever `library/` changes on `main`. It shares the STEMEd+ Commons look (the green menu band, colors and
-font) with the other STEMEd+ sites. That look now lives in its own repository,
-[stemedplus-theme](https://github.com/JLib271/stemedplus-theme); the workflow refreshes
-the copies in `library_site/` from it before each build. To publish it the first time, set
-**Settings → Pages → Source** to **GitHub Actions**. To preview locally:
+The portal reads the library from the files that website publishes
+(`data/library.tar.gz`, described by `data/library.json`): at startup, and then
+at most hourly, it checks for a new version and switches to it once it has
+downloaded and loaded cleanly. If the website can't be reached, the portal keeps
+its last good copy, or the snapshot in `library/`. So a change merged in
+humeta-library reaches the portal once the Library website rebuilds, with no
+change here.
+
+`library/` is that snapshot: a copy of a published library, used by the tests
+and as the fallback. Don't edit it here; refresh it with
 
 ```bash
-python scripts/build_library_site.py          # writes _site/
-python -m http.server -d _site 8000           # open http://localhost:8000
+python scripts/update_library.py           # copy the currently published library
+python scripts/update_library.py --check   # is the snapshot current?
+python scripts/update_library.py --from ../humeta-library   # a local checkout (unpublished changes)
 ```
+
+The site builder in humeta-library uses this repository's `oem/` code (the
+library reader, evidence profiles, and DataCite export), so changes there show up
+on the Library website at its next build. The website used to be at
+`https://jlib271.github.io/HuMeta/`; that address now forwards each page to the
+new one.
 
 When the HuMeta Portal has a public address, set `PORTAL_URL` in
 `oem/vocab.py` so the Library pages link to it.
@@ -71,23 +81,28 @@ repository revision as `openscience.py`.
 
 ---
 
-## 🤖 Community Theory and Variable Suggestions
-Signed-in researchers can submit, from Module 2, a theory and variable map, literature rationale,
-and conceptual relationships as a JSON file in `suggestions/`, on a new branch
-with a pull request to `main`. Maintainers review and merge accepted suggestions;
+## 🤖 Community Recommendations
+Signed-in researchers can recommend, from Module 2, theories and frameworks,
+instruments, corrections, and analyses. Each arrives as a JSON file in
+`suggestions/` of [humeta-library](https://github.com/JLib271/humeta-library), on a
+new branch with a pull request to its `main`. Proposed changes to the HuMeta
+profile itself (Module 1) open as `proposal` issues in
+[humeta-profile](https://github.com/JLib271/humeta-profile). Maintainers review and merge accepted suggestions;
 submissions do not update the app's built-in catalog automatically. Contributors
 must confirm that their submission contains no confidential or identifying
 information. Pull requests are public, so do not include participant information,
 private study details, unpublished results, or other sensitive content.
 
-Configure `GITHUB_PAT` as a fine-grained token limited to this repository, with
-Contents: Read and write and Pull requests: Read and write permissions. The token
+Configure `GITHUB_PAT` as a fine-grained token limited to this repository,
+[humeta-library](https://github.com/JLib271/humeta-library), and
+[humeta-profile](https://github.com/JLib271/humeta-profile), with
+Contents, Pull requests, and Issues: Read and write permissions. The token
 is stored only in the Streamlit app's secrets and is not shown to researchers.
-The app can only write to `suggestions/`, `published/study_summaries/`, and
-`published/datasets/`, and only on new branches. Because the token itself could
-push to `main`, also turn on a branch protection rule (or ruleset) for `main`
-that requires a pull request before merging, so nothing reaches `main` without a
-maintainer's approval.
+The app can only write to `published/study_summaries/` and `published/datasets/`
+here, and to `suggestions/` in humeta-library (recommendations), and only on new
+branches. Because the token itself could push to `main`, also turn on a branch
+protection rule (or ruleset) for `main` in both repositories that requires a pull
+request before merging, so nothing reaches `main` without a maintainer's approval.
 GitHub organization policies may require an administrator to approve the token.
 
 ---
@@ -100,7 +115,8 @@ GitHub organization policies may require an administrator to approve the token.
 | Private datasets | In memory for the current browser session (Module 5) | Only the researcher; discarded on reload or when the session ends |
 | Published study summaries | `published/study_summaries/` in this repo | Everyone, after a maintainer merges the pull request |
 | Published datasets | `published/datasets/` in this repo (CSV + JSON metadata, up to 25 MB) | Everyone, after a maintainer merges the pull request |
-| Theory / variable / analytics suggestions | `suggestions/` in this repo | Everyone, after a maintainer merges the pull request |
+| Theory, instrument, correction, and analysis recommendations | `suggestions/` in humeta-library | Everyone, after a maintainer merges the pull request |
+| HuMeta profile proposals | Issues in humeta-profile | Everyone, as soon as they are submitted |
 | Research measure catalog | `catalogs/measure_catalog.json` | Everyone |
 
 Researchers should keep project files in storage approved for their study
@@ -147,11 +163,16 @@ button label.
 In Streamlit Community Cloud, open the app's **Settings → Secrets** and add:
 
 ```toml
-# Fine-grained GitHub token limited to this repository:
-# Contents: Read and write; Pull requests: Read and write; Issues: Read and write (for the feedback box)
+# Fine-grained GitHub token limited to this repository, JLib271/humeta-library, and JLib271/humeta-profile:
+# Contents: Read and write; Pull requests: Read and write; Issues: Read and write
+# (Issues are for the feedback box here and for profile proposals in humeta-profile)
 GITHUB_PAT = "your-fine-grained-token"
-# Optional; defaults to JLib271/HuMeta
+# Optional; defaults to JLib271/HuMeta (feedback, published summaries and datasets)
 GITHUB_REPO = "JLib271/HuMeta"
+# Optional; defaults to JLib271/humeta-library (recommendations)
+LIBRARY_GITHUB_REPO = "JLib271/humeta-library"
+# Optional; defaults to JLib271/humeta-profile (profile proposals)
+PROFILE_GITHUB_REPO = "JLib271/humeta-profile"
 # Optional: require Google sign-in to send feedback (recommended once the app is public)
 # FEEDBACK_REQUIRES_SIGN_IN = true
 
@@ -207,7 +228,6 @@ Supabase is no longer used: remove `SUPABASE_URL`, `SUPABASE_KEY`, and
    ```bash
    pip install -r requirements-dev.txt
    python -m pytest -v                 # unit tests + opens every app page headlessly
-   python scripts/validate_library.py  # instrument library checks
    ruff check --select F,E9 openscience.py oem tests scripts
    ```
 
@@ -225,13 +245,14 @@ oem/                      Core logic with no Streamlit dependency
   vocab.py                Controlled vocabularies used by the forms
   app/common.py           Streamlit helpers shared by all pages
   app/pages/              One file per module, each with render()
-library/                  Instrument library (CC BY-SA 4.0 content; see library/README.md)
+library/                  Snapshot of the published HuMeta Instrument Library (don't edit here)
+scripts/update_library.py Refresh library/ from the published library
 standard/humeta/          Copy of the pinned humeta-profile release (don't edit here)
 humeta-profile.json       Which humeta-profile release the portal uses
 scripts/update_profile.py Move standard/humeta/ to a humeta-profile release
 tests/                    pytest suite, including an app smoke test
-scripts/validate_library.py   Library validator (also runs in CI)
-published/, suggestions/  Reviewed public records submitted through the app
+scripts/build_library_redirects.py  Forwards the old Library website address
+published/                Reviewed public records submitted through the app
 ```
 
 New logic should go in `oem/` with tests in `tests/`; pages should stay thin and
@@ -262,6 +283,6 @@ The application code is licensed under the **GNU Affero General Public License, 
 
 Copyright (C) 2026 Julie C. Libarkin. Versions released before this change remain available under the MIT License.
 
-The instrument library in `library/` is licensed separately: records are CC BY-SA 4.0, and each instrument's item text carries its own license. See [`library/LICENSE.md`](library/LICENSE.md).
+The instrument library is developed at [JLib271/humeta-library](https://github.com/JLib271/humeta-library) and licensed separately: records are CC BY-SA 4.0, and each instrument's item text carries its own license. See [`library/LICENSE.md`](library/LICENSE.md) (the snapshot keeps that license).
 
 The HuMeta profile itself is developed at [JLib271/humeta-profile](https://github.com/JLib271/humeta-profile) and licensed CC BY-SA 4.0; the copy in `standard/humeta/` keeps that license. The profile reuses third-party classifications and vocabularies, including the ANZSRC 2020 Fields of Research (CC BY 4.0, ABS and Stats NZ), TaDiRAH (CC0), and the DDI Alliance controlled vocabularies (CC BY 4.0). Their sources, licenses, and HuMeta's changes are listed in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).

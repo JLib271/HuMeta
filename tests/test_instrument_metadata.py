@@ -5,8 +5,6 @@
 from __future__ import annotations
 
 import json
-import shutil
-import sys
 from pathlib import Path
 
 import pytest
@@ -16,8 +14,6 @@ from oem import profile as P
 from oem.library import Library
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
-import validate_library  # noqa: E402
 
 
 @pytest.fixture(scope="module")
@@ -41,17 +37,6 @@ def test_library_terms_are_current_humeta_terms(lib, p):
         assert s.get("education_level") or s.get("participants"), e["id"]
         for term in s.get("participants", []):
             assert term in p.active_ids("participant_role")
-
-
-def test_validator_rejects_library_only_and_deprecated_terms(tmp_path):
-    root = tmp_path / "library"
-    shutil.copytree(ROOT / "library", root)
-    path = root / "instruments" / "gci.json"
-    rec = json.loads(path.read_text(encoding="utf-8"))
-    rec["disciplines"] = ["geoscience"]          # deprecated
-    rec["education_levels"] = ["undergraduate"]  # the library's old term
-    path.write_text(json.dumps(rec), encoding="utf-8")
-    assert validate_library.main(root) == 1
 
 
 def test_every_type_has_a_data_collection_method(p):

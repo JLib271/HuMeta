@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## 1.0.0-draft.2 (2026-11-13)
+
+* **The instrument library has its own repository.** The construct and
+  framework vocabularies are now at
+  https://github.com/JLib271/humeta-library: construct terms are
+  `https://github.com/JLib271/humeta-library/blob/main/constructs.json#<id>`
+  and framework terms `.../frameworks.json#<id>` (DataCite `schemeUri` and
+  `valueUri`, DDI `vocabURI`). Links to an instrument's Library page use the
+  website's new address, https://jlib271.github.io/humeta-library/ (the old
+  address forwards). Codes are unchanged.
+
 * **STEMEd+ disciplines, list version 5:** Human Dimensions no longer matches
   non-environmental uses such as "Human Dimensions of Organizations".
 * **STEMEd+ disciplines, list version 4:** new **Human Dimensions** discipline

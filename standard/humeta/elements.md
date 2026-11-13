@@ -2,7 +2,7 @@
 
 *HuMeta: The Social Science, Humanities, and Education Study Metadata Profile*
 
-Version 1.0.0-draft.1 (draft). Generated from `profile.json` and `vocabularies.json` by `scripts/build_profile_artifacts.py`; do not edit by hand.
+Version 1.0.0-draft.2 (draft). Generated from `profile.json` and `vocabularies.json` by `scripts/build_profile_artifacts.py`; do not edit by hand.
 
 Obligations: **M** = Mandatory: every record must have it.; **MA** = Mandatory if applicable: required when the stated condition holds.; **R** = Recommended.; **O** = Optional.
 
@@ -39,7 +39,7 @@ Elements for any study in the social sciences, humanities, or education.
 | <a id="study.design.framework_description"></a>`study.design.framework_description` | O | 0..1 | How the framework guides the study, or a description of the researcher's own framework or lens. | `HuMeta`, `≈DataCite: description (Methods)` | descriptions (descriptionType Methods) |
 | <a id="study.design.unit_of_analysis"></a>`study.design.unit_of_analysis` | O | 0..n | The unit(s) the analysis is about: people, groups, places, texts, images, objects, and so on. Vocabulary: [unit_of_analysis](#unit_of_analysis). | `HuMeta`, `DDI CV: AnalysisUnit 2.1.3`, `DDI-C: anlyUnit`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Units of Analysis') |
 | <a id="study.design.sampling_procedure"></a>`study.design.sampling_procedure` | O | 0..n | How cases (people, texts, objects, sites) were selected. Vocabulary: [sampling_procedure](#sampling_procedure). | `HuMeta`, `DDI CV: SamplingProcedure 2.0.2`, `DDI-C: sampProc`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Sampling Procedures'); descriptions (Methods) |
-| <a id="study.constructs"></a>`study.constructs` | MA | 0..n | Constructs measured, from the HuMeta construct vocabulary (library/constructs.json), optionally with the instrument, version and subscale used. *Mandatory when resource_type is Dataset or Instrument.* | `HuMeta`, `≈ERIC: descriptors`, `≈schema.org: variableMeasured`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Constructs', valueURI per construct); for datasets, relatedIdentifiers to the instrument's library record (URL, relationType IsCollectedBy) and its publication (DOI, relationType References); ERIC descriptors as additional subjects |
+| <a id="study.constructs"></a>`study.constructs` | MA | 0..n | Constructs measured, from the HuMeta construct vocabulary (constructs.json in the HuMeta Instrument Library), optionally with the instrument, version and subscale used. *Mandatory when resource_type is Dataset or Instrument.* | `HuMeta`, `≈ERIC: descriptors`, `≈schema.org: variableMeasured`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Constructs', valueURI per construct); for datasets, relatedIdentifiers to the instrument's library record (URL, relationType IsCollectedBy) and its publication (DOI, relationType References); ERIC descriptors as additional subjects |
 | <a id="study.discipline"></a>`study.discipline` | R | 0..n | Discipline(s) or subject area(s) the study is about; for education studies, also the subject taught or learned. Chosen from the ANZSRC 2020 Fields of Research (divisions and groups). Vocabulary: [discipline](#discipline). | `ANZSRC FoR: Fields of Research 2020 (divisions and groups)`, `≈OECD FOS: subcategory (per term)`, `≈ERIC: descriptors`, `≈DC: subject`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'ANZSRC Fields of Research', valueURI and classificationCode per term), plus the corresponding OECD Fields of Science subject (subjectScheme 'Fields of Science and Technology (FOS)') |
 | <a id="study.population.human_participants"></a>`study.population.human_participants` | M | 1 | Whether people take part in the study directly, are its subject only indirectly (records, public posts), or are not involved (texts, artworks, objects only). Vocabulary: [human_participants](#human_participants). | `HuMeta`, `~Common Rule: "human subject" definition` | descriptions (Methods) |
 | <a id="study.population.participant_roles"></a>`study.population.participant_roles` | MA | 0..n | Who the participants, or the people the data are about, are. *Mandatory when human participants is direct or indirect.* Vocabulary: [participant_role](#participant_role). | `HuMeta`, `≈DataCite: subject (scheme)` | subjects (subjectScheme 'HuMeta Participant Roles') |
@@ -887,7 +887,7 @@ Research activities from TaDiRAH 2.0.3, the Taxonomy of Digital Research Activit
 
 ### <a id="constructs"></a>Constructs
 
-Defined in [`library/constructs.json`](https://github.com/JLib271/HuMeta/blob/main/library/constructs.json).
+Defined in the HuMeta Instrument Library's [`constructs.json`](https://github.com/JLib271/humeta-library/blob/main/constructs.json).
 
 | Code | Label | Definition | ERIC descriptors |
 |---|---|---|---|
