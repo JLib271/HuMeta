@@ -63,6 +63,13 @@ new one.
 The portal runs at https://humeta.streamlit.app/ (`PORTAL_URL` in
 `oem/vocab.py`); the Library pages link to it.
 
+The portal's [privacy policy](PRIVACY.md) and [terms of service](TERMS.md) are
+published at https://jlib271.github.io/HuMeta/privacy/ and
+https://jlib271.github.io/HuMeta/terms/ (built by
+`scripts/build_library_redirects.py`), and linked from the sidebar and from
+the Google sign-in screen. Update them when what the portal collects or
+publishes changes.
+
 ### Research measure catalog
 
 Module 2 reads the versioned JSON catalog at
