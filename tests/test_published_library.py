@@ -142,3 +142,12 @@ def test_old_website_address_forwards_every_page(tmp_path):
     page = (tmp_path / "instruments" / "gci" / "index.html").read_text(encoding="utf-8")
     assert 'href="https://jlib271.github.io/humeta-library/instruments/gci/"' in page
     assert "jlib271.github.io/humeta-library/" in (tmp_path / "404.html").read_text(encoding="utf-8")
+
+
+def test_policy_pages_are_published(tmp_path):
+    redirects = _script("build_library_redirects")
+    redirects.build(tmp_path)
+    privacy = (tmp_path / "privacy" / "index.html").read_text(encoding="utf-8")
+    terms = (tmp_path / "terms" / "index.html").read_text(encoding="utf-8")
+    assert "<h1>HuMeta Portal privacy policy</h1>" in privacy and "<table>" in privacy
+    assert "<h1>HuMeta Portal terms of service</h1>" in terms

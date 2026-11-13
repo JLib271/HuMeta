@@ -1,8 +1,9 @@
-name: Old Library website address
+name: HuMeta pages (policies and old Library address)
 
-# The HuMeta Library website moved to https://jlib271.github.io/humeta-library/ (built in
-# JLib271/humeta-library). This keeps its old address, https://jlib271.github.io/HuMeta/, working:
-# every page forwards to the same page at the new address.
+# Publishes https://jlib271.github.io/HuMeta/: the HuMeta Portal's privacy policy (privacy/) and terms
+# of service (terms/), from PRIVACY.md and TERMS.md, and forwarding for the HuMeta Library website's
+# old address. The Library moved to https://jlib271.github.io/humeta-library/ (built in
+# JLib271/humeta-library); every old page forwards to the same page there.
 
 on:
   push:
@@ -10,6 +11,8 @@ on:
     paths:
       - "library/**"
       - "scripts/build_library_redirects.py"
+      - "PRIVACY.md"
+      - "TERMS.md"
       - "oem/vocab.py"
       - ".github/workflows/library-site.yml"
   workflow_dispatch:
@@ -31,7 +34,8 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-      - name: Build the forwarding pages
+      - run: pip install markdown
+      - name: Build the policy and forwarding pages
         run: python scripts/build_library_redirects.py --out _site
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5

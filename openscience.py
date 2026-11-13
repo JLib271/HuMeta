@@ -107,6 +107,8 @@ with st.sidebar:
         )
         if st.button("Sign in with Google", use_container_width=True, type="primary"):
             st.login()
+    st.caption("[Privacy policy](https://jlib271.github.io/HuMeta/privacy/) · "
+               "[Terms of service](https://jlib271.github.io/HuMeta/terms/)")
 
     st.divider()
     st.caption("💬 Trying the app? Use **Send feedback about this page** at the bottom of any page. "
