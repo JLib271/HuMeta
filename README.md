@@ -60,8 +60,8 @@ on the Library website at its next build. The website used to be at
 `https://jlib271.github.io/HuMeta/`; that address now forwards each page to the
 new one.
 
-When the HuMeta Portal has a public address, set `PORTAL_URL` in
-`oem/vocab.py` so the Library pages link to it.
+The portal runs at https://humeta.streamlit.app/ (`PORTAL_URL` in
+`oem/vocab.py`); the Library pages link to it.
 
 ### Research measure catalog
 

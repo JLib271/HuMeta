@@ -21,8 +21,8 @@ DEFAULT_LIBRARY_REPO = "JLib271/humeta-library"
 DEFAULT_PROFILE_REPO = "JLib271/humeta-profile"
 #: The HuMeta Library website, built by humeta-library's scripts/build_site.py
 LIBRARY_SITE_URL = "https://jlib271.github.io/humeta-library/"
-#: The deployed HuMeta Portal (Streamlit) app; leave empty until it has an address
-PORTAL_URL = ""
+#: The deployed HuMeta Portal (Streamlit) app; the Library website links to it
+PORTAL_URL = "https://humeta.streamlit.app/"
 
 
 def library_page_url(kind: str, record_id: str) -> str:
