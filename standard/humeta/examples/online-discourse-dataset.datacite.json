@@ -66,68 +66,68 @@
     {
       "subject": "Authors of online content (e.g., social media users)",
       "subjectScheme": "HuMeta Participant Roles",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#participant_role.online_authors"
+      "schemeUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#participant_role.online_authors"
     },
     {
       "subject": "Qualitative",
       "subjectScheme": "HuMeta Study Designs",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#study_design.qualitative"
+      "schemeUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#study_design.qualitative"
     },
     {
       "subject": "Time series",
       "subjectScheme": "HuMeta Study Designs",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#study_design.time_series"
+      "schemeUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#study_design.time_series"
     },
     {
       "subject": "Text (e.g., document, book, post, transcript)",
       "subjectScheme": "HuMeta Units of Analysis",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#unit_of_analysis.text"
+      "schemeUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#unit_of_analysis.text"
     },
     {
       "subject": "Non-probability: purposive / criterion-based",
       "subjectScheme": "HuMeta Sampling Procedures",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#sampling_procedure.purposive"
+      "schemeUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#sampling_procedure.purposive"
     },
     {
       "subject": "Web or platform data collection (API, scraping, data donation)",
       "subjectScheme": "HuMeta Data Collection Methods",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#data_collection_method.web_platform_data"
+      "schemeUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#data_collection_method.web_platform_data"
     },
     {
       "subject": "Assembling a corpus of texts, images, or media (e.g., published works, news)",
       "subjectScheme": "HuMeta Data Collection Methods",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#data_collection_method.corpus_collection"
+      "schemeUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#data_collection_method.corpus_collection"
     },
     {
       "subject": "Discourse or conversation analysis",
       "subjectScheme": "HuMeta Analysis Methods",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#analysis_method.discourse_analysis"
+      "schemeUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#analysis_method.discourse_analysis"
     },
     {
       "subject": "Content analysis",
       "subjectScheme": "HuMeta Analysis Methods",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#analysis_method.content_analysis"
+      "schemeUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#analysis_method.content_analysis"
     },
     {
       "subject": "Computational text or media analysis (e.g., text mining, NLP, image recognition)",
       "subjectScheme": "HuMeta Analysis Methods",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#analysis_method.computational"
+      "schemeUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#analysis_method.computational"
     },
     {
       "subject": "Social media and online platform content",
       "subjectScheme": "HuMeta Source Types",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#source_type.social_media"
+      "schemeUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#source_type.social_media"
     },
     {
       "subject": "Capturing: Gathering",

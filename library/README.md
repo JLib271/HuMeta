@@ -30,7 +30,7 @@ scripts/validate_library.py    run before opening a PR
 ## Speaking HuMeta
 
 The library describes instruments and evidence samples with the HuMeta
-standard's own vocabularies (`standard/humeta/vocabularies.json`), so an
+standard's own vocabularies ([`vocabularies.json`](https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json), copied in `standard/humeta/`), so an
 instrument and a study described with HuMeta use the same words:
 
 | Library field | HuMeta vocabulary |

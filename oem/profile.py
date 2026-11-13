@@ -36,7 +36,7 @@ ROOT = Path(__file__).resolve().parent.parent
 PROFILE_DIR = ROOT / "standard" / "humeta"
 CONSTRUCTS_URI = "https://github.com/JLib271/HuMeta/blob/main/library/constructs.json#"
 FRAMEWORKS_URI = "https://github.com/JLib271/HuMeta/blob/main/library/frameworks.json#"
-VOCAB_URI = "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#"
+VOCAB_URI = "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#"
 DATACITE_NS = "http://datacite.org/schema/kernel-4"
 DATACITE_XSD = "http://schema.datacite.org/meta/kernel-4.7/metadata.xsd"
 ERIC_SCHEME = "ERIC Thesaurus"
@@ -236,7 +236,7 @@ def json_schema(profile: Profile | None = None) -> dict:
         root[module]["description"] = f"{label} module. Null or absent when the record does not use it."
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "$id": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/schema/humeta-record.schema.json",
+        "$id": "https://github.com/JLib271/humeta-profile/blob/main/schema/humeta-record.schema.json",
         "title": f"HuMeta profile record ({p.version})",
         "description": "Generated from standard/humeta/profile.json and vocabularies.json by scripts/build_profile_artifacts.py. Do not edit by hand.",
         "type": "object",

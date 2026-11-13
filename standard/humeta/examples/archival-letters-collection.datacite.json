@@ -59,62 +59,62 @@
     {
       "subject": "Historical study",
       "subjectScheme": "HuMeta Study Designs",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#study_design.historical"
+      "schemeUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#study_design.historical"
     },
     {
       "subject": "Text (e.g., document, book, post, transcript)",
       "subjectScheme": "HuMeta Units of Analysis",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#unit_of_analysis.text"
+      "schemeUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#unit_of_analysis.text"
     },
     {
       "subject": "Still image (e.g., photograph, artwork)",
       "subjectScheme": "HuMeta Units of Analysis",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#unit_of_analysis.still_image"
+      "schemeUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#unit_of_analysis.still_image"
     },
     {
       "subject": "Archival research (finding and selecting records in archives or collections)",
       "subjectScheme": "HuMeta Data Collection Methods",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#data_collection_method.archival_research"
+      "schemeUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#data_collection_method.archival_research"
     },
     {
       "subject": "Historical analysis or source criticism",
       "subjectScheme": "HuMeta Analysis Methods",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#analysis_method.historical_analysis"
+      "schemeUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#analysis_method.historical_analysis"
     },
     {
       "subject": "Close reading or textual analysis",
       "subjectScheme": "HuMeta Analysis Methods",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#analysis_method.close_reading"
+      "schemeUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#analysis_method.close_reading"
     },
     {
       "subject": "Visual or image analysis (e.g., photographs, artworks, film)",
       "subjectScheme": "HuMeta Analysis Methods",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#analysis_method.visual_analysis"
+      "schemeUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#analysis_method.visual_analysis"
     },
     {
       "subject": "Archival or historical records",
       "subjectScheme": "HuMeta Source Types",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#source_type.archival_records"
+      "schemeUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#source_type.archival_records"
     },
     {
       "subject": "Private correspondence and personal papers",
       "subjectScheme": "HuMeta Source Types",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#source_type.correspondence"
+      "schemeUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#source_type.correspondence"
     },
     {
       "subject": "Artworks (including participant or student artwork)",
       "subjectScheme": "HuMeta Source Types",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/vocabularies.json#source_type.artworks"
+      "schemeUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json",
+      "valueUri": "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#source_type.artworks"
     },
     {
       "subject": "Capturing: Transcribing",

@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use the HuMeta profile, please cite it as below."
+title: "HuMeta: The Social Science, Humanities, and Education Study Metadata Profile"
+type: dataset
+version: "1.0.0-draft.1"
+authors:
+  - family-names: Libarkin
+    given-names: Julie C.
+    affiliation: Michigan State University
+  - name: "HuMeta contributors"
+repository: "https://github.com/JLib271/humeta-profile"
+license: CC-BY-SA-4.0
+keywords:
+  - metadata standard
+  - metadata profile
+  - education research
+  - social science research
+  - humanities research
+  - DataCite
+  - DDI
+  - CARE principles

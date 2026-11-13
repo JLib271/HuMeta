@@ -6,7 +6,7 @@
   "profile_version": "1.0.0-draft.1",
   "status": "draft",
   "namespace": "humeta",
-  "namespace_uri": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/elements.md#",
+  "namespace_uri": "https://github.com/JLib271/humeta-profile/blob/main/elements.md#",
   "datacite_schema": "4.7",
   "obligations": {
     "M": "Mandatory: every record must have it.",
@@ -18,7 +18,7 @@
     "humeta": {
       "short": "HuMeta",
       "name": "HuMeta profile (element or vocabulary defined by this profile)",
-      "url": "https://github.com/JLib271/HuMeta/blob/main/standard/humeta/README.md"
+      "url": "https://github.com/JLib271/humeta-profile/blob/main/README.md"
     },
     "datacite": {
       "short": "DataCite",

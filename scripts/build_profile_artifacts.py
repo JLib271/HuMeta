@@ -10,9 +10,14 @@ Generated (don't edit): schema/humeta-record.schema.json, elements.md,
                         crosswalks/alignments.csv, crosswalks/ddi.csv,
                         examples/*.datacite.json, examples/*.datacite.xml
 
+The profile's source of truth is its own repository, https://github.com/JLib271/humeta-profile;
+standard/humeta/ here is a copy of a released version (see scripts/update_profile.py). To regenerate
+the derived files in a checkout of humeta-profile, pass --profile-dir.
+
 Usage:
-    python scripts/build_profile_artifacts.py          # write files
-    python scripts/build_profile_artifacts.py --check  # fail if any are out of date (CI)
+    python scripts/build_profile_artifacts.py                               # write files in standard/humeta/
+    python scripts/build_profile_artifacts.py --check                       # fail if any are out of date (CI)
+    python scripts/build_profile_artifacts.py --profile-dir ../humeta-profile [--check]
 """
 from __future__ import annotations
 
@@ -37,18 +42,18 @@ def csv_text(rows: list[list[str]]) -> str:
     return buffer.getvalue()
 
 
-def build() -> dict[Path, str]:
-    p = profile.load()
+def build(base: Path = BASE) -> dict[Path, str]:
+    p = profile.load(str(base))
     lib = Library.load()
     verified = p.verified_eric()
     files: dict[Path, str] = {}
 
-    files[BASE / "schema" / "humeta-record.schema.json"] = json.dumps(profile.json_schema(p), indent=2, ensure_ascii=False) + "\n"
+    files[base / "schema" / "humeta-record.schema.json"] = json.dumps(profile.json_schema(p), indent=2, ensure_ascii=False) + "\n"
 
     rows = [["element", "module", "label", "obligation", "cardinality", "vocabulary", "datacite_4_7"]]
     for e in p.definition["elements"]:
         rows.append([e["id"], e["module"], e["label"], e["obligation"], e["cardinality"], e.get("vocabulary", ""), e["datacite"]])
-    files[BASE / "crosswalks" / "datacite-4.7.csv"] = csv_text(rows)
+    files[base / "crosswalks" / "datacite-4.7.csv"] = csv_text(rows)
 
     standards = p.definition["standards"]
     rows = [["element", "module", "label", "standard", "standard_name", "term", "match", "status", "note", "standard_url"]]
@@ -57,7 +62,7 @@ def build() -> dict[Path, str]:
             std = standards[a["standard"]]
             rows.append([e["id"], e["module"], e["label"], std["short"], std["name"], a["term"], a["match"],
                          a.get("status", ""), a.get("note", ""), std["url"]])
-    files[BASE / "crosswalks" / "alignments.csv"] = csv_text(rows)
+    files[base / "crosswalks" / "alignments.csv"] = csv_text(rows)
 
     rows = [["vocabulary", "term_id", "term_label", "ddi_vocabulary", "ddi_code", "ddi_match", "oecd_fos", "isced", "rights_statement"]]
     for vocab_id, vocab in p.vocabularies.items():
@@ -66,7 +71,7 @@ def build() -> dict[Path, str]:
             if ddi or t.get("fos") or t.get("isced") or t.get("rs"):
                 rows.append([vocab_id, t["id"], t["label"], ddi.get("cv", ""), ddi.get("code", ""), ddi.get("match", ""),
                              t.get("fos", ""), t.get("isced", ""), t.get("rs", "")])
-    files[BASE / "crosswalks" / "ddi.csv"] = csv_text(rows)
+    files[base / "crosswalks" / "ddi.csv"] = csv_text(rows)
 
     rows = [["vocabulary", "term_id", "term_label", "eric_descriptor", "eric_status"]]
     for c in lib.constructs.values():
@@ -76,7 +81,7 @@ def build() -> dict[Path, str]:
         for t in vocab["terms"]:
             for d in t.get("eric", []):
                 rows.append([vocab_id, t["id"], t["label"], d, "verified" if d in verified else "unverified"])
-    files[BASE / "crosswalks" / "eric.csv"] = csv_text(rows)
+    files[base / "crosswalks" / "eric.csv"] = csv_text(rows)
 
     lines = [
         f"# {p.definition['title']}: elements and vocabularies",
@@ -125,14 +130,14 @@ def build() -> dict[Path, str]:
             lines.append(f"| `{t['id']}` | {t['label']} | {eric} |")
         lines.append("")
     lines += ["### <a id=\"constructs\"></a>Constructs", "",
-              "Defined in [`library/constructs.json`](../../library/constructs.json).", "",
+              "Defined in [`library/constructs.json`](https://github.com/JLib271/HuMeta/blob/main/library/constructs.json).", "",
               "| Code | Label | Definition | ERIC descriptors |", "|---|---|---|---|"]
     for c in lib.constructs.values():
         eric = ", ".join(d + ("" if d in verified else " (unverified)") for d in c.get("eric", []))
         lines.append(f"| `{c['id']}` | {c['label']} | {c['definition']} | {eric} |")
-    files[BASE / "elements.md"] = "\n".join(lines) + "\n"
+    files[base / "elements.md"] = "\n".join(lines) + "\n"
 
-    for example in sorted((BASE / "examples").glob("*.json")):
+    for example in sorted((base / "examples").glob("*.json")):
         if example.name.endswith(".datacite.json"):
             continue
         record = json.loads(example.read_text(encoding="utf-8"))
@@ -145,11 +150,14 @@ def build() -> dict[Path, str]:
 
 def main() -> int:
     check = "--check" in sys.argv
+    base = BASE
+    if "--profile-dir" in sys.argv:
+        base = Path(sys.argv[sys.argv.index("--profile-dir") + 1]).resolve()
     stale = []
-    for path, content in build().items():
+    for path, content in build(base).items():
         current = path.read_text(encoding="utf-8") if path.exists() else None
         if current != content:
-            stale.append(path.relative_to(ROOT))
+            stale.append(path.relative_to(base))
             if not check:
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_text(content, encoding="utf-8")
