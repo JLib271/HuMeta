@@ -1,0 +1,15 @@
+{
+  "format": "humeta-library-archive",
+  "archive": "library.tar.gz",
+  "sha256": "bd35e4384287ddfdbd38db22e2f7658c7853d87920af90c8faea98f936110954",
+  "files": 97,
+  "built": "2026-11-13",
+  "commit": "",
+  "source": "https://github.com/JLib271/humeta-library",
+  "counts": {
+    "instruments": 6,
+    "constructs": 32,
+    "frameworks": 52,
+    "evidence": 29
+  }
+}

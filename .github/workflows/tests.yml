@@ -35,8 +35,6 @@ jobs:
         run: ruff check --select F,E9 openscience.py oem tests scripts
       - name: Unit tests and app smoke test (opens every page)
         run: python -m pytest -v
-      - name: Validate instrument library
-        run: python scripts/validate_library.py
       - name: standard/humeta/ matches the pinned humeta-profile release
         run: python scripts/update_profile.py --check
       - name: HuMeta profile artifacts are up to date

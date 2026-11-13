@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/JLib271/HuMeta/library/schema/items.schema.json",
+  "$id": "https://github.com/JLib271/humeta-library/blob/main/schema/items.schema.json",
   "title": "Item file",
   "description": "The items in one version of one instrument. Serves two purposes: a crosswalk that links items across versions (always allowed, no text needed), and item text (only when the instrument's access.item_text_shareable is true). Answer keys are only allowed when access.answer_key_shareable is true.",
   "type": "object",
@@ -183,7 +183,7 @@
           },
           "scale_id": {
             "type": "string",
-            "description": "Shared response scale from library/scales.json (for Likert-type items)."
+            "description": "Shared response scale from scales.json (for Likert-type items)."
           }
         }
       }

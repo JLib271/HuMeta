@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/JLib271/HuMeta/library/schema/instrument.schema.json",
+  "$id": "https://github.com/JLib271/humeta-library/blob/main/schema/instrument.schema.json",
   "title": "Instrument record",
   "description": "One measurement instrument (survey, concept inventory, observation protocol, rubric, ...). Describes the instrument; never stores item text unless access.item_text_shareable is true.",
   "type": "object",
@@ -54,7 +54,7 @@
       "items": {
         "type": "string"
       },
-      "description": "Who the instrument gathers data about, from the HuMeta participant_role vocabulary (standard/humeta/vocabularies.json), e.g. students, educators, community_members. For an observation protocol, the people observed."
+      "description": "Who the instrument gathers data about, from the HuMeta participant_role vocabulary (the HuMeta profile's vocabularies.json), e.g. students, educators, community_members. For an observation protocol, the people observed."
     },
     "description": {
       "type": "string",
@@ -68,7 +68,7 @@
       "items": {
         "type": "string"
       },
-      "description": "Constructs from library/constructs.json measured by the instrument as a whole."
+      "description": "Constructs from constructs.json measured by the instrument as a whole."
     },
     "construct_mapping": {
       "type": "object",
@@ -273,7 +273,7 @@
           "items": {
             "type": "string"
           },
-          "description": "Theories or frameworks in library/frameworks.json the instrument was built on."
+          "description": "Theories or frameworks in frameworks.json the instrument was built on."
         },
         "theory_named": {
           "type": "string",

@@ -550,8 +550,10 @@ def _share(lib, plan: dict, book, publish_disabled: bool, publish_hint: str | No
 # -------------------------------------------------------- recommendations
 def _submission_notice() -> None:
     public_submission_warning()
-    st.caption("Your name from sign-in appears on the submission. Recommendations land in the project's "
-               "`suggestions/` folder, and a maintainer checks the source before adding anything to the library.")
+    st.caption("Your name from sign-in appears on the submission. Theory, instrument, and correction recommendations "
+               "open as pull requests in the [HuMeta Instrument Library](https://github.com/JLib271/humeta-library), "
+               "and analysis recommendations in the [portal's repository](https://github.com/JLib271/HuMeta). A "
+               "maintainer checks the source before adding anything.")
 
 
 def _send(rec: dict, issues: list[str]) -> None:

@@ -3,7 +3,7 @@
   "title": "HuMeta",
   "full_title": "HuMeta: The Social Science, Humanities, and Education Study Metadata Profile",
   "short_name": "HuMeta",
-  "profile_version": "1.0.0-draft.1",
+  "profile_version": "1.0.0-draft.2",
   "status": "draft",
   "namespace": "humeta",
   "namespace_uri": "https://github.com/JLib271/humeta-profile/blob/main/elements.md#",
@@ -839,8 +839,8 @@
       "cardinality": "0..n",
       "type": "construct",
       "condition": "Mandatory when resource_type is Dataset or Instrument.",
-      "definition": "Constructs measured, from the HuMeta construct vocabulary (library/constructs.json), optionally with the instrument, version and subscale used.",
-      "vocabulary_file": "library/constructs.json",
+      "definition": "Constructs measured, from the HuMeta construct vocabulary (constructs.json in the HuMeta Instrument Library), optionally with the instrument, version and subscale used.",
+      "vocabulary_file": "https://github.com/JLib271/humeta-library/blob/main/constructs.json",
       "datacite": "subjects (subjectScheme 'HuMeta Constructs', valueURI per construct); for datasets, relatedIdentifiers to the instrument's library record (URL, relationType IsCollectedBy) and its publication (DOI, relationType References); ERIC descriptors as additional subjects",
       "alignments": [
         {

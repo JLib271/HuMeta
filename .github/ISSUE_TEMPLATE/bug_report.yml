@@ -17,7 +17,6 @@ body:
         - "Module 4: Community Data Repository"
         - "Module 5: Analytics"
         - "Module 6: Published Repository Viewer"
-        - Instrument library (library/)
         - Other
     validations:
       required: true

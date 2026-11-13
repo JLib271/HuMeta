@@ -34,8 +34,8 @@ from oem.vocab import library_page_url
 
 ROOT = Path(__file__).resolve().parent.parent
 PROFILE_DIR = ROOT / "standard" / "humeta"
-CONSTRUCTS_URI = "https://github.com/JLib271/HuMeta/blob/main/library/constructs.json#"
-FRAMEWORKS_URI = "https://github.com/JLib271/HuMeta/blob/main/library/frameworks.json#"
+CONSTRUCTS_URI = "https://github.com/JLib271/humeta-library/blob/main/constructs.json#"
+FRAMEWORKS_URI = "https://github.com/JLib271/humeta-library/blob/main/frameworks.json#"
 VOCAB_URI = "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#"
 DATACITE_NS = "http://datacite.org/schema/kernel-4"
 DATACITE_XSD = "http://schema.datacite.org/meta/kernel-4.7/metadata.xsd"

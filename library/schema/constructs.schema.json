@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/JLib271/HuMeta/library/schema/constructs.schema.json",
+  "$id": "https://github.com/JLib271/humeta-library/blob/main/schema/constructs.schema.json",
   "title": "Construct vocabulary",
   "type": "object",
   "additionalProperties": false,
@@ -73,7 +73,7 @@
             "items": {
               "type": "string"
             },
-            "description": "ERIC Thesaurus descriptors for the construct (see standard/humeta/crosswalks/eric_descriptor_status.json)."
+            "description": "ERIC Thesaurus descriptors for the construct (see the HuMeta profile's crosswalks/eric_descriptor_status.json)."
           }
         }
       }

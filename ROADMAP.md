@@ -7,7 +7,8 @@ their data with common names and metadata, and sharing data responsibly.
 ## Foundation (done)
 
 - Instrument library with constructs, versions, evidence, item crosswalks, and
-  licensed item text (`library/`)
+  licensed item text, now in its own repository,
+  [humeta-library](https://github.com/JLib271/humeta-library), which the portal reads from its website
 - Shared response scales, standard variables (including the 2024 federal
   race/ethnicity standard), and variable-naming rules (`oem/naming.py`)
 - Codebook builder with CSV/JSON export (`oem/codebook.py`)
@@ -57,11 +58,10 @@ their data with common names and metadata, and sharing data responsibly.
 
 ## Good first issues
 
-- Add the MSLQ items (public domain) and COPUS codes (CC BY-NC-SA 3.0) to
-  `library/items/` from their source documents
-- Resolve `needs_check` items in a library record by checking the cited source
+Library contributions (adding items, resolving `needs_check`, response scales) now live in
+[humeta-library](https://github.com/JLib271/humeta-library).
+
 - Propose a standard `gender` variable (needs community discussion; there is
   no settled federal standard to follow)
-- Add response scales used by instruments in your field to `library/scales.json`
 - Add type hints and docstrings to helpers in `oem/app/common.py`
 - Improve accessibility of form labels and help text in a page

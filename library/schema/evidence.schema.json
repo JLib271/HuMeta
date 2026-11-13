@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/JLib271/HuMeta/library/schema/evidence.schema.json",
+  "$id": "https://github.com/JLib271/humeta-library/blob/main/schema/evidence.schema.json",
   "title": "Evidence record",
   "description": "One piece of reliability or validity evidence for one instrument version (and optionally one dimension) in one sample. Published and platform-derived evidence use the same format.",
   "type": "object",
@@ -278,7 +278,7 @@
     },
     "rubric": {
       "type": "array",
-      "description": "Rubric criteria (library/evidence_rubric.json) this evidence supports, beyond those inferred from evidence_type and statistic.",
+      "description": "Rubric criteria (evidence_rubric.json) this evidence supports, beyond those inferred from evidence_type and statistic.",
       "items": {
         "type": "object",
         "additionalProperties": false,

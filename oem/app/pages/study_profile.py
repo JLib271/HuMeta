@@ -13,7 +13,7 @@ import json
 import streamlit as st
 
 from oem import profile
-from oem.app.common import automate_github_pull_request, navigate_to_module, public_submission_warning, render_project_download
+from oem.app.common import navigate_to_module, open_profile_proposal, public_submission_warning, render_project_download
 from oem.app.profile_form import SPEC_URL, current_record, record_form, store_record
 
 CONSTRUCT_RULES = {"R1"}  # constructs are completed in Module 3
@@ -72,8 +72,9 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
 
     st.markdown("---")
     st.markdown("### Propose a change to the HuMeta profile")
-    st.caption("Suggest a new element, a vocabulary term, or a clearer definition. Proposals are reviewed publicly "
-               "(see GOVERNANCE.md); do not include confidential study details.")
+    st.caption("Suggest a new element, a vocabulary term, or a clearer definition. Your proposal opens as an issue "
+               "in the [HuMeta profile's repository](https://github.com/JLib271/humeta-profile), where it stays open "
+               "for comment for at least 14 days; do not include confidential study details.")
     with st.expander("Draft a proposal"):
         public_submission_warning()
         target = st.text_input("Element or vocabulary", placeholder="e.g., learning_environment: add 'makerspace'",
@@ -86,14 +87,8 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
                 f"### Proposed change and rationale\n```text\n{details}\n```\n\n"
                 "---\n*Submitted from HuMeta Portal Module 1.*"
             )
-            if st.button("Submit proposal as a pull request", key="module1_proposal_submit",
+            if st.button("Submit proposal", key="module1_proposal_submit",
                          disabled=publish_disabled, help=publish_hint):
-                with st.spinner("Opening a pull request for review..."):
-                    safe_name = "".join(ch if ch.isalnum() else "_" for ch in target.lower())[:60]
-                    result = automate_github_pull_request(
-                        suggestion_type="Metadata",
-                        file_name=f"humeta_profile_proposal_{safe_name}.txt",
-                        file_content=payload,
-                        title_summary=f"HuMeta profile proposal: {target}",
-                    )
+                with st.spinner("Opening the proposal for comment..."):
+                    result = open_profile_proposal(f"Proposal: {target}", payload)
                 (st.error if "❌" in result else st.success)(result)

@@ -12,7 +12,8 @@ here.
 
 * **Used in:** the `discipline` vocabulary in
   `standard/humeta/vocabularies.json` (23 divisions and 213 groups), and the
-  `disciplines` tags in `library/frameworks.json`.
+  `disciplines` tags in the HuMeta Instrument Library's `frameworks.json`
+  (https://github.com/JLib271/humeta-library; snapshot in `library/`).
 * **Source:** Australian and New Zealand Standard Research Classification
   (ANZSRC) 2020, Fields of Research. Australian Bureau of Statistics (ABS) and
   Stats NZ. Codes and labels taken from the code set published by the New

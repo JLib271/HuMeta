@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/JLib271/HuMeta/library/schema/frameworks.schema.json",
+  "$id": "https://github.com/JLib271/humeta-library/blob/main/schema/frameworks.schema.json",
   "title": "Frameworks: theories, theoretical lenses, and framework approaches",
   "type": "object",
   "additionalProperties": false,
@@ -110,7 +110,7 @@
                 }
               }
             },
-            "description": "The theory's constructs. shared_construct_id links one to library/constructs.json."
+            "description": "The theory's constructs. shared_construct_id links one to constructs.json."
           },
           "paths": {
             "type": "array",

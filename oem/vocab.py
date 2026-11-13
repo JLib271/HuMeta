@@ -4,7 +4,7 @@
 
 Study metadata vocabularies live in the HuMeta profile
 (standard/humeta/vocabularies.json); theories and lenses for Module 2 live in
-library/frameworks.json."""
+library/frameworks.json (a snapshot of the HuMeta Instrument Library)."""
 
 from __future__ import annotations
 
@@ -15,8 +15,12 @@ PUBLISHED_DIR = APP_DIR / "published"
 PUBLISHED_SUMMARIES_DIR = PUBLISHED_DIR / "study_summaries"
 PUBLISHED_DATASETS_DIR = PUBLISHED_DIR / "datasets"
 DEFAULT_GITHUB_REPO = "JLib271/HuMeta"
-#: The HuMeta Library website, built from library/ by scripts/build_library_site.py
-LIBRARY_SITE_URL = "https://jlib271.github.io/HuMeta/"
+#: The HuMeta Instrument Library's repository: recommendations (suggestions/) go there
+DEFAULT_LIBRARY_REPO = "JLib271/humeta-library"
+#: The HuMeta profile's repository: proposed changes to the standard go there as issues
+DEFAULT_PROFILE_REPO = "JLib271/humeta-profile"
+#: The HuMeta Library website, built by humeta-library's scripts/build_site.py
+LIBRARY_SITE_URL = "https://jlib271.github.io/humeta-library/"
 #: The deployed HuMeta Portal (Streamlit) app; leave empty until it has an address
 PORTAL_URL = ""
 

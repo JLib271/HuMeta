@@ -36,8 +36,8 @@
     {
       "subject": "Conceptual understanding",
       "subjectScheme": "HuMeta Constructs",
-      "schemeUri": "https://github.com/JLib271/HuMeta/blob/main/library/constructs.json",
-      "valueUri": "https://github.com/JLib271/HuMeta/blob/main/library/constructs.json#conceptual_understanding"
+      "schemeUri": "https://github.com/JLib271/humeta-library/blob/main/constructs.json",
+      "valueUri": "https://github.com/JLib271/humeta-library/blob/main/constructs.json#conceptual_understanding"
     },
     {
       "subject": "Climate change science",
@@ -337,7 +337,7 @@
   ],
   "relatedIdentifiers": [
     {
-      "relatedIdentifier": "https://jlib271.github.io/HuMeta/instruments/climate-change-concept-inventory/",
+      "relatedIdentifier": "https://jlib271.github.io/humeta-library/instruments/climate-change-concept-inventory/",
       "relatedIdentifierType": "URL",
       "relationType": "IsCollectedBy"
     },

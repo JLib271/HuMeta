@@ -130,7 +130,7 @@ def build(base: Path = BASE) -> dict[Path, str]:
             lines.append(f"| `{t['id']}` | {t['label']} | {eric} |")
         lines.append("")
     lines += ["### <a id=\"constructs\"></a>Constructs", "",
-              "Defined in [`library/constructs.json`](https://github.com/JLib271/HuMeta/blob/main/library/constructs.json).", "",
+              "Defined in the HuMeta Instrument Library's [`constructs.json`](https://github.com/JLib271/humeta-library/blob/main/constructs.json).", "",
               "| Code | Label | Definition | ERIC descriptors |", "|---|---|---|---|"]
     for c in lib.constructs.values():
         eric = ", ".join(d + ("" if d in verified else " (unverified)") for d in c.get("eric", []))

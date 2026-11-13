@@ -17,7 +17,7 @@
     <subject>climate change</subject>
     <subject>concept inventory</subject>
     <subject>Climate change understanding in introductory Earth science</subject>
-    <subject subjectScheme="HuMeta Constructs" schemeURI="https://github.com/JLib271/HuMeta/blob/main/library/constructs.json" valueURI="https://github.com/JLib271/HuMeta/blob/main/library/constructs.json#conceptual_understanding">Conceptual understanding</subject>
+    <subject subjectScheme="HuMeta Constructs" schemeURI="https://github.com/JLib271/humeta-library/blob/main/constructs.json" valueURI="https://github.com/JLib271/humeta-library/blob/main/constructs.json#conceptual_understanding">Conceptual understanding</subject>
     <subject subjectScheme="ANZSRC Fields of Research" schemeURI="https://linked.data.gov.au/def/anzsrc-for/2020" valueURI="https://linked.data.gov.au/def/anzsrc-for/2020/3702" classificationCode="3702">Climate change science</subject>
     <subject subjectScheme="ANZSRC Fields of Research" schemeURI="https://linked.data.gov.au/def/anzsrc-for/2020" valueURI="https://linked.data.gov.au/def/anzsrc-for/2020/37" classificationCode="37">Earth sciences</subject>
     <subject subjectScheme="HuMeta Participant Roles" schemeURI="https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json" valueURI="https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#participant_role.students">Students / learners</subject>
@@ -69,7 +69,7 @@
   </dates>
   <language>en</language>
   <relatedIdentifiers>
-    <relatedIdentifier relatedIdentifierType="URL" relationType="IsCollectedBy">https://jlib271.github.io/HuMeta/instruments/climate-change-concept-inventory/</relatedIdentifier>
+    <relatedIdentifier relatedIdentifierType="URL" relationType="IsCollectedBy">https://jlib271.github.io/humeta-library/instruments/climate-change-concept-inventory/</relatedIdentifier>
     <relatedIdentifier relatedIdentifierType="DOI" relationType="References">10.1007/s10584-018-2279-y</relatedIdentifier>
   </relatedIdentifiers>
   <sizes>

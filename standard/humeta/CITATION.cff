@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use the HuMeta profile, please cite it as below."
 title: "HuMeta: The Social Science, Humanities, and Education Study Metadata Profile"
 type: dataset
-version: "1.0.0-draft.1"
+version: "1.0.0-draft.2"
 authors:
   - family-names: Libarkin
     given-names: Julie C.
