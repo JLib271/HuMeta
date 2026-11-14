@@ -15,7 +15,7 @@ from pathlib import Path
 from github import Github
 from oem import feedback
 from oem import library as library_source
-from oem.vocab import (APP_DIR, DEFAULT_GITHUB_REPO, DEFAULT_LIBRARY_REPO, DEFAULT_PROFILE_REPO, LEGACY_PROJECT_FILE_FORMATS, PROJECT_FILE_FORMAT, PUBLISHED_DATASETS_DIR, PUBLISHED_SUMMARIES_DIR)
+from oem.vocab import (APP_DIR, DEFAULT_GITHUB_REPO, DEFAULT_LIBRARY_REPO, DEFAULT_PROFILE_REPO, LEGACY_PROJECT_FILE_FORMATS, PROJECT_FILE_FORMAT, PUBLISHED_SUMMARIES_DIR)
 
 
 # Storage model (no database):
@@ -151,18 +151,6 @@ def load_published_summaries() -> list[dict]:
     return _read_json_files(PUBLISHED_SUMMARIES_DIR)
 
 
-@st.cache_data(ttl=300, show_spinner=False)
-def load_published_datasets() -> list[dict]:
-    datasets = []
-    for record in _read_json_files(PUBLISHED_DATASETS_DIR):
-        csv_name = os.path.basename(str(record.get("csv_file") or ""))
-        csv_path = PUBLISHED_DATASETS_DIR / csv_name
-        if csv_name.endswith(".csv") and csv_path.is_file():
-            record["_csv_path"] = str(csv_path)
-            datasets.append(record)
-    return datasets
-
-
 def safe_slug(value: str, fallback: str = "item", max_length: int = 60) -> str:
     slug = re.sub(r"[^a-z0-9]+", "-", str(value).lower()).strip("-")
     return (slug or fallback)[:max_length].strip("-") or fallback
@@ -265,15 +253,15 @@ value_propositions = [
         ],
     ),
     (
-        "4. Community Data Repository Sync",
-        "🌍 Global Open-Data Ingestion",
-        "Bridges individual datasets directly onto a unified global sharing infrastructure "
-        "for frictionless, public-facing discovery.",
-        "4. Community Data Repository Sync",
+        "4. Deposit Data in the STEMEd+ Library",
+        "📦 Share Data in the STEMEd+ Library",
+        "Gets your dataset ready to deposit in the STEMEd+ Library on Knowledge Commons, which gives it a DOI, and "
+        "links it to the instruments, constructs, and theories you used so others can find it.",
+        "4. Deposit Data in the STEMEd+ Library",
         [
-            "Browse and download datasets researchers have published.",
-            "Review permissions, identifiers, and disclosure risks before public release.",
-            "Submit a de-identified dataset for maintainer review (private data is never stored).",
+            "Download your HuMeta profile (humeta.json) to attach to the deposit.",
+            "Get the HuMeta keywords that link your deposit, even if its files are restricted.",
+            "Deposit directly in the STEMEd+ Library: the portal never receives your data.",
         ],
     ),
     (
@@ -284,29 +272,28 @@ value_propositions = [
         "established open-source package.",
         "5. Descriptive & Scale Analytics",
         [
-            "Upload a private dataset (kept in memory only), pick a published one, or try example data.",
+            "Upload a private dataset (kept in memory only) or try example data.",
             "Columns match your plan automatically; see each construct's scores and Cronbach's alpha with a 95% CI.",
             "Correlate scores, compare groups or timepoints, test associations, and run linear or logistic regression.",
             "Download results, a PDF report, and an R script that reproduces them.",
         ],
     ),
     (
-        "6. Published Repository Viewer",
-        "🧪 Open Published Registry",
-        "Shows the reviewed, publicly shared study summaries, dataset catalog, and research "
-        "measure catalog maintained in the project's GitHub repository.",
-        "6. Published Repository Viewer",
+        "6. Find Related Data",
+        "🔎 Discover Related Data",
+        "Finds datasets in the STEMEd+ Library that used the same instruments, constructs, or theories as your study.",
+        "6. Find Related Data",
         [
-            "Choose published study summaries, datasets, or measures.",
-            "Browse the reviewed public records.",
-            "Download the displayed table as CSV.",
+            "See related datasets, ranked by what they share with your study.",
+            "Browse every dataset in the STEMEd+ Library's Data collection.",
+            "See the study summaries researchers have shared.",
         ],
     ),
 ]
 
 ALLOWED_PR_FOLDERS = ("suggestions/frameworks/", "suggestions/instruments/", "suggestions/corrections/",
                       "suggestions/analyses/",
-                      "published/study_summaries/", "published/datasets/")
+                      "published/study_summaries/")
 #: Folders that live in the HuMeta Instrument Library's repository rather than this one
 LIBRARY_PR_FOLDERS = ("suggestions/frameworks/", "suggestions/instruments/", "suggestions/corrections/")
 

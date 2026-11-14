@@ -1,6 +1,6 @@
 # HuMeta Portal terms of service
 
-*Effective November 13, 2026*
+*Effective November 14, 2026*
 
 These terms apply to the HuMeta Portal (https://humeta.streamlit.app/), an
 open-source project maintained by Julie C. Libarkin. By using the portal you
@@ -33,15 +33,19 @@ When you use the portal you agree to:
 
 ## What you submit
 
-Submissions (recommendations, proposals, feedback, study summaries, and
-datasets) are published openly on GitHub for review, as described in the
+Submissions (recommendations, proposals, feedback, and study summaries) are
+published openly on GitHub for review, as described in the
 privacy policy. By submitting, you agree that they may be published and
 reused under these licenses:
 
 * contributions to the HuMeta Instrument Library and the HuMeta profile:
   [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/);
-* datasets and study summaries: the license you choose when submitting;
-* feedback and analysis recommendations: the license of the HuMeta repository.
+* study summaries, feedback, and analysis recommendations: published in the
+  HuMeta repository, where anyone may view, copy, and reuse them with
+  attribution.
+
+Data you deposit in the STEMEd+ Library are governed by Knowledge Commons'
+terms and the license you choose there.
 
 Maintainers review submissions and may edit, decline, or remove them.
 
