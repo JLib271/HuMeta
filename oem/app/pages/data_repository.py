@@ -1,168 +1,113 @@
 # Copyright (C) 2026 Julie C. Libarkin
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Module 4: Community Data Repository Sync."""
+"""Module 4: Deposit Data in the STEMEd+ Library.
+
+Data are deposited in the STEMEd+ Library's Data collection on Knowledge
+Commons, which gives each deposit a DOI and handles access. This module gets a
+researcher ready: their HuMeta profile (humeta.json) to attach, and the HuMeta
+keywords that link the deposit to the HuMeta Library. The portal itself never
+receives or stores datasets.
+"""
 
 from __future__ import annotations
-import streamlit as st
-import pandas as pd
-import io
+
 import json
-import os
-import time
-import uuid
-from pathlib import Path
-from oem.vocab import (PUBLIC_DATASET_MAX_MB)
-from oem.app.common import (LICENSE_TABLE_NOTE, license_help_link, load_published_datasets, open_review_pull_request, public_submission_warning, safe_slug)
+import re
+
+import streamlit as st
+
+from oem import datasets as D
+from oem import profile
+from oem.app.common import navigate_to_module
+from oem.app.profile_form import current_record, library, show_issues
 
 
 def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None) -> None:
-    st.header("🌐 Public Dataset Library")
+    st.header("📦 Deposit Data in the STEMEd+ Library")
     st.caption(
-        "Browse datasets researchers have published, or submit a de-identified dataset for "
-        "public release. Submissions are reviewed by a maintainer before they are listed."
+        "Share your data in the [STEMEd+ Library's Data collection](" + D.DATA_COLLECTION_URL + ") on Knowledge Commons. "
+        "It gives your dataset a DOI, keeps restricted files restricted, and links it to the instruments, constructs, "
+        "and theories you used, so others can find it from the [HuMeta Library](" + D.DATASETS_PAGE_URL + ")."
     )
     st.info(
-        "🔒 **Private datasets are never stored.** To analyze data you can't make public, use "
-        "Module 5 and upload the file there: it is held in memory for your session only and "
-        "is discarded when you leave or reload the page."
+        "🔒 **The portal never receives your data.** You upload your files directly to the STEMEd+ Library. To analyze "
+        "data you can't share, use Module 5: files are read in memory for your session only."
     )
-    st.markdown("---")
 
-    st.subheader("Published datasets")
-    published_datasets = load_published_datasets()
-    if not published_datasets:
-        st.info("No datasets have been published yet.")
+    record = current_record()
+    if record is None:
+        st.subheader("1 · Describe your study first")
+        st.write("Your deposit is linked through your study profile. Start it in Module 1, add the constructs and "
+                 "instruments you used (Modules 2 and 3), then come back here.")
+        st.button("Go to 1. Study Metadata Profile", key="m4_to_m1", on_click=navigate_to_module,
+                  args=("1. Study Metadata Profile",))
+        _browse_link()
+        return
+
+    lib = library()
+    p = profile.load()
+    links = D.study_links(record)
+    keywords = D.linking_keywords(record)
+
+    st.subheader("1 · Check your study profile")
+    if not (links["instruments"] or links["constructs"] or links["frameworks"]):
+        st.warning("Your profile doesn't name any instruments, constructs, or theories yet, so your deposit won't link "
+                   "to the HuMeta Library. Add constructs and instruments in Module 3 (and theories in Module 2).")
+        st.button("Go to 3. Check & Export Metadata", key="m4_to_m3", on_click=navigate_to_module,
+                  args=("3. Check & Export Metadata",))
     else:
-        st.dataframe(
-            pd.DataFrame(
-                [
-                    {
-                        "Title": item.get("dataset_title", ""),
-                        "Description": item.get("description", ""),
-                        "License": item.get("license", ""),
-                        "Rows": item.get("row_count", ""),
-                        "Columns": item.get("column_count", ""),
-                        "Published": item.get("submitted_at_utc", ""),
-                    }
-                    for item in published_datasets
-                ]
-            ),
-            use_container_width=True,
-            hide_index=True,
-        )
-        st.caption(LICENSE_TABLE_NOTE)
-        download_choice = st.selectbox(
-            "Download a published dataset",
-            published_datasets,
-            format_func=lambda item: item.get("dataset_title") or item.get("csv_file"),
-            key="module3_download_choice",
-        )
-        st.download_button(
-            "Download CSV",
-            data=Path(download_choice["_csv_path"]).read_bytes(),
-            file_name=os.path.basename(download_choice["_csv_path"]),
-            mime="text/csv",
-        )
+        names = {
+            "instruments": lambda i: (lib.instruments.get(i) or {}).get("name", i),
+            "constructs": lambda c: (lib.constructs.get(c) or {}).get("label", c),
+            "frameworks": lambda f: (lib.frameworks.get(f) or {}).get("label", f),
+        }
+        for kind, title in (("instruments", "Instruments"), ("constructs", "Constructs"), ("frameworks", "Theories")):
+            if links[kind]:
+                st.markdown(f"**{title}:** " + ", ".join(names[kind](x) for x in links[kind]))
+    issues = profile.validate(record, lib, p)
+    if issues:
+        with st.expander("Profile check"):
+            show_issues(issues)
+    ethics = (record.get("study") or {}).get("ethics") or {}
+    if ethics.get("identifiability") in ("identifiable", "coded"):
+        st.warning("Your profile says the data may identify participants. Deposit only data your consent forms, ethics "
+                   "approval, and data agreements allow you to share, and restrict the files if needed.")
 
-    st.markdown("---")
-    st.subheader("Submit a dataset for public release")
-    public_submission_warning()
-    st.warning(
-        "Public release is permanent in practice: once merged, the file is downloadable by anyone "
-        "and remains in the repository's history even if later removed. Review consent, IRB "
-        "requirements, data-use agreements, ownership, and disclosure risk with the appropriate "
-        "people first. These confirmations are not approval or a guarantee that data are safe to share."
-    )
-    check_authority = st.checkbox(
-        "I have permission from the data owner and applicable consent/approvals for public release."
-    )
-    check_identifiers = st.checkbox(
-        "I removed direct and indirect identifiers and reviewed sensitive fields and small groups."
-    )
-    public_release_confirmed = st.checkbox(
-        "I understand the dataset is visible on GitHub as soon as I submit it, will be public "
-        "if accepted, and cannot be fully retracted."
-    )
-    dataset_title = st.text_input("Dataset title", placeholder="e.g., First-year student engagement survey (de-identified)")
-    dataset_description = st.text_area(
-        "Short description",
-        placeholder="What was collected, from whom (in general terms), when, and how variables are coded.",
-    )
-    dataset_license = st.selectbox(
-        "License",
-        ["CC BY 4.0", "CC0 1.0 (public domain)", "CC BY-NC 4.0", "Other (describe in description)"],
-    )
-    license_help_link()
-    uploaded_data_file = st.file_uploader(
-        "Choose a de-identified dataset (.csv)",
-        type=["csv"],
-        max_upload_size=PUBLIC_DATASET_MAX_MB,
-        help=f"CSV files up to {PUBLIC_DATASET_MAX_MB} MB.",
-    )
+    st.subheader("2 · Download your HuMeta profile")
+    st.write("Attach this file to your deposit, named **humeta.json**. It describes your study in detail, so the HuMeta "
+             "Library can link your dataset precisely. If you will restrict your files, it still helps you, but the "
+             "keywords in step 4 are what link the deposit.")
+    st.download_button("Download humeta.json", json.dumps(record, ensure_ascii=False, indent=2).encode("utf-8"),
+                       file_name="humeta.json", mime="application/json", type="primary", key="m4_dl_humeta",
+                       use_container_width=True)
 
-    if uploaded_data_file is not None:
-        try:
-            uploaded_bytes = uploaded_data_file.getvalue()
-            df_user_raw = pd.read_csv(io.BytesIO(uploaded_bytes))
-            if df_user_raw.empty:
-                raise ValueError("The uploaded CSV has no data rows.")
-            st.success("CSV parsed successfully. Review the preview before submitting.")
-            st.dataframe(df_user_raw.head(10), use_container_width=True)
-            st.caption(
-                f"{len(df_user_raw):,} rows · {len(df_user_raw.columns):,} columns · "
-                f"{len(uploaded_bytes) / (1024 * 1024):.2f} MB"
-            )
+    st.subheader("3 · Deposit in the STEMEd+ Library")
+    st.write("Sign in to Knowledge Commons (free; Google, ORCID, GitHub, or your institution), choose **Dataset** as the "
+             "resource type, upload your data files and **humeta.json**, and fill in the form. Module 3 can give you "
+             "DataCite metadata to copy from.")
+    st.link_button("Start a deposit in the Data collection", D.DATA_DEPOSIT_URL, use_container_width=True)
+    title = (record.get("resource") or {}).get("title")
+    if title:
+        st.caption(f"Use the title from your profile: “{title}”.")
 
-            ready_to_submit = (
-                bool(dataset_title.strip())
-                and check_authority
-                and check_identifiers
-                and public_release_confirmed
-            )
-            if not ready_to_submit:
-                st.warning("Enter a title and complete all confirmations before submitting.")
-            if st.button(
-                "Submit dataset for public release",
-                type="primary",
-                disabled=publish_disabled or not ready_to_submit,
-                help=publish_hint,
-            ):
-                dataset_id = uuid.uuid4().hex[:10]
-                base_name = f"{safe_slug(dataset_title, 'dataset', 50)}-{dataset_id}"
-                metadata_record = {
-                    "schema_version": 1,
-                    "dataset_id": dataset_id,
-                    "dataset_title": dataset_title.strip(),
-                    "description": dataset_description.strip(),
-                    "license": dataset_license,
-                    "csv_file": f"{base_name}.csv",
-                    "original_file_name": os.path.basename(uploaded_data_file.name),
-                    "row_count": len(df_user_raw),
-                    "column_count": len(df_user_raw.columns),
-                    "columns": [str(column) for column in df_user_raw.columns],
-                    "byte_size": len(uploaded_bytes),
-                    "submitted_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                }
-                with st.spinner("Opening a pull request for maintainer review..."):
-                    result_message = open_review_pull_request(
-                        suggestion_type="Public Dataset",
-                        title_summary=dataset_title.strip()[:120],
-                        files={
-                            f"published/datasets/{base_name}.csv": uploaded_bytes,
-                            f"published/datasets/{base_name}.json": json.dumps(
-                                metadata_record, ensure_ascii=False, indent=2
-                            ),
-                        },
-                        description=(
-                            "Public dataset submission. The submitter confirmed permission, "
-                            "de-identification, and understanding that release is public. "
-                            "**Inspect the CSV for identifiers before merging.**"
-                        ),
-                    )
-                (st.error if "❌" in result_message else st.success)(result_message)
-        except pd.errors.EmptyDataError:
-            st.error("The uploaded CSV is empty or does not contain a readable header row.")
-        except (UnicodeDecodeError, pd.errors.ParserError, ValueError) as e:
-            st.error(f"Could not parse the uploaded CSV: {e}")
-        except Exception as e:
-            st.error(f"Error reading uploaded dataset: {e}")
+    st.subheader("4 · Add the HuMeta keywords")
+    if keywords:
+        st.write("In the deposit form's **Keywords** (subjects) field, add each of these exactly. They link your deposit to "
+                 "the HuMeta Library, even if its files are restricted.")
+        st.code("\n".join(keywords), language=None)
+    else:
+        st.caption("Add instruments, constructs, or theories to your profile to get HuMeta keywords.")
+
+    st.subheader("5 · See it linked")
+    st.write("Within a day, your dataset appears on the HuMeta Library's Datasets page and on the pages of the "
+             "instruments, constructs, and theories it used. Module 6 shows datasets related to your study.")
+    _browse_link()
+
+    slug = re.sub(r"[^a-z0-9]+", "-", (title or "study").lower()).strip("-")[:40] or "study"
+    st.download_button("Download the keywords (text)", "\n".join(keywords).encode("utf-8"),
+                       file_name=f"{slug}-humeta-keywords.txt", mime="text/plain", key="m4_dl_keywords",
+                       disabled=not keywords)
+
+
+def _browse_link() -> None:
+    st.link_button("Browse datasets in the HuMeta Library", D.DATASETS_PAGE_URL)

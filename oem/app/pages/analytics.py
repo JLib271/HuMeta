@@ -19,11 +19,10 @@ import streamlit as st
 from oem import analysis as A
 from oem import plan as P
 from oem import recommend as R
-from oem.app.common import current_project, load_published_datasets, open_review_pull_request, public_submission_warning
+from oem.app.common import current_project, open_review_pull_request, public_submission_warning
 from oem.app.profile_form import library
 
 PRIVATE = "Upload my dataset (.csv): analyzed in this session only, never stored"
-PUBLISHED = "Use a published public dataset"
 EXAMPLE = "Use example data (synthetic, not research data)"
 TOOLS = [
     ("R", "https://www.r-project.org/", "free statistics software; the downloadable script uses it"),
@@ -50,7 +49,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
 
     # ------------------------------------------------------------ Step 1
     st.subheader("Step 1 · Data")
-    options = [EXAMPLE, PRIVATE] + ([PUBLISHED] if load_published_datasets() else [])
+    options = [EXAMPLE, PRIVATE]
     source = st.radio("Data to analyze", options, key="m5_source")
     df = None
     if source == PRIVATE:
@@ -62,14 +61,6 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
                 df = pd.read_csv(upload)
             except (UnicodeDecodeError, pd.errors.EmptyDataError, pd.errors.ParserError) as error:
                 st.error(f"Could not read the CSV: {error}")
-    elif source == PUBLISHED:
-        datasets = load_published_datasets()
-        chosen = st.selectbox("Published dataset", datasets, key="m5_published",
-                              format_func=lambda d: f"{d.get('dataset_title') or d.get('csv_file')} ({d.get('row_count', '?')} rows)")
-        try:
-            df = pd.read_csv(chosen["_csv_path"])
-        except (KeyError, TypeError, OSError, pd.errors.EmptyDataError, pd.errors.ParserError) as error:
-            st.error(f"Could not load the dataset: {error}")
     else:
         if has_plan:
             st.info("Example data are synthetic, generated to look like your Module 2 variable plan's codebook. Use "

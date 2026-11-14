@@ -43,9 +43,9 @@ app_mode = st.sidebar.radio(
         "1. Study Metadata Profile",
         "2. Framework and Measures",
         "3. Check & Export Metadata",
-        "4. Community Data Repository Sync",
+        "4. Deposit Data in the STEMEd+ Library",
         "5. Descriptive & Scale Analytics",
-        "6. Published Repository Viewer",
+        "6. Find Related Data",
     ],
     key="app_mode"
 )
@@ -58,9 +58,9 @@ with st.sidebar:
     st.caption(
         "Your study profile (Module 1) and variable plan (Module 2) are kept in a project "
         "file on your own computer. The app does not store them. You can choose to share "
-        "parts of your work: a limited study summary or a theory and variable suggestion "
-        "(Module 2), or a de-identified dataset (Module 4). Shared items go to the project's "
-        "GitHub repository and are reviewed before they are listed in the app."
+        "parts of your work: a limited study summary or a recommendation (Module 2), which go to "
+        "GitHub for review. Data are never shared through the app: deposit them in the STEMEd+ "
+        "Library (Module 4)."
     )
     project_upload = st.file_uploader(
         "Open a project file",
@@ -158,9 +158,9 @@ PAGES = {
     "1. Study Metadata Profile": study_profile.render,
     "2. Framework and Measures": framework_measures.render,
     "3. Check & Export Metadata": metadata_check.render,
-    "4. Community Data Repository Sync": data_repository.render,
+    "4. Deposit Data in the STEMEd+ Library": data_repository.render,
     "5. Descriptive & Scale Analytics": analytics.render,
-    "6. Published Repository Viewer": published_viewer.render,
+    "6. Find Related Data": published_viewer.render,
 }
 
 if app_mode in PAGES:

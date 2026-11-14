@@ -18,9 +18,9 @@ PAGES = [
     "1. Study Metadata Profile",
     "2. Framework and Measures",
     "3. Check & Export Metadata",
-    "4. Community Data Repository Sync",
+    "4. Deposit Data in the STEMEd+ Library",
     "5. Descriptive & Scale Analytics",
-    "6. Published Repository Viewer",
+    "6. Find Related Data",
 ]
 
 

@@ -1,6 +1,6 @@
 # HuMeta Portal privacy policy
 
-*Effective November 13, 2026*
+*Effective November 14, 2026*
 
 The HuMeta Portal (https://humeta.streamlit.app/) helps researchers describe,
 plan, and share studies. It is an open-source project maintained by Julie C.
@@ -21,6 +21,10 @@ analyses without an account.
   does not save them, and they are gone when your session ends.
 * **Your work is kept by you**, in the project file you download. The portal
   has no accounts, database, or saved projects.
+* **The portal never receives research data for sharing.** To share data, you
+  deposit them yourself in the STEMEd+ Library on Knowledge Commons (Module 4
+  helps you prepare); Knowledge Commons' own policies apply there. Module 6
+  shows datasets from the public descriptions of those deposits.
 * **We do not use advertising, analytics, or tracking tools**, and we do not
   sell or share information about you.
 
@@ -50,7 +54,7 @@ repository for review:
 |---|---|
 | Recommendations of theories, instruments, or corrections | [humeta-library](https://github.com/JLib271/humeta-library) (pull request) |
 | Proposed changes to the HuMeta metadata profile | [humeta-profile](https://github.com/JLib271/humeta-profile) (issue) |
-| Analysis recommendations, study summaries, datasets | [HuMeta](https://github.com/JLib271/HuMeta) (pull request) |
+| Analysis recommendations and study summaries | [HuMeta](https://github.com/JLib271/HuMeta) (pull request) |
 | Feedback from the "Send feedback" box | [HuMeta](https://github.com/JLib271/HuMeta) (issue) |
 
 A submission, with your name if you were signed in, is **public as soon as it
