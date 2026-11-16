@@ -2,7 +2,7 @@
 
 *HuMeta: The Social Science, Humanities, and Education Study Metadata Profile*
 
-Version 1.0.0-draft.2 (draft). Generated from `profile.json` and `vocabularies.json` by `scripts/build_profile_artifacts.py`; do not edit by hand.
+Version 1.0.0-draft.3 (draft). Generated from `profile.json` and `vocabularies.json` by `scripts/build_profile_artifacts.py`; do not edit by hand.
 
 Obligations: **M** = Mandatory: every record must have it.; **MA** = Mandatory if applicable: required when the stated condition holds.; **R** = Recommended.; **O** = Optional.
 
