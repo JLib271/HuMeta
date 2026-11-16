@@ -84,9 +84,18 @@ def test_profile_needs_no_resource_type(lib, p):
     record = copy.deepcopy(EXAMPLE)
     del record["resource"]["resource_type"]
     assert profile.is_valid(record, lib, p)
-    assert profile.to_datacite_json(record, lib, p)["types"]["resourceTypeGeneral"] == "Dataset"
+    assert profile.to_datacite_json(record, lib, p)["types"]["resourceTypeGeneral"] == "StudyRegistration"
     assert profile.to_datacite_json(record, lib, p, "StudyRegistration")["types"]["resourceTypeGeneral"] == "StudyRegistration"
     assert profile.empty_record(p)["resource"]["resource_type"] is None
+
+
+def test_unregistered_study_needs_no_publisher_or_year(lib, p):
+    record = copy.deepcopy(EXAMPLE)
+    record["resource"].update({"publisher": None, "publication_year": None, "identifier": None})
+    del record["resource"]["resource_type"]
+    assert profile.is_valid(record, lib, p)
+    data = profile.to_datacite_json(record, lib, p)
+    assert data["publisher"]["name"] == "Knowledge Commons" and data["publicationYear"].isdigit()
 
 
 def test_constructs_and_design_required_for_datasets(lib):

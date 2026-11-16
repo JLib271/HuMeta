@@ -21,6 +21,7 @@ Nothing here imports Streamlit.
 from __future__ import annotations
 
 import copy
+import datetime as dt
 import json
 import re
 from dataclasses import dataclass
@@ -247,7 +248,7 @@ def json_schema(profile: Profile | None = None) -> dict:
             "profile_version": {"type": "string"},
             "resource": {
                 "type": "object", "additionalProperties": False,
-                "required": ["title", "creators", "publisher", "publication_year"],
+                "required": ["title", "creators"],
                 "properties": {
                     "title": {"type": "string", "minLength": 1},
                     "creators": {
@@ -258,8 +259,8 @@ def json_schema(profile: Profile | None = None) -> dict:
                             "affiliation": {"type": ["string", "null"]},
                         }},
                     },
-                    "publisher": {"type": "string", "minLength": 1},
-                    "publication_year": {"type": "integer", "minimum": 1900, "maximum": 2100},
+                    "publisher": {"type": ["string", "null"]},
+                    "publication_year": {"type": ["integer", "null"], "minimum": 1900, "maximum": 2100},
                     "resource_type": {"enum": [*RESOURCE_TYPES, None]},
                     "identifier": {"type": ["object", "null"], "additionalProperties": False, "properties": {
                         "value": {"type": "string"}, "type": {"type": "string"}}},
@@ -703,19 +704,20 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
                      resource_type: str | None = None) -> dict:
     """DataCite 4.7 metadata in the JSON 'attributes' form used by the DataCite REST API.
 
-    A study profile is not tied to one kind of output, but a DOI is: ``resource_type`` is what the DOI is for
-    (a DataCite resourceTypeGeneral value). Default: the record's saved choice, else Dataset."""
+    A profile describes a study, so by default this is the study's registration (DataCite StudyRegistration),
+    the record researchers deposit in the STEMEd+ Library's Studies collection. ``resource_type`` overrides it.
+    Publisher and year default to Knowledge Commons and the current year until the study is registered."""
     p = profile or load()
     lib = lib or Library.load()
     record = migrate(record, p)
     res, s = record["resource"], record["study"]
-    rtype = resource_type or res.get("resource_type") or "Dataset"
+    rtype = resource_type or res.get("resource_type") or "StudyRegistration"
     out: dict[str, Any] = {
         "types": {"resourceTypeGeneral": rtype, "resourceType": f"HuMeta {rtype}"},
         "titles": [{"title": res["title"]}],
         "creators": [],
-        "publisher": {"name": res["publisher"]},
-        "publicationYear": str(res["publication_year"]),
+        "publisher": {"name": res.get("publisher") or "Knowledge Commons"},
+        "publicationYear": str(res.get("publication_year") or dt.date.today().year),
         "subjects": [],
         "descriptions": [],
         "schemaVersion": "http://datacite.org/schema/kernel-4",
@@ -906,6 +908,11 @@ def _labels(p: Profile, vocab_id: str, ids: list[str] | None) -> list[str]:
     return [p.label(vocab_id, term_id) for term_id in ids or []]
 
 
+def _institution(res: dict) -> str:
+    """The lead institution: the first team member's affiliation (the publisher is the repository)."""
+    return next((c["affiliation"] for c in res.get("creators") or [] if c.get("affiliation")), "") or ""
+
+
 def to_study_record(record: dict, existing: dict | None = None, profile: Profile | None = None) -> dict:
     """Derive the study record that Module 2 and later modules read.
 
@@ -934,7 +941,7 @@ def to_study_record(record: dict, existing: dict | None = None, profile: Profile
     metadata = {
         "authors": authors,
         "study_doi_or_persistent_identifier": (res.get("identifier") or {}).get("value") or "",
-        "institution": res.get("publisher") or "",
+        "institution": _institution(res),
         "funding_source": "; ".join(f["funder_name"] for f in res.get("funding") or []),
         "research_questions_and_aims": s["design"].get("research_questions") or "",
         "subject_keywords": ", ".join(res.get("keywords") or []),
@@ -963,7 +970,7 @@ def to_study_record(record: dict, existing: dict | None = None, profile: Profile
         "id": existing.get("id") or str(uuid.uuid4()),
         "study_title": res.get("title") or "",
         "principal_investigator": ", ".join(a["name"] for a in authors),
-        "institution": res.get("publisher") or "",
+        "institution": _institution(res),
         "funding_source": metadata["funding_source"],
         "study_description": json.dumps(description, ensure_ascii=False),
         "created_at": existing.get("created_at") or time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),

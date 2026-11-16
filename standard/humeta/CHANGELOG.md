@@ -9,6 +9,12 @@
   study instead of the output: R1 (constructs) applies when people take part
   directly, and R2 (study design) applies to every study;
   `study.evidence.study_designs` is now mandatory.
+* **Studies get their own DOI.** `resource.publisher` and
+  `resource.publication_year` are now optional (were mandatory): they describe
+  the study's registration, not the study. DataCite exports describe the study
+  registration (`StudyRegistration`) and default to publisher Knowledge Commons
+  and the current year. `resource.identifier` is the study's own DOI; datasets
+  and other outputs link to it.
 
 ## 1.0.0-draft.2 (2026-11-13)
 

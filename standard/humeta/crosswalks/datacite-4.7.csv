@@ -1,8 +1,8 @@
 element,module,label,obligation,cardinality,vocabulary,datacite_4_7
 resource.title,core,Title,M,1,,titles.title
 resource.creators,core,Creators,M,1..n,,creators (nameIdentifier with nameIdentifierScheme ORCID; affiliation)
-resource.publisher,core,Publisher,M,1,,publisher
-resource.publication_year,core,Publication year,M,1,,publicationYear
+resource.publisher,core,Publisher,O,1,,publisher
+resource.publication_year,core,Publication year,O,1,,publicationYear
 resource.resource_type,core,Resource type,O,1,,types.resourceTypeGeneral; types.resourceType = 'HuMeta <type>'
 resource.identifier,core,Identifier,O,0..1,,identifiers (DOI) or alternateIdentifiers
 resource.description,core,Description,R,0..1,,descriptions (descriptionType Abstract)

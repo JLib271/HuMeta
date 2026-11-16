@@ -27,6 +27,12 @@ from oem.vocab import LIBRARY_SITE_URL
 DATA_COLLECTION = "stemedplus-data"
 DATA_COLLECTION_URL = f"https://works.hcommons.org/collections/{DATA_COLLECTION}"
 DATA_DEPOSIT_URL = f"https://works.hcommons.org/uploads/new?community={DATA_COLLECTION}"
+#: The STEMEd+ Library's Studies subcollection, where researchers register a study (its design) for a DOI
+STUDIES_COLLECTION = "stemedplus-studies"
+STUDIES_COLLECTION_URL = f"https://works.hcommons.org/collections/{STUDIES_COLLECTION}"
+STUDIES_DEPOSIT_URL = f"https://works.hcommons.org/uploads/new?community={STUDIES_COLLECTION}"
+#: Publisher of every Knowledge Commons Works DOI, used when a registered study has none recorded
+KC_PUBLISHER = "Knowledge Commons"
 #: The index the HuMeta Library website publishes
 DATASET_INDEX_URL = LIBRARY_SITE_URL + "data/datasets.json"
 DATASETS_PAGE_URL = LIBRARY_SITE_URL + "datasets/"

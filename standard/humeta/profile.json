@@ -240,10 +240,10 @@
     {
       "id": "resource.publisher",
       "label": "Publisher",
-      "obligation": "M",
+      "obligation": "O",
       "cardinality": "1",
       "type": "text",
-      "definition": "Entity that holds, archives, or makes the resource available (usually the repository or institution).",
+      "definition": "Entity that holds, archives, or makes the study's registration available: the repository. Recorded when the study is registered (for the STEMEd+ Library, Knowledge Commons); DataCite exports default to Knowledge Commons.",
       "datacite": "publisher",
       "alignments": [
         {
@@ -272,10 +272,10 @@
     {
       "id": "resource.publication_year",
       "label": "Publication year",
-      "obligation": "M",
+      "obligation": "O",
       "cardinality": "1",
       "type": "year",
-      "definition": "Year the resource was or will be made publicly available.",
+      "definition": "Year the study's registration was or will be made publicly available. DataCite exports default to the current year.",
       "datacite": "publicationYear",
       "alignments": [
         {
@@ -316,7 +316,7 @@
         "Collection",
         "Other"
       ],
-      "definition": "What a DOI for this study is for (data, a preregistration, an instrument, and so on), using DataCite resourceTypeGeneral values. A profile describes the study itself, so this is chosen when you export DataCite metadata for something you deposit; exports default to Dataset.",
+      "definition": "DataCite resourceTypeGeneral for the profile's DOI record. A profile describes a study, so exports use StudyRegistration unless another value is recorded.",
       "datacite": "types.resourceTypeGeneral; types.resourceType = 'HuMeta <type>'",
       "alignments": [
         {
@@ -343,7 +343,7 @@
       "obligation": "O",
       "cardinality": "0..1",
       "type": "identifier",
-      "definition": "Persistent identifier (DOI preferred) once one has been assigned.",
+      "definition": "Persistent identifier (DOI preferred) once one has been assigned. For a profile this is the study's own DOI, from registering it (for example in the STEMEd+ Library's Studies collection); datasets and other outputs link to it.",
       "datacite": "identifiers (DOI) or alternateIdentifiers",
       "alignments": [
         {

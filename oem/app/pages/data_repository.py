@@ -83,12 +83,17 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
 
     st.subheader("3 · Deposit in the STEMEd+ Library")
     st.write("Sign in to Knowledge Commons (free; Google, ORCID, GitHub, or your institution), choose **Dataset** as the "
-             "resource type, upload your data files and **humeta.json**, and fill in the form. Module 3 can give you "
-             "DataCite metadata to copy from.")
+             "resource type, upload your data files and **humeta.json**, and fill in the form.")
     st.link_button("Start a deposit in the Data collection", D.DATA_DEPOSIT_URL, use_container_width=True)
     title = (record.get("resource") or {}).get("title")
     if title:
         st.caption(f"Use the title from your profile: “{title}”.")
+    identifier = (record.get("resource") or {}).get("identifier") or {}
+    if identifier.get("type") == "DOI" and identifier.get("value"):
+        st.write("Link the dataset to your registered study: under **Related works**, add your study's DOI.")
+        st.code(identifier["value"], language=None)
+    else:
+        st.caption("Registering your study first (Module 3) gives it a DOI that this dataset can link back to.")
 
     st.subheader("4 · Add the HuMeta keywords")
     if keywords:
