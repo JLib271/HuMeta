@@ -3,7 +3,7 @@
   "title": "HuMeta",
   "full_title": "HuMeta: The Social Science, Humanities, and Education Study Metadata Profile",
   "short_name": "HuMeta",
-  "profile_version": "1.0.0-draft.2",
+  "profile_version": "1.0.0-draft.3",
   "status": "draft",
   "namespace": "humeta",
   "namespace_uri": "https://github.com/JLib271/humeta-profile/blob/main/elements.md#",

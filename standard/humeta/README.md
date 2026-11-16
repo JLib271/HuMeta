@@ -1,6 +1,6 @@
 # HuMeta: The Social Science, Humanities, and Education Study Metadata Profile
 
-**Version:** 1.0.0-draft.2 · **Status:** Draft for community comment · **Namespace prefix:** `humeta`
+**Version:** 1.0.0-draft.3 · **Status:** Draft for community comment · **Namespace prefix:** `humeta`
 
 The HuMeta profile is a shared way to describe research studies
 and the data, instruments, and records they produce across the social
@@ -387,7 +387,7 @@ of the HuMeta library. Code implementing it, such as the [HuMeta Portal](https:/
 
 > Libarkin, J. C., & HuMeta contributors. (2026). *HuMeta: The
 > Social Science, Humanities, and Education Study Metadata Profile* (Version
-> 1.0.0-draft.2). https://github.com/JLib271/humeta-profile
+> 1.0.0-draft.3). https://github.com/JLib271/humeta-profile
 
 A DOI will be registered for version 1.0.0 (DataCite resourceTypeGeneral
 `Standard`).
