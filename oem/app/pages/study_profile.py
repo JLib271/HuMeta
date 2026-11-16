@@ -1,6 +1,6 @@
 # Copyright (C) 2026 Julie C. Libarkin
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Module 1: Study Metadata Profile.
+"""Module 1: Describe Your Study.
 
 The study is described directly with the HuMeta
 Profile. Constructs are added in Module 3 after Module 2's variable plan.
@@ -20,7 +20,7 @@ CONSTRUCT_RULES = {"R1"}  # constructs are completed in Module 3
 
 
 def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None) -> None:
-    st.header("1. Study Metadata Profile")
+    st.header("1. Describe Your Study")
     p = profile.load()
     st.caption(
         f"Describe your study with [HuMeta: The Social Science, Humanities, and Education Study Metadata Profile]({SPEC_URL}) (version {p.version}): "
@@ -64,10 +64,10 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
         st.caption("Next: plan variables in Module 2, then add the constructs you measure and export the "
                    "metadata in Module 3.")
         c1, c2 = st.columns(2)
-        c1.button("Go to 2. Framework and Measures", key="module1_to_m2", on_click=navigate_to_module,
-                  args=("2. Framework and Measures",), use_container_width=True)
-        c2.button("Go to 3. Check & Export Metadata", key="module1_to_m3", on_click=navigate_to_module,
-                  args=("3. Check & Export Metadata",), use_container_width=True)
+        c1.button("Go to 2. Theory and Measures", key="module1_to_m2", on_click=navigate_to_module,
+                  args=("2. Theory and Measures",), use_container_width=True)
+        c2.button("Go to 3. Check, Register & Export", key="module1_to_m3", on_click=navigate_to_module,
+                  args=("3. Check, Register & Export",), use_container_width=True)
     render_project_download(key="module1_project_download")
 
     st.markdown("---")

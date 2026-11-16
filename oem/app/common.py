@@ -212,13 +212,19 @@ def load_measure_catalog() -> list[dict]:
     return catalog["measures"]
 
 
+#: How Modules 1 to 3 fit together, shown in the sidebar and on the About page
+STUDY_PATH = (
+    "Modules 1 and 2 define your study: what it is, and the theory and measures behind it. "
+    "Module 3 checks that description and links it to a DOI by registering the study in the STEMEd+ Library."
+)
+
 value_propositions = [
     (
-        "1. Study Metadata Profile",
+        "1. Describe Your Study",
         "📐 One Shared Metadata Standard",
         "Describes every study with HuMeta: The Social Science, Humanities, and Education Study Metadata Profile, so studies across "
         "institutions use the same fields and vocabularies and stay searchable and comparable.",
-        "1. Study Metadata Profile",
+        "1. Describe Your Study",
         [
             "Start by choosing your fields: Education, Social science, or Arts and humanities.",
             "Describe the study, team, design, population, sources, and field-specific details.",
@@ -228,11 +234,11 @@ value_propositions = [
         ],
     ),
     (
-        "2. Framework and Measures",
+        "2. Theory and Measures",
         "🗺️ From Theory to Measures",
         "Starts from the framework that guides the study, whether a theory, a lens, your own framework, or an exploratory "
         "approach, and links each of its constructs to how it is measured or coded.",
-        "2. Framework and Measures",
+        "2. Theory and Measures",
         [
             "Choose a theory, lens, or your own framework; it supplies the constructs.",
             "Give each construct a measure: a library instrument you judge fits, your own questions, or codes.",
@@ -241,14 +247,15 @@ value_propositions = [
         ],
     ),
     (
-        "3. Check & Export Metadata",
+        "3. Check, Register & Export",
         "🏷️ Standards-Ready Metadata",
         "Completes your study profile with the constructs you measure, checks it against the profile's "
-        "responsible-sharing rules, and exports metadata that DOI registration, data archives, and education indexes use.",
-        "3. Check & Export Metadata",
+        "responsible-sharing rules, registers the study for a DOI, and exports metadata for archives and indexes.",
+        "3. Check, Register & Export",
         [
             "Add constructs measured, suggested from your variable plan (Module 2).",
             "See what to fix before sharing: consent, de-identification, review, CARE.",
+            "Register the study in the STEMEd+ Library's Studies collection to give it a DOI (PDF and humeta.json).",
             "Export HuMeta JSON, DataCite 4.7 (JSON/XML), ERIC descriptors, and DDI-Codebook for social science archives.",
         ],
     ),

@@ -1,6 +1,6 @@
 # Copyright (C) 2026 Julie C. Libarkin
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Module 2: Framework and Measures.
+"""Module 2: Theory and Measures.
 
 Theory organizes the module. Choose a framework (a theory, a lens, your own
 framework, or an exploratory approach); the framework supplies constructs; each
@@ -108,7 +108,7 @@ TABS = ["🧭 Build your plan", "💡 Recommend a theory or framework", "📏 Re
 
 def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None) -> None:
     lib = library()
-    st.header("2. Framework and Measures")
+    st.header("2. Theory and Measures")
     st.caption(
         "Start from theory. Choose the framework that guides your study, and it supplies the constructs. Give each "
         "construct a measure (a library instrument, your own questions, or codes in a coding scheme), and the "

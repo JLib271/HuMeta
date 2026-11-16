@@ -39,8 +39,8 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
         st.subheader("1 · Describe your study first")
         st.write("Your deposit is linked through your study profile. Start it in Module 1, add the constructs and "
                  "instruments you used (Modules 2 and 3), then come back here.")
-        st.button("Go to 1. Study Metadata Profile", key="m4_to_m1", on_click=navigate_to_module,
-                  args=("1. Study Metadata Profile",))
+        st.button("Go to 1. Describe Your Study", key="m4_to_m1", on_click=navigate_to_module,
+                  args=("1. Describe Your Study",))
         _browse_link()
         return
 
@@ -53,8 +53,8 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     if not (links["instruments"] or links["constructs"] or links["frameworks"]):
         st.warning("Your profile doesn't name any instruments, constructs, or theories yet, so your deposit won't link "
                    "to the HuMeta Library. Add constructs and instruments in Module 3 (and theories in Module 2).")
-        st.button("Go to 3. Check & Export Metadata", key="m4_to_m3", on_click=navigate_to_module,
-                  args=("3. Check & Export Metadata",))
+        st.button("Go to 3. Check, Register & Export", key="m4_to_m3", on_click=navigate_to_module,
+                  args=("3. Check, Register & Export",))
     else:
         names = {
             "instruments": lambda i: (lib.instruments.get(i) or {}).get("name", i),
@@ -83,12 +83,17 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
 
     st.subheader("3 · Deposit in the STEMEd+ Library")
     st.write("Sign in to Knowledge Commons (free; Google, ORCID, GitHub, or your institution), choose **Dataset** as the "
-             "resource type, upload your data files and **humeta.json**, and fill in the form. Module 3 can give you "
-             "DataCite metadata to copy from.")
+             "resource type, upload your data files and **humeta.json**, and fill in the form.")
     st.link_button("Start a deposit in the Data collection", D.DATA_DEPOSIT_URL, use_container_width=True)
     title = (record.get("resource") or {}).get("title")
     if title:
         st.caption(f"Use the title from your profile: “{title}”.")
+    identifier = (record.get("resource") or {}).get("identifier") or {}
+    if identifier.get("type") == "DOI" and identifier.get("value"):
+        st.write("Link the dataset to your registered study: under **Related works**, add your study's DOI.")
+        st.code(identifier["value"], language=None)
+    else:
+        st.caption("Registering your study first (Module 3) gives it a DOI that this dataset can link back to.")
 
     st.subheader("4 · Add the HuMeta keywords")
     if keywords:

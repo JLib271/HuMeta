@@ -240,10 +240,10 @@
     {
       "id": "resource.publisher",
       "label": "Publisher",
-      "obligation": "M",
+      "obligation": "O",
       "cardinality": "1",
       "type": "text",
-      "definition": "Entity that holds, archives, or makes the resource available (usually the repository or institution).",
+      "definition": "Entity that holds, archives, or makes the study's registration available: the repository. Recorded when the study is registered (for the STEMEd+ Library, Knowledge Commons); DataCite exports default to Knowledge Commons.",
       "datacite": "publisher",
       "alignments": [
         {
@@ -272,10 +272,10 @@
     {
       "id": "resource.publication_year",
       "label": "Publication year",
-      "obligation": "M",
+      "obligation": "O",
       "cardinality": "1",
       "type": "year",
-      "definition": "Year the resource was or will be made publicly available.",
+      "definition": "Year the study's registration was or will be made publicly available. DataCite exports default to the current year.",
       "datacite": "publicationYear",
       "alignments": [
         {
@@ -304,7 +304,7 @@
     {
       "id": "resource.resource_type",
       "label": "Resource type",
-      "obligation": "M",
+      "obligation": "O",
       "cardinality": "1",
       "type": "enum",
       "values": [
@@ -316,7 +316,7 @@
         "Collection",
         "Other"
       ],
-      "definition": "General type of the resource, using DataCite resourceTypeGeneral values.",
+      "definition": "DataCite resourceTypeGeneral for the profile's DOI record. A profile describes a study, so exports use StudyRegistration unless another value is recorded.",
       "datacite": "types.resourceTypeGeneral; types.resourceType = 'HuMeta <type>'",
       "alignments": [
         {
@@ -343,7 +343,7 @@
       "obligation": "O",
       "cardinality": "0..1",
       "type": "identifier",
-      "definition": "Persistent identifier (DOI preferred) once one has been assigned.",
+      "definition": "Persistent identifier (DOI preferred) once one has been assigned. For a profile this is the study's own DOI, from registering it (for example in the STEMEd+ Library's Studies collection); datasets and other outputs link to it.",
       "datacite": "identifiers (DOI) or alternateIdentifiers",
       "alignments": [
         {
@@ -838,7 +838,7 @@
       "obligation": "MA",
       "cardinality": "0..n",
       "type": "construct",
-      "condition": "Mandatory when resource_type is Dataset or Instrument.",
+      "condition": "Mandatory when people take part directly in the study, or when exported as an Instrument.",
       "definition": "Constructs measured, from the HuMeta construct vocabulary (constructs.json in the HuMeta Instrument Library), optionally with the instrument, version and subscale used.",
       "vocabulary_file": "https://github.com/JLib271/humeta-library/blob/main/constructs.json",
       "datacite": "subjects (subjectScheme 'HuMeta Constructs', valueURI per construct); for datasets, relatedIdentifiers to the instrument's library record (URL, relationType IsCollectedBy) and its publication (DOI, relationType References); ERIC descriptors as additional subjects",
@@ -1196,11 +1196,10 @@
     {
       "id": "study.evidence.study_designs",
       "label": "Study design",
-      "obligation": "MA",
-      "cardinality": "0..n",
+      "obligation": "M",
+      "cardinality": "1..n",
       "type": "vocab",
       "vocabulary": "study_design",
-      "condition": "Mandatory when resource_type is Dataset or StudyRegistration.",
       "definition": "Design(s) that produced the evidence.",
       "datacite": "subjects (subjectScheme 'HuMeta Study Designs'); descriptions (Methods)",
       "alignments": [
@@ -1239,7 +1238,7 @@
       "cardinality": "0..n",
       "type": "vocab",
       "vocabulary": "measurement_evidence",
-      "condition": "Mandatory when resource_type is Instrument.",
+      "condition": "Mandatory when exported as an Instrument.",
       "definition": "Kinds of reliability and validity evidence the resource provides. Optional and not asked in the portal's study profile; an instrument's measurement evidence is recorded with the instrument in the HuMeta instrument library.",
       "datacite": "subjects (subjectScheme 'HuMeta Measurement Evidence')",
       "alignments": [
@@ -2021,13 +2020,13 @@
       "id": "R1",
       "severity": "error",
       "check": "constructs_required",
-      "message": "Instruments, and datasets from studies with human participants, must list at least one construct measured."
+      "message": "Studies in which people take part directly, and instruments, must list at least one construct measured."
     },
     {
       "id": "R2",
       "severity": "error",
       "check": "design_required",
-      "message": "Datasets and study registrations must list at least one study design."
+      "message": "Every study must list at least one study design."
     },
     {
       "id": "R4",

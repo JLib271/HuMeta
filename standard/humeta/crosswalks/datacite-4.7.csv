@@ -1,9 +1,9 @@
 element,module,label,obligation,cardinality,vocabulary,datacite_4_7
 resource.title,core,Title,M,1,,titles.title
 resource.creators,core,Creators,M,1..n,,creators (nameIdentifier with nameIdentifierScheme ORCID; affiliation)
-resource.publisher,core,Publisher,M,1,,publisher
-resource.publication_year,core,Publication year,M,1,,publicationYear
-resource.resource_type,core,Resource type,M,1,,types.resourceTypeGeneral; types.resourceType = 'HuMeta <type>'
+resource.publisher,core,Publisher,O,1,,publisher
+resource.publication_year,core,Publication year,O,1,,publicationYear
+resource.resource_type,core,Resource type,O,1,,types.resourceTypeGeneral; types.resourceType = 'HuMeta <type>'
 resource.identifier,core,Identifier,O,0..1,,identifiers (DOI) or alternateIdentifiers
 resource.description,core,Description,R,0..1,,descriptions (descriptionType Abstract)
 resource.keywords,core,Keywords,O,0..n,,subjects (no scheme)
@@ -33,7 +33,7 @@ study.context.locale,core,Locale,R,0..n,locale,subjects (subjectScheme 'HuMeta L
 education.modality,education,Instructional modality,R,0..n,modality,subjects (subjectScheme 'HuMeta Modalities')
 education.learning_environments,education,Learning environment,R,0..n,learning_environment,subjects (subjectScheme 'HuMeta Learning Environments')
 education.pedagogy,education,Instructional approach,O,0..n,pedagogy,subjects (subjectScheme 'HuMeta Instructional Approaches')
-study.evidence.study_designs,core,Study design,MA,0..n,study_design,subjects (subjectScheme 'HuMeta Study Designs'); descriptions (Methods)
+study.evidence.study_designs,core,Study design,M,1..n,study_design,subjects (subjectScheme 'HuMeta Study Designs'); descriptions (Methods)
 study.evidence.measurement_evidence,core,Measurement evidence,O,0..n,measurement_evidence,subjects (subjectScheme 'HuMeta Measurement Evidence')
 study.evidence.data_collection_methods,core,Data collection method,R,0..n,data_collection_method,subjects (subjectScheme 'HuMeta Data Collection Methods')
 study.evidence.analysis_methods,core,Analysis method,R,0..n,analysis_method,subjects (subjectScheme 'HuMeta Analysis Methods'); descriptions (Methods)

@@ -15,9 +15,9 @@ from streamlit.testing.v1 import AppTest  # noqa: E402
 APP = str(Path(__file__).resolve().parent.parent / "openscience.py")
 PAGES = [
     "About this app",
-    "1. Study Metadata Profile",
-    "2. Framework and Measures",
-    "3. Check & Export Metadata",
+    "1. Describe Your Study",
+    "2. Theory and Measures",
+    "3. Check, Register & Export",
     "4. Deposit Data in the STEMEd+ Library",
     "5. Descriptive & Scale Analytics",
     "6. Find Related Data",

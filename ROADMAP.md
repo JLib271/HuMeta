@@ -38,7 +38,7 @@ their data with common names and metadata, and sharing data responsibly.
    discourse analysis), add a section for non-human sources (texts, artworks, media, platform data), and
    revisit rules that assume measured constructs or human participants.
 
-1. **Module 2 follow-ups.** Module 2 is now Framework and Measures, built on
+1. **Module 2 follow-ups.** Module 2 is now Theory and Measures, built on
    the library (frameworks, constructs, instruments, codebook). Next: let
    researchers pick individual library items, retire
    `catalogs/measure_catalog.json`, and move

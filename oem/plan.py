@@ -1,6 +1,6 @@
 # Copyright (C) 2026 Julie C. Libarkin
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""The variable plan built in Module 2 (Framework and Measures).
+"""The variable plan built in Module 2 (Theory and Measures).
 
 A plan runs from theory to data, and each step builds on the one before:
 

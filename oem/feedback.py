@@ -46,7 +46,7 @@ def label_color(label: str) -> str:
 
 
 def page_label(page: str) -> str:
-    """GitHub label for an app page, e.g. '2. Framework and Measures' -> 'page: module 2'."""
+    """GitHub label for an app page, e.g. '2. Theory and Measures' -> 'page: module 2'."""
     match = re.match(r"\s*(\d+)\.", page or "")
     return f"page: module {match.group(1)}" if match else "page: about"
 

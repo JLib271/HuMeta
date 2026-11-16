@@ -8,7 +8,6 @@ and exports). The record format and all rules live in ``oem/profile.py``.
 
 from __future__ import annotations
 
-import datetime as dt
 import re
 
 import pandas as pd
@@ -21,18 +20,7 @@ from oem.library import Library
 SPEC_URL = "https://github.com/JLib271/humeta-profile/blob/main/README.md"
 ISSUES_URL = "https://github.com/JLib271/HuMeta/issues"
 DDI_URL = "https://ddialliance.org/"
-KCWORKS_URL = "https://works.hcommons.org/"
 TADIRAH_URL = "https://vocabs.dariah.eu/tadirah/"
-#: plain-language answers for the DataCite resource type
-RESOURCE_TYPE_LABELS = {
-    "Dataset": "Data from the study (a dataset)",
-    "StudyRegistration": "A study plan or preregistration (no data yet)",
-    "Instrument": "A measure or instrument (a survey, test, rubric, or coding scheme)",
-    "Collection": "A collection of sources or materials (an archive, corpus, or set of works)",
-    "Text": "A report, article, or other text",
-    "Software": "Software or code",
-    "Other": "Something else",
-}
 #: starting choice in Module 1: field module -> button label, and the research field it adds
 FIELD_START = {"education": "Education", "social_science": "Social sciences", "humanities": "Arts and humanities",
                "other": "Other field"}
@@ -177,15 +165,6 @@ def record_form(record: dict) -> dict | None:
         st.subheader("1 · The study")
         title = st.text_input(lab("Title *", "resource.title"), res.get("title") or "", key=key("title"),
                               help=tip("resource.title"))
-        # Full-width radio buttons: the answers need a few words each, which a narrow dropdown cuts off.
-        type_options = [t for t in RESOURCE_TYPE_LABELS if t in profile.RESOURCE_TYPES]
-        resource_type = st.radio(
-            lab("What will this profile be attached to? *", "resource.resource_type"), type_options,
-            index=type_options.index(res.get("resource_type") or "Dataset"), key=key("rtype"),
-            format_func=RESOURCE_TYPE_LABELS.get,
-            help=tip("resource.resource_type", "A study profile describes your study through the thing you will share, "
-                     "register, or cite. This sets the DataCite resource type used when you get a DOI, and what the "
-                     "profile checks for (for example, a dataset needs a study design)."))
         st.markdown("**Study team**",
                     help=tip("resource.creators"))
         creators_df = st.data_editor(
@@ -202,31 +181,8 @@ def record_form(record: dict) -> dict | None:
                                    key=key("description"),
                                    placeholder="Two to five sentences: what you studied, with whom or what, and how.",
                                    help=tip("resource.description", "Used as the abstract when you share or register the study."))
-        st.markdown("**For citing and sharing**")
-        st.caption("These become the citation when you share data or register a DOI. Estimates are fine for now; "
-                   "you can update them later.")
-        st.info(
-            f"**Need a DOI?** [KCWorks]({KCWORKS_URL}) (Knowledge Commons Works), a free open-access repository hosted "
-            "at Michigan State University, gives every public deposit a DOI. It accepts data, instruments, coding "
-            "schemes, course materials, and more, from any discipline. Deposits there are public and meant to be "
-            "permanent, so share only de-identified data or materials you are free to share; for restricted data, "
-            "use an archive such as ICPSR or your institution's repository."
-        )
-        c1, c2, c3 = st.columns(3)
-        publisher = c1.text_input(lab("Lead institution or repository *", "resource.publisher"), res.get("publisher") or "",
-                                  key=key("publisher"), placeholder="e.g., your university, KCWorks, or ICPSR",
-                                  help=tip("resource.publisher", "Who releases this: usually your university, or the "
-                                           "repository that will publish the data. DataCite calls this the publisher."))
-        publication_year = c2.number_input(lab("Year it will be shared (estimate) *", "resource.publication_year"),
-                                           min_value=1900, max_value=2100, step=1,
-                                           value=int(res.get("publication_year") or dt.date.today().year), key=key("year"),
-                                           help=tip("resource.publication_year", "Your best estimate of when the data or "
-                                                    "record will be available. DataCite calls this the publication year."))
-        doi = c3.text_input(lab("DOI, if you already have one", "resource.identifier"),
-                            (res.get("identifier") or {}).get("value") or "", key=key("doi"),
-                            placeholder="Leave blank until a repository such as KCWorks assigns one",
-                            help=tip("resource.identifier", "A DOI is a permanent link to your data or materials, "
-                                     "usually assigned when you deposit them in a repository (for example 10.3886/ICPSR12345)."))
+        st.caption("When the design is ready, register the study in Module 3 to get a DOI for it in the STEMEd+ Library. "
+                   "Datasets and other outputs then link back to that DOI.")
         c1, c2, c3 = st.columns(3)
         funder = c1.text_input(lab("Funder", "resource.funding"), "; ".join(f["funder_name"] for f in res.get("funding") or []),
                                key=key("funder"), help=tip("resource.funding"))
@@ -465,12 +421,11 @@ def record_form(record: dict) -> dict | None:
             orcid = re.search(r"(\d{4}-){3}\d{3}[\dX]", str(row.get("orcid") or ""))
             creators.append({"name": str(row["name"]).strip(), "orcid": orcid.group(0) if orcid else None,
                              "affiliation": _blank(str(row.get("affiliation") or ""))})
-    doi_match = re.search(r"10\.\d{4,9}/\S+", doi or "")
     new = profile.empty_record(p, modules=tuple(m for m in profile.MODULES if profile.uses(record, m)))
     new["resource"].update({
-        "title": title.strip(), "creators": creators, "publisher": publisher.strip(),
-        "publication_year": int(publication_year), "resource_type": resource_type,
-        "identifier": {"value": doi_match.group(0), "type": "DOI"} if doi_match else None,
+        "title": title.strip(), "creators": creators, "publisher": res.get("publisher") or "",
+        "publication_year": res.get("publication_year"), "resource_type": res.get("resource_type"),
+        "identifier": res.get("identifier"),  # set when the study is registered (Module 3)
         "description": _blank(description),
         "keywords": [k.strip() for k in keywords.split(",") if k.strip()],
         "language": _blank(language),

@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+* **A profile describes the study, not one output of it.** `resource.resource_type`
+  is now optional (was mandatory) and no longer asked in the study profile, so a
+  profile can be written while the study is still being designed. It is chosen
+  when exporting DataCite metadata for a DOI (default Dataset). Rules follow the
+  study instead of the output: R1 (constructs) applies when people take part
+  directly, and R2 (study design) applies to every study;
+  `study.evidence.study_designs` is now mandatory.
+* **Studies get their own DOI.** `resource.publisher` and
+  `resource.publication_year` are now optional (were mandatory): they describe
+  the study's registration, not the study. DataCite exports describe the study
+  registration (`StudyRegistration`) and default to publisher Knowledge Commons
+  and the current year. `resource.identifier` is the study's own DOI; datasets
+  and other outputs link to it.
+
 ## 1.0.0-draft.2 (2026-11-13)
 
 * **The instrument library has its own repository.** The construct and

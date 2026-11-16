@@ -23,10 +23,7 @@
       "additionalProperties": false,
       "required": [
         "title",
-        "creators",
-        "publisher",
-        "publication_year",
-        "resource_type"
+        "creators"
       ],
       "properties": {
         "title": {
@@ -64,11 +61,16 @@
           }
         },
         "publisher": {
-          "type": "string",
-          "minLength": 1
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "publication_year": {
-          "type": "integer",
+          "type": [
+            "integer",
+            "null"
+          ],
           "minimum": 1900,
           "maximum": 2100
         },
@@ -80,7 +82,8 @@
             "Text",
             "Software",
             "Collection",
-            "Other"
+            "Other",
+            null
           ]
         },
         "identifier": {
