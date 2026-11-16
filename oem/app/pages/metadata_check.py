@@ -20,6 +20,7 @@ from oem import datasets as D
 from oem import ddi
 from oem import plan as plan_model
 from oem import profile
+from oem import study_pdf
 from oem.app.common import current_project, navigate_to_module
 from oem.app.profile_form import SPEC_URL, current_record, library, show_issues, store_record
 
@@ -154,8 +155,13 @@ def _register_study(record: dict) -> None:
             "register when you are ready for the design to be public; you can add new versions as the study changes."
         )
     with st.expander("How to register", expanded=not doi):
-        st.markdown("**1.** Download your profile and attach it to the deposit, named **humeta.json**.")
-        st.download_button("Download humeta.json", json.dumps(record, ensure_ascii=False, indent=2).encode("utf-8"),
+        st.markdown("**1.** Download both files and attach both to the deposit: the **PDF** is the readable study "
+                    "profile for people; **humeta.json** is the same profile for the HuMeta Library and other tools.")
+        c1, c2 = st.columns(2)
+        c1.download_button("Download the study profile (PDF)", study_pdf.study_pdf(record, library(), profile.load()),
+                           file_name="study-profile.pdf", mime="application/pdf", key="m3_dl_register_pdf",
+                           type="primary" if not doi else "secondary", use_container_width=True)
+        c2.download_button("Download humeta.json", json.dumps(record, ensure_ascii=False, indent=2).encode("utf-8"),
                            file_name="humeta.json", mime="application/json", key="m3_dl_register",
                            type="primary" if not doi else "secondary", use_container_width=True)
         st.markdown("**2.** Start a deposit in the Studies collection. Sign in to Knowledge Commons (free; Google, ORCID, "
