@@ -39,8 +39,8 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
         st.subheader("1 · Describe your study first")
         st.write("Your deposit is linked through your study profile. Start it in Module 1, add the constructs and "
                  "instruments you used (Modules 2 and 3), then come back here.")
-        st.button("Go to 1. Study Metadata Profile", key="m4_to_m1", on_click=navigate_to_module,
-                  args=("1. Study Metadata Profile",))
+        st.button("Go to 1. Describe Your Study", key="m4_to_m1", on_click=navigate_to_module,
+                  args=("1. Describe Your Study",))
         _browse_link()
         return
 
@@ -53,8 +53,8 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     if not (links["instruments"] or links["constructs"] or links["frameworks"]):
         st.warning("Your profile doesn't name any instruments, constructs, or theories yet, so your deposit won't link "
                    "to the HuMeta Library. Add constructs and instruments in Module 3 (and theories in Module 2).")
-        st.button("Go to 3. Check & Export Metadata", key="m4_to_m3", on_click=navigate_to_module,
-                  args=("3. Check & Export Metadata",))
+        st.button("Go to 3. Check, Register & Export", key="m4_to_m3", on_click=navigate_to_module,
+                  args=("3. Check, Register & Export",))
     else:
         names = {
             "instruments": lambda i: (lib.instruments.get(i) or {}).get("name", i),

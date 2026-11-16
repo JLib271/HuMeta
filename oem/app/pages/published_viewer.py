@@ -46,15 +46,15 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
         elif record is None:
             st.info("Describe your study in Module 1 and add the constructs and instruments you used (Module 3) to find "
                     "related datasets.")
-            st.button("Go to 1. Study Metadata Profile", key="m6_to_m1", on_click=navigate_to_module,
-                      args=("1. Study Metadata Profile",))
+            st.button("Go to 1. Describe Your Study", key="m6_to_m1", on_click=navigate_to_module,
+                      args=("1. Describe Your Study",))
         else:
             links = D.study_links(record)
             if not (links["instruments"] or links["constructs"] or links["frameworks"]):
                 st.info("Your profile doesn't name instruments, constructs, or theories yet. Add them in Module 3 to find "
                         "related datasets.")
-                st.button("Go to 3. Check & Export Metadata", key="m6_to_m3", on_click=navigate_to_module,
-                          args=("3. Check & Export Metadata",))
+                st.button("Go to 3. Check, Register & Export", key="m6_to_m3", on_click=navigate_to_module,
+                          args=("3. Check, Register & Export",))
             else:
                 matches = D.related(index, record)
                 if not matches:

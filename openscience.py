@@ -9,7 +9,7 @@ shared helpers in ``oem/app/common.py``; Streamlit-free logic in ``oem/``.
 from __future__ import annotations
 import streamlit as st
 import json
-from oem.app.common import (auth_is_configured, render_feedback_box, current_project, empty_project, navigate_to_module, parse_project_file, render_project_download, render_value_card, researcher_display_name, researcher_is_signed_in, use_published_library, value_propositions)
+from oem.app.common import (auth_is_configured, render_feedback_box, current_project, empty_project, navigate_to_module, parse_project_file, render_project_download, render_value_card, researcher_display_name, STUDY_PATH, researcher_is_signed_in, use_published_library, value_propositions)
 from oem.app.pages import (
     analytics,
     data_repository,
@@ -40,15 +40,16 @@ app_mode = st.sidebar.radio(
     "Navigate Workspace Module:",
     [
         "About this app",
-        "1. Study Metadata Profile",
-        "2. Framework and Measures",
-        "3. Check & Export Metadata",
+        "1. Describe Your Study",
+        "2. Theory and Measures",
+        "3. Check, Register & Export",
         "4. Deposit Data in the STEMEd+ Library",
         "5. Descriptive & Scale Analytics",
         "6. Find Related Data",
     ],
     key="app_mode"
 )
+st.sidebar.caption(STUDY_PATH)
 
 signed_in = researcher_is_signed_in()
 
@@ -132,6 +133,7 @@ if app_mode == "About this app":
         "research across education, the social sciences, the humanities, and related fields by "
         "enforcing data structural integrity and empowering open-science collaboration."
     )
+    st.info(STUDY_PATH)
     for value_card in value_propositions:
         render_value_card(value_card, show_open_button=True)
 else:
@@ -155,9 +157,9 @@ publish_hint = (
 )
 
 PAGES = {
-    "1. Study Metadata Profile": study_profile.render,
-    "2. Framework and Measures": framework_measures.render,
-    "3. Check & Export Metadata": metadata_check.render,
+    "1. Describe Your Study": study_profile.render,
+    "2. Theory and Measures": framework_measures.render,
+    "3. Check, Register & Export": metadata_check.render,
     "4. Deposit Data in the STEMEd+ Library": data_repository.render,
     "5. Descriptive & Scale Analytics": analytics.render,
     "6. Find Related Data": published_viewer.render,

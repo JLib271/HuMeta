@@ -6,7 +6,7 @@ from oem import feedback
 
 
 def test_issue_has_page_kind_and_labels():
-    issue = feedback.build_issue("confusing", "2. Framework and Measures", "The construct table is hard to read.\nSecond line.",
+    issue = feedback.build_issue("confusing", "2. Theory and Measures", "The construct table is hard to read.\nSecond line.",
                                  name="Dana", field="Sociology")
     assert issue.title == "[Module 2] The construct table is hard to read. Second line."
     assert issue.labels == ["feedback", "feedback: confusing", "page: module 2"]

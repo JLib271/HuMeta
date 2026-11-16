@@ -1,6 +1,6 @@
 # Copyright (C) 2026 Julie C. Libarkin
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Module 3: Check & Export Metadata.
+"""Module 3: Check, Register & Export.
 
 Add the constructs measured (suggested from the variable plan in Module 2), check the
 study profile against the profile's rules, and export HuMeta JSON, DataCite
@@ -26,7 +26,7 @@ from oem.app.profile_form import SPEC_URL, current_record, library, show_issues,
 
 
 def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None) -> None:
-    st.header("3. Check & Export Metadata")
+    st.header("3. Check, Register & Export")
     p = profile.load()
     lib = library()
     st.caption(
@@ -36,8 +36,8 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     record = current_record()
     if record is None:
         st.info("Start with your study profile in Module 1.")
-        st.button("Go to 1. Study Metadata Profile", key="m3_to_m1", on_click=navigate_to_module,
-                  args=("1. Study Metadata Profile",))
+        st.button("Go to 1. Describe Your Study", key="m3_to_m1", on_click=navigate_to_module,
+                  args=("1. Describe Your Study",))
         return
 
     construct_labels = {c["label"]: cid for cid, c in lib.constructs.items()}
@@ -90,7 +90,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     issues = profile.validate(record, lib, p)
     show_issues(issues)
     st.button("Edit the study profile in Module 1", key="m3_edit_m1", on_click=navigate_to_module,
-              args=("1. Study Metadata Profile",))
+              args=("1. Describe Your Study",))
 
     st.subheader("Export")
     slug = re.sub(r"[^a-z0-9]+", "-", (record["resource"].get("title") or "record").lower()).strip("-")[:50] or "record"
