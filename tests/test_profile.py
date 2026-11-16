@@ -80,6 +80,15 @@ def test_open_access_rules(lib, change, rule):
     assert rule in rules_fired(record, lib)
 
 
+def test_profile_needs_no_resource_type(lib, p):
+    record = copy.deepcopy(EXAMPLE)
+    del record["resource"]["resource_type"]
+    assert profile.is_valid(record, lib, p)
+    assert profile.to_datacite_json(record, lib, p)["types"]["resourceTypeGeneral"] == "Dataset"
+    assert profile.to_datacite_json(record, lib, p, "StudyRegistration")["types"]["resourceTypeGeneral"] == "StudyRegistration"
+    assert profile.empty_record(p)["resource"]["resource_type"] is None
+
+
 def test_constructs_and_design_required_for_datasets(lib):
     record = copy.deepcopy(EXAMPLE)
     record["study"]["constructs"] = []

@@ -166,7 +166,8 @@ checks is `oem/profile.py` (`validate()`).
 
 | Element | Obl. | Vocabulary |
 |---|---|---|
-| `resource.title`, `.creators`, `.publisher`, `.publication_year`, `.resource_type` | M | DataCite resourceTypeGeneral |
+| `resource.title`, `.creators`, `.publisher`, `.publication_year` | M | DataCite |
+| `resource.resource_type` | O | DataCite resourceTypeGeneral; chosen at DOI export, not part of the study description |
 | `study.fields` | M | `research_field` (OECD FOS) |
 | `study.discipline` | R | `discipline` (ANZSRC 2020 FoR divisions and groups, with OECD FOS codes) |
 | `study.constructs` | MA (instruments; datasets with direct participants) | construct vocabulary |

@@ -23,16 +23,6 @@ ISSUES_URL = "https://github.com/JLib271/HuMeta/issues"
 DDI_URL = "https://ddialliance.org/"
 KCWORKS_URL = "https://works.hcommons.org/"
 TADIRAH_URL = "https://vocabs.dariah.eu/tadirah/"
-#: plain-language answers for the DataCite resource type
-RESOURCE_TYPE_LABELS = {
-    "Dataset": "Data from the study (a dataset)",
-    "StudyRegistration": "A study plan or preregistration (no data yet)",
-    "Instrument": "A measure or instrument (a survey, test, rubric, or coding scheme)",
-    "Collection": "A collection of sources or materials (an archive, corpus, or set of works)",
-    "Text": "A report, article, or other text",
-    "Software": "Software or code",
-    "Other": "Something else",
-}
 #: starting choice in Module 1: field module -> button label, and the research field it adds
 FIELD_START = {"education": "Education", "social_science": "Social sciences", "humanities": "Arts and humanities",
                "other": "Other field"}
@@ -177,15 +167,6 @@ def record_form(record: dict) -> dict | None:
         st.subheader("1 · The study")
         title = st.text_input(lab("Title *", "resource.title"), res.get("title") or "", key=key("title"),
                               help=tip("resource.title"))
-        # Full-width radio buttons: the answers need a few words each, which a narrow dropdown cuts off.
-        type_options = [t for t in RESOURCE_TYPE_LABELS if t in profile.RESOURCE_TYPES]
-        resource_type = st.radio(
-            lab("What will this profile be attached to? *", "resource.resource_type"), type_options,
-            index=type_options.index(res.get("resource_type") or "Dataset"), key=key("rtype"),
-            format_func=RESOURCE_TYPE_LABELS.get,
-            help=tip("resource.resource_type", "A study profile describes your study through the thing you will share, "
-                     "register, or cite. This sets the DataCite resource type used when you get a DOI, and what the "
-                     "profile checks for (for example, a dataset needs a study design)."))
         st.markdown("**Study team**",
                     help=tip("resource.creators"))
         creators_df = st.data_editor(
@@ -226,7 +207,8 @@ def record_form(record: dict) -> dict | None:
                             (res.get("identifier") or {}).get("value") or "", key=key("doi"),
                             placeholder="Leave blank until a repository such as KCWorks assigns one",
                             help=tip("resource.identifier", "A DOI is a permanent link to your data or materials, "
-                                     "usually assigned when you deposit them in a repository (for example 10.3886/ICPSR12345)."))
+                                     "usually assigned when you deposit them in a repository (for example 10.3886/ICPSR12345). "
+                                     "Module 3 asks what the DOI is for when you export DataCite metadata."))
         c1, c2, c3 = st.columns(3)
         funder = c1.text_input(lab("Funder", "resource.funding"), "; ".join(f["funder_name"] for f in res.get("funding") or []),
                                key=key("funder"), help=tip("resource.funding"))
@@ -469,7 +451,7 @@ def record_form(record: dict) -> dict | None:
     new = profile.empty_record(p, modules=tuple(m for m in profile.MODULES if profile.uses(record, m)))
     new["resource"].update({
         "title": title.strip(), "creators": creators, "publisher": publisher.strip(),
-        "publication_year": int(publication_year), "resource_type": resource_type,
+        "publication_year": int(publication_year), "resource_type": res.get("resource_type"),
         "identifier": {"value": doi_match.group(0), "type": "DOI"} if doi_match else None,
         "description": _blank(description),
         "keywords": [k.strip() for k in keywords.split(",") if k.strip()],

@@ -304,7 +304,7 @@
     {
       "id": "resource.resource_type",
       "label": "Resource type",
-      "obligation": "M",
+      "obligation": "O",
       "cardinality": "1",
       "type": "enum",
       "values": [
@@ -316,7 +316,7 @@
         "Collection",
         "Other"
       ],
-      "definition": "General type of the resource, using DataCite resourceTypeGeneral values.",
+      "definition": "What a DOI for this study is for (data, a preregistration, an instrument, and so on), using DataCite resourceTypeGeneral values. A profile describes the study itself, so this is chosen when you export DataCite metadata for something you deposit; exports default to Dataset.",
       "datacite": "types.resourceTypeGeneral; types.resourceType = 'HuMeta <type>'",
       "alignments": [
         {
@@ -838,7 +838,7 @@
       "obligation": "MA",
       "cardinality": "0..n",
       "type": "construct",
-      "condition": "Mandatory when resource_type is Dataset or Instrument.",
+      "condition": "Mandatory when people take part directly in the study, or when exported as an Instrument.",
       "definition": "Constructs measured, from the HuMeta construct vocabulary (constructs.json in the HuMeta Instrument Library), optionally with the instrument, version and subscale used.",
       "vocabulary_file": "https://github.com/JLib271/humeta-library/blob/main/constructs.json",
       "datacite": "subjects (subjectScheme 'HuMeta Constructs', valueURI per construct); for datasets, relatedIdentifiers to the instrument's library record (URL, relationType IsCollectedBy) and its publication (DOI, relationType References); ERIC descriptors as additional subjects",
@@ -1196,11 +1196,10 @@
     {
       "id": "study.evidence.study_designs",
       "label": "Study design",
-      "obligation": "MA",
-      "cardinality": "0..n",
+      "obligation": "M",
+      "cardinality": "1..n",
       "type": "vocab",
       "vocabulary": "study_design",
-      "condition": "Mandatory when resource_type is Dataset or StudyRegistration.",
       "definition": "Design(s) that produced the evidence.",
       "datacite": "subjects (subjectScheme 'HuMeta Study Designs'); descriptions (Methods)",
       "alignments": [
@@ -1239,7 +1238,7 @@
       "cardinality": "0..n",
       "type": "vocab",
       "vocabulary": "measurement_evidence",
-      "condition": "Mandatory when resource_type is Instrument.",
+      "condition": "Mandatory when exported as an Instrument.",
       "definition": "Kinds of reliability and validity evidence the resource provides. Optional and not asked in the portal's study profile; an instrument's measurement evidence is recorded with the instrument in the HuMeta instrument library.",
       "datacite": "subjects (subjectScheme 'HuMeta Measurement Evidence')",
       "alignments": [
@@ -2021,13 +2020,13 @@
       "id": "R1",
       "severity": "error",
       "check": "constructs_required",
-      "message": "Instruments, and datasets from studies with human participants, must list at least one construct measured."
+      "message": "Studies in which people take part directly, and instruments, must list at least one construct measured."
     },
     {
       "id": "R2",
       "severity": "error",
       "check": "design_required",
-      "message": "Datasets and study registrations must list at least one study design."
+      "message": "Every study must list at least one study design."
     },
     {
       "id": "R4",

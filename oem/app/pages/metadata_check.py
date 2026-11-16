@@ -21,6 +21,17 @@ from oem import profile
 from oem.app.common import current_project, navigate_to_module
 from oem.app.profile_form import SPEC_URL, current_record, library, show_issues, store_record
 
+#: what a DOI points to: DataCite resourceTypeGeneral -> plain-language label
+DOI_FOR = {
+    "Dataset": "Data from the study",
+    "StudyRegistration": "The study plan or preregistration",
+    "Instrument": "A measure or instrument",
+    "Collection": "A collection of sources or materials",
+    "Text": "A report or other text",
+    "Software": "Software or code",
+    "Other": "Something else",
+}
+
 
 def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None) -> None:
     st.header("3. Check & Export Metadata")
@@ -97,7 +108,17 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     if any(i.severity == "error" for i in issues):
         st.info("Fix the items above to enable the DataCite and ERIC exports.")
         return
-    datacite = profile.to_datacite_json(record, lib, p)
+    # The profile describes the study; a DOI is for one thing that comes out of it, so ask only here.
+    rtype_options = list(DOI_FOR)
+    saved_rtype = record["resource"].get("resource_type")
+    rtype = st.radio("What is the DOI for?", rtype_options, format_func=DOI_FOR.get, key="m3_rtype",
+                     index=rtype_options.index(saved_rtype) if saved_rtype in rtype_options else 0,
+                     help="Only needed for the DataCite exports: DataCite records what kind of thing a DOI points to. "
+                          "Export once for each thing you deposit.")
+    if rtype != saved_rtype:
+        record["resource"]["resource_type"] = rtype
+        store_record(record)
+    datacite = profile.to_datacite_json(record, lib, p, rtype)
     c1, c2 = st.columns(2)
     with c1:
         st.download_button("DataCite 4.7 metadata (JSON)", json.dumps(datacite, ensure_ascii=False, indent=2).encode("utf-8"),
@@ -108,7 +129,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
                                 "State University) for open materials, or ICPSR for restricted data.")
     with c2:
         if (record["resource"].get("identifier") or {}).get("type") == "DOI":
-            st.download_button("DataCite 4.7 metadata (XML)", profile.to_datacite_xml(record, lib, p).encode("utf-8"),
+            st.download_button("DataCite 4.7 metadata (XML)", profile.to_datacite_xml(record, lib, p, rtype).encode("utf-8"),
                                file_name=f"{slug}.datacite.xml", mime="application/xml", key="m3_dl_dcxml",
                                use_container_width=True)
         else:

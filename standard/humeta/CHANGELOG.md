@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+* **A profile describes the study, not one output of it.** `resource.resource_type`
+  is now optional (was mandatory) and no longer asked in the study profile, so a
+  profile can be written while the study is still being designed. It is chosen
+  when exporting DataCite metadata for a DOI (default Dataset). Rules follow the
+  study instead of the output: R1 (constructs) applies when people take part
+  directly, and R2 (study design) applies to every study;
+  `study.evidence.study_designs` is now mandatory.
+
 ## 1.0.0-draft.2 (2026-11-13)
 
 * **The instrument library has its own repository.** The construct and
