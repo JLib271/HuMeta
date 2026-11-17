@@ -179,3 +179,30 @@ def test_discipline_filter_understands_anzsrc_divisions():
     assert not P.discipline_matches("anzsrc_4410", "anzsrc_4408") and not P.discipline_matches("sociology", "anzsrc_44")
     whole = set(P.browse_frameworks(lib, discipline="anzsrc_44"))  # Human society (all)
     assert set(P.browse_frameworks(lib, discipline="anzsrc_4410")) <= whole and "civic_voluntarism" in whole
+
+
+def test_constructs_without_a_measure_still_reach_the_profile(lib):
+    plan = sdt_plan(lib)
+    plan["constructs"].append(P.shared_list_construct(lib, "self_efficacy") | {"id": "own.x", "label": "X"})
+    plan["constructs"].append(P.shared_list_construct(lib, "interest"))
+    assert P.is_shared_list_construct(lib, plan["constructs"][-1])
+    assert not P.is_shared_list_construct(lib, plan["constructs"][-2])  # renamed: stays an own construct
+    plan["measures"] = []  # measures skipped
+    linked = [c["construct_id"] for c in P.profile_constructs(plan)]
+    assert "self_efficacy" in linked and "interest" in linked
+    assert all(c["instrument_id"] is None for c in P.profile_constructs(plan))
+
+
+def test_variables_are_suggested_from_the_study_profile(lib):
+    from oem import profile
+    record = profile.empty_record(profile.load(), modules=("education",))
+    assert "participant_id" not in P.suggest_variables(lib, record)
+    record["study"]["population"]["human_participants"] = "direct"
+    record["education"]["education_levels"] = ["bachelors"]
+    record["study"]["ethics"]["consent_for_sharing"] = "broad_sharing"
+    record["study"]["evidence"]["study_designs"] = ["pre_post"]
+    suggested = P.suggest_variables(lib, record)
+    assert {"participant_id", "age_years", "race_eth", "course_level", "consent_share", "timepoint"} <= set(suggested)
+    assert "postsecondary" in suggested["course_level"]
+    assert P.suggest_timepoints(record) == ["pre", "post"]
+    assert P.suggest_variables(lib, None) == {} and P.suggest_timepoints(None) == []
