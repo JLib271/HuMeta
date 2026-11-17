@@ -19,7 +19,8 @@ import streamlit as st
 from oem import datasets as D
 from oem import profile
 from oem.app.common import navigate_to_module
-from oem.app.profile_form import current_record, library, show_issues
+from oem.app.common import LICENSE_HELP
+from oem.app.profile_form import LICENSE_URLS, LICENSES, current_record, library, show_issues, store_record
 
 
 def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None) -> None:
@@ -73,15 +74,18 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
         st.warning("Your profile says the data may identify participants. Deposit only data your consent forms, ethics "
                    "approval, and data agreements allow you to share, and restrict the files if needed.")
 
-    st.subheader("2 · Download your HuMeta profile")
+    st.subheader("2 · Choose a license for your data")
+    _choose_license(record)
+
+    st.subheader("3 · Download your HuMeta profile")
     st.write("Attach this file to your deposit, named **humeta.json**. It describes your study in detail, so the HuMeta "
              "Library can link your dataset precisely. If you will restrict your files, it still helps you, but the "
-             "keywords in step 4 are what link the deposit.")
+             "keywords in step 5 are what link the deposit.")
     st.download_button("Download humeta.json", json.dumps(record, ensure_ascii=False, indent=2).encode("utf-8"),
                        file_name="humeta.json", mime="application/json", type="primary", key="m4_dl_humeta",
                        use_container_width=True)
 
-    st.subheader("3 · Deposit in the STEMEd+ Library")
+    st.subheader("4 · Deposit in the STEMEd+ Library")
     st.write("Sign in to Knowledge Commons (free; Google, ORCID, GitHub, or your institution), choose **Dataset** as the "
              "resource type, upload your data files and **humeta.json**, and fill in the form.")
     st.link_button("Start a deposit in the Data collection", D.DATA_DEPOSIT_URL, use_container_width=True)
@@ -95,7 +99,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     else:
         st.caption("Registering your study first (Module 3) gives it a DOI that this dataset can link back to.")
 
-    st.subheader("4 · Add the HuMeta keywords")
+    st.subheader("5 · Add the HuMeta keywords")
     if keywords:
         st.write("In the deposit form's **Keywords** (subjects) field, add each of these exactly. They link your deposit to "
                  "the HuMeta Library, even if its files are restricted.")
@@ -103,7 +107,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     else:
         st.caption("Add instruments, constructs, or theories to your profile to get HuMeta keywords.")
 
-    st.subheader("5 · See it linked")
+    st.subheader("6 · See it linked")
     st.write("Within a day, your dataset appears on the HuMeta Library's Datasets page and on the pages of the "
              "instruments, constructs, and theories it used. Module 6 shows datasets related to your study.")
     _browse_link()
@@ -112,6 +116,20 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     st.download_button("Download the keywords (text)", "\n".join(keywords).encode("utf-8"),
                        file_name=f"{slug}-humeta-keywords.txt", mime="text/plain", key="m4_dl_keywords",
                        disabled=not keywords)
+
+
+def _choose_license(record: dict) -> None:
+    """The data license: saved in the study profile (and so in humeta.json) and chosen again in the deposit form."""
+    res = record["resource"]
+    current = (res.get("license") or {}).get("spdx")
+    options = list(LICENSES)
+    chosen = st.selectbox("Data license", options, index=options.index(current) if current in options else 0,
+                          format_func=lambda k: LICENSES[k], key="m4_license",
+                          help=profile.alignment_help("resource.license"))
+    st.caption(LICENSE_HELP + " Choose the same license in the deposit form.")
+    if chosen != current and (chosen or current):
+        res["license"] = {"spdx": chosen, "name": LICENSES[chosen], "url": LICENSE_URLS.get(chosen)} if chosen else None
+        store_record(record)
 
 
 def _browse_link() -> None:

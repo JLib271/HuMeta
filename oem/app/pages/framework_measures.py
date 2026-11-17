@@ -103,7 +103,8 @@ def _instrument_label(options: dict, m: dict) -> str | None:
 
 
 # ------------------------------------------------------------------ page
-TABS = ["🧭 Build your plan", "💡 Recommend a theory or framework", "📏 Recommend an instrument", "✏️ Suggest a correction"]
+TABS = ["🧭 Build your plan", "💡 Suggest to the library"]
+SUGGESTIONS = {"framework": "A theory or framework", "instrument": "An instrument", "correction": "A correction"}
 
 
 def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None) -> None:
@@ -113,19 +114,18 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
         "Start from theory. Choose the framework that guides your study, and it supplies the constructs. Give each "
         "construct a measure (a library instrument, your own questions, or codes in a coding scheme), and the "
         "framework's expected relationships draw the diagram. The result is your variable plan and its codebook. "
-        "Save it in Step 6 to carry it into Module 3."
+        "Save it in Step 5 to carry it into Module 3."
     )
-    st.info("**Help grow the shared library.** Know a theory, conceptual model, or instrument that should be here? "
-            "Use the **Recommend** tabs below. Each recommendation is reviewed before it is added for everyone.")
-    plan_tab, framework_tab, instrument_tab, correction_tab = st.tabs(TABS)
+    plan_tab, suggest_tab = st.tabs(TABS)
     with plan_tab:
         _plan(lib, publish_disabled, publish_hint)
-    with framework_tab:
-        _recommend_framework(lib, publish_disabled, publish_hint)
-    with instrument_tab:
-        _recommend_instrument(lib, publish_disabled, publish_hint)
-    with correction_tab:
-        _suggest_correction(lib, publish_disabled, publish_hint)
+    with suggest_tab:
+        st.caption("Know a theory, conceptual model, or instrument that should be in the shared library, or see "
+                   "something to fix? Each suggestion is reviewed before it is added for everyone.")
+        kind = st.radio("What would you like to suggest?", list(SUGGESTIONS), format_func=SUGGESTIONS.get,
+                        horizontal=True, key="m2_suggest_kind")
+        {"framework": _recommend_framework, "instrument": _recommend_instrument,
+         "correction": _suggest_correction}[kind](lib, publish_disabled, publish_hint)
 
 
 FIELD_FILTERS = {"": "All fields", "education": "Education", "social_sciences": "Social sciences",
@@ -199,7 +199,7 @@ def _browse_frameworks(lib, picker_key: str, v: int) -> None:
                                "and instruments that measure them")
                 if fw.get("status") == "draft":
                     st.caption("Draft: please check the constructs and relationships, and suggest changes in the "
-                               f"**{TABS[3]}** tab.")
+                               f"**{TABS[1]}** tab.")
                 st.button("✓ In your plan" if fid in chosen else "Add to my plan", key=f"m2_add_{fid}_{v}",
                           disabled=fid in chosen, on_click=_add_framework, args=(picker_key, fid))
         if not found:
@@ -221,7 +221,8 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
     picker_key = f"m2_frameworks_{v}"
     if picker_key not in st.session_state:
         st.session_state[picker_key] = [f for f in base["frameworks"] if f in lib.frameworks]
-    _browse_frameworks(lib, picker_key, v)
+    if not st.session_state[picker_key] or st.toggle("Browse the framework library", key=f"m2_browse_open_{v}"):
+        _browse_frameworks(lib, picker_key, v)
     options = P.browse_frameworks(lib)
     plan["frameworks"] = st.multiselect(
         "Your framework(s) *", options, key=picker_key,
@@ -374,7 +375,7 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
             if st.button(f"Add {len(picked)} selected measure(s)", disabled=not picked, key=f"m2_add_lib_{v}"):
                 _rebase({**plan, "measures": measures + picked, "relationships": base["relationships"]})
     st.caption(f"Know an instrument that measures one of your constructs but is not in the library? Recommend it in the "
-               f"**{TABS[2]}** tab.")
+               f"**{TABS[1]}** tab.")
     unmeasured = [c["label"] for c in constructs if c["id"] not in {m["construct"] for m in measures}]
     if unmeasured:
         st.warning("No measure yet for: " + ", ".join(unmeasured))
@@ -395,22 +396,23 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
                 st.caption("Evidence profile: " + EV.summary_line(prof)
                            + (". " + " ".join(prof.flags) if prof.flags else ""))
 
-    # ------------------------------------------------------------ Step 4
-    st.subheader("Step 4 · Standard variables and timepoints")
-    st.caption("Also collected: participant IDs, demographics, and other standard variables, and the timepoints at "
-               "which your measures are repeated.")
-    c1, c2 = st.columns(2)
-    std_labels = {f"{s['label']} ({name})": name for name, s in lib.standard_variables.items()}
-    plan["standard_variables"] = [std_labels[x] for x in c1.multiselect(
-        "Standard and demographic variables", list(std_labels),
-        default=[k for k, name in std_labels.items() if name in base["standard_variables"]], key=f"m2_std_{v}",
-        help="Shared definitions from the library, so these columns match across studies.")]
-    plan["timepoints"] = c2.multiselect("Timepoints (for repeated measures)", list(P.naming.TIMEPOINT_SUFFIXES),
-                                        default=base["timepoints"], key=f"m2_tp_{v}",
-                                        help="Each measured variable is repeated with this suffix, e.g. _pre and _post.")
+    # ------------------------------------------------------------ Optional: standard variables and timepoints
+    with st.expander("Optional · Standard variables and timepoints",
+                     expanded=bool(base["standard_variables"] or base["timepoints"])):
+        st.caption("Participant IDs, demographics, and other standard variables, and the timepoints at which your "
+                   "measures are repeated.")
+        c1, c2 = st.columns(2)
+        std_labels = {f"{s['label']} ({name})": name for name, s in lib.standard_variables.items()}
+        plan["standard_variables"] = [std_labels[x] for x in c1.multiselect(
+            "Standard and demographic variables", list(std_labels),
+            default=[k for k, name in std_labels.items() if name in base["standard_variables"]], key=f"m2_std_{v}",
+            help="Shared definitions from the library, so these columns match across studies.")]
+        plan["timepoints"] = c2.multiselect("Timepoints (for repeated measures)", list(P.naming.TIMEPOINT_SUFFIXES),
+                                            default=base["timepoints"], key=f"m2_tp_{v}",
+                                            help="Each measured variable is repeated with this suffix, e.g. _pre and _post.")
 
-    # ------------------------------------------------------------ Step 5
-    st.subheader("Step 5 · Relationships and diagram")
+    # ------------------------------------------------------------ Step 4
+    st.subheader("Step 4 · Relationships and diagram")
     st.caption("Expected relationships between constructs start from the framework. Edit them, add your own, and note hypotheses.")
     rel_df = st.data_editor(
         pd.DataFrame([{"From": construct_from_key.get(r["from"]), "To": construct_from_key.get(r["to"]),
@@ -431,11 +433,13 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
         _rebase({**plan, "relationships": plan["relationships"] + defaults})
     if constructs:
         st.graphviz_chart(P.diagram_dot(lib, plan), use_container_width=True)
-    plan["narrative"] = st.text_area("Conceptual framework narrative (optional)", base.get("narrative", ""),
-                                     key=f"m2_narrative_{v}")
+    with st.expander("Optional · Conceptual framework narrative", expanded=bool(base.get("narrative"))):
+        plan["narrative"] = st.text_area("Conceptual framework narrative", base.get("narrative", ""),
+                                         key=f"m2_narrative_{v}", label_visibility="collapsed",
+                                         placeholder="A few sentences on how your constructs relate and why.")
 
-    # ------------------------------------------------------------ Step 6
-    st.subheader("Step 6 · Review, save, and continue")
+    # ------------------------------------------------------------ Step 5
+    st.subheader("Step 5 · Review, save, and continue")
     issues = P.problems(lib, plan)
     if {"own", "lens"} & {kinds[f] for f in plan["frameworks"]} and not plan["framework_description"].strip():
         issues.append("Describe your own framework or lens in Step 1.")
@@ -451,12 +455,17 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
                      use_container_width=True, hide_index=True)
         manifest = P.manifest(lib, plan)
         st.session_state["module2_variable_manifest"] = manifest
-        d1, d2, d3, d4 = st.columns(4)
-        d1.download_button("Codebook (CSV)", book.to_csv().encode("utf-8"), file_name="codebook.csv", mime="text/csv", key="m2_dl_cb_csv")
-        d2.download_button("Codebook (JSON)", book.to_json().encode("utf-8"), file_name="codebook.json", mime="application/json", key="m2_dl_cb_json")
-        d3.download_button("Variable matrix for Module 5 (CSV)", pd.DataFrame(manifest).to_csv(index=False).encode("utf-8"),
-                           file_name="variable_matrix.csv", mime="text/csv", key="m2_dl_manifest")
-        d4.download_button("Diagram (Graphviz DOT)", P.diagram_dot(lib, plan).encode("utf-8"), file_name="framework_diagram.dot", mime="text/vnd.graphviz", key="m2_dl_dot")
+        st.download_button("Download codebook (CSV)", book.to_csv().encode("utf-8"), file_name="codebook.csv",
+                           mime="text/csv", key="m2_dl_cb_csv")
+        with st.expander("More downloads"):
+            d1, d2, d3 = st.columns(3)
+            d1.download_button("Codebook (JSON)", book.to_json().encode("utf-8"), file_name="codebook.json",
+                               mime="application/json", key="m2_dl_cb_json", use_container_width=True)
+            d2.download_button("Variable matrix for Module 5 (CSV)", pd.DataFrame(manifest).to_csv(index=False).encode("utf-8"),
+                               file_name="variable_matrix.csv", mime="text/csv", key="m2_dl_manifest", use_container_width=True)
+            d3.download_button("Diagram (Graphviz DOT)", P.diagram_dot(lib, plan).encode("utf-8"),
+                               file_name="framework_diagram.dot", mime="text/vnd.graphviz", key="m2_dl_dot",
+                               use_container_width=True)
     st.caption("**Saving moves your work into Module 3:** your framework and the constructs you measure are added to "
                "your study profile, and your variables are used in Module 3's DDI export.")
     if st.button("Save variable plan and continue", type="primary", disabled=bool(issues), key="m2_save"):

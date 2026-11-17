@@ -10,7 +10,7 @@ By participating you agree to follow our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 | You are… | You could… |
 |---|---|
-| A researcher | Recommend a theory, framework, or instrument (Module 2's **Recommend** tabs, no GitHub needed), add an instrument to the library, check a record's `needs_check` items against the source, report a confusing form, suggest a response scale or standard variable |
+| A researcher | Recommend a theory, framework, or instrument (Module 2's **Suggest to the library** tab, no GitHub needed), add an instrument to the library, check a record's `needs_check` items against the source, report a confusing form, suggest a response scale or standard variable |
 | A developer | Fix a bug, pick up a [`good first issue`](../../issues?q=is%3Aopen+label%3A%22good+first+issue%22), add tests, improve accessibility |
 | A methodologist | Review evidence records, propose naming or codebook conventions, improve de-identification checks |
 | A user | Try the app on a real study plan and [open an issue](../../issues/new/choose) describing what got in the way |
@@ -56,8 +56,8 @@ Commits should describe *why* a change was made. We use squash merges.
 
 ## Recommending theories, frameworks, and instruments
 
-The easiest way is in the app: **Module 2 → Recommend a theory or framework**,
-**Recommend an instrument**, or **Suggest a correction**. You sign in, fill in a
+The easiest way is in the app: **Module 2 → Suggest to the library**, then choose
+a theory or framework, an instrument, or a correction. You sign in, fill in a
 short structured form, and the app opens a pull request for review. You don't
 need a GitHub account. The pull request opens in the
 [HuMeta Instrument Library](https://github.com/JLib271/humeta-library) (analysis
