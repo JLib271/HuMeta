@@ -493,10 +493,13 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
              "relationship": _s(r.get("Relationship")), "hypothesis": _s(r.get("Hypothesis or rationale"))}
             for r in rel_df.to_dict(orient="records")
             if _s(r.get("From")) in construct_display and _s(r.get("To")) in construct_display]
-        defaults = [r for r in P.default_relationships(lib, plan["frameworks"], construct_keys)
-                    if (r["from"], r["to"]) not in {(x["from"], x["to"]) for x in plan["relationships"]}]
-        if defaults and st.button(f"Add the theory's {len(defaults)} expected relationship(s)", key=f"m2_paths_{v}"):
-            _rebase({**plan, "relationships": plan["relationships"] + defaults, "narrative": base.get("narrative", "")})
+        missing = P.missing_theory_relationships(lib, plan, {c["id"] for c in base["constructs"]})
+        if missing["new"]:
+            # A construct was just added (e.g. a theory was chosen): include its expected relationships.
+            _rebase({**plan, "relationships": plan["relationships"] + missing["new"], "narrative": base.get("narrative", "")})
+        if missing["removed"] and st.button(f"Restore the theory's {len(missing['removed'])} removed relationship(s)",
+                                            key=f"m2_paths_{v}"):
+            _rebase({**plan, "relationships": plan["relationships"] + missing["removed"], "narrative": base.get("narrative", "")})
         st.graphviz_chart(P.diagram_dot(lib, plan), use_container_width=True)
         with st.expander("Conceptual framework narrative (optional)", expanded=bool(base.get("narrative"))):
             plan["narrative"] = st.text_area("Conceptual framework narrative", base.get("narrative", ""),

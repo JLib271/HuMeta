@@ -260,3 +260,17 @@ def test_shared_constructs_keep_matching_under_their_official_names(lib):
     assert lib.constructs["mindset"]["label"] == "Implicit theories of intelligence"
     assert lib.constructs["mindset"]["naming"]["doi"] == "10.1037/0033-295X.95.2.256"
     assert all(c.get("naming") for c in lib.constructs.values())
+
+
+def test_theory_relationships_are_included_automatically(lib):
+    plan = P.empty_plan()
+    plan["frameworks"] = ["sct"]
+    plan["constructs"] = P.framework_constructs(lib, ["sct"])
+    expected = P.default_relationships(lib, ["sct"], {c["id"] for c in plan["constructs"]})
+    assert expected
+    # Just chose the theory: every expected relationship is new, so it is added without asking.
+    assert P.missing_theory_relationships(lib, plan, set())["new"] == expected
+    # Later the researcher deletes one: it is offered back, not re-added.
+    plan["relationships"] = expected[1:]
+    missing = P.missing_theory_relationships(lib, plan, {c["id"] for c in plan["constructs"]})
+    assert missing == {"new": [], "removed": expected[:1]}
