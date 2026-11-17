@@ -248,6 +248,7 @@ def _construct_concept(b: _Builder, parent: ET.Element, lib: Library, shared_id:
         b.el(parent, "concept", label)
 
 
+ICPSR_THESAURUS = "ICPSR Subject Thesaurus"
 NATURE = {"ordinal": "ordinal", "categorical": "nominal", "binary": "nominal", "numeric": "interval"}
 
 
@@ -269,6 +270,9 @@ def _variable(b: _Builder, parent: ET.Element, lib: Library, v: codebook.Variabl
         b.el(cat, "catValu", str(code))
         if label:
             b.el(cat, "labl", label)
+    term = (lib.standard_variables.get(v.standard_variable or "") or {}).get("icpsr_term")
+    if term:
+        b.el(node, "concept", term["term"], vocab=ICPSR_THESAURUS, vocabURI=term["url"])
     shared = [cid for cid in v.construct_ids if cid in lib.constructs]
     for cid in shared:
         _construct_concept(b, node, lib, cid, lib.constructs[cid]["label"])

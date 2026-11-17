@@ -56,6 +56,11 @@ MAPPING_STATUS = {
     "approved": "Approved by the governance committee",
 }
 OWN_PREFIX = "own"
+# Variables taken from ICPSR's Social Science Variables Database (DDI-documented variables from ICPSR studies).
+ICPSR_VARIABLE_SEARCH = "https://www.icpsr.umich.edu/web/ICPSR/search/variables"
+ICPSR_VARIABLE_PAGE = re.compile(
+    r"^https?://(?:www\.)?icpsr\.umich\.edu/web/[A-Za-z]+/studies/(\d+)/datasets/(\d+)/variables/([^/?#\s]+)")
+EXTERNAL_TYPES = {"categorical": "Categorical", "numeric": "Numeric", "text": "Text"}
 MANIFEST_FIELDS = ("Variable_ID", "Variable_Label", "Framework_Source", "Construct", "Measure", "Items")
 
 
@@ -70,6 +75,7 @@ def empty_plan() -> dict:
         "relationships": [],
         "standard_variables": [],
         "timepoints": [],
+        "external_variables": [],
         "narrative": "",
     }
 
@@ -87,6 +93,25 @@ def normalize(plan: dict | None, lib: Library | None = None) -> dict:
     out.update(copy.deepcopy({k: v for k, v in plan.items() if k in out}))
     out["schema_version"] = PLAN_VERSION
     return out
+
+
+def icpsr_variable(url: str | None) -> dict | None:
+    """Study, dataset and variable from an ICPSR variable page address (None if it isn't one)."""
+    match = ICPSR_VARIABLE_PAGE.match((url or "").strip())
+    if not match:
+        return None
+    study, dataset, variable = match.groups()
+    return {"study": study, "dataset": dataset, "variable": variable,
+            "url": f"https://www.icpsr.umich.edu/web/ICPSR/studies/{study}/datasets/{dataset}/variables/{variable}"}
+
+
+def external_variable(name: str, label: str, url: str, question: str = "", data_type: str = "categorical") -> dict:
+    """A plan variable taken from an ICPSR study, linked to its ICPSR variable page."""
+    found = icpsr_variable(url) or {}
+    return {"name": name.strip(), "label": label.strip(), "question": question.strip(),
+            "data_type": data_type if data_type in EXTERNAL_TYPES else "categorical",
+            "source": "ICPSR", "source_url": found.get("url") or url.strip(),
+            "study": found.get("study"), "variable": found.get("variable")}
 
 
 def construct_key(framework_id: str | None, label_or_id: str) -> str:
@@ -148,6 +173,69 @@ def framework_constructs(lib: Library, framework_ids: list[str]) -> list[dict]:
                 "definition": c.get("definition", ""),
             })
     return constructs
+
+
+def shared_list_construct(lib: Library, shared_id: str) -> dict:
+    """A plan construct taken straight from the shared construct list (no theory needed)."""
+    shared = lib.constructs[shared_id]
+    return {"id": construct_key(None, shared["label"]), "label": shared["label"], "framework_id": None,
+            "shared_construct_id": shared_id, "definition": shared.get("definition", "")}
+
+
+def is_shared_list_construct(lib: Library, construct: dict) -> bool:
+    """True for a construct added from the shared list as is (not renamed or redefined)."""
+    sid = construct.get("shared_construct_id")
+    return (not construct.get("framework_id") and sid in lib.constructs
+            and construct.get("label") == lib.constructs[sid]["label"])
+
+
+# Study designs with more than one measurement occasion, and the timepoints they usually need.
+REPEATED_DESIGNS = {"pre_post": ["pre", "post"], "quasi_experimental": ["pre", "post"],
+                    "randomized_experiment": ["pre", "post"], "longitudinal": ["t1", "t2"], "time_series": ["t1", "t2"]}
+POSTSECONDARY_LEVELS = {"short_cycle_tertiary", "bachelors", "masters", "doctoral", "postsecondary_non_tertiary"}
+
+
+def suggest_variables(lib: Library, record: dict | None) -> dict[str, str]:
+    """Standard variables suggested by the study profile (Module 1): name -> why it is suggested.
+
+    Suggestions only: nothing is added to the plan until the researcher ticks it.
+    """
+    if not record:
+        return {}
+    study = record.get("study") or {}
+    participants = (study.get("population") or {}).get("human_participants")
+    levels = set((record.get("education") or {}).get("education_levels") or [])
+    sharing = (study.get("ethics") or {}).get("consent_for_sharing")
+    designs = set((study.get("evidence") or {}).get("study_designs") or [])
+    out: dict[str, str] = {}
+    if participants in ("direct", "indirect"):
+        out["participant_id"] = "People take part in your study: give each person a random study ID."
+    if participants == "direct":
+        out["age_years"] = "A common demographic for studies where people take part."
+        out["race_eth"] = "A common demographic, with the federal (SPD 15) categories so studies can be compared."
+    if participants == "direct":
+        out["gender_identity"] = "A common demographic for studies where people take part."
+    if levels:
+        out["course_level"] = ("Your study is in postsecondary education." if levels & POSTSECONDARY_LEVELS
+                               else "Your study is in an education setting.")
+    if participants == "direct" and levels & POSTSECONDARY_LEVELS:
+        out["class_standing"] = "Common for college students: their year in college."
+        out["first_gen"] = "Common for college students, especially in equity and retention research."
+        out["major_cip"] = "Common for college students, recorded as a CIP code so majors match across studies."
+    if participants in ("direct", "indirect") and sharing in ("broad_sharing", "restricted_sharing", "not_addressed"):
+        out["consent_share"] = "Records who agreed to data sharing, so only they go into a shared dataset."
+    if designs & set(REPEATED_DESIGNS):
+        out["timepoint"] = "Your design measures more than once; use this if your data have one row per timepoint."
+    return {name: why for name, why in out.items() if name in lib.standard_variables}
+
+
+def suggest_timepoints(record: dict | None) -> list[str]:
+    """Timepoints suggested by the study design (Module 1), e.g. pre and post for a pre-post design."""
+    designs = ((record or {}).get("study") or {}).get("evidence", {}).get("study_designs") or []
+    for design in designs:
+        if design in REPEATED_DESIGNS:
+            return list(REPEATED_DESIGNS[design])
+    return []
 
 
 def default_relationships(lib: Library, framework_ids: list[str], included: set[str]) -> list[dict]:
@@ -236,6 +324,12 @@ def problems(lib: Library, plan: dict) -> list[str]:
     for name in plan["standard_variables"]:
         if name not in lib.standard_variables:
             issues.append(f"Unknown standard variable {name!r}.")
+    for x in plan.get("external_variables") or []:
+        where = f"Variable from ICPSR {x.get('name') or '(no name)'!r}"
+        for problem in naming.problems(x.get("name") or ""):
+            issues.append(f"{where}: variable name {problem}.")
+        if not icpsr_variable(x.get("source_url")):
+            issues.append(f"{where}: paste the address of the variable's page at ICPSR.")
     for tp in plan["timepoints"]:
         if tp not in naming.TIMEPOINT_SUFFIXES:
             issues.append(f"Unknown timepoint {tp!r}.")
@@ -323,6 +417,12 @@ def build_codebook(lib: Library, plan: dict) -> codebook.Codebook:
     variables: list[codebook.Variable] = []
     for name in plan["standard_variables"]:
         variables += codebook.standard_variable(lib, name)
+    for x in plan.get("external_variables") or []:
+        source = (f"From ICPSR study {x['study']}, variable {x['variable']}" if x.get("study") else "From ICPSR")
+        variables.append(codebook.Variable(
+            name=x["name"], label=x.get("label") or x["name"], data_type=x.get("data_type") or "categorical",
+            question=x.get("question") or None,
+            notes=f"{source} ({x['source_url']}). Question wording and codes are documented there."))
     timepoints = plan["timepoints"] or [None]
     for group in measure_groups(lib, plan):
         for tp in timepoints:
@@ -374,16 +474,19 @@ def manifest(lib: Library, plan: dict) -> list[dict]:
 
 
 def shared_construct_ids(plan: dict) -> list[str]:
-    """Shared constructs the plan measures (for Module 3), in plan order."""
-    measured = {m.get("construct") for m in plan["measures"]}
-    return list(dict.fromkeys(c["shared_construct_id"] for c in plan["constructs"]
-                              if c.get("shared_construct_id") and c["id"] in measured))
+    """Shared constructs in the plan (for Module 3), in plan order.
+
+    A construct counts whether or not a measure has been chosen for it yet: the
+    study still addresses it, and the measure can be added later.
+    """
+    return list(dict.fromkeys(c["shared_construct_id"] for c in plan["constructs"] if c.get("shared_construct_id")))
 
 
 def profile_constructs(plan: dict) -> list[dict]:
     """Constructs for the study profile (Module 3), with the library instrument used when there is one."""
     constructs = _constructs(plan)
-    out: dict[str, dict] = {}
+    out: dict[str, dict] = {cid: {"construct_id": cid, "instrument_id": None, "version_id": None, "dimension_id": None}
+                            for cid in shared_construct_ids(plan)}
     for m in plan["measures"]:
         construct = constructs.get(m.get("construct"))
         if not construct or not construct.get("shared_construct_id"):
@@ -418,13 +521,12 @@ def merge_profile_constructs(existing: list[dict], plan: dict) -> tuple[list[dic
 
 
 def unlinked_constructs(plan: dict) -> list[str]:
-    """Labels of measured constructs with no link to the shared construct list.
+    """Labels of constructs with no link to the shared construct list.
 
     They stay in the variable plan and codebook but cannot be listed in the study
     profile, which records shared constructs only.
     """
-    measured = {m.get("construct") for m in plan["measures"]}
-    return [c["label"] for c in plan["constructs"] if c["id"] in measured and not c.get("shared_construct_id")]
+    return [c["label"] for c in plan["constructs"] if not c.get("shared_construct_id")]
 
 
 # ------------------------------------------------------------------ diagram

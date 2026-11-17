@@ -48,8 +48,25 @@
             "enum": ["direct_identifier", "quasi_identifier", "sensitive", "none"],
             "description": "Disclosure risk if shared: direct identifiers must be removed before sharing; quasi-identifiers and sensitive variables need review (e.g., coarsening, small-cell checks)."
           },
-          "source": { "type": "string", "description": "Standard or reference the variable follows." },
+          "source": { "type": "string", "description": "Standard or reference the variable follows. For a linked entry (no question or options here), where to find established wording." },
           "source_url": { "type": "string", "format": "uri" },
+          "icpsr_term": {
+            "type": "object", "additionalProperties": false, "required": ["term", "id", "url"],
+            "description": "The ICPSR Subject Thesaurus term for this variable (ICPSR's own metadata). Exported to DDI as a concept; the term page leads to ICPSR studies and variables that use it.",
+            "properties": {
+              "term": { "type": "string" },
+              "id": { "type": "integer" },
+              "url": { "type": "string", "format": "uri" }
+            }
+          },
+          "code_list": {
+            "type": "object", "additionalProperties": false, "required": ["name", "url"],
+            "description": "An external code list the values come from, such as CIP codes for field of study.",
+            "properties": {
+              "name": { "type": "string" },
+              "url": { "type": "string", "format": "uri" }
+            }
+          },
           "notes": { "type": "string" }
         }
       }
