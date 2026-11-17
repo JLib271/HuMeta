@@ -16,7 +16,12 @@
         "Scientific Concepts",
         "Misconceptions",
         "Concept Formation"
-      ]
+      ],
+      "naming": {
+        "authority": "first_use",
+        "status": "unresolved",
+        "note": "No ERIC descriptor or ICPSR term with exactly this meaning. First published use not yet identified."
+      }
     },
     {
       "id": "climate_change_conceptual_understanding",
@@ -34,7 +39,12 @@
       "eric": [
         "Climate",
         "Scientific Concepts"
-      ]
+      ],
+      "naming": {
+        "authority": "first_use",
+        "status": "unresolved",
+        "note": "No ERIC descriptor or ICPSR term with exactly this meaning. First published use not yet identified."
+      }
     },
     {
       "id": "content_knowledge",
@@ -49,11 +59,16 @@
       "eric": [
         "Knowledge Level",
         "Academic Achievement"
-      ]
+      ],
+      "naming": {
+        "authority": "first_use",
+        "status": "unresolved",
+        "note": "No ERIC descriptor or ICPSR term with exactly this meaning. First published use not yet identified."
+      }
     },
     {
       "id": "problem_solving",
-      "label": "Problem solving",
+      "label": "Problem Solving",
       "domain": "cognitive",
       "definition": "Approaches and skill in working through unfamiliar disciplinary problems, including planning, representation and checking.",
       "synonyms": [
@@ -62,7 +77,13 @@
       ],
       "eric": [
         "Problem Solving"
-      ]
+      ],
+      "naming": {
+        "authority": "eric",
+        "term": "Problem Solving",
+        "url": "https://eric.ed.gov/?ti=Problem+Solving",
+        "status": "needs_check"
+      }
     },
     {
       "id": "scientific_reasoning",
@@ -77,7 +98,12 @@
       "eric": [
         "Science Process Skills",
         "Scientific Literacy"
-      ]
+      ],
+      "naming": {
+        "authority": "first_use",
+        "status": "unresolved",
+        "note": "No ERIC descriptor or ICPSR term with exactly this meaning. First published use not yet identified."
+      }
     },
     {
       "id": "quantitative_reasoning",
@@ -92,14 +118,20 @@
       "eric": [
         "Numeracy",
         "Mathematical Logic"
-      ]
+      ],
+      "naming": {
+        "authority": "first_use",
+        "status": "unresolved",
+        "note": "No ERIC descriptor or ICPSR term with exactly this meaning. First published use not yet identified."
+      }
     },
     {
       "id": "self_efficacy",
-      "label": "Self-efficacy",
+      "label": "Self Efficacy",
       "domain": "affective_motivational",
       "definition": "A person's belief in their capability to succeed at specific tasks or in a specific domain.",
       "synonyms": [
+        "Self-efficacy",
         "confidence",
         "academic self-efficacy",
         "perceived competence",
@@ -107,7 +139,13 @@
       ],
       "eric": [
         "Self Efficacy"
-      ]
+      ],
+      "naming": {
+        "authority": "eric",
+        "term": "Self Efficacy",
+        "url": "https://eric.ed.gov/?ti=Self+Efficacy",
+        "status": "needs_check"
+      }
     },
     {
       "id": "perceived_behavioral_control",
@@ -124,7 +162,17 @@
       ],
       "eric": [
         "Locus of Control"
-      ]
+      ],
+      "naming": {
+        "authority": "first_use",
+        "term": "Perceived behavioral control",
+        "citation": "Ajzen, I. (1985). From intentions to actions: A theory of planned behavior. In J. Kuhl & J. Beckmann (Eds.), Action control: From cognition to behavior (pp. 11-39). Springer.",
+        "year": 1985,
+        "status": "needs_check",
+        "doi": "10.1007/978-3-642-69746-3_2",
+        "url": "https://doi.org/10.1007/978-3-642-69746-3_2",
+        "note": "No ERIC descriptor or ICPSR term with exactly this meaning. Introduced with the theory of planned behavior; not part of the earlier theory of reasoned action."
+      }
     },
     {
       "id": "interest",
@@ -139,14 +187,23 @@
       ],
       "eric": [
         "Student Interests"
-      ]
+      ],
+      "naming": {
+        "authority": "first_use",
+        "term": "Interest",
+        "citation": "Dewey, J. (1913). Interest and effort in education. Riverside Press.",
+        "year": 1913,
+        "status": "needs_check",
+        "note": "No ERIC descriptor or ICPSR term with exactly this meaning. ERIC 'Student Interests' means topics students are interested in, not interest as a psychological state. The situational/individual distinction in the definition comes later (Hidi, 1990, Review of Educational Research, doi:10.3102/00346543060004549)."
+      }
     },
     {
       "id": "task_value",
-      "label": "Task value",
+      "label": "Subjective task value",
       "domain": "affective_motivational",
       "definition": "How interesting, important and useful a person judges a subject or task to be, and what it costs them to engage.",
       "synonyms": [
+        "Task value",
         "utility value",
         "attainment value",
         "intrinsic value",
@@ -156,11 +213,19 @@
       "eric": [
         "Values",
         "Expectation"
-      ]
+      ],
+      "naming": {
+        "authority": "first_use",
+        "term": "Subjective task value",
+        "citation": "Eccles (Parsons), J., Adler, T. F., Futterman, R., Goff, S. B., Kaczala, C. M., Meece, J. L., & Midgley, C. (1983). Expectancies, values, and academic behaviors. In J. T. Spence (Ed.), Achievement and achievement motives. W. H. Freeman.",
+        "year": 1983,
+        "status": "needs_check",
+        "note": "No ERIC descriptor or ICPSR term with exactly this meaning. The expectancy-value model's term for how interesting, important, useful and costly a task is judged to be."
+      }
     },
     {
       "id": "goal_orientation",
-      "label": "Goal orientation",
+      "label": "Goal Orientation",
       "domain": "affective_motivational",
       "definition": "The reasons a learner pursues academic tasks, such as mastering material versus demonstrating ability or earning grades.",
       "synonyms": [
@@ -172,7 +237,13 @@
       ],
       "eric": [
         "Goal Orientation"
-      ]
+      ],
+      "naming": {
+        "authority": "eric",
+        "term": "Goal Orientation",
+        "url": "https://eric.ed.gov/?ti=Goal+Orientation",
+        "status": "needs_check"
+      }
     },
     {
       "id": "anxiety",
@@ -188,7 +259,12 @@
         "Anxiety",
         "Test Anxiety",
         "Mathematics Anxiety"
-      ]
+      ],
+      "naming": {
+        "authority": "first_use",
+        "status": "unresolved",
+        "note": "No ERIC descriptor or ICPSR term with exactly this meaning. First published use not yet identified."
+      }
     },
     {
       "id": "attitude_toward_subject",
@@ -206,7 +282,12 @@
       "eric": [
         "Scientific Attitudes",
         "Student Attitudes"
-      ]
+      ],
+      "naming": {
+        "authority": "first_use",
+        "status": "unresolved",
+        "note": "No ERIC descriptor or ICPSR term with exactly this meaning. First published use not yet identified."
+      }
     },
     {
       "id": "behavioral_intention",
@@ -225,28 +306,46 @@
       "eric": [
         "Intention",
         "Academic Persistence"
-      ]
+      ],
+      "naming": {
+        "authority": "first_use",
+        "term": "Behavioral intention",
+        "citation": "Fishbein, M., & Ajzen, I. (1975). Belief, attitude, intention, and behavior: An introduction to theory and research. Addison-Wesley.",
+        "year": 1975,
+        "status": "needs_check",
+        "note": "No ERIC descriptor or ICPSR term with exactly this meaning. ERIC 'Intention' is broader. Check Fishbein's earlier (1960s) papers for an earlier use."
+      }
     },
     {
       "id": "mindset",
-      "label": "Mindset / beliefs about ability",
+      "label": "Implicit theories of intelligence",
       "domain": "affective_motivational",
       "definition": "Beliefs about whether ability in a domain is fixed or can be developed, and about who can succeed.",
       "synonyms": [
+        "Mindset / beliefs about ability",
         "growth mindset",
         "fixed mindset",
-        "implicit theories of intelligence",
         "lay theories",
         "brilliance beliefs"
       ],
       "eric": [
         "Beliefs",
         "Self Concept"
-      ]
+      ],
+      "naming": {
+        "authority": "first_use",
+        "term": "Implicit theories of intelligence",
+        "citation": "Dweck, C. S., & Leggett, E. L. (1988). A social-cognitive approach to motivation and personality. Psychological Review, 95(2), 256-273.",
+        "year": 1988,
+        "status": "needs_check",
+        "doi": "10.1037/0033-295X.95.2.256",
+        "url": "https://doi.org/10.1037/0033-295X.95.2.256",
+        "note": "No ERIC descriptor or ICPSR term with exactly this meaning. 'Mindset' is a later popular name (kept as a synonym). The 1988 paper cites earlier studies on implicit theories (Bandura & Dweck, 1985); check for an earlier first use."
+      }
     },
     {
       "id": "sense_of_belonging",
-      "label": "Sense of belonging",
+      "label": "Sense of Belonging",
       "domain": "identity_social",
       "definition": "Feeling accepted, valued and included as a member of a course, discipline, institution or community.",
       "synonyms": [
@@ -265,7 +364,13 @@
       ],
       "eric": [
         "Sense of Belonging"
-      ]
+      ],
+      "naming": {
+        "authority": "eric",
+        "term": "Sense of Belonging",
+        "url": "https://eric.ed.gov/?ti=Sense+of+Belonging",
+        "status": "needs_check"
+      }
     },
     {
       "id": "disciplinary_identity",
@@ -283,7 +388,12 @@
       "eric": [
         "Professional Identity",
         "Identification (Psychology)"
-      ]
+      ],
+      "naming": {
+        "authority": "first_use",
+        "status": "unresolved",
+        "note": "No ERIC descriptor or ICPSR term with exactly this meaning. Candidate for the science case: Carlone, H. B., & Johnson, A. (2007), Journal of Research in Science Teaching, 44(8), 1187-1218, doi:10.1002/tea.20237 ('science identity'); its scope is narrower than this construct."
+      }
     },
     {
       "id": "subjective_norm",
@@ -301,7 +411,15 @@
       "eric": [
         "Social Influences",
         "Peer Influence"
-      ]
+      ],
+      "naming": {
+        "authority": "first_use",
+        "term": "Subjective norm",
+        "citation": "Fishbein, M., & Ajzen, I. (1975). Belief, attitude, intention, and behavior: An introduction to theory and research. Addison-Wesley.",
+        "year": 1975,
+        "status": "needs_check",
+        "note": "No ERIC descriptor or ICPSR term with exactly this meaning. Check Fishbein's earlier (1960s) papers on the normative component for an earlier use."
+      }
     },
     {
       "id": "stereotype_perception",
@@ -317,28 +435,41 @@
       "eric": [
         "Stereotypes",
         "Educational Environment"
-      ]
+      ],
+      "naming": {
+        "authority": "first_use",
+        "status": "unresolved",
+        "note": "No ERIC descriptor or ICPSR term with exactly this meaning. First published use not yet identified."
+      }
     },
     {
       "id": "community_connectedness",
-      "label": "Classroom community",
+      "label": "Sense of Community",
       "domain": "identity_social",
       "definition": "Perceived cohesion, trust and mutual support among learners and instructors in a learning setting.",
       "synonyms": [
+        "Classroom community",
         "classroom community",
         "connectedness",
         "peer support"
       ],
       "eric": [
         "Sense of Community"
-      ]
+      ],
+      "naming": {
+        "authority": "eric",
+        "term": "Sense of Community",
+        "url": "https://eric.ed.gov/?ti=Sense+of+Community",
+        "status": "needs_check"
+      }
     },
     {
       "id": "epistemological_beliefs",
-      "label": "Beliefs about the discipline and learning it",
+      "label": "Epistemological beliefs",
       "domain": "epistemological",
       "definition": "Beliefs about the nature of disciplinary knowledge and about what learning the discipline involves, often compared with expert views.",
       "synonyms": [
+        "Beliefs about the discipline and learning it",
         "epistemology",
         "expert-like beliefs",
         "attitudes about science",
@@ -348,7 +479,15 @@
       "eric": [
         "Epistemology",
         "Beliefs"
-      ]
+      ],
+      "naming": {
+        "authority": "first_use",
+        "term": "Epistemological beliefs",
+        "citation": "Schommer, M. (1990). Effects of beliefs about the nature of knowledge on comprehension. Journal of Educational Psychology, 82(3), 498-504.",
+        "year": 1990,
+        "status": "needs_check",
+        "note": "No ERIC descriptor or ICPSR term with exactly this meaning. Earlier: Schommer's 1989 dissertation and Center for the Study of Reading Technical Report No. 484 (1989) use the term, and Ryan (1984) wrote of 'epistemological standards'. Check which counts as first use; add the DOI."
+      }
     },
     {
       "id": "nature_of_science",
@@ -363,7 +502,12 @@
       "eric": [
         "Scientific Literacy",
         "Epistemology"
-      ]
+      ],
+      "naming": {
+        "authority": "first_use",
+        "status": "unresolved",
+        "note": "No ERIC descriptor or ICPSR term with exactly this meaning. First published use not yet identified."
+      }
     },
     {
       "id": "real_world_relevance",
@@ -378,7 +522,12 @@
       "broader": "epistemological_beliefs",
       "eric": [
         "Relevance (Education)"
-      ]
+      ],
+      "naming": {
+        "authority": "first_use",
+        "status": "unresolved",
+        "note": "No ERIC descriptor or ICPSR term with exactly this meaning. First published use not yet identified."
+      }
     },
     {
       "id": "self_regulated_learning",
@@ -395,14 +544,25 @@
       "eric": [
         "Metacognition",
         "Self Management"
-      ]
+      ],
+      "naming": {
+        "authority": "first_use",
+        "term": "Self-regulated learning",
+        "citation": "Zimmerman, B. J. (1986). Becoming a self-regulated learner: Which are the key subprocesses? Contemporary Educational Psychology, 11(4), 307-313.",
+        "year": 1986,
+        "status": "needs_check",
+        "doi": "10.1016/0361-476X(86)90027-5",
+        "url": "https://doi.org/10.1016/0361-476X(86)90027-5",
+        "note": "No ERIC descriptor or ICPSR term with exactly this meaning. Introduces a 1986 special issue in which other articles also use the term; check for an earlier use."
+      }
     },
     {
       "id": "learning_strategies",
-      "label": "Study and learning strategies",
+      "label": "Learning Strategies",
       "domain": "behavioral_strategy",
       "definition": "Specific cognitive and resource-management strategies used when studying, such as rehearsal, elaboration, organization and help seeking.",
       "synonyms": [
+        "Study and learning strategies",
         "study strategies",
         "study habits",
         "rehearsal",
@@ -414,14 +574,21 @@
       "eric": [
         "Learning Strategies",
         "Study Habits"
-      ]
+      ],
+      "naming": {
+        "authority": "eric",
+        "term": "Learning Strategies",
+        "url": "https://eric.ed.gov/?ti=Learning+Strategies",
+        "status": "needs_check"
+      }
     },
     {
       "id": "engagement",
-      "label": "Engagement",
+      "label": "Learner Engagement",
       "domain": "behavioral_strategy",
       "definition": "Behavioral, cognitive and emotional involvement in learning activities.",
       "synonyms": [
+        "Engagement",
         "student engagement",
         "behavioral engagement",
         "participation",
@@ -429,11 +596,17 @@
       ],
       "eric": [
         "Learner Engagement"
-      ]
+      ],
+      "naming": {
+        "authority": "eric",
+        "term": "Learner Engagement",
+        "url": "https://eric.ed.gov/?ti=Learner+Engagement",
+        "status": "needs_check"
+      }
     },
     {
       "id": "critical_thinking",
-      "label": "Critical thinking",
+      "label": "Critical Thinking",
       "domain": "behavioral_strategy",
       "definition": "Evaluating claims, evidence and arguments and applying prior knowledge to new problems.",
       "synonyms": [
@@ -442,14 +615,21 @@
       ],
       "eric": [
         "Critical Thinking"
-      ]
+      ],
+      "naming": {
+        "authority": "eric",
+        "term": "Critical Thinking",
+        "url": "https://eric.ed.gov/?ti=Critical+Thinking",
+        "status": "needs_check"
+      }
     },
     {
       "id": "teaching_practices",
-      "label": "Teaching practices",
+      "label": "Teaching Methods",
       "domain": "instructional_practice",
       "definition": "What instructors do during instruction, such as lecturing, posing questions, facilitating group work or giving feedback.",
       "synonyms": [
+        "Teaching practices",
         "instructional practices",
         "teaching behaviors",
         "pedagogy",
@@ -457,7 +637,13 @@
       ],
       "eric": [
         "Teaching Methods"
-      ]
+      ],
+      "naming": {
+        "authority": "eric",
+        "term": "Teaching Methods",
+        "url": "https://eric.ed.gov/?ti=Teaching+Methods",
+        "status": "needs_check"
+      }
     },
     {
       "id": "student_classroom_activity",
@@ -472,14 +658,20 @@
       "eric": [
         "Classroom Observation Techniques",
         "Student Behavior"
-      ]
+      ],
+      "naming": {
+        "authority": "first_use",
+        "status": "unresolved",
+        "note": "No ERIC descriptor or ICPSR term with exactly this meaning. First published use not yet identified."
+      }
     },
     {
       "id": "reformed_teaching",
-      "label": "Reformed / student-centered teaching",
+      "label": "Reformed teaching",
       "domain": "instructional_practice",
       "definition": "Degree to which instruction is inquiry-oriented and student-centered rather than transmission-oriented.",
       "synonyms": [
+        "Reformed / student-centered teaching",
         "student-centered instruction",
         "inquiry-based instruction",
         "evidence-based instructional practices",
@@ -489,7 +681,16 @@
         "Active Learning",
         "Inquiry",
         "Student Centered Learning"
-      ]
+      ],
+      "naming": {
+        "authority": "first_use",
+        "term": "Reformed teaching",
+        "citation": "Piburn, M., Sawada, D., Turley, J., Falconer, K., Benford, R., Bloom, I., & Judson, E. (2000). Reformed Teaching Observation Protocol (RTOP) reference manual (ACEPT Technical Report No. IN00-3). Arizona Collaborative for Excellence in the Preparation of Teachers.",
+        "year": 2000,
+        "status": "needs_check",
+        "url": "https://eric.ed.gov/?id=ED447205",
+        "note": "No ERIC descriptor or ICPSR term with exactly this meaning. ERIC 'Student Centered Learning' is an approach, not this construct. The journal article followed in 2002 (Sawada et al., School Science and Mathematics, doi:10.1111/j.1949-8594.2002.tb17883.x). 'Reform' teaching was discussed earlier in 1990s standards documents; check."
+      }
     },
     {
       "id": "teaching_beliefs",
@@ -504,7 +705,12 @@
       "eric": [
         "Teacher Attitudes",
         "Beliefs"
-      ]
+      ],
+      "naming": {
+        "authority": "first_use",
+        "status": "unresolved",
+        "note": "No ERIC descriptor or ICPSR term with exactly this meaning. Candidate defining source, not first use: Pajares, M. F. (1992). Teachers' beliefs and educational research: Cleaning up a messy construct. Review of Educational Research, 62(3), 307-332, doi:10.3102/00346543062003307 (it reviews earlier work)."
+      }
     },
     {
       "id": "learning_environment",
@@ -520,7 +726,12 @@
       "eric": [
         "Classroom Environment",
         "Educational Environment"
-      ]
+      ],
+      "naming": {
+        "authority": "first_use",
+        "status": "unresolved",
+        "note": "No ERIC descriptor or ICPSR term with exactly this meaning. First published use not yet identified."
+      }
     }
   ]
 }

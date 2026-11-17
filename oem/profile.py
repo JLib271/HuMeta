@@ -398,6 +398,17 @@ def construct_name(lib: Library, construct: dict) -> str:
     return (construct.get("label") or "").strip() or shared.get("label") or construct.get("construct_id") or ""
 
 
+def _plain(text: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "", (text or "").lower())
+
+
+def names_shared_construct(lib: Library, name: str, construct_id: str | None) -> bool:
+    """True when ``name`` is the shared construct's official name or one of its synonyms
+    (ignoring capitals, spaces and punctuation, so 'Self-Efficacy' matches ERIC's 'Self Efficacy')."""
+    shared = lib.constructs.get(construct_id or "")
+    return bool(shared) and _plain(name) in {_plain(x) for x in [shared["label"], *shared.get("synonyms", [])]}
+
+
 def construct_key(construct: dict) -> str:
     """Identity of a study-profile construct: its own name, else its shared construct.
 
@@ -778,7 +789,7 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
         if construct:
             subjects.append({"subject": construct["label"], "subjectScheme": "HuMeta Constructs",
                              "schemeUri": CONSTRUCTS_URI.rstrip("#"), "valueUri": CONSTRUCTS_URI + construct["id"]})
-        if (c.get("label") or "").strip() and (not construct or c["label"].strip().lower() != construct["label"].lower()):
+        if (c.get("label") or "").strip() and not names_shared_construct(lib, c["label"], c.get("construct_id")):
             subjects.append({"subject": c["label"].strip()})  # the study's own construct, as a keyword
     for fid in s["design"].get("frameworks") or []:
         framework = lib.frameworks.get(fid)

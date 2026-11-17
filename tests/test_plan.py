@@ -45,7 +45,7 @@ def test_candidates_show_what_each_part_measures_and_mapping_status(lib):
     rows = P.candidate_measures(lib, P.framework_constructs(lib, ["sdt"]))
     mslq = next(r for r in rows if r["instrument_id"] == "mslq")
     assert mslq["construct"] == "sdt.competence" and mslq["dimension_id"] == "self-efficacy"
-    assert mslq["measures"] == ["Self-efficacy"] and mslq["mapping_status"] == "provisional"
+    assert mslq["measures"] == ["Self Efficacy"] and mslq["mapping_status"] == "provisional"
     assert set(P.as_measure(mslq)) == set(P.MEASURE_KEYS)
 
 
@@ -75,7 +75,7 @@ def test_codebook_from_framework_to_variables(lib):
 def test_alignment_table(lib):
     rows = P.alignment(lib, sdt_plan(lib))
     competence = [r for r in rows if r["Construct"] == "Competence"]
-    assert competence and all(r["Shared construct"] == "Self-efficacy" for r in competence)
+    assert competence and all(r["Shared construct"] == "Self Efficacy" for r in competence)
     assert any(r["Mapping status"].startswith("Provisional") for r in competence)
     assert next(r for r in rows if r["Construct"] == "Curiosity")["Mapping status"] == "Researcher-defined"
 
@@ -247,3 +247,16 @@ def test_variables_from_icpsr_go_into_the_codebook(lib):
     plan["external_variables"].append(P.external_variable("Bad Name", "x", "https://example.org"))
     issues = " ".join(P.problems(lib, plan))
     assert "Bad Name" in issues and "address of the variable's page at ICPSR" in issues
+
+
+def test_shared_constructs_keep_matching_under_their_official_names(lib):
+    """Shared constructs are named by ERIC, ICPSR or first use; plans saved under a former name still match."""
+    named = lib.constructs["self_efficacy"]
+    assert named["label"] == "Self Efficacy" and named["naming"]["authority"] == "eric"
+    assert "Self-efficacy" in named["synonyms"]  # the former label
+    old_plan_pick = {"id": "own.self_efficacy", "label": "Self-efficacy", "framework_id": None,
+                     "shared_construct_id": "self_efficacy", "definition": ""}
+    assert P.is_shared_list_construct(lib, old_plan_pick)
+    assert lib.constructs["mindset"]["label"] == "Implicit theories of intelligence"
+    assert lib.constructs["mindset"]["naming"]["doi"] == "10.1037/0033-295X.95.2.256"
+    assert all(c.get("naming") for c in lib.constructs.values())

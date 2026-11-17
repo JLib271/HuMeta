@@ -4,6 +4,13 @@
 
 ## 1.0.0-draft.4 (2026-11-17)
 
+* **Construct names.** The shared construct vocabulary (HuMeta Instrument
+  Library, `constructs.json`) now names each construct by a fixed rule: an ERIC
+  Thesaurus descriptor with exactly the same meaning, else an ICPSR Subject
+  Thesaurus term, else the name as first published, anchored to that source.
+  Labels in `elements.md` and `crosswalks/eric.csv` follow (for example
+  "Self Efficacy", "Implicit theories of intelligence"). Construct ids, and so
+  every existing record, are unchanged.
 * **Study-specific constructs.** `study.constructs` entries may now name a
   construct that is not in the shared construct vocabulary: an entry has a
   `construct_id` (shared vocabulary), a `label` (the study's own name), or

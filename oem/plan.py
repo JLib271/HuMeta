@@ -183,10 +183,14 @@ def shared_list_construct(lib: Library, shared_id: str) -> dict:
 
 
 def is_shared_list_construct(lib: Library, construct: dict) -> bool:
-    """True for a construct added from the shared list as is (not renamed or redefined)."""
+    """True for a construct added from the shared list as is (not renamed or redefined).
+
+    A plan saved before a shared construct got its official name still counts: its
+    label is one of the construct's synonyms.
+    """
+    from oem.profile import names_shared_construct
     sid = construct.get("shared_construct_id")
-    return (not construct.get("framework_id") and sid in lib.constructs
-            and construct.get("label") == lib.constructs[sid]["label"])
+    return not construct.get("framework_id") and names_shared_construct(lib, construct.get("label") or "", sid)
 
 
 # Study designs with more than one measurement occasion, and the timepoints they usually need.

@@ -6,17 +6,17 @@ construct,climate_change_conceptual_understanding,Climate change conceptual unde
 construct,climate_change_conceptual_understanding,Climate change conceptual understanding,Scientific Concepts,verified
 construct,content_knowledge,Content knowledge,Knowledge Level,verified
 construct,content_knowledge,Content knowledge,Academic Achievement,verified
-construct,problem_solving,Problem solving,Problem Solving,verified
+construct,problem_solving,Problem Solving,Problem Solving,verified
 construct,scientific_reasoning,Scientific reasoning,Science Process Skills,verified
 construct,scientific_reasoning,Scientific reasoning,Scientific Literacy,verified
 construct,quantitative_reasoning,Quantitative reasoning,Numeracy,verified
 construct,quantitative_reasoning,Quantitative reasoning,Mathematical Logic,verified
-construct,self_efficacy,Self-efficacy,Self Efficacy,verified
+construct,self_efficacy,Self Efficacy,Self Efficacy,verified
 construct,perceived_behavioral_control,Perceived behavioral control,Locus of Control,verified
 construct,interest,Interest,Student Interests,verified
-construct,task_value,Task value,Values,verified
-construct,task_value,Task value,Expectation,verified
-construct,goal_orientation,Goal orientation,Goal Orientation,verified
+construct,task_value,Subjective task value,Values,verified
+construct,task_value,Subjective task value,Expectation,verified
+construct,goal_orientation,Goal Orientation,Goal Orientation,verified
 construct,anxiety,Academic anxiety,Anxiety,verified
 construct,anxiety,Academic anxiety,Test Anxiety,verified
 construct,anxiety,Academic anxiety,Mathematics Anxiety,verified
@@ -24,33 +24,33 @@ construct,attitude_toward_subject,Attitude toward the subject or behavior,Scient
 construct,attitude_toward_subject,Attitude toward the subject or behavior,Student Attitudes,verified
 construct,behavioral_intention,Behavioral intention,Intention,verified
 construct,behavioral_intention,Behavioral intention,Academic Persistence,verified
-construct,mindset,Mindset / beliefs about ability,Beliefs,verified
-construct,mindset,Mindset / beliefs about ability,Self Concept,verified
-construct,sense_of_belonging,Sense of belonging,Sense of Belonging,verified
+construct,mindset,Implicit theories of intelligence,Beliefs,verified
+construct,mindset,Implicit theories of intelligence,Self Concept,verified
+construct,sense_of_belonging,Sense of Belonging,Sense of Belonging,verified
 construct,disciplinary_identity,Disciplinary identity,Professional Identity,verified
 construct,disciplinary_identity,Disciplinary identity,Identification (Psychology),verified
 construct,subjective_norm,Subjective norm,Social Influences,verified
 construct,subjective_norm,Subjective norm,Peer Influence,verified
 construct,stereotype_perception,Perceived stereotypes and climate,Stereotypes,verified
 construct,stereotype_perception,Perceived stereotypes and climate,Educational Environment,verified
-construct,community_connectedness,Classroom community,Sense of Community,verified
-construct,epistemological_beliefs,Beliefs about the discipline and learning it,Epistemology,verified
-construct,epistemological_beliefs,Beliefs about the discipline and learning it,Beliefs,verified
+construct,community_connectedness,Sense of Community,Sense of Community,verified
+construct,epistemological_beliefs,Epistemological beliefs,Epistemology,verified
+construct,epistemological_beliefs,Epistemological beliefs,Beliefs,verified
 construct,nature_of_science,Understanding of the nature of science,Scientific Literacy,verified
 construct,nature_of_science,Understanding of the nature of science,Epistemology,verified
 construct,real_world_relevance,Perceived real-world relevance,Relevance (Education),verified
 construct,self_regulated_learning,Self-regulated learning,Metacognition,verified
 construct,self_regulated_learning,Self-regulated learning,Self Management,verified
-construct,learning_strategies,Study and learning strategies,Learning Strategies,verified
-construct,learning_strategies,Study and learning strategies,Study Habits,verified
-construct,engagement,Engagement,Learner Engagement,verified
-construct,critical_thinking,Critical thinking,Critical Thinking,verified
-construct,teaching_practices,Teaching practices,Teaching Methods,verified
+construct,learning_strategies,Learning Strategies,Learning Strategies,verified
+construct,learning_strategies,Learning Strategies,Study Habits,verified
+construct,engagement,Learner Engagement,Learner Engagement,verified
+construct,critical_thinking,Critical Thinking,Critical Thinking,verified
+construct,teaching_practices,Teaching Methods,Teaching Methods,verified
 construct,student_classroom_activity,Student classroom activity,Classroom Observation Techniques,verified
 construct,student_classroom_activity,Student classroom activity,Student Behavior,verified
-construct,reformed_teaching,Reformed / student-centered teaching,Active Learning,verified
-construct,reformed_teaching,Reformed / student-centered teaching,Inquiry,verified
-construct,reformed_teaching,Reformed / student-centered teaching,Student Centered Learning,verified
+construct,reformed_teaching,Reformed teaching,Active Learning,verified
+construct,reformed_teaching,Reformed teaching,Inquiry,verified
+construct,reformed_teaching,Reformed teaching,Student Centered Learning,verified
 construct,teaching_beliefs,Instructor beliefs about teaching,Teacher Attitudes,verified
 construct,teaching_beliefs,Instructor beliefs about teaching,Beliefs,verified
 construct,learning_environment,Learning environment perceptions,Classroom Environment,verified

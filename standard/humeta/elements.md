@@ -894,32 +894,32 @@ Defined in the HuMeta Instrument Library's [`constructs.json`](https://github.co
 | `conceptual_understanding` | Conceptual understanding | Grasp of core disciplinary ideas and the ability to apply them to new situations, as distinct from recall or procedural skill. | Scientific Concepts, Misconceptions, Concept Formation |
 | `climate_change_conceptual_understanding` | Climate change conceptual understanding | Understanding of the scientific ideas behind climate and climate change, such as Earth's energy balance, the greenhouse effect, the carbon cycle, and natural and human causes of change, including common alternative conceptions. | Climate, Scientific Concepts |
 | `content_knowledge` | Content knowledge | Factual and procedural knowledge of a subject area, as typically measured by course exams or knowledge tests. | Knowledge Level, Academic Achievement |
-| `problem_solving` | Problem solving | Approaches and skill in working through unfamiliar disciplinary problems, including planning, representation and checking. | Problem Solving |
+| `problem_solving` | Problem Solving | Approaches and skill in working through unfamiliar disciplinary problems, including planning, representation and checking. | Problem Solving |
 | `scientific_reasoning` | Scientific reasoning | Reasoning about evidence, variables, models and experiments, including control of variables and proportional reasoning. | Science Process Skills, Scientific Literacy |
 | `quantitative_reasoning` | Quantitative reasoning | Using numbers, graphs and mathematical relationships to make sense of disciplinary situations. | Numeracy, Mathematical Logic |
-| `self_efficacy` | Self-efficacy | A person's belief in their capability to succeed at specific tasks or in a specific domain. | Self Efficacy |
+| `self_efficacy` | Self Efficacy | A person's belief in their capability to succeed at specific tasks or in a specific domain. | Self Efficacy |
 | `perceived_behavioral_control` | Perceived behavioral control | Perceived ease or difficulty of performing a behavior, including access to needed resources (Theory of Planned Behavior). | Locus of Control |
 | `interest` | Interest | Enjoyment of and desire to engage with a subject, either in the moment (situational) or as an enduring disposition (individual). | Student Interests |
-| `task_value` | Task value | How interesting, important and useful a person judges a subject or task to be, and what it costs them to engage. | Values, Expectation |
-| `goal_orientation` | Goal orientation | The reasons a learner pursues academic tasks, such as mastering material versus demonstrating ability or earning grades. | Goal Orientation |
+| `task_value` | Subjective task value | How interesting, important and useful a person judges a subject or task to be, and what it costs them to engage. | Values, Expectation |
+| `goal_orientation` | Goal Orientation | The reasons a learner pursues academic tasks, such as mastering material versus demonstrating ability or earning grades. | Goal Orientation |
 | `anxiety` | Academic anxiety | Worry and emotional arousal related to a subject or to evaluation within it. | Anxiety, Test Anxiety, Mathematics Anxiety |
 | `attitude_toward_subject` | Attitude toward the subject or behavior | Overall positive or negative evaluation of a subject, activity or behavior. | Scientific Attitudes, Student Attitudes |
 | `behavioral_intention` | Behavioral intention | Stated readiness or plan to perform a behavior, such as taking further courses or pursuing a major or career. | Intention, Academic Persistence |
-| `mindset` | Mindset / beliefs about ability | Beliefs about whether ability in a domain is fixed or can be developed, and about who can succeed. | Beliefs, Self Concept |
-| `sense_of_belonging` | Sense of belonging | Feeling accepted, valued and included as a member of a course, discipline, institution or community. | Sense of Belonging |
+| `mindset` | Implicit theories of intelligence | Beliefs about whether ability in a domain is fixed or can be developed, and about who can succeed. | Beliefs, Self Concept |
+| `sense_of_belonging` | Sense of Belonging | Feeling accepted, valued and included as a member of a course, discipline, institution or community. | Sense of Belonging |
 | `disciplinary_identity` | Disciplinary identity | Seeing oneself, and being recognized by others, as the kind of person who does a discipline (e.g. a physics person, a scientist). | Professional Identity, Identification (Psychology) |
 | `subjective_norm` | Subjective norm | Perceived expectations from important others about whether one should perform a behavior. | Social Influences, Peer Influence |
 | `stereotype_perception` | Perceived stereotypes and climate | Awareness of stereotypes about who belongs or succeeds in a field, and perception of bias in the learning environment. | Stereotypes, Educational Environment |
-| `community_connectedness` | Classroom community | Perceived cohesion, trust and mutual support among learners and instructors in a learning setting. | Sense of Community |
-| `epistemological_beliefs` | Beliefs about the discipline and learning it | Beliefs about the nature of disciplinary knowledge and about what learning the discipline involves, often compared with expert views. | Epistemology, Beliefs |
+| `community_connectedness` | Sense of Community | Perceived cohesion, trust and mutual support among learners and instructors in a learning setting. | Sense of Community |
+| `epistemological_beliefs` | Epistemological beliefs | Beliefs about the nature of disciplinary knowledge and about what learning the discipline involves, often compared with expert views. | Epistemology, Beliefs |
 | `nature_of_science` | Understanding of the nature of science | Understanding of how scientific knowledge is generated, justified and revised. | Scientific Literacy, Epistemology |
 | `real_world_relevance` | Perceived real-world relevance | Seeing connections between disciplinary content and everyday life or societal issues. | Relevance (Education) |
 | `self_regulated_learning` | Self-regulated learning | Planning, monitoring and adjusting one's own learning, including metacognition and management of time and effort. | Metacognition, Self Management |
-| `learning_strategies` | Study and learning strategies | Specific cognitive and resource-management strategies used when studying, such as rehearsal, elaboration, organization and help seeking. | Learning Strategies, Study Habits |
-| `engagement` | Engagement | Behavioral, cognitive and emotional involvement in learning activities. | Learner Engagement |
-| `critical_thinking` | Critical thinking | Evaluating claims, evidence and arguments and applying prior knowledge to new problems. | Critical Thinking |
-| `teaching_practices` | Teaching practices | What instructors do during instruction, such as lecturing, posing questions, facilitating group work or giving feedback. | Teaching Methods |
+| `learning_strategies` | Learning Strategies | Specific cognitive and resource-management strategies used when studying, such as rehearsal, elaboration, organization and help seeking. | Learning Strategies, Study Habits |
+| `engagement` | Learner Engagement | Behavioral, cognitive and emotional involvement in learning activities. | Learner Engagement |
+| `critical_thinking` | Critical Thinking | Evaluating claims, evidence and arguments and applying prior knowledge to new problems. | Critical Thinking |
+| `teaching_practices` | Teaching Methods | What instructors do during instruction, such as lecturing, posing questions, facilitating group work or giving feedback. | Teaching Methods |
 | `student_classroom_activity` | Student classroom activity | What students are observed doing during instruction, such as listening, discussing, working in groups or answering questions. | Classroom Observation Techniques, Student Behavior |
-| `reformed_teaching` | Reformed / student-centered teaching | Degree to which instruction is inquiry-oriented and student-centered rather than transmission-oriented. | Active Learning, Inquiry, Student Centered Learning |
+| `reformed_teaching` | Reformed teaching | Degree to which instruction is inquiry-oriented and student-centered rather than transmission-oriented. | Active Learning, Inquiry, Student Centered Learning |
 | `teaching_beliefs` | Instructor beliefs about teaching | Instructors' beliefs about how students learn and what effective teaching looks like. | Teacher Attitudes, Beliefs |
 | `learning_environment` | Learning environment perceptions | Learners' perceptions of course structure, support, fairness and climate. | Classroom Environment, Educational Environment |

@@ -1,7 +1,7 @@
 {
   "format": "humeta-library-archive",
   "archive": "library.tar.gz",
-  "sha256": "34ff3e4d5ee749f86431ef5699166519c0c9ef92d5ac718bce26e2f84f15d4c9",
+  "sha256": "eac711584c987456414c4949677b9f29875d6a258841cbf68987bebe64613df8",
   "files": 97,
   "built": "2026-11-17",
   "commit": "",
