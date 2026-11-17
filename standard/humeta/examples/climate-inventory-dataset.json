@@ -1,6 +1,6 @@
 {
   "profile": "humeta",
-  "profile_version": "1.0.0-draft.3",
+  "profile_version": "1.0.0-draft.4",
   "resource": {
     "title": "Example: Pre/post climate change understanding in an introductory Earth science course",
     "creators": [
@@ -122,6 +122,13 @@
         "construct_id": "conceptual_understanding",
         "instrument_id": "climate-change-concept-inventory",
         "version_id": "ccci-2018",
+        "dimension_id": null
+      },
+      {
+        "label": "Concern about climate change",
+        "definition": "How worried students are about climate change and its effects. Study-specific: not in the shared construct vocabulary.",
+        "instrument_id": null,
+        "version_id": null,
         "dimension_id": null
       }
     ]

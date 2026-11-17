@@ -3,7 +3,7 @@
   "title": "HuMeta",
   "full_title": "HuMeta: The Social Science, Humanities, and Education Study Metadata Profile",
   "short_name": "HuMeta",
-  "profile_version": "1.0.0-draft.3",
+  "profile_version": "1.0.0-draft.4",
   "status": "draft",
   "namespace": "humeta",
   "namespace_uri": "https://github.com/JLib271/humeta-profile/blob/main/elements.md#",
@@ -839,9 +839,9 @@
       "cardinality": "0..n",
       "type": "construct",
       "condition": "Mandatory when people take part directly in the study, or when exported as an Instrument.",
-      "definition": "Constructs measured, from the HuMeta construct vocabulary (constructs.json in the HuMeta Instrument Library), optionally with the instrument, version and subscale used.",
+      "definition": "Constructs measured. Each is linked to the HuMeta construct vocabulary (constructs.json in the HuMeta Instrument Library, construct_id) where a shared construct means the same thing, or named by the study (label), or both; optionally with the theory or framework it comes from (framework_id), a definition, and the instrument, version and subscale used. Study-specific constructs (label only) are recorded so that no construct is lost between the variable plan and the study profile; linking to the shared vocabulary is what lets other studies and datasets find them.",
       "vocabulary_file": "https://github.com/JLib271/humeta-library/blob/main/constructs.json",
-      "datacite": "subjects (subjectScheme 'HuMeta Constructs', valueURI per construct); for datasets, relatedIdentifiers to the instrument's library record (URL, relationType IsCollectedBy) and its publication (DOI, relationType References); ERIC descriptors as additional subjects",
+      "datacite": "subjects (subjectScheme 'HuMeta Constructs', valueURI per linked construct; study-specific names as plain subjects); for datasets, relatedIdentifiers to the instrument's library record (URL, relationType IsCollectedBy) and its publication (DOI, relationType References); ERIC descriptors as additional subjects",
       "alignments": [
         {
           "standard": "humeta",

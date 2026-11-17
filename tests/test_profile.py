@@ -426,3 +426,29 @@ def test_old_discipline_terms_move_to_anzsrc(lib, p):
     # 236 ANZSRC divisions and groups, each with an OECD FOS code, plus discipline_general (no ANZSRC or FOS code)
     assert len(active) == 237 and "discipline_general" in active
     assert all(p.term("discipline", d).get("fos") in profile.FOS_LABELS for d in active if d != "discipline_general")
+
+
+def test_study_specific_constructs(lib):
+    """Constructs not on the shared list are recorded by name (and theory) and exported as plain keywords."""
+    from oem import ddi, study_pdf
+    record = profile.empty_record(profile.load())
+    record["resource"]["title"] = "Careers study"
+    record["study"]["constructs"] = [
+        {"construct_id": "self_efficacy", "label": "Self-Efficacy", "framework_id": "sct"},
+        {"label": "Outcome Expectations", "framework_id": "sct", "definition": "Beliefs about results."},
+        {"construct_id": "self_efficacy", "label": "Math self-efficacy"},  # same shared construct, separate entry
+    ]
+    issues = [i for i in profile.validate(record, lib) if i.element == "study.constructs"]
+    assert not [i for i in issues if i.severity == "error"], issues
+    assert profile.construct_name(lib, record["study"]["constructs"][1]) == "Outcome Expectations"
+    assert not profile.same_construct(record["study"]["constructs"][0], record["study"]["constructs"][2])
+    assert profile.same_construct({"construct_id": "self_efficacy"}, record["study"]["constructs"][0])  # older, id only
+    subjects = profile.to_datacite_json(record, lib)["subjects"]
+    plain = [s["subject"] for s in subjects if "subjectScheme" not in s]
+    assert "Outcome Expectations" in plain and "Math self-efficacy" in plain and "Self-Efficacy" not in plain
+    assert sum(s.get("subjectScheme") == "HuMeta Constructs" for s in subjects) == 2
+    assert "<keyword>Outcome Expectations</keyword>" in ddi.to_ddi_codebook_xml(record, None, lib)
+    assert study_pdf.study_pdf(record, lib, profile.load())[:4] == b"%PDF"
+    bad = profile.empty_record(profile.load())
+    bad["study"]["constructs"] = [{"framework_id": "sct"}]  # neither a shared construct nor a name
+    assert [i for i in profile.validate(bad, lib) if i.severity == "error" and "constructs" in i.element]

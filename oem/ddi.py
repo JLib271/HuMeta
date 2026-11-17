@@ -121,13 +121,16 @@ def to_ddi_codebook_xml(record: dict, plan: dict | None = None, lib: Library | N
 
     info = b.el(study, "stdyInfo")
     keywords = list(res.get("keywords") or [])
-    constructs = [lib.constructs[c["construct_id"]] for c in s.get("constructs") or [] if c["construct_id"] in lib.constructs]
-    if keywords or constructs or (s["design"].get("topic") or "").strip():
+    constructs = [lib.constructs[c["construct_id"]] for c in s.get("constructs") or [] if c.get("construct_id") in lib.constructs]
+    own = [c["label"].strip() for c in s.get("constructs") or [] if not c.get("construct_id") and (c.get("label") or "").strip()]
+    if keywords or constructs or own or (s["design"].get("topic") or "").strip():
         subj = b.el(info, "subject")
         for kw in keywords:
             b.el(subj, "keyword", kw)
         for c in constructs:
             b.el(subj, "keyword", c["label"], vocab=CONSTRUCTS_VOCAB, vocabURI=profile.CONSTRUCTS_URI.rstrip("#"))
+        for label in own:  # study-specific constructs, not on the shared list
+            b.el(subj, "keyword", label)
         if (s["design"].get("topic") or "").strip():
             b.el(subj, "topcClas", s["design"]["topic"].strip())
     if (res.get("description") or "").strip():

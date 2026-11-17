@@ -97,7 +97,7 @@ def test_manifest_and_constructs_for_later_modules(lib):
     assert rows["Curiosity"]["Framework_Source"] == "Researcher-defined"
     assert P.shared_construct_ids(plan) == ["self_efficacy", "sense_of_belonging", "interest"]
     assert profile.suggest_constructs(lib, plan) == ["self_efficacy", "sense_of_belonging", "interest"]
-    linked = {c["construct_id"]: c for c in P.profile_constructs(plan)}
+    linked = {c["construct_id"]: c for c in P.profile_constructs(plan) if c.get("construct_id")}
     assert linked["self_efficacy"]["instrument_id"] in {"class", "mslq"}
 
 
@@ -106,14 +106,20 @@ def test_saving_the_plan_carries_constructs_into_the_profile(lib):
     existing = [{"construct_id": "interest", "instrument_id": None, "version_id": None, "dimension_id": None},
                 {"construct_id": "kept_from_module_3", "instrument_id": None, "version_id": None, "dimension_id": None}]
     merged, added = P.merge_profile_constructs(existing, plan)
-    ids = [c["construct_id"] for c in merged]
-    assert ids[:2] == ["interest", "kept_from_module_3"]  # nothing removed, order kept
-    assert set(ids) == {"interest", "kept_from_module_3", "self_efficacy", "sense_of_belonging"}
-    assert added == 2
-    assert existing[0]["instrument_id"] is None  # the caller's list is not changed
+    assert [c.get("construct_id") for c in merged[:2]] == ["interest", "kept_from_module_3"]  # nothing removed, order kept
+    # Every plan construct arrives, linked or not: Autonomy (SDT, unlinked) and Curiosity (own) by name.
+    by_name = {profile.construct_name(lib, c): c for c in merged}
+    assert {"Autonomy", "Competence", "Relatedness", "Curiosity"} <= set(by_name)
+    assert by_name["Autonomy"].get("construct_id") is None and by_name["Autonomy"]["framework_id"] == "sdt"
+    assert by_name["Competence"]["construct_id"] == "self_efficacy" and by_name["Competence"]["framework_id"] == "sdt"
+    assert merged[0]["framework_id"] == "sdt"  # details from the plan fill in a construct already listed
+    assert added == len(merged) - 2
+    assert "framework_id" not in existing[0]  # the caller's list is not changed
     again, added_again = P.merge_profile_constructs(merged, plan)
     assert again == merged and added_again == 0
-    assert P.unlinked_constructs(plan) == ["Autonomy", "Curiosity"]
+    record = profile.empty_record(profile.load())
+    record["study"]["constructs"] = merged
+    assert not [i for i in profile.validate(record, lib) if i.element == "study.constructs" and i.severity == "error"]
 
 
 def test_problems_are_reported(lib):
@@ -188,8 +194,9 @@ def test_constructs_without_a_measure_still_reach_the_profile(lib):
     assert P.is_shared_list_construct(lib, plan["constructs"][-1])
     assert not P.is_shared_list_construct(lib, plan["constructs"][-2])  # renamed: stays an own construct
     plan["measures"] = []  # measures skipped
-    linked = [c["construct_id"] for c in P.profile_constructs(plan)]
+    linked = [c.get("construct_id") for c in P.profile_constructs(plan)]
     assert "self_efficacy" in linked and "interest" in linked
+    assert "X" in [c.get("label") for c in P.profile_constructs(plan)]  # renamed: kept by its own name too
     assert all(c["instrument_id"] is None for c in P.profile_constructs(plan))
 
 

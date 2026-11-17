@@ -2,6 +2,29 @@
 
 ## Unreleased
 
+## 1.0.0-draft.4 (2026-11-17)
+
+* **Study-specific constructs.** `study.constructs` entries may now name a
+  construct that is not in the shared construct vocabulary: an entry has a
+  `construct_id` (shared vocabulary), a `label` (the study's own name), or
+  both, and may record the theory or framework it comes from
+  (`framework_id`) and a `definition`. Previously only shared constructs could
+  be listed, so most constructs supplied by a theory (98 of 135 in the
+  library) could not be recorded. Two study constructs linked to the same
+  shared construct (for example math and science self-efficacy) stay separate
+  entries. Study-specific names are exported as plain DataCite subjects and
+  DDI keywords; linked constructs keep the "HuMeta Constructs" scheme. R1 is
+  met by either kind. Existing records are unchanged and still valid.
+
+* **STEMEd+ disciplines, list version 6:** new **STEAM: Arts+STEM** discipline
+  (id `steam`, scope "education"; ANZSRC 36 and 3901): teaching, learning, and
+  education research that joins the arts and design with STEM, including STEAM
+  education, arts integration in STEM teaching, and sci-art. "STEAM" matches in
+  capitals only, so steam engines are not matched; "arts and sciences" (a
+  college name) and "the art and science of" are not matched. It is the first
+  discipline marked `named_only`: listings open to every STEM+ field are not
+  listed under it, only listings that name the arts.
+
 ## 1.0.0-draft.3 (2026-11-16)
 
 * **A profile describes the study, not one output of it.** `resource.resource_type`

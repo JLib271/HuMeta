@@ -629,11 +629,6 @@ def _next_step(lib) -> None:
         else:
             st.caption("In Module 3 you check the full study profile, register the study for a DOI, and export its "
                        "metadata. Module 3 uses the plan as last saved: if you change anything above, save again.")
-            unlinked = P.unlinked_constructs(P.normalize(saved, lib))
-            if unlinked:
-                st.caption("Not added to the study profile, because they are not linked to the shared construct list: "
-                           + ", ".join(unlinked) + ". They stay in your variable plan and codebook. To list one in the "
-                           "profile, link it to a shared construct in Step 2 and save again.")
             st.button("Continue to 3. Check, Register & Export →", type="primary", key="m2_to_m3",
                       on_click=navigate_to_module, args=("3. Check, Register & Export",), use_container_width=True)
         render_project_download(key="m2_project_download", label="Download project file (to keep your work)")

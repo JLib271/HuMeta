@@ -92,11 +92,18 @@
               "field"
             ],
             "description": "education: education and education research in the field. field: also the field itself."
+          },
+          "named_only": {
+            "type": "boolean",
+            "description": "true: only listings that name this discipline are listed under it; listings open to every STEM+ field are not. Default false."
           }
         }
       }
     },
     "scope_note": {
+      "type": "string"
+    },
+    "named_only_note": {
       "type": "string"
     }
   }

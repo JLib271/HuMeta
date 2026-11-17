@@ -109,7 +109,10 @@ def study_pdf(record: dict, lib: Library | None = None, p: profile.Profile | Non
     ])
     constructs = []
     for c in s.get("constructs") or []:
-        name = (lib.constructs.get(c["construct_id"]) or {}).get("label", c["construct_id"])
+        name = profile.construct_name(lib, c)
+        shared = lib.constructs.get(c.get("construct_id") or "")
+        if shared and name.lower() != shared["label"].lower():
+            name += f" (shared construct: {shared['label']})"
         iid = c.get("instrument_id")
         if iid:
             name += f" — measured with {(lib.instruments.get(iid) or {}).get('name', iid)}"

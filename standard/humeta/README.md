@@ -1,6 +1,6 @@
 # HuMeta: The Social Science, Humanities, and Education Study Metadata Profile
 
-**Version:** 1.0.0-draft.3 · **Status:** Draft for community comment · **Namespace prefix:** `humeta`
+**Version:** 1.0.0-draft.4 · **Status:** Draft for community comment · **Namespace prefix:** `humeta`
 
 The HuMeta profile is a shared way to describe research studies
 and the data, instruments, and records they produce across the social
@@ -11,7 +11,8 @@ leaves out:
 * **Research field and discipline**: disciplines from the ANZSRC 2020 Fields
   of Research (236 divisions and groups), each mapped to the OECD Fields of
   Science that DataCite uses, so studies can be found across fields
-* **Constructs measured**, from a shared, defined construct vocabulary
+* **Constructs measured**, linked to a shared, defined construct vocabulary
+  where one fits, or named by the study
 * **People and place**: whether people take part (directly, indirectly, or not
   at all), who they are, and where
 * **Sources**: texts, archives, images, artworks, media, online content,
@@ -170,7 +171,7 @@ checks is `oem/profile.py` (`validate()`).
 | `resource.resource_type` | O | DataCite resourceTypeGeneral; chosen at DOI export, not part of the study description |
 | `study.fields` | M | `research_field` (OECD FOS) |
 | `study.discipline` | R | `discipline` (ANZSRC 2020 FoR divisions and groups, with OECD FOS codes) |
-| `study.constructs` | MA (instruments; datasets with direct participants) | construct vocabulary |
+| `study.constructs` | MA (instruments; datasets with direct participants) | construct vocabulary, or a study-specific name |
 | `study.design.unit_of_analysis`, `.sampling_procedure` | O | DDI AnalysisUnit, DDI SamplingProcedure |
 | `study.population.human_participants` | M | `human_participants` (direct / indirect / none) |
 | `study.population.participant_roles` | MA (people take part directly or indirectly) | `participant_role` |
@@ -286,7 +287,8 @@ learning. Exports add the ISCED level as a DataCite subject.
 
 Resource elements map directly to DataCite properties. Profile vocabularies
 map to `subjects` with a `subjectScheme` (e.g. "HuMeta Constructs") and a
-`valueURI` for each term; ERIC descriptors are added as subjects with
+`valueURI` for each term; study-specific construct names become plain
+`subjects`; ERIC descriptors are added as subjects with
 `subjectScheme` "ERIC Thesaurus". Study designs, methods, and population
 descriptions become a `Methods` description. Ethics, access, and CARE
 information becomes `Other` descriptions and `rightsList` entries. For
@@ -387,7 +389,7 @@ of the HuMeta library. Code implementing it, such as the [HuMeta Portal](https:/
 
 > Libarkin, J. C., & HuMeta contributors. (2026). *HuMeta: The
 > Social Science, Humanities, and Education Study Metadata Profile* (Version
-> 1.0.0-draft.3). https://github.com/JLib271/humeta-profile
+> 1.0.0-draft.4). https://github.com/JLib271/humeta-profile
 
 A DOI will be registered for version 1.0.0 (DataCite resourceTypeGeneral
 `Standard`).

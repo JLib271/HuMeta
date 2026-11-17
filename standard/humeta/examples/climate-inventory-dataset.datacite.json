@@ -40,6 +40,9 @@
       "valueUri": "https://github.com/JLib271/humeta-library/blob/main/constructs.json#conceptual_understanding"
     },
     {
+      "subject": "Concern about climate change"
+    },
+    {
       "subject": "Climate change science",
       "subjectScheme": "ANZSRC Fields of Research",
       "schemeUri": "https://linked.data.gov.au/def/anzsrc-for/2020",
