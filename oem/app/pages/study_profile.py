@@ -23,10 +23,9 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     st.header("1. Describe Your Study")
     p = profile.load()
     st.caption(
-        f"Describe your study with [HuMeta: The Social Science, Humanities, and Education Study Metadata Profile]({SPEC_URL}) (version {p.version}): "
-        "the study and team, design, people and place, sources, details for your field (education, social science, "
-        "or arts and humanities), ethics and consent, and Indigenous data governance (CARE). Everything is saved to "
-        "your project file; the app keeps no copy."
+        f"Describe your study with the [HuMeta profile]({SPEC_URL}) (version {p.version}). Only the questions marked * "
+        "are required; the rest are folded under **More details**. Everything is saved to your project file; the app "
+        "keeps no copy."
     )
 
     record = current_record()
