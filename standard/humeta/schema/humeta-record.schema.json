@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/JLib271/humeta-profile/blob/main/schema/humeta-record.schema.json",
-  "title": "HuMeta profile record (1.0.0-draft.3)",
+  "title": "HuMeta profile record (1.0.0-draft.4)",
   "description": "Generated from standard/humeta/profile.json and vocabularies.json by scripts/build_profile_artifacts.py. Do not edit by hand.",
   "type": "object",
   "additionalProperties": false,
@@ -982,13 +982,39 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": [
-              "construct_id"
+            "description": "A construct the study measures: from the shared HuMeta construct list (construct_id), or study-specific (label), or both (the study's own name for a shared construct).",
+            "anyOf": [
+              {
+                "required": [
+                  "construct_id"
+                ]
+              },
+              {
+                "required": [
+                  "label"
+                ]
+              }
             ],
             "properties": {
               "construct_id": {
                 "type": "string",
                 "pattern": "^[a-z][a-z0-9_]*$"
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "framework_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "definition": {
+                "type": [
+                  "string",
+                  "null"
+                ]
               },
               "instrument_id": {
                 "type": [

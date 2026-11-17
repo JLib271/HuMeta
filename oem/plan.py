@@ -183,10 +183,14 @@ def shared_list_construct(lib: Library, shared_id: str) -> dict:
 
 
 def is_shared_list_construct(lib: Library, construct: dict) -> bool:
-    """True for a construct added from the shared list as is (not renamed or redefined)."""
+    """True for a construct added from the shared list as is (not renamed or redefined).
+
+    A plan saved before a shared construct got its official name still counts: its
+    label is one of the construct's synonyms.
+    """
+    from oem.profile import names_shared_construct
     sid = construct.get("shared_construct_id")
-    return (not construct.get("framework_id") and sid in lib.constructs
-            and construct.get("label") == lib.constructs[sid]["label"])
+    return not construct.get("framework_id") and names_shared_construct(lib, construct.get("label") or "", sid)
 
 
 # Study designs with more than one measurement occasion, and the timepoints they usually need.
@@ -482,18 +486,41 @@ def shared_construct_ids(plan: dict) -> list[str]:
     return list(dict.fromkeys(c["shared_construct_id"] for c in plan["constructs"] if c.get("shared_construct_id")))
 
 
+def _profile_key(entry: dict) -> str:
+    """Identity of a study-profile construct: its own name, else its shared construct (as in profile.construct_key)."""
+    label = (entry.get("label") or "").strip().lower()
+    return f"label:{label}" if label else entry.get("construct_id") or ""
+
+
+def _same_construct(a: dict, b: dict) -> bool:
+    """As profile.same_construct: same name, or the same shared construct when one has no name."""
+    if _profile_key(a) == _profile_key(b):
+        return True
+    no_name = not (a.get("label") or "").strip() or not (b.get("label") or "").strip()
+    return no_name and bool(a.get("construct_id")) and a.get("construct_id") == b.get("construct_id")
+
+
 def profile_constructs(plan: dict) -> list[dict]:
-    """Constructs for the study profile (Module 3), with the library instrument used when there is one."""
-    constructs = _constructs(plan)
-    out: dict[str, dict] = {cid: {"construct_id": cid, "instrument_id": None, "version_id": None, "dimension_id": None}
-                            for cid in shared_construct_ids(plan)}
-    for m in plan["measures"]:
-        construct = constructs.get(m.get("construct"))
-        if not construct or not construct.get("shared_construct_id"):
+    """Every construct in the plan, as study-profile constructs (Module 3).
+
+    A construct linked to the shared list carries its ``construct_id``; every
+    construct carries its own name (``label``) and, when it came from a theory,
+    the ``framework_id``. The first library instrument chosen for it is added.
+    """
+    out: dict[str, dict] = {}
+    by_plan_id: dict[str, dict] = {}
+    for c in plan["constructs"]:
+        entry = {k: v for k, v in {
+            "construct_id": c.get("shared_construct_id"), "label": (c.get("label") or "").strip() or None,
+            "framework_id": c.get("framework_id"), "definition": (c.get("definition") or "").strip() or None,
+        }.items() if v}
+        if not entry.get("construct_id") and not entry.get("label"):
             continue
-        cid = construct["shared_construct_id"]
-        entry = out.setdefault(cid, {"construct_id": cid, "instrument_id": None, "version_id": None, "dimension_id": None})
-        if m.get("kind") == "instrument" and not entry["instrument_id"]:
+        entry.update({"instrument_id": None, "version_id": None, "dimension_id": None})
+        by_plan_id[c["id"]] = out.setdefault(_profile_key(entry), entry)
+    for m in plan["measures"]:
+        entry = by_plan_id.get(m.get("construct"))
+        if entry and m.get("kind") == "instrument" and not entry["instrument_id"]:
             entry.update({"instrument_id": m.get("instrument_id"), "version_id": m.get("version_id"),
                           "dimension_id": m.get("dimension_id")})
     return list(out.values())
@@ -502,31 +529,25 @@ def profile_constructs(plan: dict) -> list[dict]:
 def merge_profile_constructs(existing: list[dict], plan: dict) -> tuple[list[dict], int]:
     """Add the plan's constructs to a study profile's constructs (Module 2 → Module 3).
 
-    Constructs already in the profile are kept as they are, except that a library
-    instrument from the plan fills in one the profile does not name yet. Nothing is
-    removed. Returns the merged list and how many constructs were added.
+    Constructs already in the profile are kept as they are, except that details
+    from the plan (its name, theory, definition, library instrument) fill in what
+    the profile does not have yet. Nothing is removed. Returns the merged list and
+    how many constructs were added.
     """
     merged = [dict(c) for c in existing or []]
-    by_id = {c.get("construct_id"): c for c in merged}
     added = 0
     for entry in profile_constructs(plan):
-        current = by_id.get(entry["construct_id"])
+        current = next((c for c in merged if _same_construct(c, entry)), None)
         if current is None:
             merged.append(dict(entry))
-            by_id[entry["construct_id"]] = merged[-1]
             added += 1
-        elif not current.get("instrument_id") and entry.get("instrument_id"):
+            continue
+        for k in ("label", "framework_id", "definition"):
+            if entry.get(k) and not current.get(k):
+                current[k] = entry[k]
+        if not current.get("instrument_id") and entry.get("instrument_id"):
             current.update({k: entry[k] for k in ("instrument_id", "version_id", "dimension_id")})
     return merged, added
-
-
-def unlinked_constructs(plan: dict) -> list[str]:
-    """Labels of constructs with no link to the shared construct list.
-
-    They stay in the variable plan and codebook but cannot be listed in the study
-    profile, which records shared constructs only.
-    """
-    return [c["label"] for c in plan["constructs"] if not c.get("shared_construct_id")]
 
 
 # ------------------------------------------------------------------ diagram

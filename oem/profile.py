@@ -223,9 +223,15 @@ def json_schema(profile: Profile | None = None) -> dict:
     put(("study", "constructs"), {
         "type": "array",
         "items": {
-            "type": "object", "additionalProperties": False, "required": ["construct_id"],
+            "type": "object", "additionalProperties": False,
+            "description": "A construct the study measures: from the shared HuMeta construct list (construct_id), "
+                           "or study-specific (label), or both (the study's own name for a shared construct).",
+            "anyOf": [{"required": ["construct_id"]}, {"required": ["label"]}],
             "properties": {
                 "construct_id": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+                "label": {"type": "string", "minLength": 1},
+                "framework_id": {"type": ["string", "null"]},
+                "definition": {"type": ["string", "null"]},
                 "instrument_id": {"type": ["string", "null"]},
                 "version_id": {"type": ["string", "null"]},
                 "dimension_id": {"type": ["string", "null"]},
@@ -386,6 +392,45 @@ def get(record: dict, path: tuple[str, ...]) -> Any:
     return node
 
 
+def construct_name(lib: Library, construct: dict) -> str:
+    """How a study-profile construct is shown: the study's own name, else the shared construct's label."""
+    shared = lib.constructs.get(construct.get("construct_id") or "") or {}
+    return (construct.get("label") or "").strip() or shared.get("label") or construct.get("construct_id") or ""
+
+
+def _plain(text: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "", (text or "").lower())
+
+
+def names_shared_construct(lib: Library, name: str, construct_id: str | None) -> bool:
+    """True when ``name`` is the shared construct's official name or one of its synonyms
+    (ignoring capitals, spaces and punctuation, so 'Self-Efficacy' matches ERIC's 'Self Efficacy')."""
+    shared = lib.constructs.get(construct_id or "")
+    return bool(shared) and _plain(name) in {_plain(x) for x in [shared["label"], *shared.get("synonyms", [])]}
+
+
+def construct_key(construct: dict) -> str:
+    """Identity of a study-profile construct: its own name, else its shared construct.
+
+    Two study constructs linked to the same shared construct (math and science
+    self-efficacy, say) stay separate because their names differ.
+    """
+    label = (construct.get("label") or "").strip().lower()
+    return f"label:{label}" if label else construct.get("construct_id") or ""
+
+
+def same_construct(a: dict, b: dict) -> bool:
+    """True when two study-profile constructs are the same one.
+
+    Same name, or the same shared construct when either has no name of its own
+    (constructs saved before study-specific names existed have only an id).
+    """
+    if construct_key(a) == construct_key(b):
+        return True
+    no_name = not (a.get("label") or "").strip() or not (b.get("label") or "").strip()
+    return no_name and bool(a.get("construct_id")) and a.get("construct_id") == b.get("construct_id")
+
+
 def suggest_constructs(lib: Library, plan: dict) -> list[str]:
     """Constructs measured in the Module 2 variable plan.
 
@@ -491,8 +536,10 @@ def validate(record: dict, lib: Library | None = None, profile: Profile | None =
         if fid not in lib.frameworks:
             issues.append(Issue("error", "study.design.frameworks", f"Unknown framework {fid!r}."))
     for c in s.get("constructs", []):
-        if c["construct_id"] not in lib.constructs:
+        if c.get("construct_id") and c["construct_id"] not in lib.constructs:
             issues.append(Issue("error", "study.constructs", f"Unknown construct {c['construct_id']!r}."))
+        if c.get("framework_id") and c["framework_id"] not in lib.frameworks:
+            issues.append(Issue("error", "study.constructs", f"Unknown framework {c['framework_id']!r}."))
         if c.get("instrument_id") and c["instrument_id"] not in lib.instruments:
             issues.append(Issue("error", "study.constructs", f"Unknown instrument {c['instrument_id']!r}."))
 
@@ -563,7 +610,7 @@ def eric_descriptors(record: dict, lib: Library | None = None, profile: Profile 
     record = migrate(record, p)
     terms: list[str] = []
     for c in record["study"].get("constructs", []):
-        terms += lib.constructs.get(c["construct_id"], {}).get("eric", [])
+        terms += lib.constructs.get(c.get("construct_id") or "", {}).get("eric", [])
     for path, (vocab_id, _) in VOCAB_FIELDS.items():
         for term_id in get(record, path) or []:
             terms += p.term(vocab_id, term_id).get("eric", [])
@@ -738,10 +785,12 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
     if (s.get("design", {}).get("topic") or "").strip():
         subjects.append({"subject": s["design"]["topic"].strip()})
     for c in s.get("constructs", []):
-        construct = lib.constructs.get(c["construct_id"])
+        construct = lib.constructs.get(c.get("construct_id") or "")
         if construct:
             subjects.append({"subject": construct["label"], "subjectScheme": "HuMeta Constructs",
                              "schemeUri": CONSTRUCTS_URI.rstrip("#"), "valueUri": CONSTRUCTS_URI + construct["id"]})
+        if (c.get("label") or "").strip() and not names_shared_construct(lib, c["label"], c.get("construct_id")):
+            subjects.append({"subject": c["label"].strip()})  # the study's own construct, as a keyword
     for fid in s["design"].get("frameworks") or []:
         framework = lib.frameworks.get(fid)
         if framework:

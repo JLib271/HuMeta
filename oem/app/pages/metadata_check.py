@@ -49,31 +49,35 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     _from_module_2(record, plan, lib, construct_names)
 
     st.subheader("Constructs measured")
-    st.caption("The constructs your study measures. Those from your Module 2 variable plan are already listed; "
-               "add or remove constructs here.", help=profile.alignment_help("study.constructs"))
+    st.caption("The constructs your study measures. Those from your Module 2 variable plan are already listed, "
+               "including ones that are not on the shared construct list. Add, rename, or remove constructs here. "
+               "Linking a construct to the shared list is optional; it helps other studies and datasets find yours.",
+               help=profile.alignment_help("study.constructs"))
 
     v = st.session_state.get("profile_form_version", 0)
+    existing = record["study"]["constructs"]
     with st.form(key=f"m3_constructs_{v}"):
         table = st.data_editor(
             pd.DataFrame(
-                [{"construct": construct_names.get(c["construct_id"]), "instrument": instrument_names.get(c.get("instrument_id"))}
-                 for c in record["study"]["constructs"]] or [{"construct": None, "instrument": None}],
-                columns=["construct", "instrument"]),
-            num_rows="dynamic", use_container_width=True, key=f"m3_constructs_table_{v}",
+                [{"construct": profile.construct_name(lib, c), "shared": construct_names.get(c.get("construct_id")),
+                  "theory": (lib.frameworks.get(c.get("framework_id") or "") or {}).get("label", ""),
+                  "instrument": instrument_names.get(c.get("instrument_id"))} for c in existing]
+                or [{"construct": None, "shared": None, "theory": "", "instrument": None}],
+                columns=["construct", "shared", "theory", "instrument"]),
+            num_rows="dynamic", use_container_width=True, key=f"m3_constructs_table_{v}", disabled=["theory"],
             column_config={
-                "construct": st.column_config.SelectboxColumn("Construct", options=sorted(construct_labels)),
+                "construct": st.column_config.TextColumn("Construct", help="Your name for the construct."),
+                "shared": st.column_config.SelectboxColumn(
+                    "Shared construct (optional)", options=sorted(construct_labels),
+                    help="Choose one only if it means the same thing as your construct."),
+                "theory": st.column_config.TextColumn("From theory"),
                 "instrument": st.column_config.SelectboxColumn("Instrument from the library (optional)",
                                                                options=sorted(instrument_labels)),
             },
         )
         if st.form_submit_button("Save constructs", type="primary"):
-            constructs = []
-            for row in table.to_dict(orient="records"):
-                cid = construct_labels.get(row.get("construct"))
-                if cid and all(c["construct_id"] != cid for c in constructs):
-                    constructs.append({"construct_id": cid, "instrument_id": instrument_labels.get(row.get("instrument")),
-                                       "version_id": None, "dimension_id": None})
-            record["study"]["constructs"] = constructs
+            record["study"]["constructs"] = _constructs_from_table(lib, table.to_dict(orient="records"), existing,
+                                                                   construct_labels, instrument_labels)
             store_record(record)
             st.success("Constructs saved to your project.")
 
@@ -131,6 +135,34 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
         st.json(datacite, expanded=False)
 
 
+def _constructs_from_table(lib, rows: list[dict], existing: list[dict], construct_labels: dict,
+                           instrument_labels: dict) -> list[dict]:
+    """Study-profile constructs from the Module 3 table, keeping each row's theory and definition."""
+    def text(value) -> str:
+        return "" if value is None or (isinstance(value, float) and value != value) else str(value).strip()
+
+    by_name = {profile.construct_name(lib, c).lower(): c for c in existing}
+    out: list[dict] = []
+    seen: set[str] = set()
+    for row in rows:
+        name, cid = text(row.get("construct")), construct_labels.get(text(row.get("shared")))
+        if not name and not cid:
+            continue
+        before = by_name.get(name.lower()) or {}
+        entry = {k: v for k, v in {"construct_id": cid, "label": name or None,
+                                   "framework_id": before.get("framework_id"),
+                                   "definition": before.get("definition")}.items() if v}
+        iid = instrument_labels.get(text(row.get("instrument")))
+        same_instrument = iid and iid == before.get("instrument_id")
+        entry.update({"instrument_id": iid, "version_id": before.get("version_id") if same_instrument else None,
+                      "dimension_id": before.get("dimension_id") if same_instrument else None})
+        key = profile.construct_key(entry)
+        if key not in seen:
+            seen.add(key)
+            out.append(entry)
+    return out
+
+
 def _from_module_2(record: dict, plan: dict, lib, construct_names: dict) -> None:
     """Show what Module 2 contributed, or how to get it."""
     with st.container(border=True):
@@ -149,25 +181,22 @@ def _from_module_2(record: dict, plan: dict, lib, construct_names: dict) -> None
                          or normalized["external_variables"] else 0)
         except Exception:  # an older or hand-edited plan; the rest of the page still works
             variables = "unknown"
-        listed = {x["construct_id"] for x in record["study"]["constructs"]}
-        carried = [c for c in profile.suggest_constructs(lib, plan) if c in listed]
+        listed = record["study"]["constructs"]
+        from_plan = plan_model.profile_constructs(normalized)
+        carried = [c for c in from_plan if any(profile.same_construct(c, x) for x in listed)]
         st.markdown("**From your Module 2 variable plan**")
         st.markdown(
             "- Framework: " + ("; ".join(frameworks) or "none (skipped)") + "\n"
             f"- Constructs listed in the study profile: {len(carried)}\n"
             f"- Variables: {variables} (included in the DDI-Codebook export)")
-        missing = [c for c in profile.suggest_constructs(lib, plan) if c not in listed]
+        missing = [c for c in from_plan if not any(profile.same_construct(c, x) for x in listed)]
         if missing:
-            st.info("Not yet in your study profile: " + ", ".join(construct_names.get(c, c) for c in missing)
+            st.info("Not yet in your study profile: " + ", ".join(profile.construct_name(lib, c) for c in missing)
                     + ". Add them if your study measures them.")
             if st.button("Add these constructs from my plan", key="m3_add_suggestions", type="primary"):
                 record["study"]["constructs"], _ = plan_model.merge_profile_constructs(record["study"]["constructs"], normalized)
                 store_record(record, reset_widgets=True)
                 st.rerun()
-        unlinked = plan_model.unlinked_constructs(normalized)
-        if unlinked:
-            st.caption("In your plan but not listed here, because they are not linked to the shared construct list: "
-                       + ", ".join(unlinked) + ". Link them in Module 2, Step 2, and save the plan again.")
         st.button("Edit the plan in 2. Theory and Measures", key="m3_back_to_m2", on_click=navigate_to_module,
                   args=("2. Theory and Measures",))
 

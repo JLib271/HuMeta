@@ -74,6 +74,32 @@
               "type": "string"
             },
             "description": "ERIC Thesaurus descriptors for the construct (see the HuMeta profile's crosswalks/eric_descriptor_status.json)."
+          },
+          "naming": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["authority", "status"],
+            "description": "Where the construct's official name (label) comes from. In order: an ERIC Thesaurus descriptor with exactly the same meaning; else an ICPSR Subject Thesaurus term with exactly the same meaning; else the name as first published (priority of first use, as in biological nomenclature), anchored to that source and its definition. Other names are kept as synonyms.",
+            "properties": {
+              "authority": { "enum": ["eric", "icpsr", "first_use"] },
+              "term": { "type": "string", "description": "The name exactly as the authority or first source gives it. The label must equal it unless status is unresolved." },
+              "url": { "type": "string", "format": "uri", "description": "The ERIC descriptor page, ICPSR term page, or the first source (DOI link or other address)." },
+              "id": { "type": "integer", "description": "ICPSR Subject Thesaurus term number." },
+              "citation": { "type": "string", "description": "First use: full reference of the publication that first named the construct." },
+              "doi": { "type": "string", "pattern": "^10\\.\\d{4,9}/\\S+$" },
+              "year": { "type": "integer" },
+              "status": {
+                "enum": ["needs_check", "verified", "unresolved"],
+                "description": "needs_check: proposed, to be confirmed by the governance committee. verified: confirmed. unresolved: no authority term and no agreed first use yet; the label is provisional."
+              },
+              "note": { "type": "string", "description": "Earlier precursors, scope differences, or candidates still to check." }
+            },
+            "allOf": [
+              { "if": { "properties": { "authority": { "enum": ["eric", "icpsr"] } } },
+                "then": { "required": ["term", "url"] } },
+              { "if": { "properties": { "authority": { "const": "first_use" }, "status": { "enum": ["needs_check", "verified"] } } },
+                "then": { "required": ["term", "citation", "year"] } }
+            ]
           }
         }
       }
