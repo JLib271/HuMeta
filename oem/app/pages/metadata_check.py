@@ -45,21 +45,12 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     instrument_labels = {i["name"]: iid for iid, i in lib.instruments.items()}
     instrument_names = {iid: label for label, iid in instrument_labels.items()}
 
-    st.subheader("Constructs measured")
-    st.caption("Choose the constructs your study measures.", help=profile.alignment_help("study.constructs"))
     plan = current_project().get("module2_plan") or {}
-    suggestions = [c for c in profile.suggest_constructs(lib, plan)
-                   if c not in {x["construct_id"] for x in record["study"]["constructs"]}]
-    if suggestions:
-        st.caption("From your variable plan (Module 2): " + ", ".join(construct_names[c] for c in suggestions))
-        if st.button("Add these constructs", key="m3_add_suggestions"):
-            linked = {c["construct_id"]: c for c in plan_model.profile_constructs(plan_model.normalize(plan, lib))}
-            record["study"]["constructs"] += [linked.get(c) or {"construct_id": c, "instrument_id": None, "version_id": None,
-                                                                "dimension_id": None} for c in suggestions]
-            store_record(record, reset_widgets=True)
-            st.rerun()
-    elif not plan:
-        st.caption("Plan variables in Module 2 to get construct suggestions, or pick constructs below.")
+    _from_module_2(record, plan, lib, construct_names)
+
+    st.subheader("Constructs measured")
+    st.caption("The constructs your study measures. Those from your Module 2 variable plan are already listed; "
+               "add or remove constructs here.", help=profile.alignment_help("study.constructs"))
 
     v = st.session_state.get("profile_form_version", 0)
     with st.form(key=f"m3_constructs_{v}"):
@@ -137,6 +128,45 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
         st.caption("Not yet verified against the current ERIC Thesaurus, so not included: " + "; ".join(pending))
     with st.expander("Preview DataCite JSON"):
         st.json(datacite, expanded=False)
+
+
+def _from_module_2(record: dict, plan: dict, lib, construct_names: dict) -> None:
+    """Show what Module 2 contributed, or how to get it."""
+    with st.container(border=True):
+        if not plan:
+            st.markdown("**From Module 2:** no variable plan yet.")
+            st.caption("Plan your theory and measures in Module 2 and save; the constructs you measure are then "
+                       "listed here for you. You can also pick constructs below without a plan.")
+            st.button("Go to 2. Theory and Measures", key="m3_to_m2", on_click=navigate_to_module,
+                      args=("2. Theory and Measures",))
+            return
+        normalized = plan_model.normalize(plan, lib)
+        frameworks = [lib.frameworks[f]["label"] for f in normalized["frameworks"] if f in lib.frameworks]
+        try:
+            variables = len(plan_model.build_codebook(lib, normalized)) if normalized["measures"] else 0
+        except Exception:  # an older or hand-edited plan; the rest of the page still works
+            variables = "unknown"
+        listed = {x["construct_id"] for x in record["study"]["constructs"]}
+        carried = [c for c in profile.suggest_constructs(lib, plan) if c in listed]
+        st.markdown("**From your Module 2 variable plan**")
+        st.markdown(
+            "- Framework: " + ("; ".join(frameworks) or "none chosen") + "\n"
+            f"- Constructs listed in the study profile: {len(carried)}\n"
+            f"- Variables: {variables} (included in the DDI-Codebook export)")
+        missing = [c for c in profile.suggest_constructs(lib, plan) if c not in listed]
+        if missing:
+            st.info("Not yet in your study profile: " + ", ".join(construct_names.get(c, c) for c in missing)
+                    + ". Add them if your study measures them.")
+            if st.button("Add these constructs from my plan", key="m3_add_suggestions", type="primary"):
+                record["study"]["constructs"], _ = plan_model.merge_profile_constructs(record["study"]["constructs"], normalized)
+                store_record(record, reset_widgets=True)
+                st.rerun()
+        unlinked = plan_model.unlinked_constructs(normalized)
+        if unlinked:
+            st.caption("In your plan but not listed here, because they are not linked to the shared construct list: "
+                       + ", ".join(unlinked) + ". Link them in Module 2, Step 2, and save the plan again.")
+        st.button("Edit the plan in 2. Theory and Measures", key="m3_back_to_m2", on_click=navigate_to_module,
+                  args=("2. Theory and Measures",))
 
 
 def _register_study(record: dict) -> None:

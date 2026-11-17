@@ -396,6 +396,37 @@ def profile_constructs(plan: dict) -> list[dict]:
     return list(out.values())
 
 
+def merge_profile_constructs(existing: list[dict], plan: dict) -> tuple[list[dict], int]:
+    """Add the plan's constructs to a study profile's constructs (Module 2 → Module 3).
+
+    Constructs already in the profile are kept as they are, except that a library
+    instrument from the plan fills in one the profile does not name yet. Nothing is
+    removed. Returns the merged list and how many constructs were added.
+    """
+    merged = [dict(c) for c in existing or []]
+    by_id = {c.get("construct_id"): c for c in merged}
+    added = 0
+    for entry in profile_constructs(plan):
+        current = by_id.get(entry["construct_id"])
+        if current is None:
+            merged.append(dict(entry))
+            by_id[entry["construct_id"]] = merged[-1]
+            added += 1
+        elif not current.get("instrument_id") and entry.get("instrument_id"):
+            current.update({k: entry[k] for k in ("instrument_id", "version_id", "dimension_id")})
+    return merged, added
+
+
+def unlinked_constructs(plan: dict) -> list[str]:
+    """Labels of measured constructs with no link to the shared construct list.
+
+    They stay in the variable plan and codebook but cannot be listed in the study
+    profile, which records shared constructs only.
+    """
+    measured = {m.get("construct") for m in plan["measures"]}
+    return [c["label"] for c in plan["constructs"] if c["id"] in measured and not c.get("shared_construct_id")]
+
+
 # ------------------------------------------------------------------ diagram
 def _dot_text(text: str) -> str:
     return str(text).replace("\\", "\\\\").replace('"', '\\"')
