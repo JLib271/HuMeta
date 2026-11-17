@@ -206,3 +206,37 @@ def test_variables_are_suggested_from_the_study_profile(lib):
     assert "postsecondary" in suggested["course_level"]
     assert P.suggest_timepoints(record) == ["pre", "post"]
     assert P.suggest_variables(lib, None) == {} and P.suggest_timepoints(None) == []
+
+
+def test_linked_variables_are_suggested_for_college_students(lib):
+    from oem import profile
+    record = profile.empty_record(profile.load(), modules=("education",))
+    record["study"]["population"]["human_participants"] = "direct"
+    record["education"]["education_levels"] = ["bachelors"]
+    suggested = P.suggest_variables(lib, record)
+    assert {"gender_identity", "class_standing", "first_gen", "major_cip"} <= set(suggested)
+    record["education"]["education_levels"] = ["primary"]
+    assert "major_cip" not in P.suggest_variables(lib, record)
+    for name in ("gender_identity", "first_gen", "class_standing", "major_cip"):
+        spec = lib.standard_variables[name]
+        assert spec["icpsr_term"]["url"].startswith("https://www.icpsr.umich.edu/web/ICPSR/thesaurus/10001/terms/")
+        assert "question" not in spec and "options" not in spec  # linked: wording lives at the source
+
+
+def test_variables_from_icpsr_go_into_the_codebook(lib):
+    url = "https://www.icpsr.umich.edu/web/RCMD/studies/7517/datasets/1/variables/V21?q=x"
+    assert P.icpsr_variable(url) == {"study": "7517", "dataset": "1", "variable": "V21",
+                                     "url": "https://www.icpsr.umich.edu/web/ICPSR/studies/7517/datasets/1/variables/V21"}
+    assert P.icpsr_variable("https://example.org/V21") is None
+    plan = P.empty_plan()
+    plan["external_variables"] = [P.external_variable("eye_rule", "Eye for an eye is a good rule", url, "Is it?")]
+    plan["timepoints"] = ["pre", "post"]  # ICPSR variables are not repeated per timepoint
+    assert P.problems(lib, plan) == []
+    book = P.build_codebook(lib, plan)
+    (v,) = book.variables
+    assert v.name == "eye_rule" and v.question == "Is it?"
+    assert "ICPSR study 7517, variable V21" in v.notes and "/studies/7517/datasets/1/variables/V21" in v.notes
+    assert P.normalize(plan)["external_variables"] == plan["external_variables"]  # survives save and reopen
+    plan["external_variables"].append(P.external_variable("Bad Name", "x", "https://example.org"))
+    issues = " ".join(P.problems(lib, plan))
+    assert "Bad Name" in issues and "address of the variable's page at ICPSR" in issues

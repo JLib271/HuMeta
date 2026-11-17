@@ -215,6 +215,8 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
         st.info("Tip: save your study profile in Module 1 first. This module then suggests variables for your study.")
 
     plan = P.empty_plan()
+    for later in ("standard_variables", "timepoints", "external_variables", "relationships", "narrative"):
+        plan[later] = base.get(later) or plan[later]
     kinds = {fid: f["kind"] for fid, f in lib.frameworks.items()}
 
     # ------------------------------------------------------------ Step 1
@@ -449,8 +451,12 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
                 chosen_std.add(name)
             if name in suggested:
                 st.caption(suggested[name])
+            links = [f"[ICPSR: {sv['icpsr_term']['term']}]({sv['icpsr_term']['url']})" if sv.get("icpsr_term") else "",
+                     f"[CIP codes]({sv['code_list']['url']})" if sv.get("code_list") else ""]
+            if any(links):
+                st.caption("Wording and codes: " + " · ".join(x for x in links if x))
     plan["standard_variables"] = [n for n in lib.standard_variables if n in chosen_std]
-    st.caption(f"Need a variable that isn't here, such as gender? Suggest it in the **{TABS[1]}** tab.")
+    plan["external_variables"] = _icpsr_variables(base, v)
     suggested_tp = P.suggest_timepoints(record)
     plan["timepoints"] = st.multiselect(
         "Do you measure more than once? Timepoints (optional)", list(P.naming.TIMEPOINT_SUFFIXES),
@@ -502,13 +508,13 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
     issues = P.problems(lib, plan)
     for issue in issues:
         st.error(issue)
-    empty = not plan["constructs"] and not plan["standard_variables"]
+    empty = not plan["constructs"] and not plan["standard_variables"] and not plan["external_variables"]
     measured = len({m["construct"] for m in measures})
     st.markdown(f"**Your plan:** {len(constructs)} construct(s), {measured} with a measure; "
-                f"{len(plan['standard_variables'])} other variable(s)"
+                f"{len(plan['standard_variables']) + len(plan['external_variables'])} other variable(s)"
                 + (f"; timepoints {', '.join(plan['timepoints'])}" if plan["timepoints"] else "") + ".")
     book = None
-    if not issues and (plan["measures"] or plan["standard_variables"]):
+    if not issues and (plan["measures"] or plan["standard_variables"] or plan["external_variables"]):
         book = P.build_codebook(lib, plan)
         if plan["measures"]:
             with st.expander("Alignment: construct → measure → variables"):
@@ -554,6 +560,48 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
 
     st.session_state["m2_pending"] = plan
     _share(lib, plan, book, publish_disabled, publish_hint)
+
+
+def _icpsr_variables(base: dict, v: int) -> list[dict]:
+    """Step 4: variables other studies have used, found in ICPSR's variables database and linked to it."""
+    existing = base.get("external_variables") or []
+    with st.expander(f"Variables from ICPSR ({len(existing)})" if existing else "Add other variables from ICPSR",
+                     expanded=bool(existing)):
+        st.caption("Need a variable that isn't listed above? Find how other studies asked it in ICPSR's variables "
+                   "database, which documents millions of variables from social science studies. Open the variable, "
+                   "copy its page address, and paste it here with the name you will use in your data. The question "
+                   "wording and codes stay documented at ICPSR, and your codebook links to them.")
+        st.link_button("Search ICPSR's variables database", P.ICPSR_VARIABLE_SEARCH)
+        types = {label: kind for kind, label in P.EXTERNAL_TYPES.items()}
+        table = st.data_editor(
+            pd.DataFrame([{"ICPSR variable page": x.get("source_url"), "Variable name": x.get("name"),
+                           "Label": x.get("label"), "Question text (optional)": x.get("question"),
+                           "Type": P.EXTERNAL_TYPES.get(x.get("data_type"))} for x in existing],
+                         columns=["ICPSR variable page", "Variable name", "Label", "Question text (optional)", "Type"]),
+            num_rows="dynamic", use_container_width=True, key=f"m2_icpsr_{v}",
+            column_config={
+                "ICPSR variable page": st.column_config.LinkColumn(
+                    "ICPSR variable page", help="The address of the variable's page at ICPSR, e.g. "
+                    "https://www.icpsr.umich.edu/web/ICPSR/studies/…/datasets/1/variables/V21"),
+                "Variable name": st.column_config.TextColumn(
+                    "Variable name", help="The column name in your data: lowercase letters, numbers and _."),
+                "Type": st.column_config.SelectboxColumn("Type", options=list(types)),
+            })
+    out, unfinished = [], 0
+    for row in table.to_dict(orient="records"):
+        url, name = _s(row.get("ICPSR variable page")), _s(row.get("Variable name"))
+        if not any(_s(x) for x in row.values()):
+            continue
+        if not name or not P.icpsr_variable(url):
+            unfinished += 1
+            continue
+        out.append(P.external_variable(name, _s(row.get("Label")), url, _s(row.get("Question text (optional)")),
+                                       types.get(_s(row.get("Type")), "categorical")))
+    if unfinished:
+        st.caption(f"{unfinished} unfinished row(s) are left out until they have an ICPSR variable page address "
+                   "and a variable name.")
+    st.caption(f"Something every study should share? Suggest it for the library in the **{TABS[1]}** tab.")
+    return out
 
 
 def _next_step(lib) -> None:

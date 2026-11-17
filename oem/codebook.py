@@ -132,7 +132,10 @@ def standard_variable(lib: Library, name: str, timepoint: str | None = None) -> 
     spec = lib.standard_variable(name)
     sensitivity = spec["sensitivity"]
     missing = list(lib.scale("selected").missing) if "selected" in lib.scales else []
-    common = dict(standard_variable=name, sensitivity=sensitivity, question=spec.get("question"), notes=spec.get("notes"))
+    links = [f"ICPSR term: {spec['icpsr_term']['term']} ({spec['icpsr_term']['url']})" if spec.get("icpsr_term") else None,
+             f"Codes: {spec['code_list']['name']} ({spec['code_list']['url']})" if spec.get("code_list") else None]
+    notes = " ".join(x for x in [spec.get("notes"), *(f"{link}." for link in links if link)] if x) or None
+    common = dict(standard_variable=name, sensitivity=sensitivity, question=spec.get("question"), notes=notes)
     if spec["data_type"] == "select_all":
         selected = lib.scale("selected")
         variables = [

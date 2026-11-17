@@ -109,7 +109,8 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
             st.button("DataCite 4.7 metadata (XML)", disabled=True, use_container_width=True, key="m3_dl_dcxml_off",
                       help="DataCite XML requires a DOI. Register the study above to get one.")
     plan = current_project().get("module2_plan")
-    has_plan = bool((plan or {}).get("measures") or (plan or {}).get("standard_variables"))
+    has_plan = bool((plan or {}).get("measures") or (plan or {}).get("standard_variables")
+                    or (plan or {}).get("external_variables"))
     st.download_button("DDI-Codebook 2.5 (XML)", ddi.to_ddi_codebook_xml(record, plan if has_plan else None, lib, p).encode("utf-8"),
                        file_name=f"{slug}.ddi.xml", mime="application/xml", key="m3_dl_ddi", use_container_width=True,
                        help="DDI is the social sciences' metadata standard, used by ICPSR, CESSDA archives, the UK Data "
@@ -144,7 +145,8 @@ def _from_module_2(record: dict, plan: dict, lib, construct_names: dict) -> None
         frameworks = [lib.frameworks[f]["label"] for f in normalized["frameworks"] if f in lib.frameworks]
         try:
             variables = (len(plan_model.build_codebook(lib, normalized))
-                         if normalized["measures"] or normalized["standard_variables"] else 0)
+                         if normalized["measures"] or normalized["standard_variables"]
+                         or normalized["external_variables"] else 0)
         except Exception:  # an older or hand-edited plan; the rest of the page still works
             variables = "unknown"
         listed = {x["construct_id"] for x in record["study"]["constructs"]}

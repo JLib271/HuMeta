@@ -80,3 +80,32 @@ def test_variables_carry_codes_questions_and_constructs(lib, plan):
     groups = doc.findall("d:dataDscr/d:varGrp", NS)
     assert len(groups) == 2  # one per construct and measure, across timepoints
     assert len(groups[0].get("var").split()) == 4
+
+
+def test_linked_standard_variables_point_to_icpsr(lib, schema):
+    """Linked entries carry the ICPSR Subject Thesaurus term as a DDI concept and stay valid DDI."""
+    record = json.loads((EXAMPLES / "climate-inventory-dataset.json").read_text())
+    plan = P.empty_plan()
+    plan["standard_variables"] = ["participant_id", "gender_identity", "first_gen", "class_standing", "major_cip"]
+    xml = ddi.to_ddi_codebook_xml(record, plan, lib)
+    doc = parse(xml)
+    assert schema.validate(doc), schema.error_log
+    gender = doc.find("d:dataDscr/d:var[@name='gender_identity']", NS)
+    concept = gender.find("d:concept", NS)
+    assert concept.text == "gender identity" and concept.get("vocab") == ddi.ICPSR_THESAURUS
+    assert concept.get("vocabURI").endswith("/thesaurus/10001/terms/25522")
+    major = doc.find("d:dataDscr/d:var[@name='major_cip']", NS)
+    assert "nces.ed.gov/ipeds/cipcode" in major.findtext("d:notes", namespaces=NS)
+
+
+def test_variables_from_icpsr_are_exported_with_their_link(lib, schema):
+    record = json.loads((EXAMPLES / "climate-inventory-dataset.json").read_text())
+    plan = P.empty_plan()
+    plan["external_variables"] = [P.external_variable(
+        "eye_rule", "Eye for an eye is a good rule", "https://www.icpsr.umich.edu/web/ICPSR/studies/7517/datasets/1/variables/V21",
+        "Is an eye for an eye a good rule for living?")]
+    doc = parse(ddi.to_ddi_codebook_xml(record, plan, lib))
+    assert schema.validate(doc), schema.error_log
+    var = doc.find("d:dataDscr/d:var[@name='eye_rule']", NS)
+    assert var.findtext("d:qstn/d:qstnLit", namespaces=NS).startswith("Is an eye")
+    assert "studies/7517/datasets/1/variables/V21" in var.findtext("d:notes", namespaces=NS)

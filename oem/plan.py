@@ -56,6 +56,11 @@ MAPPING_STATUS = {
     "approved": "Approved by the governance committee",
 }
 OWN_PREFIX = "own"
+# Variables taken from ICPSR's Social Science Variables Database (DDI-documented variables from ICPSR studies).
+ICPSR_VARIABLE_SEARCH = "https://www.icpsr.umich.edu/web/ICPSR/search/variables"
+ICPSR_VARIABLE_PAGE = re.compile(
+    r"^https?://(?:www\.)?icpsr\.umich\.edu/web/[A-Za-z]+/studies/(\d+)/datasets/(\d+)/variables/([^/?#\s]+)")
+EXTERNAL_TYPES = {"categorical": "Categorical", "numeric": "Numeric", "text": "Text"}
 MANIFEST_FIELDS = ("Variable_ID", "Variable_Label", "Framework_Source", "Construct", "Measure", "Items")
 
 
@@ -70,6 +75,7 @@ def empty_plan() -> dict:
         "relationships": [],
         "standard_variables": [],
         "timepoints": [],
+        "external_variables": [],
         "narrative": "",
     }
 
@@ -87,6 +93,25 @@ def normalize(plan: dict | None, lib: Library | None = None) -> dict:
     out.update(copy.deepcopy({k: v for k, v in plan.items() if k in out}))
     out["schema_version"] = PLAN_VERSION
     return out
+
+
+def icpsr_variable(url: str | None) -> dict | None:
+    """Study, dataset and variable from an ICPSR variable page address (None if it isn't one)."""
+    match = ICPSR_VARIABLE_PAGE.match((url or "").strip())
+    if not match:
+        return None
+    study, dataset, variable = match.groups()
+    return {"study": study, "dataset": dataset, "variable": variable,
+            "url": f"https://www.icpsr.umich.edu/web/ICPSR/studies/{study}/datasets/{dataset}/variables/{variable}"}
+
+
+def external_variable(name: str, label: str, url: str, question: str = "", data_type: str = "categorical") -> dict:
+    """A plan variable taken from an ICPSR study, linked to its ICPSR variable page."""
+    found = icpsr_variable(url) or {}
+    return {"name": name.strip(), "label": label.strip(), "question": question.strip(),
+            "data_type": data_type if data_type in EXTERNAL_TYPES else "categorical",
+            "source": "ICPSR", "source_url": found.get("url") or url.strip(),
+            "study": found.get("study"), "variable": found.get("variable")}
 
 
 def construct_key(framework_id: str | None, label_or_id: str) -> str:
@@ -188,9 +213,15 @@ def suggest_variables(lib: Library, record: dict | None) -> dict[str, str]:
     if participants == "direct":
         out["age_years"] = "A common demographic for studies where people take part."
         out["race_eth"] = "A common demographic, with the federal (SPD 15) categories so studies can be compared."
+    if participants == "direct":
+        out["gender_identity"] = "A common demographic for studies where people take part."
     if levels:
         out["course_level"] = ("Your study is in postsecondary education." if levels & POSTSECONDARY_LEVELS
                                else "Your study is in an education setting.")
+    if participants == "direct" and levels & POSTSECONDARY_LEVELS:
+        out["class_standing"] = "Common for college students: their year in college."
+        out["first_gen"] = "Common for college students, especially in equity and retention research."
+        out["major_cip"] = "Common for college students, recorded as a CIP code so majors match across studies."
     if participants in ("direct", "indirect") and sharing in ("broad_sharing", "restricted_sharing", "not_addressed"):
         out["consent_share"] = "Records who agreed to data sharing, so only they go into a shared dataset."
     if designs & set(REPEATED_DESIGNS):
@@ -293,6 +324,12 @@ def problems(lib: Library, plan: dict) -> list[str]:
     for name in plan["standard_variables"]:
         if name not in lib.standard_variables:
             issues.append(f"Unknown standard variable {name!r}.")
+    for x in plan.get("external_variables") or []:
+        where = f"Variable from ICPSR {x.get('name') or '(no name)'!r}"
+        for problem in naming.problems(x.get("name") or ""):
+            issues.append(f"{where}: variable name {problem}.")
+        if not icpsr_variable(x.get("source_url")):
+            issues.append(f"{where}: paste the address of the variable's page at ICPSR.")
     for tp in plan["timepoints"]:
         if tp not in naming.TIMEPOINT_SUFFIXES:
             issues.append(f"Unknown timepoint {tp!r}.")
@@ -380,6 +417,12 @@ def build_codebook(lib: Library, plan: dict) -> codebook.Codebook:
     variables: list[codebook.Variable] = []
     for name in plan["standard_variables"]:
         variables += codebook.standard_variable(lib, name)
+    for x in plan.get("external_variables") or []:
+        source = (f"From ICPSR study {x['study']}, variable {x['variable']}" if x.get("study") else "From ICPSR")
+        variables.append(codebook.Variable(
+            name=x["name"], label=x.get("label") or x["name"], data_type=x.get("data_type") or "categorical",
+            question=x.get("question") or None,
+            notes=f"{source} ({x['source_url']}). Question wording and codes are documented there."))
     timepoints = plan["timepoints"] or [None]
     for group in measure_groups(lib, plan):
         for tp in timepoints:
