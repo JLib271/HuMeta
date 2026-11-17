@@ -101,6 +101,21 @@ def test_manifest_and_constructs_for_later_modules(lib):
     assert linked["self_efficacy"]["instrument_id"] in {"class", "mslq"}
 
 
+def test_saving_the_plan_carries_constructs_into_the_profile(lib):
+    plan = sdt_plan(lib)
+    existing = [{"construct_id": "interest", "instrument_id": None, "version_id": None, "dimension_id": None},
+                {"construct_id": "kept_from_module_3", "instrument_id": None, "version_id": None, "dimension_id": None}]
+    merged, added = P.merge_profile_constructs(existing, plan)
+    ids = [c["construct_id"] for c in merged]
+    assert ids[:2] == ["interest", "kept_from_module_3"]  # nothing removed, order kept
+    assert set(ids) == {"interest", "kept_from_module_3", "self_efficacy", "sense_of_belonging"}
+    assert added == 2
+    assert existing[0]["instrument_id"] is None  # the caller's list is not changed
+    again, added_again = P.merge_profile_constructs(merged, plan)
+    assert again == merged and added_again == 0
+    assert P.unlinked_constructs(plan) == ["Autonomy", "Curiosity"]
+
+
 def test_problems_are_reported(lib):
     plan = sdt_plan(lib)
     plan["measures"].append({"construct": "nope", "kind": "question", "text": "x", "name": "Bad Name"})

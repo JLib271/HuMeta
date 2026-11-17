@@ -25,7 +25,7 @@ from oem import recommend as R
 from oem.vocab import library_page_url
 from oem.app.common import (APP_DIR, context_search_terms, current_project,
                             load_published_summaries, open_review_pull_request, public_submission_warning,
-                            render_project_download, safe_slug)
+                            navigate_to_module, render_project_download, safe_slug)
 from oem.app.profile_form import current_record, library, store_record
 
 KIND_ORDER = ["theory", "lens", "own", "exploratory"]
@@ -112,7 +112,8 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     st.caption(
         "Start from theory. Choose the framework that guides your study, and it supplies the constructs. Give each "
         "construct a measure (a library instrument, your own questions, or codes in a coding scheme), and the "
-        "framework's expected relationships draw the diagram. The result is your variable plan and its codebook."
+        "framework's expected relationships draw the diagram. The result is your variable plan and its codebook. "
+        "Save it in Step 6 to carry it into Module 3."
     )
     st.info("**Help grow the shared library.** Know a theory, conceptual model, or instrument that should be here? "
             "Use the **Recommend** tabs below. Each recommendation is reviewed before it is added for everyone.")
@@ -434,7 +435,7 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
                                      key=f"m2_narrative_{v}")
 
     # ------------------------------------------------------------ Step 6
-    st.subheader("Step 6 · Review and save")
+    st.subheader("Step 6 · Review, save, and continue")
     issues = P.problems(lib, plan)
     if {"own", "lens"} & {kinds[f] for f in plan["frameworks"]} and not plan["framework_description"].strip():
         issues.append("Describe your own framework or lens in Step 1.")
@@ -456,26 +457,63 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
         d3.download_button("Variable matrix for Module 5 (CSV)", pd.DataFrame(manifest).to_csv(index=False).encode("utf-8"),
                            file_name="variable_matrix.csv", mime="text/csv", key="m2_dl_manifest")
         d4.download_button("Diagram (Graphviz DOT)", P.diagram_dot(lib, plan).encode("utf-8"), file_name="framework_diagram.dot", mime="text/vnd.graphviz", key="m2_dl_dot")
-    if st.button("Save variable plan to project", type="primary", disabled=bool(issues), key="m2_save"):
+    st.caption("**Saving moves your work into Module 3:** your framework and the constructs you measure are added to "
+               "your study profile, and your variables are used in Module 3's DDI export.")
+    if st.button("Save variable plan and continue", type="primary", disabled=bool(issues), key="m2_save"):
         project = current_project()
         project["module2_plan"] = plan
         st.session_state["project"] = project
         st.session_state["m2_marker"] = _project_plan_marker(project)
         record = current_record()
+        added = 0
         if record is not None:
             record["study"]["design"]["frameworks"] = list(plan["frameworks"])
             if plan["framework_description"].strip():
                 record["study"]["design"]["framework_description"] = plan["framework_description"].strip()
+            record["study"]["constructs"], added = P.merge_profile_constructs(record["study"].get("constructs"), plan)
             store_record(record, reset_widgets=True)
-        st.session_state["m2_saved"] = True
+        st.session_state["m2_saved"] = added
         _rebase(plan)
-    if st.session_state.get("m2_saved"):
-        st.success("Variable plan saved to your project" + (", and your study profile now lists the framework." if current_record()
-                                                             else ".") + " Download the project file to keep it; the app does not store a copy.")
-        render_project_download(key="m2_project_download")
+    if issues:
+        st.caption("Fix the items listed above to save.")
+    _next_step(lib)
 
     st.session_state["m2_pending"] = plan
     _share(lib, plan, book, publish_disabled, publish_hint)
+
+
+def _next_step(lib) -> None:
+    """After saving: what moved into Module 3, and the way there."""
+    saved = current_project().get("module2_plan")
+    if not saved:
+        return
+    record = current_record()
+    with st.container(border=True):
+        st.markdown("**Next: 3. Check, Register & Export**")
+        if "m2_saved" in st.session_state:
+            added = st.session_state.pop("m2_saved")
+            if record is not None:
+                st.success("Variable plan saved. Your study profile now lists your framework"
+                           + (f" and {added} new construct(s) from this plan." if added else
+                              "; its constructs were already listed."))
+            else:
+                st.success("Variable plan saved to your project.")
+        if record is None:
+            st.warning("Your plan is saved, but there is no study profile yet, so nothing could be added to one. "
+                       "Save a study profile in Module 1, then come back here and save the plan again.")
+            st.button("Go to 1. Describe Your Study", key="m2_to_m1", on_click=navigate_to_module,
+                      args=("1. Describe Your Study",), use_container_width=True)
+        else:
+            st.caption("In Module 3 you check the full study profile, register the study for a DOI, and export its "
+                       "metadata. Module 3 uses the plan as last saved: if you change anything above, save again.")
+            unlinked = P.unlinked_constructs(P.normalize(saved, lib))
+            if unlinked:
+                st.caption("Not added to the study profile, because they are not linked to the shared construct list: "
+                           + ", ".join(unlinked) + ". They stay in your variable plan and codebook. To list one in the "
+                           "profile, link it to a shared construct in Step 2 and save again.")
+            st.button("Continue to 3. Check, Register & Export →", type="primary", key="m2_to_m3",
+                      on_click=navigate_to_module, args=("3. Check, Register & Export",), use_container_width=True)
+        render_project_download(key="m2_project_download", label="Download project file (to keep your work)")
 
 
 def _related_studies(lib, framework_ids: list[str]) -> list[dict]:
