@@ -452,3 +452,15 @@ def test_study_specific_constructs(lib):
     bad = profile.empty_record(profile.load())
     bad["study"]["constructs"] = [{"framework_id": "sct"}]  # neither a shared construct nor a name
     assert [i for i in profile.validate(bad, lib) if i.severity == "error" and "constructs" in i.element]
+
+
+def test_profile_check_names_each_question_and_where_it_is():
+    pytest.importorskip("streamlit")
+    from oem.app.profile_form import ISSUE_PLACES, describe_issue
+    p = profile.load()
+    for e in p.definition["elements"]:  # every question has a place in the app
+        assert any(e["id"] == k or e["id"].startswith(k + ".") for k in ISSUE_PLACES), e["id"]
+    record = profile.empty_record(p)
+    text = " ".join(describe_issue(i) for i in profile.validate(record))
+    assert "**Identifiability** (Module 1, Ethics, consent, and access): This question needs an answer." in text
+    assert "study.ethics" not in text

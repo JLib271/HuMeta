@@ -481,12 +481,48 @@ def record_form(record: dict) -> dict | None:
     return new
 
 
+# Where each part of the study profile is filled in (longest matching prefix wins).
+ISSUE_PLACES = {
+    "study.fields": "Module 1, top: research fields",
+    "resource": "Module 1, section 1 · The study",
+    "study.discipline": "Module 1, section 1 · The study, under More details",
+    "study.evidence": "Module 1, section 2 · Study design",
+    "study.design": "Module 1, section 2 · Study design",
+    "study.population": "Module 1, section 3 · People and place",
+    "study.context": "Module 1, section 3 · People and place, under More details",
+    "resource.geography": "Module 1, section 3 · People and place, under More details",
+    "resource.collection_dates": "Module 1, section 2 · Study design, under More details",
+    "resource.funding": "Module 1, section 1 · The study, under More details",
+    "study.sources": "Module 1, the Sources box (below People and place)",
+    "education": "Module 1, Education section",
+    "social_science": "Module 1, Social science section",
+    "humanities": "Module 1, Arts and humanities section",
+    "study.ethics": "Module 1, Ethics, consent, and access",
+    "study.ethics.online_data": "Module 1, Ethics: the Online data practices box",
+    "study.care": "Module 1, Indigenous data governance (CARE)",
+    "study.constructs": "Module 3, Constructs measured",
+    "resource.license": "Module 4, step 2 · Choose a license",
+}
+
+
+def describe_issue(issue: profile.Issue) -> str:
+    """One problem in plain words: the question's name, where to find it, and what is wrong."""
+    try:
+        label = profile.element(issue.element)["label"]
+    except KeyError:
+        label = issue.element
+    place = next((ISSUE_PLACES[k] for k in sorted(ISSUE_PLACES, key=len, reverse=True)
+                  if issue.element == k or issue.element.startswith(k + ".")), "")
+    message = "This question needs an answer." if issue.message.strip() == "Required." else issue.message
+    return f"**{label}**" + (f" ({place})" if place else "") + f": {message}"
+
+
 def show_issues(issues: list[profile.Issue]) -> None:
     errors = [i for i in issues if i.severity == "error"]
     warnings = [i for i in issues if i.severity == "warning"]
     if not issues:
         st.success("This study profile meets every requirement of HuMeta.")
     for issue in errors:
-        st.error(f"**{issue.element}**: {issue.message}" + (f" ({issue.rule})" if issue.rule else ""))
+        st.error(describe_issue(issue))
     for issue in warnings:
-        st.warning(f"**{issue.element}**: {issue.message}" + (f" ({issue.rule})" if issue.rule else ""))
+        st.warning(describe_issue(issue))
