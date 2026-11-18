@@ -36,6 +36,12 @@ def persistent_uri(kind: str, record_id: str, version_id: str | None = None) -> 
     return f"{PERSISTENT_BASE}{kind}/{record_id.replace('_', '-')}" + (f"/{version_id}" if version_id else "")
 
 
+def item_uri(instrument_id: str, item_id: str) -> str:
+    """Persistent identifier of an item, the same in every version that has it:
+    https://w3id.org/humeta/instrument/gci/item/q05."""
+    return f"{persistent_uri('instrument', instrument_id)}/item/{item_id}"
+
+
 def library_page_url(kind: str, record_id: str) -> str:
     """Address of a record's page on the Library website (kind: instruments, frameworks or constructs)."""
     return f"{LIBRARY_SITE_URL}{kind}/{record_id.replace('_', '-')}/"

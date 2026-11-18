@@ -30,6 +30,7 @@ from dataclasses import asdict, dataclass, field
 
 from oem import naming
 from oem.library import Library
+from oem.vocab import item_uri
 
 CODEBOOK_FORMAT = "humeta-codebook"
 CODEBOOK_VERSION = 1
@@ -57,6 +58,8 @@ class Variable:
     code_level: str | None = None  # which parts the code has, e.g. construct_measure_item
     measure_uri: str | None = None  # persistent identifier of the measure: library instrument version, or DOI
     construct_uri: str | None = None  # persistent identifier of the shared construct measured
+    item_uri: str | None = None  # persistent identifier of the item, the same in every version that has it
+    linked_items: str | None = None  # the item in other versions, and items linked to it (possible or confirmed)
 
     def __post_init__(self) -> None:
         naming.check(self.name)
@@ -67,6 +70,17 @@ def _with_timepoint(variables: list[Variable], timepoint: str | None) -> list[Va
         variable.name = naming.with_timepoint(variable.name, timepoint)
         variable.timepoint = timepoint
     return variables
+
+
+def describe_links(instrument_id: str, links: list[dict]) -> str | None:
+    """Codebook text for an item's links: '<item uri> (no. 7 in gci-v1; same item, confirmed); ...'."""
+    parts = []
+    for k in links:
+        relation = "same item" if k["relation"] == "same_item" else (
+            ("source of: " if k.get("inverse") else "") + k["relation"].replace("_", " "))
+        parts.append(f"{item_uri(instrument_id, k['item_id'])} (no. {k['number']} in {k['version_id']}; {relation}, "
+                     f"{k['status']}" + (f", {k['basis'].replace('_', ' ')}" if k.get("basis") else "") + ")")
+    return "; ".join(parts) or None
 
 
 def instrument_items(
@@ -103,6 +117,8 @@ def instrument_items(
             instrument_id=instrument_id,
             version_id=version_id,
             item_id=item["item_id"],
+            item_uri=item_uri(instrument_id, item["item_id"]),
+            linked_items=describe_links(instrument_id, lib.item_links(instrument_id, item["item_id"], version_id)),
             construct_ids=list(item.get("construct_ids", [])),
             question=question,
         )
@@ -164,7 +180,7 @@ class Codebook:
     """An ordered, name-unique set of variables with export helpers."""
 
     COLUMNS = (
-        "name", "metadata_code", "code_level", "measure_uri", "construct_uri", "label", "data_type", "values", "missing", "scale_id", "question",
+        "name", "metadata_code", "code_level", "measure_uri", "construct_uri", "item_uri", "linked_items", "label", "data_type", "values", "missing", "scale_id", "question",
         "instrument_id", "version_id", "item_id", "option", "standard_variable",
         "construct_ids", "timepoint", "sensitivity", "notes",
     )

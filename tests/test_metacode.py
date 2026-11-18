@@ -167,3 +167,27 @@ def test_version_codes_and_persistent_identifiers(lib, monkeypatch):
     xml = ddi.to_ddi_codebook_xml(record, plan, lib)
     assert 'vocabURI="https://w3id.org/humeta/construct/self-efficacy"' in xml
     assert 'vocabURI="https://w3id.org/humeta/metadata-code"' in xml
+
+
+def test_items_link_across_versions(lib, monkeypatch):
+    """A made-up second GCI version: q01 unchanged, q90 a possible rewording of q05, q91 a confirmed split of q06."""
+    from oem import codebook
+    v4 = next(vid for (iid, vid) in lib.item_files if iid == "gci")
+    test = {"instrument_id": "gci", "version_id": "gci-test", "items": [
+        {"item_id": "q01", "number": "9", "response_type": "single_response"},
+        {"item_id": "q90", "number": "1", "response_type": "single_response",
+         "derived_from": [{"item_id": "q05", "relation": "reworded", "status": "possible"}]},
+        {"item_id": "q91", "number": "2", "response_type": "single_response",
+         "derived_from": {"item_id": "q06", "relation": "split", "status": "confirmed", "basis": "expert_review"}}]}
+    monkeypatch.setitem(lib.item_files, ("gci", "gci-test"), test)
+    same = lib.item_links("gci", "q01", v4)
+    assert [(k["version_id"], k["number"], k["relation"]) for k in same] == [("gci-test", "9", "same_item")]
+    assert [(k["item_id"], k["status"], k["inverse"]) for k in lib.item_links("gci", "q05", v4)] == [("q90", "possible", True)]
+    assert [(k["item_id"], k["basis"]) for k in lib.item_links("gci", "q91", "gci-test")] == [("q06", "expert_review")]
+    text = codebook.describe_links("gci", lib.item_links("gci", "q06", v4))
+    assert text == ("https://w3id.org/humeta/instrument/gci/item/q91 (no. 2 in gci-test; source of: split, confirmed, "
+                    "expert review)")
+    variables = {v.item_id: v for v in codebook.instrument_items(lib, "gci", v4)}
+    assert variables["q01"].item_uri == "https://w3id.org/humeta/instrument/gci/item/q01"
+    assert "no. 9 in gci-test; same item, confirmed" in variables["q01"].linked_items
+    assert "possible" in variables["q05"].linked_items and variables["q02"].linked_items is None

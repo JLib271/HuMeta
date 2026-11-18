@@ -217,6 +217,38 @@ class Library:
         record = self.item_files.get((instrument_id, version_id))
         return list(record["items"]) if record else []
 
+    def item_links(self, instrument_id: str, item_id: str, version_id: str | None = None) -> list[dict]:
+        """Where an item appears in the instrument's other versions, and the items it is linked to.
+
+        One entry per (version, item): the same item_id in another version (relation ``same_item``,
+        confirmed), items this item's ``derived_from`` links point to, and items whose links point to
+        this item (``inverse`` True). Each entry: item_id, version_id, number, relation, status, basis.
+        """
+        def links(item):
+            d = item.get("derived_from") or []
+            return [d] if isinstance(d, dict) else list(d)
+
+        files = {vid: rec for (iid, vid), rec in self.item_files.items() if iid == instrument_id}
+        where: dict[str, list[tuple[str, str]]] = {}
+        for vid, rec in files.items():
+            for it in rec.get("items", []):
+                where.setdefault(it["item_id"], []).append((vid, str(it.get("number", ""))))
+        out = [{"item_id": item_id, "version_id": vid, "number": num, "relation": "same_item", "status": "confirmed",
+                "basis": None, "inverse": False} for vid, num in where.get(item_id, []) if vid != version_id]
+        for vid, rec in files.items():
+            for it in rec.get("items", []):
+                for k in links(it):
+                    if it["item_id"] == item_id:
+                        targets, inverse = [(k["item_id"], v, n) for v, n in where.get(k["item_id"], [])], False
+                    elif k["item_id"] == item_id:
+                        targets, inverse = [(it["item_id"], vid, str(it.get("number", "")))], True
+                    else:
+                        continue
+                    out += [{"item_id": t, "version_id": v, "number": n, "relation": k["relation"],
+                             "status": k.get("status", "confirmed"), "basis": k.get("basis"), "inverse": inverse}
+                            for t, v, n in targets]
+        return out
+
     def item(self, instrument_id: str, version_id: str, item_id: str) -> dict:
         for item in self.items(instrument_id, version_id):
             if item["item_id"] == item_id:
