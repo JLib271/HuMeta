@@ -243,11 +243,13 @@ def suggest_timepoints(record: dict | None) -> list[str]:
     return []
 
 
-def default_positions(plan: dict, column: int = 260, row: int = 110) -> dict[str, list[float]]:
+def default_positions(plan: dict, column: int = 340, row: int = 150) -> dict[str, list[float]]:
     """Starting places for the diagram: causes on the left, outcomes to the right.
 
     Each construct's column is the length of the longest chain of relationships
-    leading to it (cycles are cut), so arrows mostly point right.
+    leading to it (cycles are cut), so arrows mostly point right. Every other
+    column is shifted down half a row, so arrows between neighbouring columns are
+    not level with each other and their labels do not sit on top of one another.
     """
     keys = [c["id"] for c in plan["constructs"]]
     into: dict[str, set[str]] = {k: set() for k in keys}
@@ -266,8 +268,43 @@ def default_positions(plan: dict, column: int = 260, row: int = 110) -> dict[str
     out: dict[str, list[float]] = {}
     for k in keys:
         col = level(k, frozenset())
-        out[k] = [float(col * column), float(rows.get(col, 0) * row)]
+        out[k] = [float(col * column), float(rows.get(col, 0) * row + (col % 2) * row / 2)]
         rows[col] = rows.get(col, 0) + 1
+    return out
+
+
+TWO_WAY = "<->"
+
+
+def diagram_arrows(plan: dict) -> list[dict]:
+    """The arrows to draw: one per relationship, except that a two-way relationship
+    (A to B and B to A) is one arrow with heads at both ends and one label, so the
+    two arrows and their labels are not drawn on top of each other."""
+    by_pair = {(r["from"], r["to"]): (r.get("relationship") or "").strip() for r in plan["relationships"]
+               if r["from"] != r["to"]}
+    out, done = [], set()
+    for (a, b), label in by_pair.items():
+        if (a, b) in done:
+            continue
+        if (b, a) in by_pair:
+            back = by_pair[(b, a)]
+            done |= {(a, b), (b, a)}
+            out.append({"id": f"{a}{TWO_WAY}{b}", "source": a, "target": b, "both": True,
+                        "label": label if not back or back == label else (f"{label} / {back}" if label else back)})
+        else:
+            done.add((a, b))
+            out.append({"id": f"{a}->{b}", "source": a, "target": b, "both": False, "label": label})
+    return out
+
+
+def edges_from_diagram(edges: list[tuple[str, str, str]]) -> list[tuple[str, str]]:
+    """Relationships (from, to) from the diagram's arrows, given as (id, source, target):
+    a two-way arrow stands for both directions."""
+    out: list[tuple[str, str]] = []
+    for edge_id, source, target in edges:
+        out.append((source, target))
+        if TWO_WAY in (edge_id or ""):
+            out.append((target, source))
     return out
 
 

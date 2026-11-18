@@ -293,3 +293,24 @@ def test_diagram_layout_and_arrows(lib):
     assert rels[0]["relationship"] == "shapes" and rels[1]["relationship"] == ""  # wording kept; new arrow blank
     plan["positions"] = {se: [10.0, 20.0]}
     assert P.normalize(plan)["positions"] == {se: [10.0, 20.0]}  # survives save and reopen
+
+
+def test_two_way_relationships_are_one_arrow(lib):
+    plan = P.empty_plan()
+    plan["frameworks"] = ["sct"]
+    plan["constructs"] = P.framework_constructs(lib, ["sct"])
+    plan["relationships"] = P.default_relationships(lib, ["sct"], {c["id"] for c in plan["constructs"]})
+    arrows = P.diagram_arrows(plan)
+    two_way = [a for a in arrows if a["both"]]
+    assert len(two_way) == 1 and len(arrows) == len(plan["relationships"]) - 1  # personal <-> behavioral
+    assert two_way[0]["label"] == "Reciprocal influence"  # same wording both ways: shown once
+    # Round trip: the drawn arrows give back every relationship, both directions included.
+    edges = P.edges_from_diagram([(a["id"], a["source"], a["target"]) for a in arrows])
+    assert sorted(edges) == sorted((r["from"], r["to"]) for r in plan["relationships"])
+    # Deleting the two-way arrow removes both directions.
+    kept = [(a["id"], a["source"], a["target"]) for a in arrows if not a["both"]]
+    assert len(P.edges_from_diagram(kept)) == len(plan["relationships"]) - 2
+    plan["relationships"][2]["relationship"] = "Shapes"  # different wording each way: both shown
+    assert " / " in [a for a in P.diagram_arrows(plan) if a["both"]][0]["label"]
+    places = P.default_positions(plan)
+    assert len({tuple(xy) for xy in places.values()}) == len(places)  # no two boxes start in the same place
