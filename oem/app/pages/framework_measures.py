@@ -18,6 +18,7 @@ import time
 import pandas as pd
 import streamlit as st
 
+from oem import metacode
 from oem import plan as P
 from oem import profile
 from oem import evidence as EV
@@ -363,12 +364,15 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
         picked_measures = []
         if constructs and not any(c.get("shared_construct_id") for c in constructs):
             st.caption("Library instruments are suggested for constructs from the shared list (Step 2).")
+    search_picks, new_constructs = _search_library(lib, constructs, construct_display, construct_from_key, v)
     scale_labels = {s.label: sid for sid, s in lib.scales.items()}
     scale_names = {sid: label for label, sid in scale_labels.items()}
-    kind_labels = {label: kind for kind, label in P.MEASURE_KINDS.items()}
-    with st.expander(f"Your measures ({len(base['measures'])})" if base["measures"]
+    kind_labels = {label: kind for kind, label in P.MEASURE_KINDS.items() if kind != "published"}
+    published_base = [m for m in base["measures"] if m.get("kind") == "published"]
+    n_table = len(base["measures"]) - len(published_base)
+    with st.expander(f"Your measures ({n_table})" if n_table
                      else "Add a measure yourself (your own questions, codes, or another instrument)",
-                     expanded=bool(base["measures"])):
+                     expanded=bool(n_table)):
         measures_df = st.data_editor(
             pd.DataFrame([{
                 "Construct": construct_from_key.get(m.get("construct")),
@@ -377,15 +381,21 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
                 "Question, or code definition": m.get("text") or "",
                 "Label (code name or item label)": m.get("label") or "",
                 "Response scale": scale_names.get(m.get("scale_id")),
+                "Target (optional)": m.get("target") or "",
                 "Variable name (optional)": m.get("name") or "",
-            } for m in base["measures"]], columns=["Construct", "Type", "Library instrument", "Question, or code definition",
-                                                   "Label (code name or item label)", "Response scale", "Variable name (optional)"]),
+            } for m in base["measures"] if m.get("kind") != "published"],
+                columns=["Construct", "Type", "Library instrument", "Question, or code definition",
+                                                   "Label (code name or item label)", "Response scale", "Target (optional)",
+                                                   "Variable name (optional)"]),
             num_rows="dynamic", use_container_width=True, key=f"m2_measures_{v}",
             column_config={
                 "Construct": st.column_config.SelectboxColumn("Construct", options=list(construct_display)),
                 "Type": st.column_config.SelectboxColumn("Type", options=list(kind_labels)),
                 "Library instrument": st.column_config.SelectboxColumn("Library instrument", options=list(instrument_options)),
                 "Response scale": st.column_config.SelectboxColumn("Response scale", options=list(scale_labels)),
+                "Target (optional)": st.column_config.TextColumn(
+                    "Target (optional)", help="What the measure is about, in a word or two: e.g. Vote, Recycling, "
+                    "Physics. Added to the metadata code so studies with the same target can be found."),
             },
         )
     for row in measures_df.to_dict(orient="records"):
@@ -403,20 +413,25 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
                          "version_id": vid if kind == "instrument" else None,
                          "dimension_id": did if kind == "instrument" else None,
                          "name": _s(row.get("Variable name (optional)")), "label": label, "text": text,
-                         "scale_id": scale_labels.get(_s(row.get("Response scale")))})
+                         "scale_id": scale_labels.get(_s(row.get("Response scale"))),
+                         "target": _s(row.get("Target (optional)"))})
+    measures += _published_instruments(published_base, construct_display, construct_from_key, constructs, v)
+    skipped += st.session_state.pop("m2_published_skipped", 0)
     if skipped:
-        st.caption(f"{skipped} unfinished row(s) are left out of the plan until they have a construct, a type, and "
-                   "an instrument or question.")
+        st.caption(f"{skipped} unfinished row(s) are left out of the plan until they have a construct and a measure: "
+                   "a library instrument, a question, or a published instrument's name with its first author and "
+                   "year or DOI.")
     plan["measures"] = measures
+    picked_measures = picked_measures + search_picks
     if picked_measures and st.button(f"Add {len(picked_measures)} selected instrument(s)", key=f"m2_add_lib_{v}",
                                      type="primary"):
-        _rebase({**plan, "measures": measures + picked_measures, "standard_variables": base["standard_variables"],
+        _rebase({**plan, "constructs": plan["constructs"] + new_constructs,
+                 "measures": measures + picked_measures, "standard_variables": base["standard_variables"],
                  "timepoints": base["timepoints"], "relationships": base["relationships"],
                  "narrative": base.get("narrative", "")})
     unmeasured = [c["label"] for c in constructs if c["id"] not in {m["construct"] for m in measures}]
     if unmeasured and measures:
         st.caption("No measure yet (fine to leave for later): " + ", ".join(unmeasured))
-    st.caption(f"Know an instrument that is not in the library? Recommend it in the **{TABS[1]}** tab.")
     used = {m["instrument_id"] for m in measures if m["kind"] == "instrument" and m["instrument_id"]}
     if used:
         with st.expander("About the library instruments in your plan"):
@@ -452,7 +467,7 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
             if name in suggested:
                 st.caption(suggested[name])
             links = [f"[ICPSR: {sv['icpsr_term']['term']}]({sv['icpsr_term']['url']})" if sv.get("icpsr_term") else "",
-                     f"[CIP codes]({sv['code_list']['url']})" if sv.get("code_list") else ""]
+                     f"[US CIP codes (NCES)]({sv['code_list']['url']})" if sv.get("code_list") else ""]
             if any(links):
                 st.caption("Wording and codes: " + " · ".join(x for x in links if x))
     plan["standard_variables"] = [n for n in lib.standard_variables if n in chosen_std]
@@ -540,14 +555,18 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
                 f"{len(plan['standard_variables']) + len(plan['external_variables'])} other variable(s)"
                 + (f"; timepoints {', '.join(plan['timepoints'])}" if plan["timepoints"] else "") + ".")
     book = None
-    if not issues and (plan["measures"] or plan["standard_variables"] or plan["external_variables"]):
+    if not issues and (plan["constructs"] or plan["standard_variables"] or plan["external_variables"]):
         book = P.build_codebook(lib, plan)
         if plan["measures"]:
             with st.expander("Alignment: construct → measure → variables"):
                 st.dataframe(pd.DataFrame(P.alignment(lib, plan)), use_container_width=True, hide_index=True)
-        with st.expander(f"Codebook: {len(book)} variables"):
-            st.dataframe(pd.DataFrame(book.to_rows())[["name", "label", "data_type", "values", "question",
-                                                       "construct_ids", "notes"]],
+        with st.expander(f"Codebook: {len(book)} variables"
+                         + (f", {len(book.constructs)} construct(s) without a measure yet" if book.constructs else "")):
+            st.caption("**metadata_code** is the same in every study that uses the same construct, measure, item, "
+                       "and target (Construct_Measure_Item_Target), so studies can be matched at each level. "
+                       "**name** is the column name in your data file.")
+            st.dataframe(pd.DataFrame(book.to_rows())[["name", "metadata_code", "code_level", "label", "data_type",
+                                                       "values", "question", "construct_ids", "notes"]],
                          use_container_width=True, hide_index=True)
         manifest = P.manifest(lib, plan)
         st.session_state["module2_variable_manifest"] = manifest
@@ -564,6 +583,18 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
                                use_container_width=True)
     st.caption("**Saving moves your work into Module 3:** your framework and constructs are added to your study "
                "profile, and your variables are used in Module 3's DDI export. You can come back and add more later.")
+    dois = P.published_dois(plan)
+    add_dois = False
+    if dois and record is not None:
+        new = [d for d in dois if d["doi"].lower() not in {(r.get("identifier") or "").lower()
+                                                            for r in record["resource"].get("related") or []}]
+        if new:
+            add_dois = st.checkbox(
+                f"Also list the published instrument(s) you use in your study profile ({len(new)}): "
+                + "; ".join(f"{d['name']} (doi:{d['doi']})" for d in new),
+                value=True, key=f"m2_add_dois_{v}",
+                help="Adds each DOI to the study profile's related works (cited by the study), so your study "
+                     "record and its DataCite metadata name the instrument even though it is not in the library.")
     if st.button("Save variable plan and continue", type="primary", disabled=bool(issues) or empty, key="m2_save"):
         project = current_project()
         project["module2_plan"] = plan
@@ -575,6 +606,9 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
             if plan["framework_description"].strip():
                 record["study"]["design"]["framework_description"] = plan["framework_description"].strip()
             record["study"]["constructs"], added = P.merge_profile_constructs(record["study"].get("constructs"), plan)
+            if add_dois:
+                record["resource"]["related"], dois_added = P.merge_related_dois(record["resource"].get("related"), plan)
+                st.session_state["m2_saved_dois"] = dois_added
             store_record(record, reset_widgets=True)
         st.session_state["m2_saved"] = added
         _rebase(plan)
@@ -586,6 +620,125 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
 
     st.session_state["m2_pending"] = plan
     _share(lib, plan, book, publish_disabled, publish_hint)
+
+
+NEW_CONSTRUCT = "New construct: "
+
+
+def _search_library(lib, constructs: list[dict], construct_display: dict, construct_from_key: dict,
+                    v: int) -> tuple[list[dict], list[dict]]:
+    """Search box for library instruments. Returns the measures ticked and any constructs they add."""
+    query = st.text_input("Search the library for an instrument", key=f"m2_inst_q_{v}",
+                          placeholder="Name, acronym, author, or what it measures, e.g. belonging, MSLQ, Libarkin")
+    if not query.strip():
+        return [], []
+    hits = P.search_instruments(lib, query)
+    if not hits:
+        st.caption("Nothing in the library matches. If it is a published instrument, add it under **A published "
+                   "instrument that is not in the library** below.")
+        return [], []
+    by_shared = {}
+    for c in constructs:
+        by_shared.setdefault(c.get("shared_construct_id"), c["id"])
+    new_options = {}
+    for h in hits:
+        for sid in h["construct_ids"]:
+            if sid not in by_shared:
+                new_options[NEW_CONSTRUCT + lib.constructs[sid]["label"]] = sid
+
+    def default(h):
+        mine = next((by_shared[s] for s in h["construct_ids"] if s in by_shared), None)
+        if mine:
+            return construct_from_key.get(mine)
+        return NEW_CONSTRUCT + lib.constructs[h["construct_ids"][0]]["label"] if h["construct_ids"] else None
+
+    st.caption(f"{len(hits)} match(es). Tick **Add** and choose which of your constructs it measures; "
+               "\"New construct\" adds that shared construct to your plan too.")
+    df = st.data_editor(
+        pd.DataFrame([{"Add": False, "Instrument": h["instrument"], "Part": h["part"],
+                       "Developed to measure": ", ".join(h["measures"]), "For your construct": default(h)}
+                      for h in hits]),
+        disabled=["Instrument", "Part", "Developed to measure"], hide_index=True, use_container_width=True,
+        key=f"m2_inst_hits_{v}",
+        column_config={"Add": st.column_config.CheckboxColumn("Add"),
+                       "For your construct": st.column_config.SelectboxColumn(
+                           "For your construct", options=[*construct_display, *sorted(new_options)])})
+    picks, added, unassigned = [], {}, 0
+    keys = {c["id"] for c in constructs}
+    for h, row in zip(hits, df.to_dict(orient="records")):
+        if row.get("Add") is not True:
+            continue
+        target = _s(row.get("For your construct"))
+        if target in new_options:
+            new = P.shared_list_construct(lib, new_options[target])
+            if new["id"] not in keys:
+                added.setdefault(new["id"], new)
+            cid = new["id"]
+        else:
+            cid = construct_display.get(target)
+        if not cid:
+            unassigned += 1
+            continue
+        picks.append(P.as_measure({"construct": cid, "kind": "instrument", "instrument_id": h["instrument_id"],
+                                   "version_id": h["version_id"], "dimension_id": h["dimension_id"]}))
+    if unassigned:
+        st.caption(f"Choose a construct for {unassigned} ticked row(s).")
+    return picks, list(added.values())
+
+
+def _published_instruments(published_base: list[dict], construct_display: dict, construct_from_key: dict,
+                           constructs: list[dict], v: int) -> list[dict]:
+    """Published instruments that are not in the library: name, first author and year, DOI."""
+    with st.expander(f"Published instruments not in the library ({len(published_base)})" if published_base
+                     else "A published instrument that is not in the library", expanded=bool(published_base)):
+        st.caption("Give its name, the first author and year of its original publication, and its DOI (the "
+                   "instrument's own record if it has one, otherwise the paper that published it). Studies that use "
+                   "the same instrument are matched by its DOI, and its metadata code uses the author and year, as for "
+                   "library instruments (e.g. Smith2017).")
+        df = st.data_editor(
+            pd.DataFrame([{"Construct": construct_from_key.get(m.get("construct")), "Instrument name": m.get("label") or "",
+                           "First author and year": m.get("citation") or "", "DOI": m.get("doi") or "",
+                           "Target (optional)": m.get("target") or "", "Variable name (optional)": m.get("name") or ""}
+                          for m in published_base],
+                         columns=["Construct", "Instrument name", "First author and year", "DOI", "Target (optional)",
+                                  "Variable name (optional)"]),
+            num_rows="dynamic", use_container_width=True, key=f"m2_published_{v}",
+            column_config={
+                "Construct": st.column_config.SelectboxColumn("Construct", options=list(construct_display)),
+                "First author and year": st.column_config.TextColumn("First author and year",
+                                                                     help="For example: Smith 2017"),
+                "DOI": st.column_config.TextColumn("DOI", help="For example: 10.1037/a0026659"),
+            })
+    out, skipped, not_dois = [], 0, []
+    for row in df.to_dict(orient="records"):
+        if not any(_s(x) for x in row.values()):
+            continue
+        cid = construct_display.get(_s(row.get("Construct")))
+        name, cite, doi = _s(row.get("Instrument name")), _s(row.get("First author and year")), _s(row.get("DOI"))
+        if doi and not P.normalize_doi(doi):
+            not_dois.append(doi)
+        if not cid or not name or not (metacode.author_year(cite) or P.normalize_doi(doi)):
+            skipped += 1
+            continue
+        out.append(P.published_measure(cid, name, cite, doi, _s(row.get("Target (optional)")),
+                                       _s(row.get("Variable name (optional)"))))
+    st.session_state["m2_published_skipped"] = skipped
+    if not_dois:
+        st.warning("Not a DOI: " + ", ".join(not_dois) + ". A DOI starts with 10., for example 10.1037/a0026659.")
+    if out:
+        labels = {m["label"]: m for m in out}
+        c1, c2 = st.columns([2, 1])
+        chosen = c1.selectbox("Help others find it: recommend it for the library", list(labels),
+                              key=f"m2_published_rec_{v}")
+        if c2.button("Fill in a recommendation", key=f"m2_published_rec_btn_{v}", use_container_width=True):
+            m = labels[chosen]
+            label = next((c["label"] for c in constructs if c["id"] == m["construct"]), "")
+            st.session_state.update({"m2_suggest_kind": "instrument", "m2_rec_name": m["label"],
+                                     "m2_rec_citation": m["citation"], "m2_rec_doi": m["doi"],
+                                     "m2_rec_construct_prefill": label})
+            st.success(f"The instrument recommendation form is filled in. Open the **{TABS[1]}** tab at the top of "
+                       "this page, add the full citation and what it measures, and submit.")
+    return out
 
 
 def _diagram_editor(plan: dict, positions: dict, names: dict, v: int):
@@ -698,8 +851,10 @@ def _next_step(lib) -> None:
         if "m2_saved" in st.session_state:
             added = st.session_state.pop("m2_saved")
             if record is not None:
+                dois_added = st.session_state.pop("m2_saved_dois", 0)
                 listed = (["your framework"] if (saved.get("frameworks")) else []) + (
-                    [f"{added} new construct(s)"] if added else [])
+                    [f"{added} new construct(s)"] if added else []) + (
+                    [f"{dois_added} published instrument DOI(s) as related works"] if dois_added else [])
                 st.success("Variable plan saved." + (f" Your study profile now lists {' and '.join(listed)} from this plan."
                                                      if listed else ""))
             else:
@@ -860,12 +1015,12 @@ def _recommend_instrument(lib, publish_disabled: bool, publish_hint: str | None)
     plan_constructs = [c["label"] for c in (st.session_state.get("m2_pending") or {}).get("constructs", [])]
     with st.form("m2_recommend_instrument", clear_on_submit=False):
         c1, c2, c3 = st.columns([3, 1, 2])
-        name = c1.text_input("Instrument name *")
+        name = c1.text_input("Instrument name *", key="m2_rec_name")
         acronym = c2.text_input("Acronym")
         relationship = c3.selectbox("Your relationship to it *", list(R.RELATIONSHIPS), format_func=R.RELATIONSHIPS.get)
         c1, c2 = st.columns(2)
-        citation = c1.text_area("Primary citation *", height=90)
-        doi = c2.text_input("DOI (optional)", placeholder="10.xxxx/xxxxx")
+        citation = c1.text_area("Primary citation *", height=90, key="m2_rec_citation")
+        doi = c2.text_input("DOI (optional)", placeholder="10.xxxx/xxxxx", key="m2_rec_doi")
         url = c2.text_input("Link to the instrument or its manual (optional)")
         st.markdown("**What does each part measure?** \\* One row for the whole instrument, or one row per subscale.")
         alignment_df = st.data_editor(
@@ -875,7 +1030,13 @@ def _recommend_instrument(lib, publish_disabled: bool, publish_hint: str | None)
             num_rows="dynamic", use_container_width=True, key="m2_rec_inst_alignment",
             column_config={"Measures (shared construct)": st.column_config.SelectboxColumn(
                 "Measures (shared construct)", options=list(construct_labels))})
-        construct = st.selectbox("Construct in your plan that it measures (optional)", ["", *plan_constructs])
+        options = ["", *plan_constructs]
+        prefill = st.session_state.pop("m2_rec_construct_prefill", None)
+        if st.session_state.get("m2_rec_construct") not in options:
+            st.session_state.pop("m2_rec_construct", None)
+        if prefill in options:
+            st.session_state["m2_rec_construct"] = prefill
+        construct = st.selectbox("Construct in your plan that it measures (optional)", options, key="m2_rec_construct")
         c1, c2, c3 = st.columns(3)
         respondents = c1.text_input("Who responds?", placeholder="e.g., undergraduate students")
         item_count = c2.text_input("Total number of items")

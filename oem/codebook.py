@@ -53,6 +53,8 @@ class Variable:
     timepoint: str | None = None
     sensitivity: str = "none"
     notes: str | None = None
+    metadata_code: str | None = None  # Construct_Measure_Item_Target (oem.metacode); same in every study
+    code_level: str | None = None  # which parts the code has, e.g. construct_measure_item
 
     def __post_init__(self) -> None:
         naming.check(self.name)
@@ -160,17 +162,19 @@ class Codebook:
     """An ordered, name-unique set of variables with export helpers."""
 
     COLUMNS = (
-        "name", "label", "data_type", "values", "missing", "scale_id", "question",
+        "name", "metadata_code", "code_level", "label", "data_type", "values", "missing", "scale_id", "question",
         "instrument_id", "version_id", "item_id", "option", "standard_variable",
         "construct_ids", "timepoint", "sensitivity", "notes",
     )
 
-    def __init__(self, variables: list[Variable]):
+    def __init__(self, variables: list[Variable], constructs: list[dict] | None = None):
         names = [v.name for v in variables]
         duplicates = sorted({n for n in names if names.count(n) > 1})
         if duplicates:
             raise naming.NamingError(f"Duplicate variable names: {', '.join(duplicates)}")
         self.variables = list(variables)
+        # Constructs in the plan with no measure yet: listed at construct level, with no data column.
+        self.constructs = list(constructs or [])
 
     def __len__(self) -> int:
         return len(self.variables)
@@ -194,6 +198,11 @@ class Codebook:
             row["missing"] = self._codes(v.missing)
             row["construct_ids"] = "; ".join(v.construct_ids)
             rows.append({column: ("" if row[column] is None else row[column]) for column in self.COLUMNS})
+        for c in self.constructs:
+            rows.append({column: "" for column in self.COLUMNS} | {
+                "metadata_code": c["metadata_code"], "code_level": "construct", "label": c["label"],
+                "construct_ids": "; ".join(c.get("construct_ids") or []),
+                "notes": c.get("notes") or "No measure chosen yet: no data column."})
         return rows
 
     def to_csv(self) -> str:
@@ -210,5 +219,7 @@ class Codebook:
             record["values"] = [{"code": c, "label": l} for c, l in v.values]
             record["missing"] = [{"code": c, "label": l} for c, l in v.missing]
             variables.append({k: val for k, val in record.items() if val not in (None, [], "")})
-        return json.dumps({"format": CODEBOOK_FORMAT, "version": CODEBOOK_VERSION, "variables": variables},
-                          ensure_ascii=False, indent=2)
+        out = {"format": CODEBOOK_FORMAT, "version": CODEBOOK_VERSION, "variables": variables}
+        if self.constructs:
+            out["constructs_without_measures"] = self.constructs
+        return json.dumps(out, ensure_ascii=False, indent=2)

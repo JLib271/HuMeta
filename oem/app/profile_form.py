@@ -257,7 +257,7 @@ def record_form(record: dict) -> dict | None:
             locale = c1.multiselect(lab("Locale", "study.context.locale"), p.ids("locale"),
                                     default=[x for x in s["context"].get("locale") or [] if x in p.ids("locale")],
                                     format_func=lambda t: p.label("locale", t), key=key("locale"),
-                                    help=tip("study.context.locale", "NCES locale types. Fully online study? Leave blank."))
+                                    help=tip("study.context.locale", "US NCES locale types (City, Suburb, Town, Rural). Fully online study? Leave blank."))
             geo = res.get("geography") or {}
             states = c2.multiselect(lab("US states", "resource.geography"), US_STATES,
                                     help=tip("resource.geography", "USPS state codes."),

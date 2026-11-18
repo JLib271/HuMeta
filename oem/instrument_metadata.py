@@ -72,7 +72,7 @@ def record_evidence(lib: Library, record: dict) -> list[str]:
 
 
 # ------------------------------------------------------------------ DataCite
-#: KCWorks files instruments as Text document > Other, which maps to DataCite Text; DataCite's own "Instrument"
+#: The STEMEd+ Commons Library files instruments as Text document > Other, which maps to DataCite Text; DataCite's own "Instrument"
 #: type is for the physical device instance, so it does not fit questionnaires, tests, or protocols.
 RESOURCE_TYPE_GENERAL = "Text"
 PUBLISHER = "HuMeta Instrument Library"

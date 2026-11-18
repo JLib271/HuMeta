@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Module 6: Find Related Data.
 
-Datasets deposited in the STEMEd+ Library that share instruments, constructs,
+Datasets deposited in the STEMEd+ Commons Library that share instruments, constructs,
 or theories with your study, from the index the HuMeta Library website
 publishes daily; plus the study summaries researchers have shared.
 """
@@ -32,8 +32,8 @@ def _dataset_index() -> dict | None:
 def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None) -> None:
     st.header("🔎 Find Related Data")
     st.caption(
-        "Datasets in the [STEMEd+ Library](" + D.DATA_COLLECTION_URL + ") that used the same instruments, constructs, or "
-        "theories as your study. The data stay in the STEMEd+ Library; follow a link to see each deposit and its terms."
+        "Datasets in the [STEMEd+ Commons Library](" + D.DATA_COLLECTION_URL + ") that used the same instruments, constructs, or "
+        "theories as your study. The data stay in the STEMEd+ Commons Library; follow a link to see each deposit and its terms."
     )
     tab_related, tab_all, tab_summaries = st.tabs(["Related to my study", "All datasets", "Shared study summaries"])
     index = _dataset_index()
@@ -69,7 +69,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
         else:
             rows = index.get("datasets") or []
             if not rows:
-                st.info("No datasets have been deposited in the STEMEd+ Library's Data collection yet.")
+                st.info("No datasets have been deposited in the STEMEd+ Commons Library's Data collection yet.")
             else:
                 lib = library()
                 st.dataframe(pd.DataFrame([{
@@ -80,9 +80,9 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
                 } for d in rows]), use_container_width=True, hide_index=True,
                     column_config={"Page": st.column_config.LinkColumn("HuMeta Library page", display_text="Open")})
             if index.get("fetched"):
-                st.caption(f"From the STEMEd+ Library, checked {index['fetched']}.")
+                st.caption(f"From the STEMEd+ Commons Library, checked {index['fetched']}.")
         st.button("How to deposit your data (Module 4)", key="m6_to_m4", on_click=navigate_to_module,
-                  args=("4. Deposit Data in the STEMEd+ Library",))
+                  args=("4. Deposit Data in the STEMEd+ Commons Library",))
 
     with tab_summaries:
         summaries = load_published_summaries()

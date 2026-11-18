@@ -752,8 +752,9 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
     """DataCite 4.7 metadata in the JSON 'attributes' form used by the DataCite REST API.
 
     A profile describes a study, so by default this is the study's registration (DataCite StudyRegistration),
-    the record researchers deposit in the STEMEd+ Library's Studies collection. ``resource_type`` overrides it.
-    Publisher and year default to Knowledge Commons and the current year until the study is registered."""
+    the record researchers deposit in the STEMEd+ Commons Library's Studies collection. ``resource_type`` overrides it.
+    Publisher defaults to Knowledge Commons (which registers STEMEd+ Commons Library DOIs) and year to the
+    current year until the study is registered."""
     p = profile or load()
     lib = lib or Library.load()
     record = migrate(record, p)

@@ -64,7 +64,9 @@ def scale_groups(lib: Library, plan: dict) -> list[dict]:
     merged: dict[tuple, dict] = {}
     for group in P.measure_groups(lib, plan):
         m = group["measure"]
-        kind_key = (m["kind"],) if m["kind"] in ("question", "code") else (m["kind"], m.get("instrument_id"), m.get("dimension_id"))
+        kind_key = ((m["kind"],) if m["kind"] in ("question", "code")
+                    else (m["kind"], m.get("doi") or m.get("label")) if m["kind"] == "published"
+                    else (m["kind"], m.get("instrument_id"), m.get("dimension_id")))
         entry = merged.setdefault((group["construct"]["id"], *kind_key),
                                   {"construct": group["construct"], "label": group["label"], "variables": []})
         entry["variables"] += group["variables"]

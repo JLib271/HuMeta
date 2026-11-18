@@ -113,7 +113,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
             st.button("DataCite 4.7 metadata (XML)", disabled=True, use_container_width=True, key="m3_dl_dcxml_off",
                       help="DataCite XML requires a DOI. Register the study above to get one.")
     plan = current_project().get("module2_plan")
-    has_plan = bool((plan or {}).get("measures") or (plan or {}).get("standard_variables")
+    has_plan = bool((plan or {}).get("constructs") or (plan or {}).get("standard_variables")
                     or (plan or {}).get("external_variables"))
     st.download_button("DDI-Codebook 2.5 (XML)", ddi.to_ddi_codebook_xml(record, plan if has_plan else None, lib, p).encode("utf-8"),
                        file_name=f"{slug}.ddi.xml", mime="application/xml", key="m3_dl_ddi", use_container_width=True,
@@ -202,8 +202,8 @@ def _from_module_2(record: dict, plan: dict, lib, construct_names: dict) -> None
 
 
 def _register_study(record: dict) -> None:
-    """Register the study (its design) in the STEMEd+ Library's Studies collection, and save its DOI."""
-    st.subheader("Register your study in the STEMEd+ Library")
+    """Register the study (its design) in the STEMEd+ Commons Library's Studies collection, and save its DOI."""
+    st.subheader("Register your study in the STEMEd+ Commons Library")
     res = record["resource"]
     doi = (res.get("identifier") or {}).get("value") if (res.get("identifier") or {}).get("type") == "DOI" else None
     if doi:
@@ -213,7 +213,7 @@ def _register_study(record: dict) -> None:
             st.markdown("**Download your study profile again, now with its DOI**")
             st.caption("The files you deposited were made before the study had a DOI. Keep these updated copies "
                        "with your study materials and use them when you share the study profile. You don't need to "
-                       "deposit them again: the Knowledge Commons record already shows the DOI.")
+                       "deposit them again: the STEMEd+ Commons Library record already shows the DOI.")
             c1, c2, c3 = st.columns(3)
             c1.download_button("Study profile with DOI (PDF)", study_pdf.study_pdf(record, library(), profile.load()),
                                file_name="study-profile.pdf", mime="application/pdf", key="m3_dl_doi_pdf",
@@ -225,8 +225,8 @@ def _register_study(record: dict) -> None:
                 render_project_download(key="m3_dl_doi_project", label="Project file (saves the DOI)")
     else:
         st.write(
-            "Give your study its own DOI by depositing this profile in the [STEMEd+ Library's Studies collection]("
-            + D.STUDIES_COLLECTION_URL + ") on Knowledge Commons. The DOI stays with the study: the dataset, "
+            "Give your study its own DOI by depositing this profile in the [STEMEd+ Commons Library's Studies collection]("
+            + D.STUDIES_COLLECTION_URL + "). The DOI stays with the study: the dataset, "
             "instruments, and papers that come from it link back to it. Deposits are public and permanent, so "
             "register when you are ready for the design to be public; you can add new versions as the study changes."
         )
@@ -240,8 +240,8 @@ def _register_study(record: dict) -> None:
         c2.download_button("Download humeta.json", json.dumps(record, ensure_ascii=False, indent=2).encode("utf-8"),
                            file_name="humeta.json", mime="application/json", key="m3_dl_register",
                            type="primary" if not doi else "secondary", use_container_width=True)
-        st.markdown("**2.** Start a deposit in the Studies collection. Sign in to Knowledge Commons (free; Google, ORCID, "
-                    "GitHub, or your institution).")
+        st.markdown("**2.** Start a deposit in the Studies collection. Sign in to the STEMEd+ Commons Library, or join free "
+                    "([how to join](" + D.JOIN_URL + "); Google, ORCID, GitHub, or your institution).")
         st.link_button("Start a deposit in the Studies collection", D.STUDIES_DEPOSIT_URL, use_container_width=True)
         st.markdown("**3.** Copy these into the deposit form.")
         creators = "; ".join(c["name"] + (f" (ORCID {c['orcid']})" if c.get("orcid") else "")
@@ -257,7 +257,7 @@ def _register_study(record: dict) -> None:
         if keywords:
             st.markdown("Keywords (add each one; the `humeta:` keywords link the study to the HuMeta Library)")
             st.code("\n".join(keywords), language=None)
-        st.markdown("**4.** When Knowledge Commons gives you the DOI, paste it here and save your project.")
+        st.markdown("**4.** When the STEMEd+ Commons Library gives you the DOI, paste it here and save your project.")
         c1, c2 = st.columns([3, 1])
         entered = c1.text_input("Study DOI", doi or "", key="m3_study_doi", placeholder="10.17613/...",
                                 label_visibility="collapsed")

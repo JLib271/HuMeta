@@ -12,7 +12,7 @@ The site is https://jlib271.github.io/HuMeta/. It holds:
 
 The website moved from https://jlib271.github.io/HuMeta/ to
 https://jlib271.github.io/humeta-library/ when the library got its own
-repository. Knowledge Commons deposits, papers, and DataCite records link to
+repository. STEMEd+ Commons Library deposits, papers, and DataCite records link to
 the old pages, so this builds a small site for the old address: one forwarding
 page for every record page and the site's other pages (with a canonical link
 for search engines), and a 404 page that forwards any other path, such as a

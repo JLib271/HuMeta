@@ -22,8 +22,9 @@ analyses without an account.
 * **Your work is kept by you**, in the project file you download. The portal
   has no accounts, database, or saved projects.
 * **The portal never receives research data for sharing.** To share data, you
-  deposit them yourself in the STEMEd+ Library on Knowledge Commons (Module 4
-  helps you prepare); Knowledge Commons' own policies apply there. Module 6
+  deposit them yourself in the STEMEd+ Commons Library (Module 4
+  helps you prepare); the policies of Knowledge Commons, the platform STEMEd+ Commons
+  runs on, apply there. Module 6
   shows datasets from the public descriptions of those deposits.
 * **We do not use advertising, analytics, or tracking tools**, and we do not
   sell or share information about you.

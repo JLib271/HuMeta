@@ -44,8 +44,9 @@ reused under these licenses:
   HuMeta repository, where anyone may view, copy, and reuse them with
   attribution.
 
-Data you deposit in the STEMEd+ Library are governed by Knowledge Commons'
-terms and the license you choose there.
+Data you deposit in the STEMEd+ Commons Library are governed by the terms of
+Knowledge Commons, the platform STEMEd+ Commons runs on, and the license you
+choose there.
 
 Maintainers review submissions and may edit, decline, or remove them.
 

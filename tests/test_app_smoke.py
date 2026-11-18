@@ -18,7 +18,7 @@ PAGES = [
     "1. Describe Your Study",
     "2. Theory and Measures",
     "3. Check, Register & Export",
-    "4. Deposit Data in the STEMEd+ Library",
+    "4. Deposit Data in the STEMEd+ Commons Library",
     "5. Descriptive & Scale Analytics",
     "6. Find Related Data",
 ]

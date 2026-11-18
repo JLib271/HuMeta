@@ -1,9 +1,8 @@
 # Copyright (C) 2026 Julie C. Libarkin
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Datasets in the STEMEd+ Library, and how a study connects to them.
+"""Datasets in the STEMEd+ Commons Library, and how a study connects to them.
 
-Research data are deposited in the STEMEd+ Library's Data collection on
-Knowledge Commons, not in the portal. The HuMeta Library website reads that
+Research data are deposited in the STEMEd+ Commons Library's Data collection, not in the portal. The HuMeta Library website reads that
 collection daily and publishes an index, ``data/datasets.json``, linking each
 deposit to the instruments, constructs, and theories it used (built by
 humeta-library's ``scripts/fetch_datasets.py``). This module:
@@ -23,15 +22,18 @@ from dataclasses import dataclass, field
 
 from oem.vocab import LIBRARY_SITE_URL
 
-#: The STEMEd+ Library's Data subcollection on Knowledge Commons (KCWorks)
+#: The STEMEd+ Commons Library's Data subcollection
 DATA_COLLECTION = "stemedplus-data"
 DATA_COLLECTION_URL = f"https://works.hcommons.org/collections/{DATA_COLLECTION}"
 DATA_DEPOSIT_URL = f"https://works.hcommons.org/uploads/new?community={DATA_COLLECTION}"
-#: The STEMEd+ Library's Studies subcollection, where researchers register a study (its design) for a DOI
+#: The STEMEd+ Commons Library's Studies subcollection, where researchers register a study (its design) for a DOI
 STUDIES_COLLECTION = "stemedplus-studies"
 STUDIES_COLLECTION_URL = f"https://works.hcommons.org/collections/{STUDIES_COLLECTION}"
 STUDIES_DEPOSIT_URL = f"https://works.hcommons.org/uploads/new?community={STUDIES_COLLECTION}"
-#: Publisher of every Knowledge Commons Works DOI, used when a registered study has none recorded
+#: How to join: one account for STEMEd+ Commons and its library
+JOIN_URL = "https://support.hcommons.org/profiles/login-and-registration/"
+#: Publisher on STEMEd+ Commons Library DOIs (registered by Knowledge Commons, the platform STEMEd+ Commons runs
+#: on), used when a registered study has none recorded
 KC_PUBLISHER = "Knowledge Commons"
 #: The index the HuMeta Library website publishes
 DATASET_INDEX_URL = LIBRARY_SITE_URL + "data/datasets.json"

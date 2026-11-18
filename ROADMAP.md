@@ -9,8 +9,8 @@ their data with common names and metadata, and sharing data responsibly.
 - Instrument library with constructs, versions, evidence, item crosswalks, and
   licensed item text, now in its own repository,
   [humeta-library](https://github.com/JLib271/humeta-library), which the portal reads from its website
-- Shared response scales, standard variables (including the 2024 federal
-  race/ethnicity standard), and variable-naming rules (`oem/naming.py`)
+- Shared response scales, standard variables (including the US federal
+  government's 2024 race/ethnicity standard, OMB SPD 15), and variable-naming rules (`oem/naming.py`)
 - Codebook builder with CSV/JSON export (`oem/codebook.py`)
 - App split into testable modules; CI with unit tests and page smoke tests
 - Metadata profile 1.0.0-draft.1 with DataCite 4.7 and ERIC crosswalks; Module 1 is now the profile form
@@ -62,6 +62,6 @@ Library contributions (adding items, resolving `needs_check`, response scales) n
 [humeta-library](https://github.com/JLib271/humeta-library).
 
 - Propose a standard `gender` variable (needs community discussion; there is
-  no settled federal standard to follow)
+  no settled US federal standard to follow)
 - Add type hints and docstrings to helpers in `oem/app/common.py`
 - Improve accessibility of form labels and help text in a page
