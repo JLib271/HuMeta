@@ -458,7 +458,7 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
             if name in suggested:
                 st.caption(suggested[name])
             links = [f"[ICPSR: {sv['icpsr_term']['term']}]({sv['icpsr_term']['url']})" if sv.get("icpsr_term") else "",
-                     f"[CIP codes]({sv['code_list']['url']})" if sv.get("code_list") else ""]
+                     f"[US CIP codes (NCES)]({sv['code_list']['url']})" if sv.get("code_list") else ""]
             if any(links):
                 st.caption("Wording and codes: " + " · ".join(x for x in links if x))
     plan["standard_variables"] = [n for n in lib.standard_variables if n in chosen_std]

@@ -217,7 +217,8 @@ def suggest_variables(lib: Library, record: dict | None) -> dict[str, str]:
         out["participant_id"] = "People take part in your study: give each person a random study ID."
     if participants == "direct":
         out["age_years"] = "A common demographic for studies where people take part."
-        out["race_eth"] = "A common demographic, with the federal (SPD 15) categories so studies can be compared."
+        out["race_eth"] = ("A common demographic, with the US federal categories (OMB SPD 15, 2024) so studies can be "
+                           "compared. Outside the US, add your country's own question as a study variable.")
     if participants == "direct":
         out["gender_identity"] = "A common demographic for studies where people take part."
     if levels:
@@ -226,7 +227,7 @@ def suggest_variables(lib: Library, record: dict | None) -> dict[str, str]:
     if participants == "direct" and levels & POSTSECONDARY_LEVELS:
         out["class_standing"] = "Common for college students: their year in college."
         out["first_gen"] = "Common for college students, especially in equity and retention research."
-        out["major_cip"] = "Common for college students, recorded as a CIP code so majors match across studies."
+        out["major_cip"] = "Common for college students, recorded as a US CIP code (NCES) so majors match across studies."
     if participants in ("direct", "indirect") and sharing in ("broad_sharing", "restricted_sharing", "not_addressed"):
         out["consent_share"] = "Records who agreed to data sharing, so only they go into a shared dataset."
     if designs & set(REPEATED_DESIGNS):

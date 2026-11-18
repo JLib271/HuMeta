@@ -87,3 +87,9 @@ def test_standard_variables_and_ddi_carry_the_code(lib):
     xml = ddi.to_ddi_codebook_xml(record, plan, lib)
     assert ">outcome_expectations_SCT_Own_item1_PeopleExpectMeTo<" in xml
     assert ddi.METADATA_CODE_VOCAB in xml
+
+
+def test_fixed_library_codes_win_over_the_citation(lib, monkeypatch):
+    inst = dict(lib.instruments["mslq"], metadata_code="Pintrich1991a")
+    monkeypatch.setitem(lib.instruments, "mslq", inst)
+    assert M.instrument_code(lib, "mslq") == "Pintrich1991a"

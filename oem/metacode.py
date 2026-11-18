@@ -9,7 +9,8 @@ every study, so studies can be matched at each level:
   with the theory), the shared construct's id (``self_efficacy``) for a
   construct taken from the shared list, or the researcher's own name.
 * **Construct_Measure**: ``outcome_expectations_SCT_Smith2017``. A library
-  instrument is named by the first author and year of its original citation;
+  instrument is named by its fixed code in the library (first author and year of
+  its original publication, with a letter if two would clash);
   researcher-written questions are ``Own``; codes in a coding scheme are ``Codes``.
 * **Construct_Measure_Item**: ``..._Smith2017_item1_PeopleExpectMeTo``. The item's
   number, then its first words when the item text may be shown (otherwise the
@@ -61,11 +62,14 @@ def construct_code(lib: Library, construct: dict) -> str:
 
 
 def instrument_code(lib: Library, instrument_id: str) -> str:
-    """A library instrument as first author and year of its original citation: 'Pintrich1991'.
+    """A library instrument's fixed code, 'Pintrich1991' (its ``metadata_code`` in the library).
 
-    Falls back to the instrument's id when the citation has no 'Surname, ... (Year)'.
+    For a library without fixed codes, worked out from the original citation (first author and
+    year), else from the instrument's id.
     """
     inst = lib.instruments.get(instrument_id) or {}
+    if inst.get("metadata_code"):
+        return inst["metadata_code"]
     text = (inst.get("original_citation") or {}).get("text") or ""
     author = re.match(r"\s*([A-Za-z][A-Za-z'\-]+)", text)
     year = re.search(r"\((\d{4})[a-z]?\)", text) or re.search(r"\b(1[89]\d\d|20\d\d)\b", text)
