@@ -35,6 +35,11 @@
             "type": "string",
             "pattern": "^[a-z][a-z0-9_]*$"
           },
+          "pid": {
+            "type": "string",
+            "pattern": "^hmf[0-9]{4}$",
+            "description": "Persistent identifier, issued by scripts/assign_identifiers.py and recorded in identifiers.csv. Opaque, never changed, reassigned or deleted. See IDENTIFIERS.md. URI: https://w3id.org/humeta/framework/<pid>. Not given to the portal's own and exploratory choices."
+          },
           "label": {
             "type": "string",
             "minLength": 1

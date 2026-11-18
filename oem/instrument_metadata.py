@@ -116,8 +116,8 @@ def to_datacite_json(lib: Library, instrument_id: str, profile=None) -> dict:
         "subjects": [{"subject": "research instrument"}],
         "descriptions": [],
         "url": library_page_url("instruments", instrument_id),
-        "alternateIdentifiers": [{"alternateIdentifier": persistent_uri("instrument", instrument_id),
-                                  "alternateIdentifierType": "URL"}],
+        "alternateIdentifiers": [{"alternateIdentifier": uri, "alternateIdentifierType": "URL"}
+                                 for uri in [persistent_uri(lib, "instrument", instrument_id)] if uri],
         "schemaVersion": "http://datacite.org/schema/kernel-4",
     }
     if inst.get("acronym"):
@@ -137,12 +137,14 @@ def to_datacite_json(lib: Library, instrument_id: str, profile=None) -> dict:
         c = lib.constructs.get(cid)
         if c:
             subjects.append({"subject": c["label"], "subjectScheme": "HuMeta Constructs",
-                             "schemeUri": P.CONSTRUCTS_SCHEME_URI, "valueUri": persistent_uri("construct", cid)})
+                             "schemeUri": P.CONSTRUCTS_SCHEME_URI,
+                             **P.value_uri(persistent_uri(lib, "construct", cid))})
     for fid in (inst.get("development") or {}).get("framework_ids", []):
         f = lib.frameworks.get(fid)
         if f:
             subjects.append({"subject": f["label"], "subjectScheme": "HuMeta Frameworks",
-                             "schemeUri": P.FRAMEWORKS_SCHEME_URI, "valueUri": persistent_uri("framework", fid)})
+                             "schemeUri": P.FRAMEWORKS_SCHEME_URI,
+                             **P.value_uri(persistent_uri(lib, "framework", fid))})
     subjects += P.vocab_subjects(p, "discipline", "HuMeta Disciplines",
                                  [d for d in inst.get("disciplines", []) if p.term("discipline", d)])
     for field, vocab_id, scheme in INSTRUMENT_SUBJECTS:
@@ -222,7 +224,8 @@ def to_schema_org(lib: Library, instrument_id: str, profile=None) -> dict:
     """schema.org JSON-LD for an instrument's Library page (read by search engines)."""
     dc = to_datacite_json(lib, instrument_id, profile)
     inst = lib.instrument(instrument_id)
-    pid = dc["alternateIdentifiers"][0]["alternateIdentifier"]
+    # The persistent identifier, or the Library page for a record that has none yet
+    pid = next((a["alternateIdentifier"] for a in dc["alternateIdentifiers"]), dc["url"])
     out = {"@context": "https://schema.org", "@type": "CreativeWork", "@id": pid, "identifier": [pid],
            "additionalType": "https://schema.org/Survey" if inst.get("instrument_type") in ("attitude_beliefs_survey", "self_report_scale")
            else None,

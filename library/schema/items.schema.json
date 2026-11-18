@@ -99,30 +99,19 @@
             "type": "boolean"
           },
           "derived_from": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "item_id",
-              "relation"
-            ],
-            "properties": {
-              "item_id": {
-                "type": "string"
+            "description": "Links from this item to items in other versions it corresponds to (a changed item gets a new item_id; an unchanged item keeps its item_id and needs no link). Each link is possible or confirmed. A split or merged item may link to several items. A single link may also be written as one object.",
+            "oneOf": [
+              {
+                "$ref": "#/$defs/item_link"
               },
-              "relation": {
-                "enum": [
-                  "reworded",
-                  "domain_word_swapped",
-                  "options_changed",
-                  "translated",
-                  "split",
-                  "merged"
-                ]
-              },
-              "notes": {
-                "type": "string"
+              {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "$ref": "#/$defs/item_link"
+                }
               }
-            }
+            ]
           },
           "notes": {
             "type": "string"
@@ -185,6 +174,62 @@
             "type": "string",
             "description": "Shared response scale from scales.json (for Likert-type items)."
           }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "item_link": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "item_id",
+        "relation",
+        "status"
+      ],
+      "properties": {
+        "item_id": {
+          "type": "string",
+          "description": "The linked item in another version of this instrument (its item_id)."
+        },
+        "relation": {
+          "enum": [
+            "reworded",
+            "domain_word_swapped",
+            "options_changed",
+            "translated",
+            "split",
+            "merged"
+          ],
+          "description": "How this item differs from the linked item."
+        },
+        "status": {
+          "enum": [
+            "possible",
+            "confirmed"
+          ],
+          "description": "possible: proposed, not yet checked (for example from item order or similar wording). confirmed: checked; give the basis."
+        },
+        "basis": {
+          "enum": [
+            "developer_documentation",
+            "item_text_comparison",
+            "response_data",
+            "expert_review",
+            "other"
+          ],
+          "description": "What the link rests on. Required when status is confirmed."
+        },
+        "checked_by": {
+          "type": "string",
+          "description": "Who confirmed the link."
+        },
+        "checked_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "notes": {
+          "type": "string"
         }
       }
     }

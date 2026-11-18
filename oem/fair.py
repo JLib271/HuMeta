@@ -17,8 +17,9 @@ PRINCIPLES: list[tuple[str, str, str, str]] = [
     ("F1", "Metadata and data have a globally unique, persistent identifier",
      "Each study gets its own DOI when registered in the STEMEd+ Commons Library (Module 3), and each dataset gets "
      "one when deposited (Module 4). Every library instrument, instrument version, item, construct, and theory has "
-     "a persistent identifier (https://w3id.org/humeta/…). A published instrument that is not in the library is "
-     "identified by its DOI.", "Met"),
+     "a persistent identifier (for example https://w3id.org/humeta/instrument/hmi0004). The identifiers carry no "
+     "meaning and are never reassigned or deleted, following McMurry et al. (2017), \"Identifiers for the 21st "
+     "century\". A published instrument that is not in the library is identified by its DOI.", "Met"),
     ("F2", "Data are described with rich metadata",
      "The HuMeta study profile records the study's design, population, setting, theory, constructs, measures, "
      "ethics, and Indigenous data governance (CARE). The codebook describes every variable, down to the item, and "
@@ -32,7 +33,8 @@ PRINCIPLES: list[tuple[str, str, str, str]] = [
      "and instruments, and describes them for search engines (schema.org). Library instruments are not yet in "
      "DataCite: that needs a DOI for each, deposited by its developers.", "Partly"),
     ("A1", "Metadata are retrievable by their identifier using a standard protocol",
-     "DOIs and w3id identifiers resolve over HTTPS to pages and to machine-readable records (JSON).", "Met"),
+     "DOIs and w3id identifiers resolve over HTTPS to pages; DOIs and instrument identifiers also return "
+     "machine-readable records (JSON) when asked for them.", "Met"),
     ("A1.1", "The protocol is open, free, and universally implementable",
      "HTTPS; no software or account is needed to read any metadata.", "Met"),
     ("A1.2", "The protocol allows authentication and authorization where needed",

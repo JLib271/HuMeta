@@ -1,5 +1,6 @@
 {
   "id": "climate-change-concept-inventory",
+  "pid": "hmi0002",
   "name": "Climate Change Concept Inventory (Libarkin et al.)",
   "developers": [
     {
@@ -19,6 +20,13 @@
     }
   ],
   "variable_prefix": "ccci",
+  "metadata_code": "Libarkin2018",
+  "identifiers": {
+    "status": "needs_check",
+    "checked": "2026-11-18",
+    "note": "PsycTests (APA, subscription) and ZIS have not been searched by a reviewer yet.",
+    "records": []
+  },
   "instrument_type": "concept_inventory",
   "participants": [
     "students",
@@ -64,6 +72,8 @@
   "versions": [
     {
       "version_id": "ccci-2018",
+      "pid": "hmi0002.1",
+      "code": "V1",
       "label": "21-item version (2018)",
       "language": "en",
       "year": 2018,

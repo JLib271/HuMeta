@@ -40,7 +40,7 @@
       "instruction": "Select all that apply.",
       "data_type": "select_all",
       "sensitivity": "sensitive",
-      "source": "OMB Statistical Policy Directive No. 15 (2024), minimum reporting categories",
+      "source": "US Office of Management and Budget (OMB) Statistical Policy Directive No. 15 (2024), minimum reporting categories (a US federal standard)",
       "source_url": "https://www.federalregister.gov/documents/2024/03/29/2024-06469/revisions-to-ombs-statistical-policy-directive-no-15-standards-for-maintaining-collecting-and",
       "options": [
         { "code": 1, "label": "American Indian or Alaska Native", "suffix": "aian" },
@@ -116,7 +116,7 @@
       "source": "ICPSR Social Science Variables Database (search and compare variables)",
       "source_url": "https://www.icpsr.umich.edu/web/ICPSR/search/variables",
       "icpsr_term": { "term": "academic disciplines", "id": 24058, "url": "https://www.icpsr.umich.edu/web/ICPSR/thesaurus/10001/terms/24058" },
-      "code_list": { "name": "Classification of Instructional Programs (CIP 2020), NCES", "url": "https://nces.ed.gov/ipeds/cipcode/" },
+      "code_list": { "name": "Classification of Instructional Programs (CIP 2020), US National Center for Education Statistics (NCES)", "url": "https://nces.ed.gov/ipeds/cipcode/" },
       "notes": "Linked entry: record the six-digit CIP 2020 code of the student's major in the form ##.#### (for example 26.0205, Molecular Biology). The first two digits group related programs. See how other studies ask about major in ICPSR's variables database. Small majors can identify people: share the two-digit series if cells are small."
     }
   ]

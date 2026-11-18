@@ -1,5 +1,6 @@
 {
   "id": "copus",
+  "pid": "hmi0003",
   "name": "Classroom Observation Protocol for Undergraduate STEM",
   "acronym": "COPUS",
   "developers": [
@@ -17,6 +18,22 @@
     }
   ],
   "variable_prefix": "copus",
+  "metadata_code": "Smith2013",
+  "identifiers": {
+    "status": "needs_check",
+    "checked": "2026-11-18",
+    "note": "PsycTests (APA, subscription) and ZIS have not been searched by a reviewer yet.",
+    "records": [
+      {
+        "registry": "physport",
+        "url": "https://www.physport.org/assessments/COPUS"
+      },
+      {
+        "registry": "chiral",
+        "url": "https://chiral.chemedx.org/instrument/classroom-observation-protocol-undergraduate-stem"
+      }
+    ]
+  },
   "instrument_type": "observation_protocol",
   "participants": [
     "students",
@@ -64,6 +81,8 @@
   "versions": [
     {
       "version_id": "copus-v1",
+      "pid": "hmi0003.1",
+      "code": "V1",
       "label": "Version 1",
       "language": "en",
       "year": 2013,

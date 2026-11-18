@@ -3,6 +3,7 @@
   "constructs": [
     {
       "id": "conceptual_understanding",
+      "pid": "hmc0006",
       "label": "Conceptual understanding",
       "domain": "cognitive",
       "definition": "Grasp of core disciplinary ideas and the ability to apply them to new situations, as distinct from recall or procedural skill.",
@@ -25,6 +26,7 @@
     },
     {
       "id": "climate_change_conceptual_understanding",
+      "pid": "hmc0004",
       "label": "Climate change conceptual understanding",
       "domain": "cognitive",
       "broader": "conceptual_understanding",
@@ -48,6 +50,7 @@
     },
     {
       "id": "content_knowledge",
+      "pid": "hmc0007",
       "label": "Content knowledge",
       "domain": "cognitive",
       "definition": "Factual and procedural knowledge of a subject area, as typically measured by course exams or knowledge tests.",
@@ -68,6 +71,7 @@
     },
     {
       "id": "problem_solving",
+      "pid": "hmc0019",
       "label": "Problem Solving",
       "domain": "cognitive",
       "definition": "Approaches and skill in working through unfamiliar disciplinary problems, including planning, representation and checking.",
@@ -87,6 +91,7 @@
     },
     {
       "id": "scientific_reasoning",
+      "pid": "hmc0023",
       "label": "Scientific reasoning",
       "domain": "cognitive",
       "definition": "Reasoning about evidence, variables, models and experiments, including control of variables and proportional reasoning.",
@@ -107,6 +112,7 @@
     },
     {
       "id": "quantitative_reasoning",
+      "pid": "hmc0020",
       "label": "Quantitative reasoning",
       "domain": "cognitive",
       "definition": "Using numbers, graphs and mathematical relationships to make sense of disciplinary situations.",
@@ -127,6 +133,7 @@
     },
     {
       "id": "self_efficacy",
+      "pid": "hmc0024",
       "label": "Self Efficacy",
       "domain": "affective_motivational",
       "definition": "A person's belief in their capability to succeed at specific tasks or in a specific domain.",
@@ -149,6 +156,7 @@
     },
     {
       "id": "perceived_behavioral_control",
+      "pid": "hmc0018",
       "label": "Perceived behavioral control",
       "domain": "affective_motivational",
       "definition": "Perceived ease or difficulty of performing a behavior, including access to needed resources (Theory of Planned Behavior).",
@@ -176,6 +184,7 @@
     },
     {
       "id": "interest",
+      "pid": "hmc0013",
       "label": "Interest",
       "domain": "affective_motivational",
       "definition": "Enjoyment of and desire to engage with a subject, either in the moment (situational) or as an enduring disposition (individual).",
@@ -199,6 +208,7 @@
     },
     {
       "id": "task_value",
+      "pid": "hmc0030",
       "label": "Subjective task value",
       "domain": "affective_motivational",
       "definition": "How interesting, important and useful a person judges a subject or task to be, and what it costs them to engage.",
@@ -225,6 +235,7 @@
     },
     {
       "id": "goal_orientation",
+      "pid": "hmc0012",
       "label": "Goal Orientation",
       "domain": "affective_motivational",
       "definition": "The reasons a learner pursues academic tasks, such as mastering material versus demonstrating ability or earning grades.",
@@ -247,6 +258,7 @@
     },
     {
       "id": "anxiety",
+      "pid": "hmc0001",
       "label": "Academic anxiety",
       "domain": "affective_motivational",
       "definition": "Worry and emotional arousal related to a subject or to evaluation within it.",
@@ -268,6 +280,7 @@
     },
     {
       "id": "attitude_toward_subject",
+      "pid": "hmc0002",
       "label": "Attitude toward the subject or behavior",
       "domain": "affective_motivational",
       "definition": "Overall positive or negative evaluation of a subject, activity or behavior.",
@@ -291,6 +304,7 @@
     },
     {
       "id": "behavioral_intention",
+      "pid": "hmc0003",
       "label": "Behavioral intention",
       "domain": "affective_motivational",
       "definition": "Stated readiness or plan to perform a behavior, such as taking further courses or pursuing a major or career.",
@@ -318,6 +332,7 @@
     },
     {
       "id": "mindset",
+      "pid": "hmc0016",
       "label": "Implicit theories of intelligence",
       "domain": "affective_motivational",
       "definition": "Beliefs about whether ability in a domain is fixed or can be developed, and about who can succeed.",
@@ -345,6 +360,7 @@
     },
     {
       "id": "sense_of_belonging",
+      "pid": "hmc0026",
       "label": "Sense of Belonging",
       "domain": "identity_social",
       "definition": "Feeling accepted, valued and included as a member of a course, discipline, institution or community.",
@@ -374,6 +390,7 @@
     },
     {
       "id": "disciplinary_identity",
+      "pid": "hmc0009",
       "label": "Disciplinary identity",
       "domain": "identity_social",
       "definition": "Seeing oneself, and being recognized by others, as the kind of person who does a discipline (e.g. a physics person, a scientist).",
@@ -397,6 +414,7 @@
     },
     {
       "id": "subjective_norm",
+      "pid": "hmc0029",
       "label": "Subjective norm",
       "domain": "identity_social",
       "definition": "Perceived expectations from important others about whether one should perform a behavior.",
@@ -423,6 +441,7 @@
     },
     {
       "id": "stereotype_perception",
+      "pid": "hmc0027",
       "label": "Perceived stereotypes and climate",
       "domain": "identity_social",
       "definition": "Awareness of stereotypes about who belongs or succeeds in a field, and perception of bias in the learning environment.",
@@ -444,6 +463,7 @@
     },
     {
       "id": "community_connectedness",
+      "pid": "hmc0005",
       "label": "Sense of Community",
       "domain": "identity_social",
       "definition": "Perceived cohesion, trust and mutual support among learners and instructors in a learning setting.",
@@ -465,6 +485,7 @@
     },
     {
       "id": "epistemological_beliefs",
+      "pid": "hmc0011",
       "label": "Epistemological beliefs",
       "domain": "epistemological",
       "definition": "Beliefs about the nature of disciplinary knowledge and about what learning the discipline involves, often compared with expert views.",
@@ -491,6 +512,7 @@
     },
     {
       "id": "nature_of_science",
+      "pid": "hmc0017",
       "label": "Understanding of the nature of science",
       "domain": "epistemological",
       "definition": "Understanding of how scientific knowledge is generated, justified and revised.",
@@ -511,6 +533,7 @@
     },
     {
       "id": "real_world_relevance",
+      "pid": "hmc0021",
       "label": "Perceived real-world relevance",
       "domain": "epistemological",
       "definition": "Seeing connections between disciplinary content and everyday life or societal issues.",
@@ -531,6 +554,7 @@
     },
     {
       "id": "self_regulated_learning",
+      "pid": "hmc0025",
       "label": "Self-regulated learning",
       "domain": "behavioral_strategy",
       "definition": "Planning, monitoring and adjusting one's own learning, including metacognition and management of time and effort.",
@@ -558,6 +582,7 @@
     },
     {
       "id": "learning_strategies",
+      "pid": "hmc0015",
       "label": "Learning Strategies",
       "domain": "behavioral_strategy",
       "definition": "Specific cognitive and resource-management strategies used when studying, such as rehearsal, elaboration, organization and help seeking.",
@@ -584,6 +609,7 @@
     },
     {
       "id": "engagement",
+      "pid": "hmc0010",
       "label": "Learner Engagement",
       "domain": "behavioral_strategy",
       "definition": "Behavioral, cognitive and emotional involvement in learning activities.",
@@ -606,6 +632,7 @@
     },
     {
       "id": "critical_thinking",
+      "pid": "hmc0008",
       "label": "Critical Thinking",
       "domain": "behavioral_strategy",
       "definition": "Evaluating claims, evidence and arguments and applying prior knowledge to new problems.",
@@ -625,6 +652,7 @@
     },
     {
       "id": "teaching_practices",
+      "pid": "hmc0032",
       "label": "Teaching Methods",
       "domain": "instructional_practice",
       "definition": "What instructors do during instruction, such as lecturing, posing questions, facilitating group work or giving feedback.",
@@ -647,6 +675,7 @@
     },
     {
       "id": "student_classroom_activity",
+      "pid": "hmc0028",
       "label": "Student classroom activity",
       "domain": "instructional_practice",
       "definition": "What students are observed doing during instruction, such as listening, discussing, working in groups or answering questions.",
@@ -667,6 +696,7 @@
     },
     {
       "id": "reformed_teaching",
+      "pid": "hmc0022",
       "label": "Reformed teaching",
       "domain": "instructional_practice",
       "definition": "Degree to which instruction is inquiry-oriented and student-centered rather than transmission-oriented.",
@@ -694,6 +724,7 @@
     },
     {
       "id": "teaching_beliefs",
+      "pid": "hmc0031",
       "label": "Instructor beliefs about teaching",
       "domain": "instructional_practice",
       "definition": "Instructors' beliefs about how students learn and what effective teaching looks like.",
@@ -714,6 +745,7 @@
     },
     {
       "id": "learning_environment",
+      "pid": "hmc0014",
       "label": "Learning environment perceptions",
       "domain": "environment",
       "definition": "Learners' perceptions of course structure, support, fairness and climate.",

@@ -1,5 +1,6 @@
 {
   "id": "class",
+  "pid": "hmi0001",
   "name": "Colorado Learning Attitudes about Science Survey",
   "acronym": "CLASS",
   "developers": [
@@ -23,6 +24,18 @@
     }
   ],
   "variable_prefix": "class",
+  "metadata_code": "Adams2006",
+  "identifiers": {
+    "status": "needs_check",
+    "checked": "2026-11-18",
+    "note": "PsycTests (APA, subscription) and ZIS have not been searched by a reviewer yet.",
+    "records": [
+      {
+        "registry": "physport",
+        "url": "https://www.physport.org/assessments/CLASS"
+      }
+    ]
+  },
   "instrument_type": "attitude_beliefs_survey",
   "participants": [
     "students"
@@ -66,6 +79,8 @@
   "versions": [
     {
       "version_id": "class-phys-v3",
+      "pid": "hmi0001.1",
+      "code": "PhysV3",
       "label": "Physics, version 3",
       "language": "en",
       "discipline_adaptation": "physics",
@@ -88,6 +103,8 @@
     },
     {
       "version_id": "class-chem",
+      "pid": "hmi0001.2",
+      "code": "Chem",
       "label": "Chemistry",
       "language": "en",
       "discipline_adaptation": "chemistry",

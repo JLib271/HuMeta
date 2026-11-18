@@ -20,13 +20,19 @@
     "dimensions",
     "review",
     "info_sources",
-    "variable_prefix"
+    "variable_prefix",
+    "metadata_code"
   ],
   "properties": {
     "id": {
       "type": "string",
       "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
       "description": "Stable slug. Must match the file name. Never change after publishing."
+    },
+    "pid": {
+      "type": "string",
+      "pattern": "^hmi[0-9]{4}$",
+      "description": "Persistent identifier, issued by scripts/assign_identifiers.py and recorded in identifiers.csv. Opaque, never changed, reassigned or deleted. See IDENTIFIERS.md. URI: https://w3id.org/humeta/instrument/<pid>."
     },
     "name": {
       "type": "string",
@@ -250,6 +256,39 @@
       "pattern": "^[a-z][a-z0-9]{1,9}$",
       "description": "Short prefix for generated variable names (e.g. 'gci' -> gci_q05). Must be unique across the library and never change once data exist."
     },
+    "metadata_code": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Za-z]*[0-9]{4}[a-z]?$",
+      "description": "Fixed measure part of HuMeta metadata codes (Construct_Measure_Item_Target): first author's surname and year of the original publication, e.g. Pintrich1991. A letter is added when two instruments would share a code (Smith2013a, Smith2013b). Unique across the library; never changes once published, even if the citation is corrected."
+    },
+    "identifiers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "records"],
+      "description": "Where this instrument is registered elsewhere, so HuMeta links to existing records instead of duplicating them. Order of preference: APA PsycTests DOI; a DOI from ZIS (GESIS), the Open Test Archive (ZPID) or FDZ Bildung (DIPF); a LOINC code (health instruments). Catalog pages without persistent identifiers (PhysPort, CHIRAL, AIR's edinstruments.org) and ERIC numbers are listed too.",
+      "properties": {
+        "status": {
+          "enum": ["needs_check", "verified"],
+          "description": "needs_check: registries not yet fully searched (PsycTests needs a subscription to search). verified: a reviewer searched PsycTests and ZIS and the records below are complete."
+        },
+        "checked": {"type": "string", "format": "date", "description": "When the registries were last searched."},
+        "note": {"type": "string"},
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["registry", "url"],
+            "properties": {
+              "registry": {"enum": ["psyctests", "zis", "open_test_archive", "fdz_bildung", "loinc", "eric", "physport", "chiral", "edinstruments"]},
+              "id": {"type": "string", "description": "The registry's identifier: a DOI (PsycTests 10.1037/t#####-000, ZIS 10.6102/zis###), a LOINC code, or an ERIC number (ED######)."},
+              "url": {"type": "string", "format": "uri"},
+              "note": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
     "development": {
       "type": "object",
       "additionalProperties": false,
@@ -336,7 +375,7 @@
     },
     "commons_records": {
       "type": "array",
-      "description": "Deposits about this instrument on Knowledge Commons (KCWorks), ideally one record in the HuMeta Instrument Library collection holding the instrument, its manual, item and scoring files, and a paper where the license allows.",
+      "description": "Deposits about this instrument in the STEMEd+ Commons Library, ideally one record in its HuMeta Instrument Library sub-collection holding the instrument, its manual, item and scoring files, and a paper where the license allows.",
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -446,6 +485,7 @@
       "additionalProperties": false,
       "required": [
         "version_id",
+        "code",
         "label",
         "language",
         "response_format",
@@ -455,6 +495,16 @@
         "version_id": {
           "type": "string",
           "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "pid": {
+          "type": "string",
+          "pattern": "^hmi[0-9]{4}\\.[1-9][0-9]*$",
+          "description": "Persistent identifier of this version: the instrument's pid, a dot and HuMeta's version number (1 for the first version added, and so on; not the publisher's version name). See IDENTIFIERS.md."
+        },
+        "code": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Za-z0-9]{0,11}$",
+          "description": "Fixed version part of HuMeta metadata codes, joined to the instrument's metadata_code: Libarkin2005 + V4 = Libarkin2005V4. Item numbers differ between versions, so codes for items always say which version. Unique within the instrument; never changes once published. Version codes start with a capital letter (V1, V4, PhysV3, Chem)."
         },
         "label": {
           "type": "string"

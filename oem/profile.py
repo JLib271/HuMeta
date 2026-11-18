@@ -714,6 +714,11 @@ def _methods_text(record: dict, p: Profile, lib: Library | None = None) -> str |
     return " ".join(parts) or None
 
 
+def value_uri(uri: str | None) -> dict:
+    """A DataCite subject's valueUri, when the term has a persistent identifier."""
+    return {"valueUri": uri} if uri else {}
+
+
 def vocab_subjects(p: Profile, vocab_id: str, scheme: str, term_ids: list[str]) -> list[dict]:
     """DataCite subjects for HuMeta vocabulary terms: ANZSRC and TaDiRAH terms with their own concept URIs,
     others with the HuMeta vocabulary URI (plus an ISCED subject for education levels)."""
@@ -791,14 +796,16 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
         construct = lib.constructs.get(c.get("construct_id") or "")
         if construct:
             subjects.append({"subject": construct["label"], "subjectScheme": "HuMeta Constructs",
-                             "schemeUri": CONSTRUCTS_SCHEME_URI, "valueUri": persistent_uri("construct", construct["id"])})
+                             "schemeUri": CONSTRUCTS_SCHEME_URI,
+                             **value_uri(persistent_uri(lib, "construct", construct["id"]))})
         if (c.get("label") or "").strip() and not names_shared_construct(lib, c["label"], c.get("construct_id")):
             subjects.append({"subject": c["label"].strip()})  # the study's own construct, as a keyword
     for fid in s["design"].get("frameworks") or []:
         framework = lib.frameworks.get(fid)
         if framework:
             subjects.append({"subject": framework["label"], "subjectScheme": "HuMeta Frameworks",
-                             "schemeUri": FRAMEWORKS_SCHEME_URI, "valueUri": persistent_uri("framework", fid)})
+                             "schemeUri": FRAMEWORKS_SCHEME_URI,
+                             **value_uri(persistent_uri(lib, "framework", fid))})
     for path, (vocab_id, scheme) in VOCAB_FIELDS.items():
         if scheme:
             subjects += vocab_subjects(p, vocab_id, scheme, get(record, path) or [])
@@ -862,9 +869,10 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
         iid = c.get("instrument_id")
         if iid and iid not in seen_instruments and iid in lib.instruments:
             seen_instruments.add(iid)
-            if rtype == "Dataset":
+            instrument_uri = persistent_uri(lib, "instrument", iid, c.get("version_id"))
+            if rtype == "Dataset" and instrument_uri:
                 # The instrument itself (its Library page) collected the data ...
-                related.append({"relatedIdentifier": persistent_uri("instrument", iid, c.get("version_id")),
+                related.append({"relatedIdentifier": instrument_uri,
                                 "relatedIdentifierType": "URL", "relationType": "IsCollectedBy"})
             doi = lib.instruments[iid].get("original_citation", {}).get("doi")
             if doi:

@@ -247,7 +247,7 @@ def _data_description(b: _Builder, root: ET.Element, lib: Library, plan: dict) -
 def _construct_concept(b: _Builder, parent: ET.Element, lib: Library, shared_id: str | None, label: str) -> None:
     if shared_id and shared_id in lib.constructs:
         b.el(parent, "concept", lib.constructs[shared_id]["label"], vocab=CONSTRUCTS_VOCAB,
-             vocabURI=persistent_uri("construct", shared_id))
+             vocabURI=persistent_uri(lib, "construct", shared_id))
     else:
         b.el(parent, "concept", label)
 

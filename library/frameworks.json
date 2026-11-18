@@ -4,6 +4,7 @@
   "frameworks": [
     {
       "id": "tpb",
+      "pid": "hmf0048",
       "label": "Theory of Planned Behavior (TPB)",
       "kind": "theory",
       "description": "Behavior follows from intention, which is shaped by attitude, subjective norms, and perceived behavioral control.",
@@ -78,6 +79,7 @@
     },
     {
       "id": "sdt",
+      "pid": "hmf0039",
       "label": "Self-Determination Theory (SDT)",
       "kind": "theory",
       "description": "Satisfying needs for autonomy, competence, and relatedness supports intrinsic motivation.",
@@ -137,6 +139,7 @@
     },
     {
       "id": "evt",
+      "pid": "hmf0017",
       "label": "Expectancy-Value Theory",
       "kind": "theory",
       "description": "Achievement-related choices and performance depend on expectancies for success and the subjective value of the task.",
@@ -218,6 +221,7 @@
     },
     {
       "id": "science_identity",
+      "pid": "hmf0037",
       "label": "Science Identity Model",
       "kind": "theory",
       "description": "Science identity is built from competence, performance, and recognition as a science person.",
@@ -274,6 +278,7 @@
     },
     {
       "id": "tam",
+      "pid": "hmf0046",
       "label": "Technology Acceptance Model (TAM)",
       "kind": "theory",
       "description": "Perceived usefulness and ease of use shape the intention to use a technology and its actual use.",
@@ -335,6 +340,7 @@
     },
     {
       "id": "hbm",
+      "pid": "hmf0022",
       "label": "Health Belief Model (HBM)",
       "kind": "theory",
       "description": "Health behavior depends on perceived threat, benefits, barriers, self-efficacy, and cues to action.",
@@ -425,6 +431,7 @@
     },
     {
       "id": "sct",
+      "pid": "hmf0038",
       "label": "Social Cognitive Theory (SCT)",
       "kind": "theory",
       "description": "Personal, environmental, and behavioral factors influence each other; self-efficacy and outcome expectations guide behavior.",
@@ -504,6 +511,7 @@
     },
     {
       "id": "self_efficacy_theory",
+      "pid": "hmf0040",
       "label": "Self-Efficacy Theory",
       "kind": "theory",
       "description": "Self-efficacy is shaped by mastery experiences, vicarious experiences, verbal persuasion, and emotional states.",
@@ -568,6 +576,7 @@
     },
     {
       "id": "ttm",
+      "pid": "hmf0049",
       "label": "Transtheoretical Model (Stages of Change)",
       "kind": "theory",
       "description": "People move through stages of readiness to change a behavior.",
@@ -628,6 +637,7 @@
     },
     {
       "id": "control_theory",
+      "pid": "hmf0010",
       "label": "Control Theory",
       "kind": "theory",
       "description": "Behavior is regulated by comparing a perceived current state with a goal and adjusting to reduce the discrepancy.",
@@ -693,6 +703,7 @@
     },
     {
       "id": "com_b",
+      "pid": "hmf0006",
       "label": "COM-B Model",
       "kind": "theory",
       "description": "Behavior results from capability, opportunity, and motivation.",
@@ -774,6 +785,7 @@
     },
     {
       "id": "tdf",
+      "pid": "hmf0047",
       "label": "Theoretical Domains Framework (TDF)",
       "kind": "theory",
       "description": "Fourteen domains that influence behavior, used to study implementation problems.",
@@ -855,6 +867,7 @@
     },
     {
       "id": "operant",
+      "pid": "hmf0031",
       "label": "Operant Conditioning",
       "kind": "theory",
       "description": "Behavior changes with its consequences: reinforcement and punishment.",
@@ -916,6 +929,7 @@
     },
     {
       "id": "sociocultural",
+      "pid": "hmf0044",
       "label": "Sociocultural Theory",
       "kind": "lens",
       "description": "Learning and thinking develop through social interaction and cultural tools.",
@@ -937,6 +951,7 @@
     },
     {
       "id": "communities_of_practice",
+      "pid": "hmf0007",
       "label": "Communities of Practice / Situated Learning",
       "kind": "lens",
       "description": "Learning is participation in communities of practice, moving from peripheral to full participation.",
@@ -957,6 +972,7 @@
     },
     {
       "id": "critical_race_theory",
+      "pid": "hmf0011",
       "label": "Critical Race Theory",
       "kind": "lens",
       "description": "Examines how race and racism shape law, institutions, and everyday life, centering the experiences of people of color.",
@@ -979,6 +995,7 @@
     },
     {
       "id": "intersectionality",
+      "pid": "hmf0026",
       "label": "Intersectionality",
       "kind": "lens",
       "description": "Examines how overlapping social identities and systems of power shape experience.",
@@ -1001,6 +1018,7 @@
     },
     {
       "id": "feminist_theory",
+      "pid": "hmf0018",
       "label": "Feminist Theory",
       "kind": "lens",
       "description": "Examines gender, power, and knowledge; a family of perspectives rather than a single theory. Cite the specific work you draw on.",
@@ -1024,6 +1042,7 @@
     },
     {
       "id": "postcolonial_theory",
+      "pid": "hmf0033",
       "label": "Postcolonial and Decolonial Theory",
       "kind": "lens",
       "description": "Examines the legacies of colonialism in culture, knowledge, and institutions. Cite the specific work you draw on.",
@@ -1047,6 +1066,7 @@
     },
     {
       "id": "phenomenology",
+      "pid": "hmf0032",
       "label": "Phenomenology",
       "kind": "lens",
       "description": "Studies lived experience as people experience it.",
@@ -1068,6 +1088,7 @@
     },
     {
       "id": "critical_theory",
+      "pid": "hmf0012",
       "label": "Critical Theory",
       "kind": "lens",
       "description": "Examines power, ideology, and social structures with the aim of social change. Cite the specific work you draw on.",
@@ -1087,6 +1108,7 @@
     },
     {
       "id": "new_historicism",
+      "pid": "hmf0030",
       "label": "New Historicism and Cultural History",
       "kind": "lens",
       "description": "Reads texts and artifacts in relation to the cultural and historical conditions of their making.",
@@ -1107,6 +1129,7 @@
     },
     {
       "id": "semiotics",
+      "pid": "hmf0041",
       "label": "Semiotics and Visual Rhetoric",
       "kind": "lens",
       "description": "Analyzes how signs, images, and media make meaning.",
@@ -1129,6 +1152,7 @@
     },
     {
       "id": "bourdieu_practice",
+      "pid": "hmf0003",
       "label": "Bourdieu's Theory of Practice (Capital, Habitus, Field)",
       "kind": "theory",
       "description": "Social position and practice arise from the forms of capital people hold, their habitus, and the fields in which they act.",
@@ -1207,6 +1231,7 @@
     },
     {
       "id": "social_capital_theory",
+      "pid": "hmf0042",
       "label": "Social Capital Theory",
       "kind": "theory",
       "description": "Networks, trust, and shared norms are resources that make collective action and individual outcomes possible.",
@@ -1278,6 +1303,7 @@
     },
     {
       "id": "symbolic_interactionism",
+      "pid": "hmf0045",
       "label": "Symbolic Interactionism",
       "kind": "lens",
       "description": "People act toward things on the basis of the meanings those things have for them, meanings that arise in and are modified through social interaction.",
@@ -1298,6 +1324,7 @@
     },
     {
       "id": "institutional_theory",
+      "pid": "hmf0025",
       "label": "Institutional Theory (Institutional Isomorphism)",
       "kind": "theory",
       "description": "Organizations in the same field become alike through coercive, mimetic, and normative pressures, often in pursuit of legitimacy rather than efficiency.",
@@ -1368,6 +1395,7 @@
     },
     {
       "id": "social_identity_theory",
+      "pid": "hmf0043",
       "label": "Social Identity Theory",
       "kind": "theory",
       "description": "Part of the self-concept comes from group memberships; people seek positive distinctiveness for their groups, which shapes intergroup behavior.",
@@ -1437,6 +1465,7 @@
     },
     {
       "id": "civic_voluntarism",
+      "pid": "hmf0004",
       "label": "Civic Voluntarism Model",
       "kind": "theory",
       "description": "People take part in politics when they can (resources), want to (engagement), and are asked (recruitment).",
@@ -1492,6 +1521,7 @@
     },
     {
       "id": "rational_choice",
+      "pid": "hmf0035",
       "label": "Rational Choice Theory",
       "kind": "lens",
       "description": "Explains political and social outcomes as the result of individuals pursuing their goals given costs, benefits, information, and the choices of others.",
@@ -1511,6 +1541,7 @@
     },
     {
       "id": "framing_theory",
+      "pid": "hmf0020",
       "label": "Framing Theory",
       "kind": "theory",
       "description": "Communicators select and make salient some aspects of a perceived reality, promoting a particular problem definition, causal interpretation, moral evaluation, or remedy.",
@@ -1559,6 +1590,7 @@
     },
     {
       "id": "agenda_setting",
+      "pid": "hmf0001",
       "label": "Agenda-Setting Theory",
       "kind": "theory",
       "description": "The prominence the news media give to issues shapes which issues the public considers important.",
@@ -1605,6 +1637,7 @@
     },
     {
       "id": "uses_gratifications",
+      "pid": "hmf0050",
       "label": "Uses and Gratifications",
       "kind": "theory",
       "description": "Audiences actively choose media to satisfy needs; the gratifications they seek shape media use and its effects.",
@@ -1661,6 +1694,7 @@
     },
     {
       "id": "diffusion_of_innovations",
+      "pid": "hmf0014",
       "label": "Diffusion of Innovations",
       "kind": "theory",
       "description": "New ideas, practices, and technologies spread through social systems over time; perceived attributes of an innovation shape how quickly it is adopted.",
@@ -1742,6 +1776,7 @@
     },
     {
       "id": "human_capital",
+      "pid": "hmf0024",
       "label": "Human Capital Theory",
       "kind": "theory",
       "description": "Education and training are investments that raise productivity and, in turn, earnings.",
@@ -1802,6 +1837,7 @@
     },
     {
       "id": "ecological_systems",
+      "pid": "hmf0016",
       "label": "Ecological Systems Theory",
       "kind": "theory",
       "description": "Development happens within nested systems, from immediate settings such as family and school to the wider culture, and through their interactions over time.",
@@ -1881,6 +1917,7 @@
     },
     {
       "id": "constructivism",
+      "pid": "hmf0009",
       "label": "Constructivism",
       "kind": "lens",
       "description": "Learners actively build knowledge by connecting new experience to what they already know, rather than receiving it ready-made.",
@@ -1901,6 +1938,7 @@
     },
     {
       "id": "cognitive_load",
+      "pid": "hmf0005",
       "label": "Cognitive Load Theory",
       "kind": "theory",
       "description": "Working memory is limited; instruction that reduces unnecessary (extraneous) load frees capacity for building schemas.",
@@ -1972,6 +2010,7 @@
     },
     {
       "id": "community_of_inquiry",
+      "pid": "hmf0008",
       "label": "Community of Inquiry",
       "kind": "theory",
       "description": "Deep learning in online and blended courses emerges from the interplay of social, cognitive, and teaching presence.",
@@ -2037,6 +2076,7 @@
     },
     {
       "id": "culturally_relevant_pedagogy",
+      "pid": "hmf0013",
       "label": "Culturally Relevant Pedagogy",
       "kind": "lens",
       "description": "Teaching that supports students' academic success, cultural competence, and critical consciousness.",
@@ -2056,6 +2096,7 @@
     },
     {
       "id": "funds_of_knowledge",
+      "pid": "hmf0021",
       "label": "Funds of Knowledge",
       "kind": "lens",
       "description": "Households and communities hold historically accumulated knowledge and skills that teachers can learn about and build on.",
@@ -2076,6 +2117,7 @@
     },
     {
       "id": "hermeneutics",
+      "pid": "hmf0023",
       "label": "Hermeneutics",
       "kind": "lens",
       "description": "Understanding as interpretation: meaning emerges in a dialogue between the interpreter's horizon and that of the text or work.",
@@ -2097,6 +2139,7 @@
     },
     {
       "id": "foucauldian_discourse",
+      "pid": "hmf0019",
       "label": "Foucauldian Discourse Analysis",
       "kind": "lens",
       "description": "Examines how discourses, the rules governing what can be said and known, produce knowledge, subjects, and relations of power.",
@@ -2119,6 +2162,7 @@
     },
     {
       "id": "narratology",
+      "pid": "hmf0029",
       "label": "Narratology",
       "kind": "lens",
       "description": "Analyzes how narratives work: order, duration, voice, and focalization, and how they shape meaning.",
@@ -2139,6 +2183,7 @@
     },
     {
       "id": "reception_theory",
+      "pid": "hmf0036",
       "label": "Reception Theory and Reader-Response",
       "kind": "lens",
       "description": "Meaning is realized in the encounter between a work and its readers or audiences, whose expectations change over time.",
@@ -2160,6 +2205,7 @@
     },
     {
       "id": "queer_theory",
+      "pid": "hmf0034",
       "label": "Queer Theory",
       "kind": "lens",
       "description": "Questions fixed categories of gender and sexuality and examines how they are produced and performed.",
@@ -2183,6 +2229,7 @@
     },
     {
       "id": "ecocriticism",
+      "pid": "hmf0015",
       "label": "Ecocriticism",
       "kind": "lens",
       "description": "Studies the relationship between literature, culture, and the physical environment.",
@@ -2204,6 +2251,7 @@
     },
     {
       "id": "marxist_criticism",
+      "pid": "hmf0027",
       "label": "Marxist Criticism",
       "kind": "lens",
       "description": "Reads cultural works in relation to the economic and class relations of the society that produced them.",
@@ -2227,6 +2275,7 @@
     },
     {
       "id": "material_culture",
+      "pid": "hmf0028",
       "label": "Material Culture Studies",
       "kind": "lens",
       "description": "Studies objects as evidence of the beliefs, values, and practices of the people who made and used them.",
@@ -2251,6 +2300,7 @@
     },
     {
       "id": "arts_based_research",
+      "pid": "hmf0002",
       "label": "Arts-Based Research",
       "kind": "lens",
       "description": "Uses artistic processes and forms (writing, image, performance, music) as ways of inquiring and of representing what is learned.",

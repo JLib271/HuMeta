@@ -72,13 +72,13 @@ def _with_timepoint(variables: list[Variable], timepoint: str | None) -> list[Va
     return variables
 
 
-def describe_links(instrument_id: str, links: list[dict]) -> str | None:
+def describe_links(lib, instrument_id: str, links: list[dict]) -> str | None:
     """Codebook text for an item's links: '<item uri> (no. 7 in gci-v1; same item, confirmed); ...'."""
     parts = []
     for k in links:
         relation = "same item" if k["relation"] == "same_item" else (
             ("source of: " if k.get("inverse") else "") + k["relation"].replace("_", " "))
-        parts.append(f"{item_uri(instrument_id, k['item_id'])} (no. {k['number']} in {k['version_id']}; {relation}, "
+        parts.append(f"{item_uri(lib, instrument_id, k['item_id']) or k['item_id']} (no. {k['number']} in {k['version_id']}; {relation}, "
                      f"{k['status']}" + (f", {k['basis'].replace('_', ' ')}" if k.get("basis") else "") + ")")
     return "; ".join(parts) or None
 
@@ -117,8 +117,8 @@ def instrument_items(
             instrument_id=instrument_id,
             version_id=version_id,
             item_id=item["item_id"],
-            item_uri=item_uri(instrument_id, item["item_id"]),
-            linked_items=describe_links(instrument_id, lib.item_links(instrument_id, item["item_id"], version_id)),
+            item_uri=item_uri(lib, instrument_id, item["item_id"]),
+            linked_items=describe_links(lib, instrument_id, lib.item_links(instrument_id, item["item_id"], version_id)),
             construct_ids=list(item.get("construct_ids", [])),
             question=question,
         )

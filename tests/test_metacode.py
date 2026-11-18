@@ -72,7 +72,7 @@ def test_items_from_the_library_get_item_codes(lib):
                            "shared_construct_id": "conceptual_understanding", "definition": ""}]
     plan["measures"] = [{"construct": "own.understanding", "kind": "instrument", "instrument_id": "gci"}]
     variables = P.build_codebook(lib, P.normalize(plan)).variables
-    assert variables and all(v.metadata_code.startswith("conceptual_understanding_Libarkin2005_item")
+    assert variables and all(v.metadata_code.startswith("conceptual_understanding_Libarkin2005V4_item")
                              for v in variables)
 
 
@@ -153,19 +153,21 @@ def test_version_codes_and_persistent_identifiers(lib, monkeypatch):
     plan = sct_plan(lib)
     plan["measures"] = [{"construct": "sct.self_efficacy", "kind": "instrument", "instrument_id": "mslq"}]
     [v] = P.build_codebook(lib, plan).variables
-    vid = inst["versions"][0]["version_id"]
     assert v.metadata_code == "self_efficacy_SCT_Pintrich1991V1"
-    assert v.measure_uri == f"https://w3id.org/humeta/instrument/mslq/{vid}"
-    assert v.construct_uri == "https://w3id.org/humeta/construct/self-efficacy"
-    assert persistent_uri("construct", "sense_of_belonging") == "https://w3id.org/humeta/construct/sense-of-belonging"
+    # Opaque identifiers (humeta-library IDENTIFIERS.md); these never change, so they are spelled out here
+    assert v.measure_uri == "https://w3id.org/humeta/instrument/hmi0006.1"
+    assert v.construct_uri == "https://w3id.org/humeta/construct/hmc0024"
+    assert persistent_uri(lib, "construct", "sense_of_belonging") == "https://w3id.org/humeta/construct/hmc0026"
+    assert persistent_uri(lib, "instrument", "mslq", "no-such-version") == "https://w3id.org/humeta/instrument/hmi0006"
+    assert persistent_uri(lib, "construct", "not_in_the_library") is None
     dc = IM.to_datacite_json(lib, "gci")
-    assert dc["alternateIdentifiers"][0]["alternateIdentifier"] == "https://w3id.org/humeta/instrument/gci"
+    assert dc["alternateIdentifiers"][0]["alternateIdentifier"] == "https://w3id.org/humeta/instrument/hmi0004"
     assert all(s["valueUri"].startswith("https://w3id.org/humeta/construct/")
                for s in dc["subjects"] if s.get("subjectScheme") == "HuMeta Constructs")
-    assert IM.to_schema_org(lib, "gci")["@id"] == "https://w3id.org/humeta/instrument/gci"
+    assert IM.to_schema_org(lib, "gci")["@id"] == "https://w3id.org/humeta/instrument/hmi0004"
     record = json.loads((EXAMPLES / "climate-inventory-dataset.json").read_text())
     xml = ddi.to_ddi_codebook_xml(record, plan, lib)
-    assert 'vocabURI="https://w3id.org/humeta/construct/self-efficacy"' in xml
+    assert 'vocabURI="https://w3id.org/humeta/construct/hmc0024"' in xml
     assert 'vocabURI="https://w3id.org/humeta/metadata-code"' in xml
 
 
@@ -184,10 +186,10 @@ def test_items_link_across_versions(lib, monkeypatch):
     assert [(k["version_id"], k["number"], k["relation"]) for k in same] == [("gci-test", "9", "same_item")]
     assert [(k["item_id"], k["status"], k["inverse"]) for k in lib.item_links("gci", "q05", v4)] == [("q90", "possible", True)]
     assert [(k["item_id"], k["basis"]) for k in lib.item_links("gci", "q91", "gci-test")] == [("q06", "expert_review")]
-    text = codebook.describe_links("gci", lib.item_links("gci", "q06", v4))
-    assert text == ("https://w3id.org/humeta/instrument/gci/item/q91 (no. 2 in gci-test; source of: split, confirmed, "
+    text = codebook.describe_links(lib, "gci", lib.item_links("gci", "q06", v4))
+    assert text == ("https://w3id.org/humeta/instrument/hmi0004/item/q91 (no. 2 in gci-test; source of: split, confirmed, "
                     "expert review)")
     variables = {v.item_id: v for v in codebook.instrument_items(lib, "gci", v4)}
-    assert variables["q01"].item_uri == "https://w3id.org/humeta/instrument/gci/item/q01"
+    assert variables["q01"].item_uri == "https://w3id.org/humeta/instrument/hmi0004/item/q01"
     assert "no. 9 in gci-test; same item, confirmed" in variables["q01"].linked_items
     assert "possible" in variables["q05"].linked_items and variables["q02"].linked_items is None

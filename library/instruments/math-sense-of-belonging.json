@@ -1,5 +1,6 @@
 {
   "id": "math-sense-of-belonging",
+  "pid": "hmi0005",
   "name": "Sense of Belonging to Math Scale",
   "developers": [
     {
@@ -13,6 +14,13 @@
     }
   ],
   "variable_prefix": "sbm",
+  "metadata_code": "Good2012",
+  "identifiers": {
+    "status": "needs_check",
+    "checked": "2026-11-18",
+    "note": "PsycTests (APA, subscription) and ZIS have not been searched by a reviewer yet.",
+    "records": []
+  },
   "instrument_type": "self_report_scale",
   "participants": [
     "students"
@@ -46,6 +54,8 @@
   "versions": [
     {
       "version_id": "good-2012-en",
+      "pid": "hmi0005.1",
+      "code": "V1",
       "label": "Original (Good, Rattan & Dweck, 2012)",
       "language": "en",
       "discipline_adaptation": "mathematics",

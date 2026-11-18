@@ -8,6 +8,7 @@ library/frameworks.json (a snapshot of the HuMeta Instrument Library)."""
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 APP_DIR = Path(__file__).resolve().parent.parent
@@ -24,22 +25,47 @@ LIBRARY_SITE_URL = "https://jlib271.github.io/humeta-library/"
 PORTAL_URL = "https://humeta.streamlit.app/"
 
 
-#: Persistent identifiers of library records on w3id.org (redirect rules: humeta-library w3id/ids/humeta/.htaccess)
+#: Persistent identifiers of library records on w3id.org (redirect rules: humeta-library w3id/ids/humeta/.htaccess).
+#: Identifiers are opaque (hmi0004, hmi0004.1, hmc0024, hmf0038): each record's "pid" in the library. The policy,
+#: which follows McMurry et al. (2017), is humeta-library's IDENTIFIERS.md.
 PERSISTENT_BASE = "https://w3id.org/humeta/"
+IDENTIFIER_POLICY_URL = "https://github.com/JLib271/humeta-library/blob/main/IDENTIFIERS.md"
 #: The HuMeta metadata-code scheme (Construct_Measure_Item_Target)
 METADATA_CODE_URI = PERSISTENT_BASE + "metadata-code"
+_PID_TYPES = (("instrument", re.compile(r"^hmi[0-9]{4}(\.[1-9][0-9]*)?$")),
+              ("construct", re.compile(r"^hmc[0-9]{4}$")),
+              ("framework", re.compile(r"^hmf[0-9]{4}$")))
 
 
-def persistent_uri(kind: str, record_id: str, version_id: str | None = None) -> str:
-    """Persistent identifier of a library record: kind instrument, construct or framework, e.g.
-    https://w3id.org/humeta/construct/self-efficacy or https://w3id.org/humeta/instrument/gci/gci-v4-2014."""
-    return f"{PERSISTENT_BASE}{kind}/{record_id.replace('_', '-')}" + (f"/{version_id}" if version_id else "")
+def pid_uri(pid: str | None) -> str | None:
+    """https://w3id.org/humeta/<type>/<pid> for a HuMeta identifier, else None."""
+    for kind, pattern in _PID_TYPES:
+        if pid and pattern.match(pid):
+            return f"{PERSISTENT_BASE}{kind}/{pid}"
+    return None
 
 
-def item_uri(instrument_id: str, item_id: str) -> str:
+def persistent_uri(lib, kind: str, record_id: str | None, version_id: str | None = None) -> str | None:
+    """Persistent identifier of a library record, or None if the record has none (or is not in the library).
+
+    kind: instrument, construct or framework. With version_id, the identifier of that instrument version
+    (https://w3id.org/humeta/instrument/hmi0004.1); if the version is not found, the instrument's."""
+    records = {"instrument": lib.instruments, "construct": lib.constructs, "framework": lib.frameworks}[kind]
+    rec = records.get(record_id or "")
+    if not rec:
+        return None
+    if kind == "instrument" and version_id:
+        version = next((v for v in rec.get("versions", []) if v.get("version_id") == version_id), None)
+        if version and pid_uri(version.get("pid")):
+            return pid_uri(version["pid"])
+    return pid_uri(rec.get("pid"))
+
+
+def item_uri(lib, instrument_id: str, item_id: str) -> str | None:
     """Persistent identifier of an item, the same in every version that has it:
-    https://w3id.org/humeta/instrument/gci/item/q05."""
-    return f"{persistent_uri('instrument', instrument_id)}/item/{item_id}"
+    https://w3id.org/humeta/instrument/hmi0004/item/q05."""
+    base = persistent_uri(lib, "instrument", instrument_id)
+    return f"{base}/item/{item_id}" if base else None
 
 
 def library_page_url(kind: str, record_id: str) -> str:

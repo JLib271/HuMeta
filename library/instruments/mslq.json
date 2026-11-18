@@ -1,5 +1,6 @@
 {
   "id": "mslq",
+  "pid": "hmi0006",
   "name": "Motivated Strategies for Learning Questionnaire",
   "acronym": "MSLQ",
   "developers": [
@@ -17,6 +18,27 @@
     }
   ],
   "variable_prefix": "mslq",
+  "metadata_code": "Pintrich1991",
+  "identifiers": {
+    "status": "needs_check",
+    "checked": "2026-11-18",
+    "note": "PsycTests (APA, subscription) and ZIS have not been searched by a reviewer yet.",
+    "records": [
+      {
+        "registry": "eric",
+        "id": "ED338122",
+        "url": "https://eric.ed.gov/?id=ED338122"
+      },
+      {
+        "registry": "chiral",
+        "url": "https://chiral.chemedx.org/instrument/motivated-strategies-learning-questionnaire"
+      },
+      {
+        "registry": "edinstruments",
+        "url": "https://edinstruments.org/instruments/motivated-strategies-learning-questionnaire-mslq"
+      }
+    ]
+  },
   "instrument_type": "self_report_scale",
   "participants": [
     "students"
@@ -62,6 +84,8 @@
   "versions": [
     {
       "version_id": "mslq-1991-en",
+      "pid": "hmi0006.1",
+      "code": "V1",
       "label": "Original English (manual, 1991)",
       "language": "en",
       "year": 1991,

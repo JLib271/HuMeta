@@ -1,5 +1,6 @@
 {
   "id": "gci",
+  "pid": "hmi0004",
   "name": "Geoscience Concept Inventory",
   "acronym": "GCI",
   "developers": [
@@ -11,6 +12,13 @@
     }
   ],
   "variable_prefix": "gci",
+  "metadata_code": "Libarkin2005",
+  "identifiers": {
+    "status": "needs_check",
+    "checked": "2026-11-18",
+    "note": "PsycTests (APA, subscription) and ZIS have not been searched by a reviewer yet.",
+    "records": []
+  },
   "instrument_type": "concept_inventory",
   "participants": [
     "students"
@@ -53,6 +61,8 @@
   "versions": [
     {
       "version_id": "gci-v4-2014",
+      "pid": "hmi0004.1",
+      "code": "V4",
       "label": "GCI v.4 (2014 item set)",
       "language": "en",
       "year": 2014,
