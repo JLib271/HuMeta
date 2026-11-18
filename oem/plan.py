@@ -429,7 +429,22 @@ def search_instruments(lib: Library, query: str) -> list[dict]:
     instrument also matches on its description and all its constructs; a subscale on its own name and
     the constructs it measures (names and synonyms). One row per part: the whole instrument, then
     each subscale.
+
+    A persistent identifier in the query, short (hmi0004) or as its address
+    (https://w3id.org/humeta/instrument/hmi0004), finds that instrument; a version identifier
+    (hmi0004.1) also picks that version.
     """
+    found = re.search(r"\bhmi[0-9]{4}(?:\.[1-9][0-9]*)?\b", (query or "").lower())
+    if found:
+        pid = found.group(0)
+        base = pid.split(".")[0]
+        iid = next((k for k, v in lib.instruments.items() if v.get("pid") == base), None)
+        if iid is None:
+            return []
+        rows = search_instruments(lib, lib.instruments[iid]["name"])
+        rows = [r for r in rows if r["instrument_id"] == iid]
+        version = next((v["version_id"] for v in lib.instruments[iid].get("versions", []) if v.get("pid") == pid), None)
+        return [dict(r, version_id=version) for r in rows] if version else rows
     words = [w for w in re.findall(r"[a-z0-9]+", (query or "").lower()) if w]
     if not words:
         return []
@@ -441,7 +456,9 @@ def search_instruments(lib: Library, query: str) -> list[dict]:
     rows = []
     for iid, inst in sorted(lib.instruments.items(), key=lambda kv: kv[1]["name"]):
         version_id = (inst.get("versions") or [{}])[0].get("version_id")
-        common = " ".join([inst["name"], inst.get("acronym") or "", iid, metacode.instrument_code(lib, iid),
+        code = metacode.instrument_code(lib, iid)
+        common = " ".join([inst["name"], inst.get("acronym") or "", iid, code,
+                           " ".join(code + (v.get("code") or "") for v in inst.get("versions", [])),
                            " ".join(d.get("name", "") for d in inst.get("developers", []))])
         parts = [(None, "Whole instrument", inst.get("construct_ids", []))] + [
             (d["dimension_id"], d["name"], d.get("construct_ids", [])) for d in inst.get("dimensions", [])]

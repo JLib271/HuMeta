@@ -193,3 +193,13 @@ def test_items_link_across_versions(lib, monkeypatch):
     assert variables["q01"].item_uri == "https://w3id.org/humeta/instrument/hmi0004/item/q01"
     assert "no. 9 in gci-test; same item, confirmed" in variables["q01"].linked_items
     assert "possible" in variables["q05"].linked_items and variables["q02"].linked_items is None
+
+
+def test_instruments_can_be_found_by_persistent_identifier(lib):
+    for query in ("hmi0004", "https://w3id.org/humeta/instrument/hmi0004", "humeta.instrument:hmi0004"):
+        rows = P.search_instruments(lib, query)
+        assert rows and {r["instrument_id"] for r in rows} == {"gci"}, query
+    [row] = [r for r in P.search_instruments(lib, "https://w3id.org/humeta/instrument/hmi0006.1") if r["dimension_id"] is None]
+    assert row["instrument_id"] == "mslq" and row["version_id"] == lib.instruments["mslq"]["versions"][0]["version_id"]
+    assert P.search_instruments(lib, "hmi9999") == []
+    assert {r["instrument_id"] for r in P.search_instruments(lib, "Libarkin2005V4")} == {"gci"}

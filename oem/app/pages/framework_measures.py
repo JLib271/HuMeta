@@ -629,7 +629,7 @@ def _search_library(lib, constructs: list[dict], construct_display: dict, constr
                     v: int) -> tuple[list[dict], list[dict]]:
     """Search box for library instruments. Returns the measures ticked and any constructs they add."""
     query = st.text_input("Search the library for an instrument", key=f"m2_inst_q_{v}",
-                          placeholder="Name, acronym, author, or what it measures, e.g. belonging, MSLQ, Libarkin")
+                          placeholder="Name, acronym, author, what it measures, or its HuMeta identifier, e.g. belonging, MSLQ, Libarkin, hmi0004")
     if not query.strip():
         return [], []
     hits = P.search_instruments(lib, query)
