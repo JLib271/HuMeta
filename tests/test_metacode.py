@@ -93,3 +93,38 @@ def test_fixed_library_codes_win_over_the_citation(lib, monkeypatch):
     inst = dict(lib.instruments["mslq"], metadata_code="Pintrich1991a")
     monkeypatch.setitem(lib.instruments, "mslq", inst)
     assert M.instrument_code(lib, "mslq") == "Pintrich1991a"
+
+
+def test_search_finds_instruments_and_subscales(lib):
+    hits = P.search_instruments(lib, "mslq efficacy")
+    assert [(h["instrument_id"], h["dimension_id"] is None) for h in hits][0] == ("mslq", True)
+    assert any("Self-Efficacy" in h["part"] for h in hits) and len(hits) == 2
+    assert {h["instrument_id"] for h in P.search_instruments(lib, "Libarkin")} == {"gci", "climate-change-concept-inventory"}
+    assert {h["instrument_id"] for h in P.search_instruments(lib, "belonging")} >= {"math-sense-of-belonging"}
+    assert P.search_instruments(lib, "Pintrich1991")[0]["instrument_id"] == "mslq"
+    assert P.search_instruments(lib, "") == [] and P.search_instruments(lib, "zzzz") == []
+
+
+def test_dois_are_normalized():
+    assert P.normalize_doi("https://doi.org/10.1037/a0026659") == "10.1037/a0026659"
+    assert P.normalize_doi("doi: 10.1037/a0026659") == "10.1037/a0026659"
+    assert P.normalize_doi("not-a-doi") == ""
+    assert M.author_year("Smith et al. (2017)") == "Smith2017" and M.author_year("Smith 2017") == "Smith2017"
+    assert M.author_year("Smith") == ""
+
+
+def test_published_instruments_not_in_the_library(lib):
+    plan = sct_plan(lib)
+    plan["measures"] = [P.published_measure("sct.self_efficacy", "Science Self-Efficacy Scale", "Smith et al. (2017)",
+                                            "https://doi.org/10.1002/tea.21234", "Physics")]
+    assert P.problems(lib, plan) == []
+    [v] = P.build_codebook(lib, plan).variables
+    assert v.metadata_code == "self_efficacy_SCT_Smith2017_Physics" and v.code_level == "construct_measure_target"
+    assert v.name == "science_self_efficacy_score" and "https://doi.org/10.1002/tea.21234" in v.notes
+    # only a DOI: still valid, code from the name
+    plan["measures"] = [P.published_measure("sct.self_efficacy", "Science Self-Efficacy Scale", "", "10.1002/tea.21234")]
+    assert P.problems(lib, plan) == []
+    assert P.build_codebook(lib, plan).variables[0].metadata_code == "self_efficacy_SCT_ScienceSelfEfficacyScale"
+    # neither author-year nor DOI
+    plan["measures"] = [P.published_measure("sct.self_efficacy", "Science Self-Efficacy Scale")]
+    assert P.problems(lib, plan)

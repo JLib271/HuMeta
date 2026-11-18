@@ -8,10 +8,12 @@ every study, so studies can be matched at each level:
 * **Construct**: ``outcome_expectations_SCT`` (the theory's construct, tagged
   with the theory), the shared construct's id (``self_efficacy``) for a
   construct taken from the shared list, or the researcher's own name.
-* **Construct_Measure**: ``outcome_expectations_SCT_Smith2017``. A library
-  instrument is named by its fixed code in the library (first author and year of
-  its original publication, with a letter if two would clash);
-  researcher-written questions are ``Own``; codes in a coding scheme are ``Codes``.
+* **Construct_Measure**: ``outcome_expectations_SCT_Smith2017``. A measure is
+  named by the first author and year of its original publication: a library
+  instrument by its fixed code in the library (a letter is added if two would
+  clash), a published instrument not in the library from the author and year the
+  researcher gives. Researcher-written questions are ``Own``; codes in a coding
+  scheme are ``Codes``.
 * **Construct_Measure_Item**: ``..._Smith2017_item1_PeopleExpectMeTo``. The item's
   number, then its first words when the item text may be shown (otherwise the
   number only).
@@ -61,6 +63,13 @@ def construct_code(lib: Library, construct: dict) -> str:
     return _snake(construct.get("label") or construct.get("id", "construct")) or "construct"
 
 
+def author_year(text: str | None) -> str:
+    """'Smith, J. K. (2017). ...', 'Smith et al. 2017' or 'Smith 2017' -> 'Smith2017' ('' if no surname and year)."""
+    author = re.match(r"\s*([A-Za-z][A-Za-z'\-]+)", text or "")
+    year = re.search(r"\((\d{4})[a-z]?\)", text or "") or re.search(r"\b(1[89]\d\d|20\d\d)\b", text or "")
+    return camel(author.group(1), 1) + year.group(1) if author and year else ""
+
+
 def instrument_code(lib: Library, instrument_id: str) -> str:
     """A library instrument's fixed code, 'Pintrich1991' (its ``metadata_code`` in the library).
 
@@ -70,18 +79,20 @@ def instrument_code(lib: Library, instrument_id: str) -> str:
     inst = lib.instruments.get(instrument_id) or {}
     if inst.get("metadata_code"):
         return inst["metadata_code"]
-    text = (inst.get("original_citation") or {}).get("text") or ""
-    author = re.match(r"\s*([A-Za-z][A-Za-z'\-]+)", text)
-    year = re.search(r"\((\d{4})[a-z]?\)", text) or re.search(r"\b(1[89]\d\d|20\d\d)\b", text)
-    if author and year:
-        return camel(author.group(1), 1) + year.group(1)
-    return camel(instrument_id.replace("-", " "), 6) or instrument_id
+    return (author_year((inst.get("original_citation") or {}).get("text"))
+            or camel(instrument_id.replace("-", " "), 6) or instrument_id)
 
 
 def measure_code(lib: Library, measure: dict) -> str:
-    """Measure level part: the instrument's author-year, 'Own' for written questions, 'Codes' for codes."""
+    """Measure level part: the instrument's author-year, 'Own' for written questions, 'Codes' for codes.
+
+    A published instrument that is not in the library is named the same way, from the first author and
+    year the researcher gives (``citation``), else from its name.
+    """
     if measure.get("kind") == "instrument" and measure.get("instrument_id"):
         return instrument_code(lib, measure["instrument_id"])
+    if measure.get("kind") == "published":
+        return author_year(measure.get("citation")) or camel(measure.get("label") or "", 4) or OWN_MEASURE
     return CODES_MEASURE if measure.get("kind") == "code" else OWN_MEASURE
 
 

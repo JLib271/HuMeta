@@ -42,9 +42,11 @@ from oem.library import Library
 PLAN_VERSION = 3
 MEASURE_KINDS = {
     "instrument": "Library instrument",
+    "published": "Published instrument not in the library",
     "question": "Researcher-written question",
     "code": "Code in a coding scheme",
 }
+DOI_PATTERN = re.compile(r"^10\.\d{4,9}/\S+$")
 FRAMEWORK_KINDS = {
     "theory": "Theories",
     "lens": "Theoretical lenses and perspectives",
@@ -397,7 +399,60 @@ def candidate_measures(lib: Library, constructs: list[dict]) -> list[dict]:
     return rows
 
 
-MEASURE_KEYS = ("construct", "kind", "instrument_id", "version_id", "dimension_id", "name", "label", "text", "scale_id")
+MEASURE_KEYS = ("construct", "kind", "instrument_id", "version_id", "dimension_id", "name", "label", "text", "scale_id",
+                "target", "citation", "doi")
+
+
+def normalize_doi(text: str | None) -> str:
+    """'https://doi.org/10.1037/a0026659', 'doi:10.1037/a0026659' -> '10.1037/a0026659' ('' if not a DOI)."""
+    doi = re.sub(r"^(https?://(dx\.)?doi\.org/|doi:\s*)", "", (text or "").strip(), flags=re.I)
+    return doi if DOI_PATTERN.match(doi) else ""
+
+
+def published_measure(construct: str, name: str, citation: str = "", doi: str = "", target: str = "",
+                      variable: str = "") -> dict:
+    """A published instrument that is not in the library: its name, first author and year, and DOI.
+
+    Studies that use the same one are matched by its DOI, and its metadata code is built from the
+    author and year, as for library instruments.
+    """
+    return {"construct": construct, "kind": "published", "instrument_id": None, "version_id": None,
+            "dimension_id": None, "name": variable.strip(), "label": name.strip(), "text": "", "scale_id": None,
+            "target": target.strip(), "citation": citation.strip(), "doi": normalize_doi(doi)}
+
+
+def search_instruments(lib: Library, query: str) -> list[dict]:
+    """Library instruments and subscales matching every word of ``query``.
+
+    Every part matches on the instrument's name, acronym, developers, and metadata code. The whole
+    instrument also matches on its description and all its constructs; a subscale on its own name and
+    the constructs it measures (names and synonyms). One row per part: the whole instrument, then
+    each subscale.
+    """
+    words = [w for w in re.findall(r"[a-z0-9]+", (query or "").lower()) if w]
+    if not words:
+        return []
+
+    def construct_text(ids):
+        return " ".join(" ".join([lib.constructs[c]["label"], *lib.constructs[c].get("synonyms", [])])
+                        for c in ids if c in lib.constructs)
+
+    rows = []
+    for iid, inst in sorted(lib.instruments.items(), key=lambda kv: kv[1]["name"]):
+        version_id = (inst.get("versions") or [{}])[0].get("version_id")
+        common = " ".join([inst["name"], inst.get("acronym") or "", iid, metacode.instrument_code(lib, iid),
+                           " ".join(d.get("name", "") for d in inst.get("developers", []))])
+        parts = [(None, "Whole instrument", inst.get("construct_ids", []))] + [
+            (d["dimension_id"], d["name"], d.get("construct_ids", [])) for d in inst.get("dimensions", [])]
+        for dimension_id, part, ids in parts:
+            own = part if dimension_id else (inst.get("description") or "")
+            text = " ".join([common, own, construct_text(ids)]).lower()
+            if all(w in text for w in words):
+                rows.append({"instrument_id": iid, "version_id": version_id, "dimension_id": dimension_id,
+                             "instrument": inst["name"] + (f" ({inst['acronym']})" if inst.get("acronym") else ""),
+                             "part": part, "construct_ids": [c for c in ids if c in lib.constructs],
+                             "measures": [lib.constructs[c]["label"] for c in ids if c in lib.constructs]})
+    return rows
 
 
 def as_measure(row: dict) -> dict:
@@ -425,6 +480,11 @@ def problems(lib: Library, plan: dict) -> list[str]:
         elif m["kind"] == "instrument":
             if m.get("instrument_id") not in lib.instruments:
                 issues.append(f"{where}: choose a library instrument.")
+        elif m["kind"] == "published":
+            if not (m.get("label") or "").strip():
+                issues.append(f"{where}: give the published instrument's name.")
+            elif not (metacode.author_year(m.get("citation")) or m.get("doi")):
+                issues.append(f"{where}: give the published instrument's first author and year, or its DOI.")
         elif not (m.get("text") or m.get("label") or "").strip():
             issues.append(f"{where}: write the question or the code's label.")
         if (m.get("name") or "").strip():
@@ -467,6 +527,22 @@ def _score_name(prefix: str, dimension_id: str | None) -> str:
     return naming.check(f"{prefix}_{naming.slugify(dimension_id, room)}")
 
 
+def _published_score_name(title: str) -> str:
+    """'Science Self-Efficacy Scale' -> 'science_self_efficacy_score': whole words that fit, then _score."""
+    words = re.findall(r"[a-z0-9]+", title.lower()) or ["published"]
+    if not words[0][0].isalpha():
+        words.insert(0, "i")
+    room = naming.MAX_LENGTH - len("_score")
+    kept: list[str] = []
+    for w in words:
+        if len("_".join([*kept, w])) > room:
+            break
+        kept.append(w)
+    stem = "_".join(kept) or words[0][:room]
+    stem = re.sub(r"_(scale|inventory|questionnaire|survey|test|instrument)$", "", stem) or stem
+    return naming.check(stem + "_score")
+
+
 def measure_groups(lib: Library, plan: dict) -> list[dict]:
     """One group per (construct, measure): the variables that measure it, before timepoints."""
     constructs = _constructs(plan)
@@ -506,6 +582,19 @@ def measure_groups(lib: Library, plan: dict) -> list[dict]:
                     notes=notes + "; scale score (item-level variables are not in the library for this instrument)",
                     metadata_code=metacode.join(c_code, m_code, target),
                     code_level=metacode.level(measure=True, target=bool(target)))]
+            group_label = title
+        elif m["kind"] == "published":
+            title = (m.get("label") or "").strip()
+            name = (m.get("name") or "").strip() or _published_score_name(title)
+            source = "; ".join(x for x in [(m.get("citation") or "").strip(),
+                                           f"https://doi.org/{m['doi']}" if m.get("doi") else ""] if x)
+            variables = [codebook.Variable(
+                name=name, label=f"{title} (scale score)", data_type="numeric", construct_ids=shared,
+                notes=notes + f"; published instrument not in the HuMeta Library: {title}"
+                + (f" ({source})" if source else "") + ". Item-level variables can be added as researcher-written "
+                "questions if you record items.",
+                metadata_code=metacode.join(c_code, m_code, target),
+                code_level=metacode.level(measure=True, target=bool(target)))]
             group_label = title
         elif m["kind"] == "question":
             counters[construct["id"]] = counters.get(construct["id"], 0) + 1
