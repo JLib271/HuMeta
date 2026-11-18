@@ -9,7 +9,7 @@ shared helpers in ``oem/app/common.py``; Streamlit-free logic in ``oem/``.
 from __future__ import annotations
 import streamlit as st
 import json
-from oem.app.common import (ABOUT, PARTS, auth_is_configured, render_feedback_box, current_project, empty_project, navigate_to_module, parse_project_file, render_project_download, render_value_card, researcher_display_name, STUDY_PATH, researcher_is_signed_in, use_published_library, value_propositions)
+from oem.app.common import (ABOUT, PARTS, scroll_to_top_on_new_module, auth_is_configured, render_feedback_box, current_project, empty_project, navigate_to_module, parse_project_file, render_project_download, render_value_card, researcher_display_name, STUDY_PATH, researcher_is_signed_in, use_published_library, value_propositions)
 from oem.app.pages import (
     analytics,
     data_repository,
@@ -46,6 +46,7 @@ with st.sidebar:
             st.button(module, key=f"nav_{module}", use_container_width=True, on_click=navigate_to_module,
                       args=(module,), type="primary" if st.session_state["app_mode"] == module else "secondary")
 app_mode = st.session_state["app_mode"]
+scroll_to_top_on_new_module(app_mode)
 
 signed_in = researcher_is_signed_in()
 

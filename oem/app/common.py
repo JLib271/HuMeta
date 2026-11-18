@@ -550,6 +550,35 @@ def navigate_to_module(module: str) -> None:
     st.session_state["app_mode"] = module
 
 
+def scroll_to_top_on_new_module(module: str) -> None:
+    """Open each module at its top: Streamlit otherwise keeps the scroll position of the page you came from."""
+    if st.session_state.get("_shown_module") == module:
+        return
+    st.session_state["_shown_module"] = module
+    st.session_state["_scroll_nonce"] = st.session_state.get("_scroll_nonce", 0) + 1
+    try:
+        import streamlit.components.v1 as components
+    except ImportError:  # pragma: no cover - very old or very new Streamlit
+        return
+    # Runs in a hidden frame; scrolls the app's main area (the selectors cover recent Streamlit versions), and
+    # repeats briefly while the new module finishes drawing.
+    components.html(
+        "<script>/* " + str(st.session_state["_scroll_nonce"]) + " */\n"
+        "function up() {\n"
+        "  const d = window.parent.document;\n"
+        "  for (const s of ['[data-testid=\"stMain\"]', 'section.main', '[data-testid=\"stAppViewContainer\"]',\n"
+        "                   '[data-testid=\"stAppScrollToBottomContainer\"]']) {\n"
+        "    const el = d.querySelector(s); if (el) el.scrollTop = 0;\n"
+        "  }\n"
+        "  if (d.scrollingElement) d.scrollingElement.scrollTop = 0;\n"
+        "  window.parent.scrollTo(0, 0);\n"
+        "}\n"
+        "up(); [100, 300, 700].forEach(t => setTimeout(up, t));\n"
+        "</script>",
+        height=0,
+    )
+
+
 def render_value_card(
     card: tuple[str, str, str, str, list[str]],
     show_open_button: bool = False,

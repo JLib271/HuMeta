@@ -478,10 +478,15 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
         plan["positions"] = {k: xy for k, xy in (base.get("positions") or {}).items() if k in construct_keys}
         plan["narrative"] = narrative_base
     else:
-        st.caption(("Relationships your theory expects are filled in. " if plan["frameworks"] else "")
-                   + "**Drag the boxes** to arrange them. **To add a relationship**, drag from the right side of one "
-                   "box to the left side of another. **To remove one**, right-click the arrow and choose Delete. "
-                   "You can also edit relationships, and describe them, in the table below the diagram.")
+        if plan["frameworks"]:
+            st.caption("The relationships your theory expects are already filled in.")
+        st.info(
+            "**You can change the relationships in two ways. Use either one; they stay in sync.**\n\n"
+            "**1. On the diagram:** **drag a box** to move it. **To add a relationship**, drag from the right edge "
+            "of one box to the left edge of another. **To remove one**, right-click its arrow and choose "
+            "**Delete Edge**. A two-headed arrow means each construct influences the other.\n\n"
+            "**2. In the table** (*Edit relationships as a table*, below the diagram): add, change, or delete rows, "
+            "and describe each relationship and your hypothesis.")
         diagram_area = st.container()  # drawn after the table, so table edits show at once
         with st.expander("Edit relationships as a table"):
             rel_df = st.data_editor(
@@ -592,10 +597,10 @@ def _diagram_editor(plan: dict, positions: dict, names: dict, v: int):
     except ImportError:
         return None
     keys = [c["id"] for c in plan["constructs"]]
-    arrows = sorted({(r["from"], r["to"]) for r in plan["relationships"]})
-    labels = {(r["from"], r["to"]): r.get("relationship", "") for r in plan["relationships"]}
+    arrows = P.diagram_arrows(plan)
     # A new diagram whenever constructs or arrows change outside it (table edits, Step 2); moves keep the same one.
-    key = f"m2_flow_{v}_{abs(hash((tuple(keys), tuple(arrows), tuple(labels.values())))) % 10**8}"
+    key = f"m2_flow_{v}_{abs(hash((tuple(keys), tuple((a['id'], a['label']) for a in arrows)))) % 10**8}"
+    head = {"type": "arrowclosed", "width": 22, "height": 22, "color": "#333333"}  # large, so direction is clear
     # The diagram's state is kept under its own name: Streamlit stores the component's raw value under `key`.
     state_key = f"{key}_state"
     if state_key not in st.session_state:
@@ -604,14 +609,17 @@ def _diagram_editor(plan: dict, positions: dict, names: dict, v: int):
                                      node_type="default", source_position="right", target_position="left",
                                      draggable=True, connectable=True, selectable=True, deletable=False)
                    for k in keys],
-            edges=[StreamlitFlowEdge(id=f"{a}->{b}", source=a, target=b, marker_end={"type": "arrowclosed"},
-                                     label=labels.get((a, b), ""), deletable=True, focusable=True)
-                   for a, b in arrows])
+            edges=[StreamlitFlowEdge(id=a["id"], source=a["source"], target=a["target"], marker_end=head,
+                                     marker_start=head if a["both"] else {}, label=a["label"],
+                                     label_show_bg=True, label_bg_style={"fill": "#ffffff", "fillOpacity": 0.95},
+                                     style={"strokeWidth": 2, "stroke": "#333333"}, deletable=True, focusable=True)
+                   for a in arrows])
     state = streamlit_flow(key, st.session_state[state_key], height=460, fit_view=True, allow_new_edges=True,
                            enable_edge_menu=True, show_controls=True, hide_watermark=True)
     st.session_state[state_key] = state
     moved = {n.id: [float(n.position["x"]), float(n.position["y"])] for n in state.nodes if n.id in positions}
-    edges = [(e.source, e.target) for e in state.edges if e.source in positions and e.target in positions]
+    edges = P.edges_from_diagram([(e.id, e.source, e.target) for e in state.edges
+                                  if e.source in positions and e.target in positions])
     return edges, {**positions, **moved}
 
 
