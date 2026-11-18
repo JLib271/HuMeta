@@ -9,6 +9,7 @@ shared helpers in ``oem/app/common.py``; Streamlit-free logic in ``oem/``.
 from __future__ import annotations
 import streamlit as st
 import json
+from oem import fair
 from oem.app.common import (ABOUT, PARTS, scroll_to_top_on_new_module, auth_is_configured, render_feedback_box, current_project, empty_project, navigate_to_module, parse_project_file, render_project_download, render_value_card, researcher_display_name, STUDY_PATH, researcher_is_signed_in, use_published_library, value_propositions)
 from oem.app.pages import (
     analytics,
@@ -137,6 +138,11 @@ if app_mode == "About this app":
         for value_card in value_propositions:
             if value_card[3] in info["modules"]:
                 render_value_card(value_card, show_open_button=True)
+    met = sum(1 for p in fair.PRINCIPLES if p[3] == "Met")
+    with st.expander(f"How HuMeta follows the FAIR principles ({met} of {len(fair.PRINCIPLES)} fully met)"):
+        st.caption(f"Findable, Accessible, Interoperable, Reusable: [{fair.SOURCE}]({fair.SOURCE_URL}). "
+                   "✅ Met: HuMeta does this now. ◐ Partly: what is still missing is said in the row.")
+        st.markdown(fair.markdown_table())
 else:
     st.button(
         "← About this app",
