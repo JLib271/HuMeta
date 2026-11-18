@@ -195,7 +195,7 @@ def _browse_frameworks(lib, picker_key: str, v: int) -> None:
                 if cite:
                     st.caption(f"Key source: {cite}")
                 if fw.get("kind") not in ("own", "exploratory"):
-                    st.caption(f"[Library page]({library_page_url('frameworks', fw['id'])}): constructs, relationships, "
+                    st.caption(f"[Library page]({library_page_url(lib, 'frameworks', fw['id'])}): constructs, relationships, "
                                "and instruments that measure them")
                 if fw.get("status") == "draft":
                     st.caption("Draft: please check the constructs and relationships, and suggest changes in the "
@@ -444,7 +444,7 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
                 status = P.MAPPING_STATUS[P.mapping_status(inst)]
                 st.markdown(f"**{inst['name']}**. {text_ok}. Access: {access.get('terms_summary', access.get('access_type', ''))} "
                             f"{cite} *Construct mapping: {status}.* "
-                            f"[Library page]({library_page_url('instruments', iid)})")
+                            f"[Library page]({library_page_url(lib, 'instruments', iid)})")
                 prof = EV.profile(lib, iid)
                 st.caption("Evidence profile: " + EV.summary_line(prof)
                            + (". " + " ".join(prof.flags) if prof.flags else ""))

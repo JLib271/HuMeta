@@ -115,7 +115,7 @@ def to_datacite_json(lib: Library, instrument_id: str, profile=None) -> dict:
         "publicationYear": str(year) if year else "",
         "subjects": [{"subject": "research instrument"}],
         "descriptions": [],
-        "url": library_page_url("instruments", instrument_id),
+        "url": library_page_url(lib, "instruments", instrument_id),
         "alternateIdentifiers": [{"alternateIdentifier": uri, "alternateIdentifierType": "URL"}
                                  for uri in [persistent_uri(lib, "instrument", instrument_id)] if uri],
         "schemaVersion": "http://datacite.org/schema/kernel-4",

@@ -31,7 +31,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from oem.library import Library  # noqa: E402
-from oem.vocab import LIBRARY_SITE_URL  # noqa: E402
+from oem.vocab import LIBRARY_SITE_URL, library_page_url  # noqa: E402
 
 OLD_PREFIX = "/HuMeta/"
 STATIC_PAGES = ("", "compare/", "recommend/", "reference/", "about/")
@@ -117,10 +117,12 @@ def not_found_page() -> str:
 """
 
 
-def paths(lib: Library) -> list[str]:
-    out = list(STATIC_PAGES)
+def paths(lib: Library) -> list[tuple[str, str]]:
+    """(page at the old address, where it now lives). Record pages were named by record id
+    (instruments/gci/); they now live at the record's persistent identifier (instruments/hmi0004/)."""
+    out = [(rel, LIBRARY_SITE_URL + rel) for rel in STATIC_PAGES]
     for kind, ids in (("instruments", lib.instruments), ("frameworks", lib.frameworks), ("constructs", lib.constructs)):
-        out += [f"{kind}/{rid.replace('_', '-')}/" for rid in ids]
+        out += [(f"{kind}/{rid.replace('_', '-')}/", library_page_url(lib, kind, rid)) for rid in ids]
     return out
 
 
@@ -129,10 +131,10 @@ def build(out: Path, lib: Library | None = None) -> int:
     out.mkdir(parents=True, exist_ok=True)
     (out / ".nojekyll").write_text("", encoding="utf-8")
     pages = paths(lib)
-    for rel in pages:
+    for rel, new in pages:
         dest = out / rel / "index.html"
         dest.parent.mkdir(parents=True, exist_ok=True)
-        dest.write_text(page(LIBRARY_SITE_URL + rel), encoding="utf-8")
+        dest.write_text(page(new), encoding="utf-8")
     (out / "404.html").write_text(not_found_page(), encoding="utf-8")
     write_policies(out)
     return len(pages)

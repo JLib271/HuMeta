@@ -60,7 +60,7 @@ def test_datacite_description(lib, p, iid):
     d = IM.to_datacite_json(lib, iid, p)
     assert d["types"] == {"resourceTypeGeneral": "Text", "resourceType": d["types"]["resourceType"]}
     assert d["titles"][0]["title"] and d["creators"] and d["publisher"]["name"]
-    assert len(d["publicationYear"]) == 4 and d["url"].endswith(f"instruments/{iid.replace('_', '-')}/")
+    assert len(d["publicationYear"]) == 4 and d["url"].endswith(f"instruments/{lib.instruments[iid]['pid']}/")
     vocab_uris = [s["valueUri"] for s in d["subjects"] if s.get("valueUri", "").startswith(P.VOCAB_URI)]
     for uri in vocab_uris:  # every HuMeta subject points at a current term
         vocab, term = uri.removeprefix(P.VOCAB_URI).split(".", 1)

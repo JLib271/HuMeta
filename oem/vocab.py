@@ -68,9 +68,13 @@ def item_uri(lib, instrument_id: str, item_id: str) -> str | None:
     return f"{base}/item/{item_id}" if base else None
 
 
-def library_page_url(kind: str, record_id: str) -> str:
-    """Address of a record's page on the Library website (kind: instruments, frameworks or constructs)."""
-    return f"{LIBRARY_SITE_URL}{kind}/{record_id.replace('_', '-')}/"
+def library_page_url(lib, kind: str, record_id: str) -> str:
+    """Address of a record's page on the Library website (kind: instruments, frameworks or constructs).
+
+    Pages live at the record's persistent identifier (instruments/hmi0004/)."""
+    records = {"instruments": lib.instruments, "constructs": lib.constructs, "frameworks": lib.frameworks}[kind]
+    pid = (records.get(record_id) or {}).get("pid")
+    return f"{LIBRARY_SITE_URL}{kind}/{pid or record_id.replace('_', '-')}/"
 PROJECT_FILE_FORMAT = "humeta-project"
 #: earlier project-file format names that still load
 LEGACY_PROJECT_FILE_FORMATS = ("openedmetadata-project",)
