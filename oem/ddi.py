@@ -288,6 +288,8 @@ def _variable(b: _Builder, parent: ET.Element, lib: Library, v: codebook.Variabl
     notes = [x.strip().rstrip(".") for x in (v.notes, f"Timepoint: {v.timepoint}" if v.timepoint else None,
                          f"Instrument: {lib.instruments[v.instrument_id]['name']}"
                          + (f" ({v.measure_uri})" if v.measure_uri else "") if v.instrument_id in lib.instruments else None,
+                         f"Item: {v.item_uri}" if v.item_uri else None,
+                         f"Same or linked items in other versions: {v.linked_items}" if v.linked_items else None,
                          f"Sensitivity if shared: {v.sensitivity}" if v.sensitivity != "none" else None) if x]
     if notes:
         b.el(node, "notes", ". ".join(notes) + ".")
