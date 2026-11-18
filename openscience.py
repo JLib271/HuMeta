@@ -161,7 +161,7 @@ PAGES = {
     "1. Describe Your Study": study_profile.render,
     "2. Theory and Measures": framework_measures.render,
     "3. Check, Register & Export": metadata_check.render,
-    "4. Deposit Data in the STEMEd+ Library": data_repository.render,
+    "4. Deposit Data in the STEMEd+ Commons Library": data_repository.render,
     "5. Descriptive & Scale Analytics": analytics.render,
     "6. Find Related Data": published_viewer.render,
 }

@@ -227,7 +227,7 @@ PARTS = {
     },
     "Part 2 · Share and connect your results": {
         "about": "Deposit the data, analyze them, and connect them to related data.",
-        "modules": ["4. Deposit Data in the STEMEd+ Library", "5. Descriptive & Scale Analytics", "6. Find Related Data"],
+        "modules": ["4. Deposit Data in the STEMEd+ Commons Library", "5. Descriptive & Scale Analytics", "6. Find Related Data"],
     },
 }
 ABOUT = "About this app"
@@ -269,20 +269,20 @@ value_propositions = [
         [
             "Add constructs measured, suggested from your variable plan (Module 2).",
             "See what to fix before sharing: consent, de-identification, review, CARE.",
-            "Register the study in the STEMEd+ Library's Studies collection to give it a DOI (PDF and humeta.json).",
+            "Register the study in the STEMEd+ Commons Library's Studies collection to give it a DOI (PDF and humeta.json).",
             "Export HuMeta JSON, DataCite 4.7 (JSON/XML), ERIC descriptors, and DDI-Codebook for social science archives.",
         ],
     ),
     (
-        "4. Deposit Data in the STEMEd+ Library",
-        "📦 Share Data in the STEMEd+ Library",
-        "Gets your dataset ready to deposit in the STEMEd+ Library on Knowledge Commons, which gives it a DOI, and "
+        "4. Deposit Data in the STEMEd+ Commons Library",
+        "📦 Share Data in the STEMEd+ Commons Library",
+        "Gets your dataset ready to deposit in the STEMEd+ Commons Library, which gives it a DOI, and "
         "links it to the instruments, constructs, and theories you used so others can find it.",
-        "4. Deposit Data in the STEMEd+ Library",
+        "4. Deposit Data in the STEMEd+ Commons Library",
         [
             "Download your HuMeta profile (humeta.json) to attach to the deposit.",
             "Get the HuMeta keywords that link your deposit, even if its files are restricted.",
-            "Deposit directly in the STEMEd+ Library: the portal never receives your data.",
+            "Deposit directly in the STEMEd+ Commons Library: the portal never receives your data.",
         ],
     ),
     (
@@ -302,11 +302,11 @@ value_propositions = [
     (
         "6. Find Related Data",
         "🔎 Discover Related Data",
-        "Finds datasets in the STEMEd+ Library that used the same instruments, constructs, or theories as your study.",
+        "Finds datasets in the STEMEd+ Commons Library that used the same instruments, constructs, or theories as your study.",
         "6. Find Related Data",
         [
             "See related datasets, ranked by what they share with your study.",
-            "Browse every dataset in the STEMEd+ Library's Data collection.",
+            "Browse every dataset in the STEMEd+ Commons Library's Data collection.",
             "See the study summaries researchers have shared.",
         ],
     ),

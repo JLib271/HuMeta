@@ -71,7 +71,7 @@ def test_datacite_description(lib, p, iid):
 def test_datacite_links(lib, p):
     gci = IM.to_datacite_json(lib, "gci", p)
     rel = {(r["relatedIdentifier"], r["relationType"]) for r in gci["relatedIdentifiers"]}
-    assert ("10.17613/wnm5z-00x75", "IsDescribedBy") in rel  # its KCWorks chapter
+    assert ("10.17613/wnm5z-00x75", "IsDescribedBy") in rel  # its STEMEd+ Commons Library chapter
     assert any(r["rights"].startswith("Item text: CC BY-SA") for r in gci["rightsList"])
     assert {"Libarkin", "Anderson"} == {c["familyName"] for c in gci["creators"]}
 

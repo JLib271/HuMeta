@@ -7,8 +7,8 @@ push to the deployed branch).
 
 Researchers never write here directly: the app opens a pull request, and the
 record is published only when a maintainer merges it. Research data are not
-kept here: researchers deposit them in the STEMEd+ Library on Knowledge
-Commons (Module 4).
+kept here: researchers deposit them in the STEMEd+ Commons Library
+(Module 4).
 
 | Folder | Contents | Created by |
 | --- | --- | --- |

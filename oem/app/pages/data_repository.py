@@ -1,9 +1,9 @@
 # Copyright (C) 2026 Julie C. Libarkin
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Module 4: Deposit Data in the STEMEd+ Library.
+"""Module 4: Deposit Data in the STEMEd+ Commons Library.
 
-Data are deposited in the STEMEd+ Library's Data collection on Knowledge
-Commons, which gives each deposit a DOI and handles access. This module gets a
+Data are deposited in the STEMEd+ Commons Library's Data collection,
+which gives each deposit a DOI and handles access. This module gets a
 researcher ready: their HuMeta profile (humeta.json) to attach, and the HuMeta
 keywords that link the deposit to the HuMeta Library. The portal itself never
 receives or stores datasets.
@@ -24,14 +24,14 @@ from oem.app.profile_form import LICENSE_URLS, LICENSES, current_record, library
 
 
 def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None) -> None:
-    st.header("📦 Deposit Data in the STEMEd+ Library")
+    st.header("📦 Deposit Data in the STEMEd+ Commons Library")
     st.caption(
-        "Share your data in the [STEMEd+ Library's Data collection](" + D.DATA_COLLECTION_URL + ") on Knowledge Commons. "
+        "Share your data in the [STEMEd+ Commons Library's Data collection](" + D.DATA_COLLECTION_URL + "). "
         "It gives your dataset a DOI, keeps restricted files restricted, and links it to the instruments, constructs, "
         "and theories you used, so others can find it from the [HuMeta Library](" + D.DATASETS_PAGE_URL + ")."
     )
     st.info(
-        "🔒 **The portal never receives your data.** You upload your files directly to the STEMEd+ Library. To analyze "
+        "🔒 **The portal never receives your data.** You upload your files directly to the STEMEd+ Commons Library. To analyze "
         "data you can't share, use Module 5: files are read in memory for your session only."
     )
 
@@ -85,8 +85,8 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
                        file_name="humeta.json", mime="application/json", type="primary", key="m4_dl_humeta",
                        use_container_width=True)
 
-    st.subheader("4 · Deposit in the STEMEd+ Library")
-    st.write("Sign in to Knowledge Commons (free; Google, ORCID, GitHub, or your institution), choose **Dataset** as the "
+    st.subheader("4 · Deposit in the STEMEd+ Commons Library")
+    st.write("Sign in to the STEMEd+ Commons Library (free; Google, ORCID, GitHub, or your institution), choose **Dataset** as the "
              "resource type, upload your data files and **humeta.json**, and fill in the form.")
     st.link_button("Start a deposit in the Data collection", D.DATA_DEPOSIT_URL, use_container_width=True)
     title = (record.get("resource") or {}).get("title")

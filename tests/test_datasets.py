@@ -1,6 +1,6 @@
 # Copyright (C) 2026 Julie C. Libarkin
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Studies link to datasets in the STEMEd+ Library through HuMeta keywords and the published index."""
+"""Studies link to datasets in the STEMEd+ Commons Library through HuMeta keywords and the published index."""
 from __future__ import annotations
 
 import io
