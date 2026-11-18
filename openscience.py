@@ -9,7 +9,7 @@ shared helpers in ``oem/app/common.py``; Streamlit-free logic in ``oem/``.
 from __future__ import annotations
 import streamlit as st
 import json
-from oem.app.common import (auth_is_configured, render_feedback_box, current_project, empty_project, navigate_to_module, parse_project_file, render_project_download, render_value_card, researcher_display_name, STUDY_PATH, researcher_is_signed_in, use_published_library, value_propositions)
+from oem.app.common import (ABOUT, PARTS, auth_is_configured, render_feedback_box, current_project, empty_project, navigate_to_module, parse_project_file, render_project_download, render_value_card, researcher_display_name, STUDY_PATH, researcher_is_signed_in, use_published_library, value_propositions)
 from oem.app.pages import (
     analytics,
     data_repository,
@@ -35,21 +35,17 @@ if "session_instruments" not in st.session_state:
     st.session_state.session_instruments = []
 
 # Engine selection sidebar routing
-st.sidebar.header("⚙️ Core Controls")
-app_mode = st.sidebar.radio(
-    "Navigate Workspace Module:",
-    [
-        "About this app",
-        "1. Describe Your Study",
-        "2. Theory and Measures",
-        "3. Check, Register & Export",
-        "4. Deposit Data in the STEMEd+ Library",
-        "5. Descriptive & Scale Analytics",
-        "6. Find Related Data",
-    ],
-    key="app_mode"
-)
-st.sidebar.caption(STUDY_PATH)
+st.session_state.setdefault("app_mode", ABOUT)
+with st.sidebar:
+    st.button(ABOUT, key="nav_about", use_container_width=True, on_click=navigate_to_module, args=(ABOUT,),
+              type="primary" if st.session_state["app_mode"] == ABOUT else "secondary")
+    for part, info in PARTS.items():
+        st.markdown(f"**{part}**")
+        st.caption(info["about"])
+        for module in info["modules"]:
+            st.button(module, key=f"nav_{module}", use_container_width=True, on_click=navigate_to_module,
+                      args=(module,), type="primary" if st.session_state["app_mode"] == module else "secondary")
+app_mode = st.session_state["app_mode"]
 
 signed_in = researcher_is_signed_in()
 
@@ -134,8 +130,12 @@ if app_mode == "About this app":
         "enforcing data structural integrity and empowering open-science collaboration."
     )
     st.info(STUDY_PATH)
-    for value_card in value_propositions:
-        render_value_card(value_card, show_open_button=True)
+    for part, info in PARTS.items():
+        st.subheader(part)
+        st.caption(info["about"])
+        for value_card in value_propositions:
+            if value_card[3] in info["modules"]:
+                render_value_card(value_card, show_open_button=True)
 else:
     st.button(
         "← About this app",

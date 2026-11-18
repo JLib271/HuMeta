@@ -76,6 +76,7 @@ def empty_plan() -> dict:
         "standard_variables": [],
         "timepoints": [],
         "external_variables": [],
+        "positions": {},  # construct id -> [x, y] on the Step 5 diagram, as the researcher arranged it
         "narrative": "",
     }
 
@@ -240,6 +241,51 @@ def suggest_timepoints(record: dict | None) -> list[str]:
         if design in REPEATED_DESIGNS:
             return list(REPEATED_DESIGNS[design])
     return []
+
+
+def default_positions(plan: dict, column: int = 260, row: int = 110) -> dict[str, list[float]]:
+    """Starting places for the diagram: causes on the left, outcomes to the right.
+
+    Each construct's column is the length of the longest chain of relationships
+    leading to it (cycles are cut), so arrows mostly point right.
+    """
+    keys = [c["id"] for c in plan["constructs"]]
+    into: dict[str, set[str]] = {k: set() for k in keys}
+    for r in plan["relationships"]:
+        if r["from"] in into and r["to"] in into and r["from"] != r["to"]:
+            into[r["to"]].add(r["from"])
+    depth: dict[str, int] = {}
+
+    def level(k: str, seen: frozenset) -> int:
+        if k not in depth:
+            parents = [p for p in into[k] if p not in seen]
+            depth[k] = 1 + max((level(p, seen | {k}) for p in parents), default=-1)
+        return depth[k]
+
+    rows: dict[int, int] = {}
+    out: dict[str, list[float]] = {}
+    for k in keys:
+        col = level(k, frozenset())
+        out[k] = [float(col * column), float(rows.get(col, 0) * row)]
+        rows[col] = rows.get(col, 0) + 1
+    return out
+
+
+def relationships_from_edges(relationships: list[dict], edges: list[tuple[str, str]]) -> list[dict]:
+    """The plan's relationships after arrows were drawn or deleted on the diagram.
+
+    Arrows that already were relationships keep their wording; new arrows become
+    relationships with no wording yet; deleted arrows are dropped. Self-loops and
+    repeats are ignored.
+    """
+    existing = {(r["from"], r["to"]): r for r in relationships}
+    out, seen = [], set()
+    for source, target in edges:
+        if source == target or (source, target) in seen:
+            continue
+        seen.add((source, target))
+        out.append(existing.get((source, target)) or {"from": source, "to": target, "relationship": "", "hypothesis": ""})
+    return out
 
 
 def missing_theory_relationships(lib: Library, plan: dict, earlier_construct_ids: set[str]) -> dict[str, list[dict]]:
