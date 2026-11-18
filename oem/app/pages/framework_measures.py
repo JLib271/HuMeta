@@ -596,8 +596,10 @@ def _diagram_editor(plan: dict, positions: dict, names: dict, v: int):
     labels = {(r["from"], r["to"]): r.get("relationship", "") for r in plan["relationships"]}
     # A new diagram whenever constructs or arrows change outside it (table edits, Step 2); moves keep the same one.
     key = f"m2_flow_{v}_{abs(hash((tuple(keys), tuple(arrows), tuple(labels.values())))) % 10**8}"
-    if key not in st.session_state:
-        st.session_state[key] = StreamlitFlowState(
+    # The diagram's state is kept under its own name: Streamlit stores the component's raw value under `key`.
+    state_key = f"{key}_state"
+    if state_key not in st.session_state:
+        st.session_state[state_key] = StreamlitFlowState(
             nodes=[StreamlitFlowNode(id=k, pos=tuple(positions[k]), data={"content": names.get(k, k)},
                                      node_type="default", source_position="right", target_position="left",
                                      draggable=True, connectable=True, selectable=True, deletable=False)
@@ -605,10 +607,9 @@ def _diagram_editor(plan: dict, positions: dict, names: dict, v: int):
             edges=[StreamlitFlowEdge(id=f"{a}->{b}", source=a, target=b, marker_end={"type": "arrowclosed"},
                                      label=labels.get((a, b), ""), deletable=True, focusable=True)
                    for a, b in arrows])
-    st.session_state[key] = streamlit_flow(key, st.session_state[key], height=460, fit_view=True,
-                                           allow_new_edges=True, enable_edge_menu=True, show_controls=True,
-                                           hide_watermark=True)
-    state = st.session_state[key]
+    state = streamlit_flow(key, st.session_state[state_key], height=460, fit_view=True, allow_new_edges=True,
+                           enable_edge_menu=True, show_controls=True, hide_watermark=True)
+    st.session_state[state_key] = state
     moved = {n.id: [float(n.position["x"]), float(n.position["y"])] for n in state.nodes if n.id in positions}
     edges = [(e.source, e.target) for e in state.edges if e.source in positions and e.target in positions]
     return edges, {**positions, **moved}
