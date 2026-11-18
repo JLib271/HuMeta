@@ -242,6 +242,24 @@ def suggest_timepoints(record: dict | None) -> list[str]:
     return []
 
 
+def missing_theory_relationships(lib: Library, plan: dict, earlier_construct_ids: set[str]) -> dict[str, list[dict]]:
+    """The theory's expected relationships that the plan does not have yet.
+
+    ``new``: ones touching a construct that was not in the plan before (just added,
+    e.g. by choosing a theory): include these automatically. ``removed``: ones
+    between constructs that were already there, so the researcher deleted them:
+    offer to restore, never re-add on their own.
+    """
+    have = {(r["from"], r["to"]) for r in plan["relationships"]}
+    keys = {c["id"] for c in plan["constructs"]}
+    out: dict[str, list[dict]] = {"new": [], "removed": []}
+    for r in default_relationships(lib, plan["frameworks"], keys):
+        if (r["from"], r["to"]) not in have:
+            fresh = r["from"] not in earlier_construct_ids or r["to"] not in earlier_construct_ids
+            out["new" if fresh else "removed"].append(r)
+    return out
+
+
 def default_relationships(lib: Library, framework_ids: list[str], included: set[str]) -> list[dict]:
     """The frameworks' expected paths between the constructs that were kept."""
     rows = []
