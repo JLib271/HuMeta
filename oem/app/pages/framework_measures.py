@@ -614,8 +614,10 @@ def _diagram_editor(plan: dict, positions: dict, names: dict, v: int):
                                      label_show_bg=True, label_bg_style={"fill": "#ffffff", "fillOpacity": 0.95},
                                      style={"strokeWidth": 2, "stroke": "#333333"}, deletable=True, focusable=True)
                    for a in arrows])
-    state = streamlit_flow(key, st.session_state[state_key], height=460, fit_view=True, allow_new_edges=True,
-                           enable_edge_menu=True, show_controls=True, hide_watermark=True)
+    # Tall enough for the whole diagram, and zoom out far enough that a big one still fits.
+    state = streamlit_flow(key, st.session_state[state_key], height=P.diagram_height(positions), fit_view=True,
+                           min_zoom=0.2, allow_new_edges=True, enable_edge_menu=True, show_controls=True,
+                           hide_watermark=True)
     st.session_state[state_key] = state
     moved = {n.id: [float(n.position["x"]), float(n.position["y"])] for n in state.nodes if n.id in positions}
     edges = P.edges_from_diagram([(e.id, e.source, e.target) for e in state.edges

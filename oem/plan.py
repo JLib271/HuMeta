@@ -273,6 +273,14 @@ def default_positions(plan: dict, column: int = 340, row: int = 150) -> dict[str
     return out
 
 
+def diagram_height(positions: dict, box: int = 60, margin: int = 160, low: int = 420, high: int = 900) -> int:
+    """Height (pixels) of the Step 5 diagram area, so every box fits without scrolling or zooming."""
+    ys = [xy[1] for xy in positions.values()]
+    if not ys:
+        return low
+    return int(max(low, min(high, max(ys) - min(ys) + box + margin)))
+
+
 TWO_WAY = "<->"
 
 

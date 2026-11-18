@@ -314,3 +314,14 @@ def test_two_way_relationships_are_one_arrow(lib):
     assert " / " in [a for a in P.diagram_arrows(plan) if a["both"]][0]["label"]
     places = P.default_positions(plan)
     assert len({tuple(xy) for xy in places.values()}) == len(places)  # no two boxes start in the same place
+
+
+def test_diagram_area_fits_every_box(lib):
+    plan = P.empty_plan()
+    plan["frameworks"] = ["sct"]
+    plan["constructs"] = P.framework_constructs(lib, ["sct"])
+    plan["relationships"] = P.default_relationships(lib, ["sct"], {c["id"] for c in plan["constructs"]})
+    places = P.default_positions(plan)
+    ys = [y for _, y in places.values()]
+    assert P.diagram_height(places) >= max(ys) - min(ys) + 60  # tallest column fits, box included
+    assert P.diagram_height({}) == 420 and P.diagram_height({"a": [0, 0], "b": [0, 5000]}) == 900
