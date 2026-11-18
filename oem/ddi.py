@@ -31,6 +31,7 @@ from oem import codebook, naming
 from oem import plan as plan_model
 from oem import profile
 from oem.library import Library
+from oem.vocab import METADATA_CODE_URI, persistent_uri
 
 DDI_NS = "ddi:codebook:2_5"
 DDI_XSD = "http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/codebook.xsd"
@@ -128,7 +129,7 @@ def to_ddi_codebook_xml(record: dict, plan: dict | None = None, lib: Library | N
         for kw in keywords:
             b.el(subj, "keyword", kw)
         for c in constructs:
-            b.el(subj, "keyword", c["label"], vocab=CONSTRUCTS_VOCAB, vocabURI=profile.CONSTRUCTS_URI.rstrip("#"))
+            b.el(subj, "keyword", c["label"], vocab=CONSTRUCTS_VOCAB, vocabURI=profile.CONSTRUCTS_SCHEME_URI)
         for label in own:  # study-specific constructs, not on the shared list
             b.el(subj, "keyword", label)
         if (s["design"].get("topic") or "").strip():
@@ -246,13 +247,12 @@ def _data_description(b: _Builder, root: ET.Element, lib: Library, plan: dict) -
 def _construct_concept(b: _Builder, parent: ET.Element, lib: Library, shared_id: str | None, label: str) -> None:
     if shared_id and shared_id in lib.constructs:
         b.el(parent, "concept", lib.constructs[shared_id]["label"], vocab=CONSTRUCTS_VOCAB,
-             vocabURI=profile.CONSTRUCTS_URI + shared_id)
+             vocabURI=persistent_uri("construct", shared_id))
     else:
         b.el(parent, "concept", label)
 
 
 METADATA_CODE_VOCAB = "HuMeta metadata code (Construct_Measure_Item_Target)"
-METADATA_CODE_URI = "https://github.com/JLib271/HuMeta/blob/main/oem/metacode.py"
 ICPSR_THESAURUS = "ICPSR Subject Thesaurus"
 NATURE = {"ordinal": "ordinal", "categorical": "nominal", "binary": "nominal", "numeric": "interval"}
 
@@ -286,7 +286,8 @@ def _variable(b: _Builder, parent: ET.Element, lib: Library, v: codebook.Variabl
     if v.metadata_code:  # the same code in every study that uses this construct, measure, item, and target
         b.el(node, "concept", v.metadata_code, vocab=METADATA_CODE_VOCAB, vocabURI=METADATA_CODE_URI)
     notes = [x.strip().rstrip(".") for x in (v.notes, f"Timepoint: {v.timepoint}" if v.timepoint else None,
-                         f"Instrument: {lib.instruments[v.instrument_id]['name']}" if v.instrument_id in lib.instruments else None,
+                         f"Instrument: {lib.instruments[v.instrument_id]['name']}"
+                         + (f" ({v.measure_uri})" if v.measure_uri else "") if v.instrument_id in lib.instruments else None,
                          f"Sensitivity if shared: {v.sensitivity}" if v.sensitivity != "none" else None) if x]
     if notes:
         b.el(node, "notes", ". ".join(notes) + ".")

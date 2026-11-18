@@ -31,11 +31,12 @@ from typing import Any
 from xml.etree import ElementTree as ET
 
 from oem.library import Library
-from oem.vocab import library_page_url
+from oem.vocab import persistent_uri
 
 ROOT = Path(__file__).resolve().parent.parent
 PROFILE_DIR = ROOT / "standard" / "humeta"
-CONSTRUCTS_URI = "https://github.com/JLib271/humeta-library/blob/main/constructs.json#"
+#: The HuMeta construct vocabulary: scheme and, per construct, its persistent identifier (vocab.persistent_uri)
+CONSTRUCTS_SCHEME_URI = "https://w3id.org/humeta/construct"
 FRAMEWORKS_URI = "https://github.com/JLib271/humeta-library/blob/main/frameworks.json#"
 VOCAB_URI = "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#"
 DATACITE_NS = "http://datacite.org/schema/kernel-4"
@@ -789,7 +790,7 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
         construct = lib.constructs.get(c.get("construct_id") or "")
         if construct:
             subjects.append({"subject": construct["label"], "subjectScheme": "HuMeta Constructs",
-                             "schemeUri": CONSTRUCTS_URI.rstrip("#"), "valueUri": CONSTRUCTS_URI + construct["id"]})
+                             "schemeUri": CONSTRUCTS_SCHEME_URI, "valueUri": persistent_uri("construct", construct["id"])})
         if (c.get("label") or "").strip() and not names_shared_construct(lib, c["label"], c.get("construct_id")):
             subjects.append({"subject": c["label"].strip()})  # the study's own construct, as a keyword
     for fid in s["design"].get("frameworks") or []:
@@ -862,7 +863,7 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
             seen_instruments.add(iid)
             if rtype == "Dataset":
                 # The instrument itself (its Library page) collected the data ...
-                related.append({"relatedIdentifier": library_page_url("instruments", iid),
+                related.append({"relatedIdentifier": persistent_uri("instrument", iid, c.get("version_id")),
                                 "relatedIdentifierType": "URL", "relationType": "IsCollectedBy"})
             doi = lib.instruments[iid].get("original_citation", {}).get("doi")
             if doi:

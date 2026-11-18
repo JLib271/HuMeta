@@ -11,7 +11,7 @@ every study, so studies can be matched at each level:
 * **Construct_Measure**: ``outcome_expectations_SCT_Smith2017``. A measure is
   named by the first author and year of its original publication: a library
   instrument by its fixed code in the library (a letter is added if two would
-  clash), a published instrument not in the library from the author and year the
+  clash) plus its version's code (``Libarkin2005V4``), a published instrument not in the library from the author and year the
   researcher gives. Researcher-written questions are ``Own``; codes in a coding
   scheme are ``Codes``.
 * **Construct_Measure_Item**: ``..._Smith2017_item1_PeopleExpectMeTo``. The item's
@@ -83,6 +83,16 @@ def instrument_code(lib: Library, instrument_id: str) -> str:
             or camel(instrument_id.replace("-", " "), 6) or instrument_id)
 
 
+def version_code(lib: Library, instrument_id: str, version_id: str | None = None) -> str:
+    """A library version's fixed code ('V4', 'PhysV3'), added to the instrument's: Libarkin2005V4.
+
+    ``version_id`` defaults to the instrument's first version; '' when the library gives no code.
+    """
+    versions = (lib.instruments.get(instrument_id) or {}).get("versions") or []
+    version = next((v for v in versions if v.get("version_id") == version_id), versions[0] if versions else {})
+    return version.get("code") or ""
+
+
 def measure_code(lib: Library, measure: dict) -> str:
     """Measure level part: the instrument's author-year, 'Own' for written questions, 'Codes' for codes.
 
@@ -90,7 +100,8 @@ def measure_code(lib: Library, measure: dict) -> str:
     year the researcher gives (``citation``), else from its name.
     """
     if measure.get("kind") == "instrument" and measure.get("instrument_id"):
-        return instrument_code(lib, measure["instrument_id"])
+        return instrument_code(lib, measure["instrument_id"]) + version_code(lib, measure["instrument_id"],
+                                                                             measure.get("version_id"))
     if measure.get("kind") == "published":
         return author_year(measure.get("citation")) or camel(measure.get("label") or "", 4) or OWN_MEASURE
     return CODES_MEASURE if measure.get("kind") == "code" else OWN_MEASURE

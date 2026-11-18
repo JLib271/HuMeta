@@ -142,3 +142,28 @@ def test_published_instrument_dois_go_to_related_works(lib):
     assert added == 1 and merged[0] == existing[0]
     assert merged[1] == {"identifier": "10.1002/TEA.21234", "identifier_type": "DOI", "relation": "References"}
     assert P.merge_related_dois(merged, plan) == (merged, 0)
+
+
+def test_version_codes_and_persistent_identifiers(lib, monkeypatch):
+    from oem import instrument_metadata as IM
+    from oem.vocab import persistent_uri
+    inst = dict(lib.instruments["mslq"], metadata_code="Pintrich1991",
+                versions=[dict(v, code="V1") for v in lib.instruments["mslq"]["versions"]])
+    monkeypatch.setitem(lib.instruments, "mslq", inst)
+    plan = sct_plan(lib)
+    plan["measures"] = [{"construct": "sct.self_efficacy", "kind": "instrument", "instrument_id": "mslq"}]
+    [v] = P.build_codebook(lib, plan).variables
+    vid = inst["versions"][0]["version_id"]
+    assert v.metadata_code == "self_efficacy_SCT_Pintrich1991V1"
+    assert v.measure_uri == f"https://w3id.org/humeta/instrument/mslq/{vid}"
+    assert v.construct_uri == "https://w3id.org/humeta/construct/self-efficacy"
+    assert persistent_uri("construct", "sense_of_belonging") == "https://w3id.org/humeta/construct/sense-of-belonging"
+    dc = IM.to_datacite_json(lib, "gci")
+    assert dc["alternateIdentifiers"][0]["alternateIdentifier"] == "https://w3id.org/humeta/instrument/gci"
+    assert all(s["valueUri"].startswith("https://w3id.org/humeta/construct/")
+               for s in dc["subjects"] if s.get("subjectScheme") == "HuMeta Constructs")
+    assert IM.to_schema_org(lib, "gci")["@id"] == "https://w3id.org/humeta/instrument/gci"
+    record = json.loads((EXAMPLES / "climate-inventory-dataset.json").read_text())
+    xml = ddi.to_ddi_codebook_xml(record, plan, lib)
+    assert 'vocabURI="https://w3id.org/humeta/construct/self-efficacy"' in xml
+    assert 'vocabURI="https://w3id.org/humeta/metadata-code"' in xml

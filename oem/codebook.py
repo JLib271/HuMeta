@@ -55,6 +55,8 @@ class Variable:
     notes: str | None = None
     metadata_code: str | None = None  # Construct_Measure_Item_Target (oem.metacode); same in every study
     code_level: str | None = None  # which parts the code has, e.g. construct_measure_item
+    measure_uri: str | None = None  # persistent identifier of the measure: library instrument version, or DOI
+    construct_uri: str | None = None  # persistent identifier of the shared construct measured
 
     def __post_init__(self) -> None:
         naming.check(self.name)
@@ -162,7 +164,7 @@ class Codebook:
     """An ordered, name-unique set of variables with export helpers."""
 
     COLUMNS = (
-        "name", "metadata_code", "code_level", "label", "data_type", "values", "missing", "scale_id", "question",
+        "name", "metadata_code", "code_level", "measure_uri", "construct_uri", "label", "data_type", "values", "missing", "scale_id", "question",
         "instrument_id", "version_id", "item_id", "option", "standard_variable",
         "construct_ids", "timepoint", "sensitivity", "notes",
     )
@@ -201,6 +203,7 @@ class Codebook:
         for c in self.constructs:
             rows.append({column: "" for column in self.COLUMNS} | {
                 "metadata_code": c["metadata_code"], "code_level": "construct", "label": c["label"],
+                "construct_uri": c.get("construct_uri") or "",
                 "construct_ids": "; ".join(c.get("construct_ids") or []),
                 "notes": c.get("notes") or "No measure chosen yet: no data column."})
         return rows
