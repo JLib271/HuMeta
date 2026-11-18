@@ -34,6 +34,7 @@ def test_page_renders_without_errors(page):
     at.run()
     assert not _errors(at), f"start page raised: {_errors(at)}"
     if page != "About this app":
-        at.radio(key="app_mode").set_value(page).run()
+        at.session_state["app_mode"] = page
+        at.run()
     assert not _errors(at), f"{page} raised: {_errors(at)}"
     assert at.header, f"{page} rendered no header"

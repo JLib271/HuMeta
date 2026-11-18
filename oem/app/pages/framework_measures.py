@@ -215,7 +215,7 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
         st.info("Tip: save your study profile in Module 1 first. This module then suggests variables for your study.")
 
     plan = P.empty_plan()
-    for later in ("standard_variables", "timepoints", "external_variables", "relationships", "narrative"):
+    for later in ("standard_variables", "timepoints", "external_variables", "relationships", "positions", "narrative"):
         plan[later] = base.get(later) or plan[later]
     kinds = {fid: f["kind"] for fid, f in lib.frameworks.items()}
 
@@ -471,14 +471,19 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
 
     # ------------------------------------------------------------ Step 5
     st.subheader("Step 5 · How your constructs relate (optional)")
+    narrative_base = base.get("narrative", "")
     if len(constructs) < 2:
-        st.caption("With two or more constructs you can show how they relate. Skip this if it doesn't apply.")
+        st.caption("With two or more constructs you can show how they relate. Add one below, or skip this step.")
         plan["relationships"] = [r for r in base["relationships"] if r["from"] in construct_keys and r["to"] in construct_keys]
-        plan["narrative"] = base.get("narrative", "")
+        plan["positions"] = {k: xy for k, xy in (base.get("positions") or {}).items() if k in construct_keys}
+        plan["narrative"] = narrative_base
     else:
-        st.caption("Relationships your theory expects are filled in. Edit them, add your own, or skip this step."
-                   if plan["frameworks"] else "Add the relationships you expect between your constructs, or skip this step.")
-        with st.expander("Edit relationships"):
+        st.caption(("Relationships your theory expects are filled in. " if plan["frameworks"] else "")
+                   + "**Drag the boxes** to arrange them. **To add a relationship**, drag from the right side of one "
+                   "box to the left side of another. **To remove one**, right-click the arrow and choose Delete. "
+                   "You can also edit relationships, and describe them, in the table below the diagram.")
+        diagram_area = st.container()  # drawn after the table, so table edits show at once
+        with st.expander("Edit relationships as a table"):
             rel_df = st.data_editor(
                 pd.DataFrame([{"From": construct_from_key.get(r["from"]), "To": construct_from_key.get(r["to"]),
                                "Relationship": r.get("relationship", ""), "Hypothesis or rationale": r.get("hypothesis", "")}
@@ -496,15 +501,28 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
         missing = P.missing_theory_relationships(lib, plan, {c["id"] for c in base["constructs"]})
         if missing["new"]:
             # A construct was just added (e.g. a theory was chosen): include its expected relationships.
-            _rebase({**plan, "relationships": plan["relationships"] + missing["new"], "narrative": base.get("narrative", "")})
-        if missing["removed"] and st.button(f"Restore the theory's {len(missing['removed'])} removed relationship(s)",
-                                            key=f"m2_paths_{v}"):
-            _rebase({**plan, "relationships": plan["relationships"] + missing["removed"], "narrative": base.get("narrative", "")})
-        st.graphviz_chart(P.diagram_dot(lib, plan), use_container_width=True)
-        with st.expander("Conceptual framework narrative (optional)", expanded=bool(base.get("narrative"))):
-            plan["narrative"] = st.text_area("Conceptual framework narrative", base.get("narrative", ""),
+            _rebase({**plan, "relationships": plan["relationships"] + missing["new"], "narrative": narrative_base})
+        positions = {**P.default_positions(plan),
+                     **{k: xy for k, xy in (base.get("positions") or {}).items() if k in construct_keys}}
+        with diagram_area:
+            drawn = _diagram_editor(plan, positions, construct_from_key, v)
+            if drawn is None:  # the interactive diagram is not available: show the picture
+                plan["positions"] = positions
+                st.graphviz_chart(P.diagram_dot(lib, plan), use_container_width=True)
+            else:
+                edges, plan["positions"] = drawn
+                if set(edges) != {(r["from"], r["to"]) for r in plan["relationships"]}:
+                    # Arrows drawn or deleted on the diagram: update the relationships (and the table).
+                    _rebase({**plan, "relationships": P.relationships_from_edges(plan["relationships"], edges),
+                             "narrative": narrative_base})
+            if missing["removed"] and st.button(f"Restore the theory's {len(missing['removed'])} removed relationship(s)",
+                                                key=f"m2_paths_{v}"):
+                _rebase({**plan, "relationships": plan["relationships"] + missing["removed"], "narrative": narrative_base})
+        with st.expander("Conceptual framework narrative (optional)", expanded=bool(narrative_base)):
+            plan["narrative"] = st.text_area("Conceptual framework narrative", narrative_base,
                                              key=f"m2_narrative_{v}", label_visibility="collapsed",
                                              placeholder="A few sentences on how your constructs relate and why.")
+    _add_construct_here(lib, plan, construct_labels, construct_names, v, narrative_base)
 
     # ------------------------------------------------------------ Step 6
     st.subheader("Step 6 · Review, save, and continue")
@@ -563,6 +581,57 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
 
     st.session_state["m2_pending"] = plan
     _share(lib, plan, book, publish_disabled, publish_hint)
+
+
+def _diagram_editor(plan: dict, positions: dict, names: dict, v: int):
+    """Step 5's drag-and-drop diagram. Returns (arrows, box positions), or None if the component is missing."""
+    try:
+        from streamlit_flow import streamlit_flow
+        from streamlit_flow.elements import StreamlitFlowEdge, StreamlitFlowNode
+        from streamlit_flow.state import StreamlitFlowState
+    except ImportError:
+        return None
+    keys = [c["id"] for c in plan["constructs"]]
+    arrows = sorted({(r["from"], r["to"]) for r in plan["relationships"]})
+    labels = {(r["from"], r["to"]): r.get("relationship", "") for r in plan["relationships"]}
+    # A new diagram whenever constructs or arrows change outside it (table edits, Step 2); moves keep the same one.
+    key = f"m2_flow_{v}_{abs(hash((tuple(keys), tuple(arrows), tuple(labels.values())))) % 10**8}"
+    if key not in st.session_state:
+        st.session_state[key] = StreamlitFlowState(
+            nodes=[StreamlitFlowNode(id=k, pos=tuple(positions[k]), data={"content": names.get(k, k)},
+                                     node_type="default", source_position="right", target_position="left",
+                                     draggable=True, connectable=True, selectable=True, deletable=False)
+                   for k in keys],
+            edges=[StreamlitFlowEdge(id=f"{a}->{b}", source=a, target=b, marker_end={"type": "arrowclosed"},
+                                     label=labels.get((a, b), ""), deletable=True, focusable=True)
+                   for a, b in arrows])
+    st.session_state[key] = streamlit_flow(key, st.session_state[key], height=460, fit_view=True,
+                                           allow_new_edges=True, enable_edge_menu=True, show_controls=True,
+                                           hide_watermark=True)
+    state = st.session_state[key]
+    moved = {n.id: [float(n.position["x"]), float(n.position["y"])] for n in state.nodes if n.id in positions}
+    edges = [(e.source, e.target) for e in state.edges if e.source in positions and e.target in positions]
+    return edges, {**positions, **moved}
+
+
+def _add_construct_here(lib, plan: dict, construct_labels: dict, construct_names: dict, v: int, narrative: str) -> None:
+    """Step 5: add a construct you realize is missing while building the diagram."""
+    with st.expander("Missing something? Add a construct"):
+        st.caption("Add a construct here and it joins your plan (Step 2) and the diagram. Choose it from the shared "
+                   "list, or name your own.")
+        c1, c2 = st.columns(2)
+        name = c1.text_input("Your name for it", key=f"m2_addc_name_{v}", placeholder="e.g. Career interests")
+        shared = c2.selectbox("Shared construct (optional)", [""] + list(construct_labels), key=f"m2_addc_shared_{v}",
+                              help="Choose one only if it means the same thing as your construct.")
+        if st.button("Add construct", key=f"m2_addc_go_{v}", disabled=not (name.strip() or shared)):
+            sid = construct_labels.get(shared)
+            new = (P.shared_list_construct(lib, sid) if sid and not name.strip() else
+                   {"id": P.construct_key(None, name.strip()), "label": name.strip(), "framework_id": None,
+                    "shared_construct_id": sid, "definition": ""})
+            if new["id"] in {c["id"] for c in plan["constructs"]}:
+                st.warning(f"{new['label']} is already in your plan.")
+            else:
+                _rebase({**plan, "constructs": plan["constructs"] + [new], "narrative": narrative})
 
 
 def _icpsr_variables(base: dict, v: int) -> list[dict]:

@@ -214,9 +214,23 @@ def load_measure_catalog() -> list[dict]:
 
 #: How Modules 1 to 3 fit together, shown in the sidebar and on the About page
 STUDY_PATH = (
-    "Modules 1 and 2 define your study: what it is, and the theory and measures behind it. "
-    "Module 3 checks that description and links it to a DOI by registering the study in the STEMEd+ Library."
+    "HuMeta has two parts. **Part 1, Design your study** (Modules 1–3): describe the study and the theory and "
+    "measures behind it, then check that description and register the study for a DOI. **Part 2, Share and connect "
+    "your results** (Modules 4–6): deposit the data, analyze them, and find related data from other studies."
 )
+
+# The two parts of HuMeta and their modules, in order (sidebar navigation and the About page).
+PARTS = {
+    "Part 1 · Design your study": {
+        "about": "Describe the study, plan its theory and measures, and register it for a DOI.",
+        "modules": ["1. Describe Your Study", "2. Theory and Measures", "3. Check, Register & Export"],
+    },
+    "Part 2 · Share and connect your results": {
+        "about": "Deposit the data, analyze them, and connect them to related data.",
+        "modules": ["4. Deposit Data in the STEMEd+ Library", "5. Descriptive & Scale Analytics", "6. Find Related Data"],
+    },
+}
+ABOUT = "About this app"
 
 value_propositions = [
     (

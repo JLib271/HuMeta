@@ -21,7 +21,7 @@ from oem import ddi
 from oem import plan as plan_model
 from oem import profile
 from oem import study_pdf
-from oem.app.common import current_project, navigate_to_module
+from oem.app.common import current_project, navigate_to_module, render_project_download
 from oem.app.profile_form import SPEC_URL, current_record, library, show_issues, store_record
 
 
@@ -209,6 +209,20 @@ def _register_study(record: dict) -> None:
     if doi:
         st.success(f"Your study is registered: [https://doi.org/{doi}](https://doi.org/{doi}). Datasets and other "
                    "outputs from the study link back to this DOI (Module 4 shows how).")
+        with st.container(border=True):
+            st.markdown("**Download your study profile again, now with its DOI**")
+            st.caption("The files you deposited were made before the study had a DOI. Keep these updated copies "
+                       "with your study materials and use them when you share the study profile. You don't need to "
+                       "deposit them again: the Knowledge Commons record already shows the DOI.")
+            c1, c2, c3 = st.columns(3)
+            c1.download_button("Study profile with DOI (PDF)", study_pdf.study_pdf(record, library(), profile.load()),
+                               file_name="study-profile.pdf", mime="application/pdf", key="m3_dl_doi_pdf",
+                               type="primary", use_container_width=True)
+            c2.download_button("humeta.json with DOI", json.dumps(record, ensure_ascii=False, indent=2).encode("utf-8"),
+                               file_name="humeta.json", mime="application/json", key="m3_dl_doi_json",
+                               type="primary", use_container_width=True)
+            with c3:
+                render_project_download(key="m3_dl_doi_project", label="Project file (saves the DOI)")
     else:
         st.write(
             "Give your study its own DOI by depositing this profile in the [STEMEd+ Library's Studies collection]("

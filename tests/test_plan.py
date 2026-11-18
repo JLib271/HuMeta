@@ -274,3 +274,22 @@ def test_theory_relationships_are_included_automatically(lib):
     plan["relationships"] = expected[1:]
     missing = P.missing_theory_relationships(lib, plan, {c["id"] for c in plan["constructs"]})
     assert missing == {"new": [], "removed": expected[:1]}
+
+
+def test_diagram_layout_and_arrows(lib):
+    plan = P.empty_plan()
+    plan["frameworks"] = ["sct"]
+    plan["constructs"] = P.framework_constructs(lib, ["sct"])
+    plan["relationships"] = P.default_relationships(lib, ["sct"], {c["id"] for c in plan["constructs"]})
+    places = P.default_positions(plan)
+    assert set(places) == {c["id"] for c in plan["constructs"]}
+    se, bf = "sct.self_efficacy", "sct.behavioral_factors"
+    assert places[se][0] < places[bf][0]  # cause to the left of its outcome
+    plan["relationships"][0]["relationship"] = "shapes"
+    first = (plan["relationships"][0]["from"], plan["relationships"][0]["to"])
+    edges = [first, (se, "sct.outcome_expectations"), (se, se), (se, "sct.outcome_expectations")]
+    rels = P.relationships_from_edges(plan["relationships"], edges)
+    assert [(r["from"], r["to"]) for r in rels] == edges[:2]  # deleted arrows dropped, loops and repeats ignored
+    assert rels[0]["relationship"] == "shapes" and rels[1]["relationship"] == ""  # wording kept; new arrow blank
+    plan["positions"] = {se: [10.0, 20.0]}
+    assert P.normalize(plan)["positions"] == {se: [10.0, 20.0]}  # survives save and reopen
