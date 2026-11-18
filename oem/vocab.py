@@ -24,6 +24,18 @@ LIBRARY_SITE_URL = "https://jlib271.github.io/humeta-library/"
 PORTAL_URL = "https://humeta.streamlit.app/"
 
 
+#: Persistent identifiers of library records on w3id.org (redirect rules: humeta-library w3id/ids/humeta/.htaccess)
+PERSISTENT_BASE = "https://w3id.org/humeta/"
+#: The HuMeta metadata-code scheme (Construct_Measure_Item_Target)
+METADATA_CODE_URI = PERSISTENT_BASE + "metadata-code"
+
+
+def persistent_uri(kind: str, record_id: str, version_id: str | None = None) -> str:
+    """Persistent identifier of a library record: kind instrument, construct or framework, e.g.
+    https://w3id.org/humeta/construct/self-efficacy or https://w3id.org/humeta/instrument/gci/gci-v4-2014."""
+    return f"{PERSISTENT_BASE}{kind}/{record_id.replace('_', '-')}" + (f"/{version_id}" if version_id else "")
+
+
 def library_page_url(kind: str, record_id: str) -> str:
     """Address of a record's page on the Library website (kind: instruments, frameworks or constructs)."""
     return f"{LIBRARY_SITE_URL}{kind}/{record_id.replace('_', '-')}/"

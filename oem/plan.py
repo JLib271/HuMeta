@@ -38,6 +38,7 @@ from typing import Any
 
 from oem import codebook, metacode, naming
 from oem.library import Library
+from oem.vocab import persistent_uri
 
 PLAN_VERSION = 3
 MEASURE_KINDS = {
@@ -555,6 +556,7 @@ def measure_groups(lib: Library, plan: dict) -> list[dict]:
         c_code, m_code = metacode.construct_code(lib, construct), metacode.measure_code(lib, m)
         target = metacode.target_code(m.get("target"))
         shared = [construct["shared_construct_id"]] if construct.get("shared_construct_id") else []
+        construct_uri = persistent_uri("construct", shared[0]) if shared else None
         notes = f"Measures construct: {construct['label']}"
         variables: list[codebook.Variable] = []
         if m["kind"] == "instrument":
@@ -624,6 +626,12 @@ def measure_groups(lib: Library, plan: dict) -> list[dict]:
                 metadata_code=metacode.join(c_code, m_code, metacode.camel(label, metacode.ITEM_WORDS), target),
                 code_level=metacode.level(measure=True, item=True, target=bool(target)))]
             group_label = f"{construct['label']} (codes)"
+        measure_uri = (persistent_uri("instrument", m["instrument_id"], m.get("version_id") or (
+            (lib.instruments[m["instrument_id"]].get("versions") or [{}])[0].get("version_id")))
+            if m["kind"] == "instrument" else f"https://doi.org/{m['doi']}" if m["kind"] == "published" and m.get("doi")
+            else None)
+        for var in variables:
+            var.measure_uri, var.construct_uri = measure_uri, construct_uri
         groups.append({"construct": construct, "measure": m, "label": group_label, "variables": variables})
     return groups
 
@@ -656,7 +664,9 @@ def build_codebook(lib: Library, plan: dict) -> codebook.Codebook:
         v.name = name
     measured = {m.get("construct") for m in plan["measures"]}
     unmeasured = [{"metadata_code": metacode.construct_code(lib, c), "label": c["label"],
-                   "construct_ids": [c["shared_construct_id"]] if c.get("shared_construct_id") else []}
+                   "construct_ids": [c["shared_construct_id"]] if c.get("shared_construct_id") else [],
+                   **({"construct_uri": persistent_uri("construct", c["shared_construct_id"])}
+                      if c.get("shared_construct_id") else {})}
                   for c in plan["constructs"] if c["id"] not in measured]
     return codebook.Codebook(variables, unmeasured)
 
