@@ -14,7 +14,7 @@ import streamlit as st
 
 from oem import profile
 from oem.app.common import navigate_to_module, open_profile_proposal, public_submission_warning, render_project_download
-from oem.app.profile_form import SPEC_URL, current_record, record_form, store_record
+from oem.app.profile_form import SPEC_URL, current_record, record_form, show_issues, store_record
 
 CONSTRUCT_RULES = {"R1"}  # constructs are completed in Module 3
 
@@ -56,8 +56,8 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
     warnings = sum(i.severity == "warning" for i in issues)
     with st.container(border=True):
         if errors or warnings:
-            st.markdown(f"**Profile check:** {errors} item(s) to fix and {warnings} to review. "
-                        "Details are listed in Module 3.")
+            st.markdown(f"**Profile check:** {errors} item(s) to fix and {warnings} to review:")
+            show_issues(issues)
         else:
             st.markdown("**Profile check:** the study profile is complete so far.")
         st.caption("Next: plan variables in Module 2, then add the constructs you measure and export the "
