@@ -30,6 +30,8 @@ DATA_DEPOSIT_URL = f"https://works.hcommons.org/uploads/new?community={DATA_COLL
 STUDIES_COLLECTION = "stemedplus-studies"
 STUDIES_COLLECTION_URL = f"https://works.hcommons.org/collections/{STUDIES_COLLECTION}"
 STUDIES_DEPOSIT_URL = f"https://works.hcommons.org/uploads/new?community={STUDIES_COLLECTION}"
+#: How to join: one account for STEMEd+ Commons and its library
+JOIN_URL = "https://support.hcommons.org/profiles/login-and-registration/"
 #: Publisher on STEMEd+ Commons Library DOIs (registered by Knowledge Commons, the platform STEMEd+ Commons runs
 #: on), used when a registered study has none recorded
 KC_PUBLISHER = "Knowledge Commons"

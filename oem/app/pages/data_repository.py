@@ -86,7 +86,8 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
                        use_container_width=True)
 
     st.subheader("4 · Deposit in the STEMEd+ Commons Library")
-    st.write("Sign in to the STEMEd+ Commons Library (free; Google, ORCID, GitHub, or your institution), choose **Dataset** as the "
+    st.write("Sign in to the STEMEd+ Commons Library, or join free ([how to join](" + D.JOIN_URL + "); Google, ORCID, "
+             "GitHub, or your institution), choose **Dataset** as the "
              "resource type, upload your data files and **humeta.json**, and fill in the form.")
     st.link_button("Start a deposit in the Data collection", D.DATA_DEPOSIT_URL, use_container_width=True)
     title = (record.get("resource") or {}).get("title")

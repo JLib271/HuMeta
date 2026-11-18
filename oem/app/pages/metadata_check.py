@@ -240,8 +240,8 @@ def _register_study(record: dict) -> None:
         c2.download_button("Download humeta.json", json.dumps(record, ensure_ascii=False, indent=2).encode("utf-8"),
                            file_name="humeta.json", mime="application/json", key="m3_dl_register",
                            type="primary" if not doi else "secondary", use_container_width=True)
-        st.markdown("**2.** Start a deposit in the Studies collection. Sign in to the STEMEd+ Commons Library (free; Google, ORCID, "
-                    "GitHub, or your institution).")
+        st.markdown("**2.** Start a deposit in the Studies collection. Sign in to the STEMEd+ Commons Library, or join free "
+                    "([how to join](" + D.JOIN_URL + "); Google, ORCID, GitHub, or your institution).")
         st.link_button("Start a deposit in the Studies collection", D.STUDIES_DEPOSIT_URL, use_container_width=True)
         st.markdown("**3.** Copy these into the deposit form.")
         creators = "; ".join(c["name"] + (f" (ORCID {c['orcid']})" if c.get("orcid") else "")
