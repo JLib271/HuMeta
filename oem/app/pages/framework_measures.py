@@ -377,15 +377,20 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
                 "Question, or code definition": m.get("text") or "",
                 "Label (code name or item label)": m.get("label") or "",
                 "Response scale": scale_names.get(m.get("scale_id")),
+                "Target (optional)": m.get("target") or "",
                 "Variable name (optional)": m.get("name") or "",
             } for m in base["measures"]], columns=["Construct", "Type", "Library instrument", "Question, or code definition",
-                                                   "Label (code name or item label)", "Response scale", "Variable name (optional)"]),
+                                                   "Label (code name or item label)", "Response scale", "Target (optional)",
+                                                   "Variable name (optional)"]),
             num_rows="dynamic", use_container_width=True, key=f"m2_measures_{v}",
             column_config={
                 "Construct": st.column_config.SelectboxColumn("Construct", options=list(construct_display)),
                 "Type": st.column_config.SelectboxColumn("Type", options=list(kind_labels)),
                 "Library instrument": st.column_config.SelectboxColumn("Library instrument", options=list(instrument_options)),
                 "Response scale": st.column_config.SelectboxColumn("Response scale", options=list(scale_labels)),
+                "Target (optional)": st.column_config.TextColumn(
+                    "Target (optional)", help="What the measure is about, in a word or two: e.g. Vote, Recycling, "
+                    "Physics. Added to the metadata code so studies with the same target can be found."),
             },
         )
     for row in measures_df.to_dict(orient="records"):
@@ -403,7 +408,8 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
                          "version_id": vid if kind == "instrument" else None,
                          "dimension_id": did if kind == "instrument" else None,
                          "name": _s(row.get("Variable name (optional)")), "label": label, "text": text,
-                         "scale_id": scale_labels.get(_s(row.get("Response scale")))})
+                         "scale_id": scale_labels.get(_s(row.get("Response scale"))),
+                         "target": _s(row.get("Target (optional)"))})
     if skipped:
         st.caption(f"{skipped} unfinished row(s) are left out of the plan until they have a construct, a type, and "
                    "an instrument or question.")
@@ -540,14 +546,18 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
                 f"{len(plan['standard_variables']) + len(plan['external_variables'])} other variable(s)"
                 + (f"; timepoints {', '.join(plan['timepoints'])}" if plan["timepoints"] else "") + ".")
     book = None
-    if not issues and (plan["measures"] or plan["standard_variables"] or plan["external_variables"]):
+    if not issues and (plan["constructs"] or plan["standard_variables"] or plan["external_variables"]):
         book = P.build_codebook(lib, plan)
         if plan["measures"]:
             with st.expander("Alignment: construct → measure → variables"):
                 st.dataframe(pd.DataFrame(P.alignment(lib, plan)), use_container_width=True, hide_index=True)
-        with st.expander(f"Codebook: {len(book)} variables"):
-            st.dataframe(pd.DataFrame(book.to_rows())[["name", "label", "data_type", "values", "question",
-                                                       "construct_ids", "notes"]],
+        with st.expander(f"Codebook: {len(book)} variables"
+                         + (f", {len(book.constructs)} construct(s) without a measure yet" if book.constructs else "")):
+            st.caption("**metadata_code** is the same in every study that uses the same construct, measure, item, "
+                       "and target (Construct_Measure_Item_Target), so studies can be matched at each level. "
+                       "**name** is the column name in your data file.")
+            st.dataframe(pd.DataFrame(book.to_rows())[["name", "metadata_code", "code_level", "label", "data_type",
+                                                       "values", "question", "construct_ids", "notes"]],
                          use_container_width=True, hide_index=True)
         manifest = P.manifest(lib, plan)
         st.session_state["module2_variable_manifest"] = manifest

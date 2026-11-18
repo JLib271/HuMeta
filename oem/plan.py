@@ -36,7 +36,7 @@ import copy
 import re
 from typing import Any
 
-from oem import codebook, naming
+from oem import codebook, metacode, naming
 from oem.library import Library
 
 PLAN_VERSION = 3
@@ -475,6 +475,8 @@ def measure_groups(lib: Library, plan: dict) -> list[dict]:
         construct = constructs.get(m.get("construct"))
         if not construct or m.get("kind") not in MEASURE_KINDS:
             continue
+        c_code, m_code = metacode.construct_code(lib, construct), metacode.measure_code(lib, m)
+        target = metacode.target_code(m.get("target"))
         shared = [construct["shared_construct_id"]] if construct.get("shared_construct_id") else []
         notes = f"Measures construct: {construct['label']}"
         variables: list[codebook.Variable] = []
@@ -490,13 +492,19 @@ def measure_groups(lib: Library, plan: dict) -> list[dict]:
                 for v in variables:
                     v.construct_ids = sorted(set(v.construct_ids) | set(shared))
                     v.notes = notes
+                    number = lib.item(inst["id"], version_id, v.item_id)["number"]
+                    item = metacode.join(metacode.item_code(number, v.question), metacode.camel(v.option or "", 2))
+                    v.metadata_code = metacode.join(c_code, m_code, item, target)
+                    v.code_level = metacode.level(measure=True, item=True, target=bool(target))
             else:
                 name = (m.get("name") or "").strip() or _score_name(inst["variable_prefix"], m.get("dimension_id"))
                 variables = [codebook.Variable(
                     name=name, label=f"{title} (scale score)", data_type="numeric",
                     instrument_id=inst["id"], version_id=version_id,
                     construct_ids=sorted(set(shared) | set((dim or inst).get("construct_ids", []))),
-                    notes=notes + "; scale score (item-level variables are not in the library for this instrument)")]
+                    notes=notes + "; scale score (item-level variables are not in the library for this instrument)",
+                    metadata_code=metacode.join(c_code, m_code, target),
+                    code_level=metacode.level(measure=True, target=bool(target)))]
             group_label = title
         elif m["kind"] == "question":
             counters[construct["id"]] = counters.get(construct["id"], 0) + 1
@@ -507,7 +515,10 @@ def measure_groups(lib: Library, plan: dict) -> list[dict]:
                 data_type=("ordinal" if scale.level == "ordinal" else "categorical") if scale else "numeric",
                 values=list(scale.points) if scale else [], missing=list(scale.missing) if scale else [],
                 scale_id=scale.id if scale else None, question=(m.get("text") or "").strip() or None,
-                construct_ids=shared, notes=notes)]
+                construct_ids=shared, notes=notes,
+                metadata_code=metacode.join(c_code, m_code, metacode.item_code(counters[construct["id"]], m.get("text")),
+                                            target),
+                code_level=metacode.level(measure=True, item=True, target=bool(target)))]
             group_label = f"{construct['label']} (researcher-written items)"
         else:  # code
             label = (m.get("label") or m.get("text") or "").strip()
@@ -519,7 +530,9 @@ def measure_groups(lib: Library, plan: dict) -> list[dict]:
                 missing=list(selected.missing) if selected else [],
                 scale_id="selected" if selected else None,
                 question=(m.get("text") or "").strip() or None, construct_ids=shared,
-                notes=notes + "; code in a coding scheme (1 = present in the unit of analysis)")]
+                notes=notes + "; code in a coding scheme (1 = present in the unit of analysis)",
+                metadata_code=metacode.join(c_code, m_code, metacode.camel(label, metacode.ITEM_WORDS), target),
+                code_level=metacode.level(measure=True, item=True, target=bool(target)))]
             group_label = f"{construct['label']} (codes)"
         groups.append({"construct": construct, "measure": m, "label": group_label, "variables": variables})
     return groups
@@ -529,13 +542,17 @@ def build_codebook(lib: Library, plan: dict) -> codebook.Codebook:
     """The plan's codebook: standard variables, then every measure, repeated per timepoint."""
     variables: list[codebook.Variable] = []
     for name in plan["standard_variables"]:
-        variables += codebook.standard_variable(lib, name)
+        for v in codebook.standard_variable(lib, name):
+            v.metadata_code, v.code_level = name, "standard_variable"
+            variables.append(v)
     for x in plan.get("external_variables") or []:
         source = (f"From ICPSR study {x['study']}, variable {x['variable']}" if x.get("study") else "From ICPSR")
         variables.append(codebook.Variable(
             name=x["name"], label=x.get("label") or x["name"], data_type=x.get("data_type") or "categorical",
             question=x.get("question") or None,
-            notes=f"{source} ({x['source_url']}). Question wording and codes are documented there."))
+            notes=f"{source} ({x['source_url']}). Question wording and codes are documented there.",
+            metadata_code=f"ICPSR{x['study']}_{x['variable']}" if x.get("study") else None,
+            code_level="icpsr_variable"))
     timepoints = plan["timepoints"] or [None]
     for group in measure_groups(lib, plan):
         for tp in timepoints:
@@ -547,7 +564,11 @@ def build_codebook(lib: Library, plan: dict) -> codebook.Codebook:
     names = naming.deduplicate([v.name for v in variables])
     for v, name in zip(variables, names):
         v.name = name
-    return codebook.Codebook(variables)
+    measured = {m.get("construct") for m in plan["measures"]}
+    unmeasured = [{"metadata_code": metacode.construct_code(lib, c), "label": c["label"],
+                   "construct_ids": [c["shared_construct_id"]] if c.get("shared_construct_id") else []}
+                  for c in plan["constructs"] if c["id"] not in measured]
+    return codebook.Codebook(variables, unmeasured)
 
 
 def alignment(lib: Library, plan: dict) -> list[dict]:

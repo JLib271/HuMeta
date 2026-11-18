@@ -113,7 +113,7 @@ def render(*, signed_in: bool, publish_disabled: bool, publish_hint: str | None)
             st.button("DataCite 4.7 metadata (XML)", disabled=True, use_container_width=True, key="m3_dl_dcxml_off",
                       help="DataCite XML requires a DOI. Register the study above to get one.")
     plan = current_project().get("module2_plan")
-    has_plan = bool((plan or {}).get("measures") or (plan or {}).get("standard_variables")
+    has_plan = bool((plan or {}).get("constructs") or (plan or {}).get("standard_variables")
                     or (plan or {}).get("external_variables"))
     st.download_button("DDI-Codebook 2.5 (XML)", ddi.to_ddi_codebook_xml(record, plan if has_plan else None, lib, p).encode("utf-8"),
                        file_name=f"{slug}.ddi.xml", mime="application/xml", key="m3_dl_ddi", use_container_width=True,

@@ -251,6 +251,8 @@ def _construct_concept(b: _Builder, parent: ET.Element, lib: Library, shared_id:
         b.el(parent, "concept", label)
 
 
+METADATA_CODE_VOCAB = "HuMeta metadata code (Construct_Measure_Item_Target)"
+METADATA_CODE_URI = "https://github.com/JLib271/HuMeta/blob/main/oem/metacode.py"
 ICPSR_THESAURUS = "ICPSR Subject Thesaurus"
 NATURE = {"ordinal": "ordinal", "categorical": "nominal", "binary": "nominal", "numeric": "interval"}
 
@@ -281,6 +283,8 @@ def _variable(b: _Builder, parent: ET.Element, lib: Library, v: codebook.Variabl
         _construct_concept(b, node, lib, cid, lib.constructs[cid]["label"])
     if construct and not shared:  # the plan's own construct, not (yet) on the shared list
         b.el(node, "concept", construct["label"])
+    if v.metadata_code:  # the same code in every study that uses this construct, measure, item, and target
+        b.el(node, "concept", v.metadata_code, vocab=METADATA_CODE_VOCAB, vocabURI=METADATA_CODE_URI)
     notes = [x.strip().rstrip(".") for x in (v.notes, f"Timepoint: {v.timepoint}" if v.timepoint else None,
                          f"Instrument: {lib.instruments[v.instrument_id]['name']}" if v.instrument_id in lib.instruments else None,
                          f"Sensitivity if shared: {v.sensitivity}" if v.sensitivity != "none" else None) if x]
