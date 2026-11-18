@@ -37,7 +37,8 @@ ROOT = Path(__file__).resolve().parent.parent
 PROFILE_DIR = ROOT / "standard" / "humeta"
 #: The HuMeta construct vocabulary: scheme and, per construct, its persistent identifier (vocab.persistent_uri)
 CONSTRUCTS_SCHEME_URI = "https://w3id.org/humeta/construct"
-FRAMEWORKS_URI = "https://github.com/JLib271/humeta-library/blob/main/frameworks.json#"
+#: Theories and frameworks: scheme and, per framework, its persistent identifier (vocab.persistent_uri)
+FRAMEWORKS_SCHEME_URI = "https://w3id.org/humeta/framework"
 VOCAB_URI = "https://github.com/JLib271/humeta-profile/blob/main/vocabularies.json#"
 DATACITE_NS = "http://datacite.org/schema/kernel-4"
 DATACITE_XSD = "http://schema.datacite.org/meta/kernel-4.7/metadata.xsd"
@@ -797,7 +798,7 @@ def to_datacite_json(record: dict, lib: Library | None = None, profile: Profile 
         framework = lib.frameworks.get(fid)
         if framework:
             subjects.append({"subject": framework["label"], "subjectScheme": "HuMeta Frameworks",
-                             "schemeUri": FRAMEWORKS_URI.rstrip("#"), "valueUri": FRAMEWORKS_URI + fid})
+                             "schemeUri": FRAMEWORKS_SCHEME_URI, "valueUri": persistent_uri("framework", fid)})
     for path, (vocab_id, scheme) in VOCAB_FIELDS.items():
         if scheme:
             subjects += vocab_subjects(p, vocab_id, scheme, get(record, path) or [])

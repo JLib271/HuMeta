@@ -362,7 +362,7 @@ def test_theoretical_frameworks_are_validated_and_exported(lib, p):
     data = profile.to_datacite_json(record, lib, p)
     fw = [s for s in data["subjects"] if s.get("subjectScheme") == "HuMeta Frameworks"]
     assert [s["subject"] for s in fw] == ["New Historicism and Cultural History"]
-    assert fw[0]["valueUri"].endswith("frameworks.json#new_historicism")
+    assert fw[0]["valueUri"] == "https://w3id.org/humeta/framework/new-historicism"
     methods = next(d["description"] for d in data["descriptions"] if d["descriptionType"] == "Methods")
     assert "Theoretical framework: New Historicism and Cultural History." in methods
     record["study"]["design"]["frameworks"] = ["not_a_framework"]

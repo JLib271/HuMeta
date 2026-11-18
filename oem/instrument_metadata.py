@@ -142,7 +142,7 @@ def to_datacite_json(lib: Library, instrument_id: str, profile=None) -> dict:
         f = lib.frameworks.get(fid)
         if f:
             subjects.append({"subject": f["label"], "subjectScheme": "HuMeta Frameworks",
-                             "schemeUri": P.FRAMEWORKS_URI.rstrip("#"), "valueUri": P.FRAMEWORKS_URI + fid})
+                             "schemeUri": P.FRAMEWORKS_SCHEME_URI, "valueUri": persistent_uri("framework", fid)})
     subjects += P.vocab_subjects(p, "discipline", "HuMeta Disciplines",
                                  [d for d in inst.get("disciplines", []) if p.term("discipline", d)])
     for field, vocab_id, scheme in INSTRUMENT_SUBJECTS:
