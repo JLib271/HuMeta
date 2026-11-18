@@ -583,6 +583,18 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
                                use_container_width=True)
     st.caption("**Saving moves your work into Module 3:** your framework and constructs are added to your study "
                "profile, and your variables are used in Module 3's DDI export. You can come back and add more later.")
+    dois = P.published_dois(plan)
+    add_dois = False
+    if dois and record is not None:
+        new = [d for d in dois if d["doi"].lower() not in {(r.get("identifier") or "").lower()
+                                                            for r in record["resource"].get("related") or []}]
+        if new:
+            add_dois = st.checkbox(
+                f"Also list the published instrument(s) you use in your study profile ({len(new)}): "
+                + "; ".join(f"{d['name']} (doi:{d['doi']})" for d in new),
+                value=True, key=f"m2_add_dois_{v}",
+                help="Adds each DOI to the study profile's related works (cited by the study), so your study "
+                     "record and its DataCite metadata name the instrument even though it is not in the library.")
     if st.button("Save variable plan and continue", type="primary", disabled=bool(issues) or empty, key="m2_save"):
         project = current_project()
         project["module2_plan"] = plan
@@ -594,6 +606,9 @@ def _plan(lib, publish_disabled: bool, publish_hint: str | None) -> None:
             if plan["framework_description"].strip():
                 record["study"]["design"]["framework_description"] = plan["framework_description"].strip()
             record["study"]["constructs"], added = P.merge_profile_constructs(record["study"].get("constructs"), plan)
+            if add_dois:
+                record["resource"]["related"], dois_added = P.merge_related_dois(record["resource"].get("related"), plan)
+                st.session_state["m2_saved_dois"] = dois_added
             store_record(record, reset_widgets=True)
         st.session_state["m2_saved"] = added
         _rebase(plan)
@@ -836,8 +851,10 @@ def _next_step(lib) -> None:
         if "m2_saved" in st.session_state:
             added = st.session_state.pop("m2_saved")
             if record is not None:
+                dois_added = st.session_state.pop("m2_saved_dois", 0)
                 listed = (["your framework"] if (saved.get("frameworks")) else []) + (
-                    [f"{added} new construct(s)"] if added else [])
+                    [f"{added} new construct(s)"] if added else []) + (
+                    [f"{dois_added} published instrument DOI(s) as related works"] if dois_added else [])
                 st.success("Variable plan saved." + (f" Your study profile now lists {' and '.join(listed)} from this plan."
                                                      if listed else ""))
             else:

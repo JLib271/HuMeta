@@ -128,3 +128,17 @@ def test_published_instruments_not_in_the_library(lib):
     # neither author-year nor DOI
     plan["measures"] = [P.published_measure("sct.self_efficacy", "Science Self-Efficacy Scale")]
     assert P.problems(lib, plan)
+
+
+def test_published_instrument_dois_go_to_related_works(lib):
+    plan = sct_plan(lib)
+    plan["measures"] = [P.published_measure("sct.self_efficacy", "Science Self-Efficacy Scale", "Smith 2017", "10.1002/TEA.21234"),
+                        P.published_measure("sct.outcome_expectations", "Science Self-Efficacy Scale", "Smith 2017",
+                                            "https://doi.org/10.1002/tea.21234"),
+                        P.published_measure("sct.outcome_expectations", "No DOI Scale", "Lee 2020")]
+    assert [d["doi"] for d in P.published_dois(plan)] == ["10.1002/TEA.21234"]
+    existing = [{"identifier": "10.1/x", "identifier_type": "DOI", "relation": "IsSupplementTo"}]
+    merged, added = P.merge_related_dois(existing, plan)
+    assert added == 1 and merged[0] == existing[0]
+    assert merged[1] == {"identifier": "10.1002/TEA.21234", "identifier_type": "DOI", "relation": "References"}
+    assert P.merge_related_dois(merged, plan) == (merged, 0)

@@ -746,6 +746,32 @@ def profile_constructs(plan: dict) -> list[dict]:
     return list(out.values())
 
 
+def published_dois(plan: dict) -> list[dict]:
+    """The published instruments (not in the library) in the plan that have a DOI: name and DOI, once each."""
+    out: dict[str, dict] = {}
+    for m in plan.get("measures") or []:
+        if m.get("kind") == "published" and m.get("doi"):
+            out.setdefault(m["doi"].lower(), {"name": (m.get("label") or "").strip(), "doi": m["doi"]})
+    return list(out.values())
+
+
+def merge_related_dois(existing: list[dict] | None, plan: dict) -> tuple[list[dict], int]:
+    """Add the DOIs of the plan's published instruments to a study profile's related works (``resource.related``).
+
+    Each is added as a DOI the study References, as the original publications of library instruments are in
+    the DataCite export. DOIs already listed are left as they are. Returns the merged list and how many were added.
+    """
+    merged = [dict(r) for r in existing or []]
+    listed = {(r.get("identifier") or "").lower() for r in merged if r.get("identifier_type") == "DOI"}
+    added = 0
+    for p in published_dois(plan):
+        if p["doi"].lower() not in listed:
+            merged.append({"identifier": p["doi"], "identifier_type": "DOI", "relation": "References"})
+            listed.add(p["doi"].lower())
+            added += 1
+    return merged, added
+
+
 def merge_profile_constructs(existing: list[dict], plan: dict) -> tuple[list[dict], int]:
     """Add the plan's constructs to a study profile's constructs (Module 2 → Module 3).
 
